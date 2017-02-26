@@ -7649,3 +7649,138 @@ server/entities/map_entities.qc:215: warning Q302: float endframe  no references
 server/entities/map_entities.qc:216: warning Q302: string modelname  no references.
 Compile finished: ../qwprogs.dat (id format)
 Done. 6 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:580: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 1 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+848 used, but not referenced.
+in function buy_weapon_touch (line 211),
+server/entities/map_entities.qc:212: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:213: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:215: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:215: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:216: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:580: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+shared/weapon_defines.qc:663: warning F210: Sound "sounds/weapons/fg42/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:665: warning F210: Sound "sounds/weapons/fg42/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:667: warning F210: Sound "sounds/weapons/fg42/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:669: warning F210: Sound "sounds/weapons/fg42/boltforward.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 5 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+852 used, but not referenced.
+in function buy_weapon_touch (line 211),
+server/entities/map_entities.qc:212: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:213: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:215: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:215: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:216: warning Q302: string modelname  no references.
+at global scope,
+shared/weapon_defines.qc:663: warning F210: Sound "sounds/weapons/fg42/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:665: warning F210: Sound "sounds/weapons/fg42/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:667: warning F210: Sound "sounds/weapons/fg42/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:669: warning F210: Sound "sounds/weapons/fg42/boltforward.wav" was used but not directly precached
+Compile finished: ../qwprogs.dat (id format)
+Done. 10 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:580: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 1 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+847 used, but not referenced.
+in function buy_weapon_touch (line 211),
+server/entities/map_entities.qc:212: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:213: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:215: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:215: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:216: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
