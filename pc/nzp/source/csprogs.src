@@ -1,0 +1,8 @@
+../csprogs.dat
+client/csdefs.qc
+shared/customdefs.qc
+shared/weapon_defines.qc
+client/math.qc
+client/customdefs.qc
+client/menu.qc
+client/main.qc

@@ -1,0 +1,2795 @@
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe "Hello World"
+outputfile: progs.dat
+
+************ ERROR ************
+Couldn't open file Hello
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+shared/customdefs.qc:11: warning: Missing semicolon at end of definition
+shared/customdefs.qc:11: error: "1" is not a type
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+
+************ ERROR ************
+compilation errors
+Error in shared/customdefs.qc on line 11
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:11: warning Q302: .float picked = picked+676 used, but not referenced.
+server/customdefs.qc:12: warning Q302: .float parts = parts+677 used, but not referenced.
+Compile finished: ../qwprogs.dat (id format)
+Done. 2 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+in function getWeaponDelay (line 43),
+server/weapons/weapon_defines.qc:48: error: Unknown value "RELOAD".
+server/weapons/weapon_defines.qc:50: error: Unknown value "FIRE".
+in function GetFrame (line 58),
+server/weapons/weapon_defines.qc:64: error: Unknown value "FIRE_START".
+server/weapons/weapon_defines.qc:66: error: Unknown value "FIRE_END".
+server/weapons/weapon_defines.qc:68: error: Unknown value "RELOAD_START".
+server/weapons/weapon_defines.qc:70: error: Unknown value "RELOAD_END".
+server/weapons/weapon_defines.qc:72: error: Unknown value "SPRINT_IN_START".
+server/weapons/weapon_defines.qc:74: error: Unknown value "SPRINT_IN_END".
+server/weapons/weapon_defines.qc:76: error: Unknown value "SPRINT_START".
+server/weapons/weapon_defines.qc:78: error: Unknown value "SPRINT_END".
+server/weapons/weapon_defines.qc:80: error: Unknown value "SPRINT_OUT_START".
+server/weapons/weapon_defines.qc:82: error: Unknown value "SPRINT_OUT_END".
+server/weapons/weapon_defines.qc:84: error: Unknown value "TAKE_OUT_START".
+server/weapons/weapon_defines.qc:86: error: Unknown value "TAKE_OUT_END".
+server/weapons/weapon_defines.qc:88: error: Unknown value "PUT_OUT_START".
+server/weapons/weapon_defines.qc:90: error: Unknown value "PUT_OUT_END".
+server/weapons/weapon_defines.qc:92: error: Unknown value "RELOAD_CANCEL".
+in function PlayWeaponSound (line 129),
+server/weapons/weapon_defines.qc:132: error: Unknown value "curweaponframe".
+
+************ ERROR ************
+Errors have occured
+
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+in function PlayWeaponSound (line 129),
+server/weapons/weapon_defines.qc:132: error: Unknown value "curweaponframe".
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/weapons/weapon_defines.qc:134: warning F210: Sound "weapons/colt/magout.wav" was used but not directly precached
+server/weapons/weapon_defines.qc:136: warning F210: Sound "weapons/colt/magin.wav" was used but not directly precached
+server/weapons/weapon_defines.qc:138: warning F210: Sound "weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../qwprogs.dat (id format)
+Done. 3 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/weapons/weapon_defines.qc:134: warning F210: Sound "weapons/colt/magout.wav" was used but not directly precached
+server/weapons/weapon_defines.qc:136: warning F210: Sound "weapons/colt/magin.wav" was used but not directly precached
+server/weapons/weapon_defines.qc:138: warning F210: Sound "weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../qwprogs.dat (id format)
+Done. 3 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 81),
+server/weapons/weapon_core.qc:83: error: Unknown field "fire_delay" in class "entity"
+server/weapons/weapon_core.qc:83: error: Unknown field "new_anim_stop" in class "entity"
+server/weapons/weapon_core.qc:83: error: Unknown field "zoom" in class "entity"
+server/weapons/weapon_core.qc:83: error: Unknown field "reload_delay" in class "entity"
+server/weapons/weapon_core.qc:90: error: Unknown field "currentmag" in class "entity"
+server/weapons/weapon_core.qc:90: error: Type mismatch: !__variant
+compiling server/player.qc
+in function PlayerPreThink (line 27),
+server/player.qc:61: error: Unknown value "Weapon_Logic".
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Error in server/weapons/weapon_core.qc on line 90
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 81),
+server/weapons/weapon_core.qc:90: error: Unknown field "currentmag" in class "entity"
+server/weapons/weapon_core.qc:90: error: Type mismatch: !__variant
+compiling server/player.qc
+in function PlayerPreThink (line 27),
+server/player.qc:61: error: Unknown value "Weapon_Logic".
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Error in server/weapons/weapon_core.qc on line 90
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 76),
+server/weapons/weapon_core.qc:87: error: Unknown value "W_Reload".
+server/weapons/weapon_core.qc:92: error: Unknown value "firetype".
+server/weapons/weapon_core.qc:93: error: Unknown value "modelname".
+server/weapons/weapon_core.qc:94: error: Unknown value "shotcount".
+server/weapons/weapon_core.qc:95: error: Unknown value "soundname".
+server/weapons/weapon_core.qc:101: error: Unknown field "semi" in class "entity"
+server/weapons/weapon_core.qc:101: warning: conditional type mismatch: variant
+server/weapons/weapon_core.qc:104: error: Unknown value "spread".
+server/weapons/weapon_core.qc:104: error: Unknown value "GetWeaponSpread".
+server/weapons/weapon_core.qc:105: error: Unknown value "FireTrace".
+server/weapons/weapon_core.qc:105: error: Unknown value "damage".
+server/weapons/weapon_core.qc:107: error: Unknown value "true".
+server/weapons/weapon_core.qc:107: error: QCC_StoreToPointer doesn't know how to store to that type
+
+************ ERROR ************
+Errors have occured
+
+Error in server/weapons/weapon_core.qc on line 107
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 76),
+server/weapons/weapon_core.qc:111: error: Unknown field "semi" in class "entity"
+server/weapons/weapon_core.qc:111: warning: conditional type mismatch: variant
+server/weapons/weapon_core.qc:114: error: Unknown value "GetWeaponSpread".
+server/weapons/weapon_core.qc:115: error: Unknown value "FireTrace".
+server/weapons/weapon_core.qc:117: error: Unknown value "true".
+server/weapons/weapon_core.qc:117: error: QCC_StoreToPointer doesn't know how to store to that type
+compiling server/player.qc
+in function PlayerPreThink (line 27),
+server/player.qc:61: error: Unknown value "Weapon_Logic".
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Error in server/weapons/weapon_core.qc on line 117
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 76),
+server/weapons/weapon_core.qc:115: error: Unknown value "FireTrace".
+server/weapons/weapon_core.qc:123: error: Unknown value "Set_W_Frame".
+server/weapons/weapon_core.qc:123: error: Unknown value "CheckReload".
+server/weapons/weapon_core.qc:123: error: Unknown value "false".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+in function Set_W_Frame (line 8),
+server/weapons/frames_core.qc:34: error: Unknown value "W_KAR_SCOPE".
+server/weapons/frames_core.qc:34: error: Unknown value "W_HEADCRACKER".
+server/weapons/frames_core.qc:36: error: Unknown field "weapon2model" in class "entity"
+server/weapons/frames_core.qc:37: error: Unknown field "weapon2frame" in class "entity"
+server/weapons/frames_core.qc:38: error: Unknown field "weapon2skin" in class "entity"
+server/weapons/frames_core.qc:38: error: Unknown field "weaponskin" in class "entity"
+server/weapons/frames_core.qc:38: error: QCC_StoreToPointer doesn't know how to store to that type
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 76),
+server/weapons/weapon_core.qc:115: error: Unknown value "FireTrace".
+server/weapons/weapon_core.qc:123: error: Unknown value "CheckReload".
+server/weapons/weapon_core.qc:123: error: Unknown value "false".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Error in server/weapons/frames_core.qc on line 38
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 76),
+server/weapons/weapon_core.qc:115: error: Unknown value "FireTrace".
+server/weapons/weapon_core.qc:123: error: Unknown value "CheckReload".
+server/weapons/weapon_core.qc:123: error: Unknown value "false".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function CheckReload (line 31),
+server/weapons/weapon_core.qc:33: error: Unknown value "W_Reload".
+in function W_Fire (line 85),
+server/weapons/weapon_core.qc:124: error: Unknown value "FireTrace".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 86),
+server/weapons/weapon_core.qc:125: error: Unknown value "FireTrace".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function FireTrace (line 67),
+server/weapons/weapon_core.qc:93: error: Unknown value "getWeaponPenetration".
+server/weapons/weapon_core.qc:100: error: Unknown field "larm" in class "entity"
+server/weapons/weapon_core.qc:100: error: Unknown field "rarm" in class "entity"
+server/weapons/weapon_core.qc:100: error: Unknown field "head" in class "entity"
+server/weapons/weapon_core.qc:111: error: Unknown value "TraceAttack".
+server/weapons/weapon_core.qc:126: error: Unknown value "Parse_Damage".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+in function GetFiretype (line 2),
+server/weapons/weapon_defines.qc:9: error: Unknown value "W_BIATCH".
+server/weapons/weapon_defines.qc:12: error: Unknown value "W_KAR".
+server/weapons/weapon_defines.qc:15: error: Unknown value "W_ARMAGEDDON".
+server/weapons/weapon_defines.qc:18: error: Unknown value "W_THOMPSON".
+server/weapons/weapon_defines.qc:21: error: Unknown value "W_GIBS".
+server/weapons/weapon_defines.qc:24: error: Unknown value "W_357".
+server/weapons/weapon_defines.qc:27: error: Unknown value "W_KILLU".
+server/weapons/weapon_defines.qc:30: error: Unknown value "W_BAR".
+server/weapons/weapon_defines.qc:33: error: Unknown value "W_WIDOW".
+server/weapons/weapon_defines.qc:36: error: Unknown value "W_BK".
+server/weapons/weapon_defines.qc:39: error: Unknown value "W_BROWNING".
+server/weapons/weapon_defines.qc:42: error: Unknown value "W_ACCELERATOR".
+server/weapons/weapon_defines.qc:45: error: Unknown value "W_DB".
+server/weapons/weapon_defines.qc:48: error: Unknown value "W_BORE".
+server/weapons/weapon_defines.qc:51: error: Unknown value "W_FG".
+server/weapons/weapon_defines.qc:54: error: Unknown value "W_IMPELLER".
+server/weapons/weapon_defines.qc:57: error: Unknown value "W_GEWEHR".
+server/weapons/weapon_defines.qc:60: error: Unknown value "W_COMPRESSOR".
+server/weapons/weapon_defines.qc:63: error: Unknown value "W_KAR_SCOPE".
+server/weapons/weapon_defines.qc:66: error: Unknown value "W_HEADCRACKER".
+server/weapons/weapon_defines.qc:69: error: Unknown value "W_M1".
+server/weapons/weapon_defines.qc:72: error: Unknown value "W_M1000".
+server/weapons/weapon_defines.qc:75: error: Unknown value "W_M1A1".
+server/weapons/weapon_defines.qc:78: error: Unknown value "W_WIDDER".
+server/weapons/weapon_defines.qc:81: error: Unknown value "W_M2".
+server/weapons/weapon_defines.qc:84: error: Unknown value "W_FIW".
+server/weapons/weapon_defines.qc:87: error: Unknown value "W_MP40".
+server/weapons/weapon_defines.qc:90: error: Unknown value "W_AFTERBURNER".
+server/weapons/weapon_defines.qc:93: error: Unknown value "W_MG".
+server/weapons/weapon_defines.qc:96: error: Unknown value "W_BARRACUDA".
+server/weapons/weapon_defines.qc:99: error: Unknown value "W_PANZER".
+server/weapons/weapon_defines.qc:102: error: Unknown value "W_LONGINUS".
+server/weapons/weapon_defines.qc:105: error: Unknown value "W_PPSH".
+server/weapons/weapon_defines.qc:108: error: Unknown value "W_REAPER".
+server/weapons/weapon_defines.qc:111: error: Unknown value "W_PTRS".
+server/weapons/weapon_defines.qc:114: error: Unknown value "W_PENETRATOR".
+server/weapons/weapon_defines.qc:117: error: Unknown value "W_RAY".
+server/weapons/weapon_defines.qc:120: error: Unknown value "W_PORTER".
+server/weapons/weapon_defines.qc:123: error: Unknown value "W_SAWNOFF".
+server/weapons/weapon_defines.qc:126: error: Unknown value "W_SNUFF".
+server/weapons/weapon_defines.qc:129: error: Unknown value "W_STG".
+server/weapons/weapon_defines.qc:132: error: Unknown value "W_SPATZ".
+server/weapons/weapon_defines.qc:135: error: Unknown value "W_TRENCH".
+server/weapons/weapon_defines.qc:138: error: Unknown value "W_GUT".
+server/weapons/weapon_defines.qc:141: error: Unknown value "W_TYPE".
+server/weapons/weapon_defines.qc:144: error: Unknown value "W_SAMURAI".
+server/weapons/weapon_defines.qc:147: error: Unknown value "W_MP5".
+server/weapons/weapon_defines.qc:150: error: Unknown value "W_TESLA".
+server/weapons/weapon_defines.qc:153: error: Unknown value "W_M14".
+in function GetWeapopnMultiplier (line 167),
+server/weapons/weapon_defines.qc:179: error: Unknown value "W_BIATCH".
+server/weapons/weapon_defines.qc:188: error: Unknown value "W_KAR".
+server/weapons/weapon_defines.qc:197: error: Unknown value "W_ARMAGEDDON".
+server/weapons/weapon_defines.qc:206: error: Unknown value "W_THOMPSON".
+server/weapons/weapon_defines.qc:215: error: Unknown value "W_GIBS".
+server/weapons/weapon_defines.qc:224: error: Unknown value "W_357".
+server/weapons/weapon_defines.qc:233: error: Unknown value "W_KILLU".
+server/weapons/weapon_defines.qc:242: error: Unknown value "W_BAR".
+server/weapons/weapon_defines.qc:251: error: Unknown value "W_WIDOW".
+server/weapons/weapon_defines.qc:260: error: Unknown value "W_BK".
+server/weapons/weapon_defines.qc:263: error: Unknown value "W_BROWNING".
+server/weapons/weapon_defines.qc:272: error: Unknown value "W_ACCELERATOR".
+server/weapons/weapon_defines.qc:281: error: Unknown value "W_DB".
+server/weapons/weapon_defines.qc:290: error: Unknown value "W_BORE".
+server/weapons/weapon_defines.qc:299: error: Unknown value "W_FG".
+server/weapons/weapon_defines.qc:308: error: Unknown value "W_IMPELLER".
+server/weapons/weapon_defines.qc:317: error: Unknown value "W_GEWEHR".
+server/weapons/weapon_defines.qc:326: error: Unknown value "W_COMPRESSOR".
+server/weapons/weapon_defines.qc:335: error: Unknown value "W_KAR_SCOPE".
+server/weapons/weapon_defines.qc:344: error: Unknown value "W_HEADCRACKER".
+server/weapons/weapon_defines.qc:353: error: Unknown value "W_M1".
+server/weapons/weapon_defines.qc:362: error: Unknown value "W_M1000".
+server/weapons/weapon_defines.qc:371: error: Unknown value "W_M1A1".
+server/weapons/weapon_defines.qc:380: error: Unknown value "W_WIDDER".
+server/weapons/weapon_defines.qc:389: error: Unknown value "W_M2".
+server/weapons/weapon_defines.qc:392: error: Unknown value "W_FIW".
+server/weapons/weapon_defines.qc:395: error: Unknown value "W_MP40".
+server/weapons/weapon_defines.qc:404: error: Unknown value "W_AFTERBURNER".
+server/weapons/weapon_defines.qc:413: error: Unknown value "W_MG".
+server/weapons/weapon_defines.qc:422: error: Unknown value "W_BARRACUDA".
+server/weapons/weapon_defines.qc:431: error: Unknown value "W_PANZER".
+server/weapons/weapon_defines.qc:434: error: Unknown value "W_LONGINUS".
+server/weapons/weapon_defines.qc:437: error: Unknown value "W_PPSH".
+server/weapons/weapon_defines.qc:446: error: Unknown value "W_REAPER".
+server/weapons/weapon_defines.qc:455: error: Unknown value "W_PTRS".
+server/weapons/weapon_defines.qc:464: error: Unknown value "W_PENETRATOR".
+server/weapons/weapon_defines.qc:473: error: Unknown value "W_RAY".
+server/weapons/weapon_defines.qc:476: error: Unknown value "W_PORTER".
+server/weapons/weapon_defines.qc:479: error: Unknown value "W_SAWNOFF".
+server/weapons/weapon_defines.qc:488: error: Unknown value "W_SNUFF".
+server/weapons/weapon_defines.qc:497: error: Unknown value "W_STG".
+server/weapons/weapon_defines.qc:506: error: Unknown value "W_SPATZ".
+server/weapons/weapon_defines.qc:515: error: Unknown value "W_TRENCH".
+server/weapons/weapon_defines.qc:524: error: Unknown value "W_GUT".
+server/weapons/weapon_defines.qc:533: error: Unknown value "W_TYPE".
+server/weapons/weapon_defines.qc:542: error: Unknown value "W_SAMURAI".
+server/weapons/weapon_defines.qc:551: error: Unknown value "W_MP5".
+server/weapons/weapon_defines.qc:560: error: Unknown value "W_TESLA".
+server/weapons/weapon_defines.qc:569: error: Unknown value "W_M14".
+in function getWeaponMag (line 582),
+server/weapons/weapon_defines.qc:589: error: Unknown value "W_BIATCH".
+server/weapons/weapon_defines.qc:592: error: Unknown value "W_KAR".
+server/weapons/weapon_defines.qc:595: error: Unknown value "W_THOMPSON".
+server/weapons/weapon_defines.qc:598: error: Unknown value "W_357".
+server/weapons/weapon_defines.qc:601: error: Unknown value "W_KILLU".
+server/weapons/weapon_defines.qc:604: error: Unknown value "W_BAR".
+server/weapons/weapon_defines.qc:607: error: Unknown value "W_BK".
+server/weapons/weapon_defines.qc:610: error: Unknown value "W_BROWNING".
+server/weapons/weapon_defines.qc:613: error: Unknown value "W_DB".
+server/weapons/weapon_defines.qc:616: error: Unknown value "W_FG".
+server/weapons/weapon_defines.qc:619: error: Unknown value "W_GEWEHR".
+server/weapons/weapon_defines.qc:622: error: Unknown value "W_KAR_SCOPE".
+server/weapons/weapon_defines.qc:625: error: Unknown value "W_M1".
+server/weapons/weapon_defines.qc:628: error: Unknown value "W_M1A1".
+server/weapons/weapon_defines.qc:631: error: Unknown value "W_MP40".
+server/weapons/weapon_defines.qc:634: error: Unknown value "W_MG".
+server/weapons/weapon_defines.qc:637: error: Unknown value "W_PANZER".
+server/weapons/weapon_defines.qc:640: error: Unknown value "W_PPSH".
+server/weapons/weapon_defines.qc:643: error: Unknown value "W_PTRS".
+server/weapons/weapon_defines.qc:646: error: Unknown value "W_RAY".
+server/weapons/weapon_defines.qc:649: error: Unknown value "W_SAWNOFF".
+server/weapons/weapon_defines.qc:652: error: Unknown value "W_STG".
+server/weapons/weapon_defines.qc:655: error: Unknown value "W_TRENCH".
+server/weapons/weapon_defines.qc:658: error: Unknown value "W_TYPE".
+server/weapons/weapon_defines.qc:661: error: Unknown value "W_M2".
+server/weapons/weapon_defines.qc:664: error: Unknown value "W_COMPRESSOR".
+server/weapons/weapon_defines.qc:667: error: Unknown value "W_M1000".
+server/weapons/weapon_defines.qc:670: error: Unknown value "W_GIBS".
+server/weapons/weapon_defines.qc:673: error: Unknown value "W_SAMURAI".
+server/weapons/weapon_defines.qc:676: error: Unknown value "W_AFTERBURNER".
+server/weapons/weapon_defines.qc:679: error: Unknown value "W_SPATZ".
+server/weapons/weapon_defines.qc:682: error: Unknown value "W_SNUFF".
+server/weapons/weapon_defines.qc:685: error: Unknown value "W_BORE".
+server/weapons/weapon_defines.qc:688: error: Unknown value "W_IMPELLER".
+server/weapons/weapon_defines.qc:691: error: Unknown value "W_BARRACUDA".
+server/weapons/weapon_defines.qc:694: error: Unknown value "W_ACCELERATOR".
+server/weapons/weapon_defines.qc:697: error: Unknown value "W_GUT".
+server/weapons/weapon_defines.qc:700: error: Unknown value "W_REAPER".
+server/weapons/weapon_defines.qc:703: error: Unknown value "W_HEADCRACKER".
+server/weapons/weapon_defines.qc:706: error: Unknown value "W_LONGINUS".
+server/weapons/weapon_defines.qc:709: error: Unknown value "W_PENETRATOR".
+server/weapons/weapon_defines.qc:712: error: Unknown value "W_WIDOW".
+server/weapons/weapon_defines.qc:715: error: Unknown value "W_PORTER".
+server/weapons/weapon_defines.qc:718: error: Unknown value "W_ARMAGEDDON".
+server/weapons/weapon_defines.qc:721: error: Unknown value "W_WIDDER".
+server/weapons/weapon_defines.qc:724: error: Unknown value "W_MP5".
+server/weapons/weapon_defines.qc:727: error: Unknown value "W_TESLA".
+server/weapons/weapon_defines.qc:730: error: Unknown value "W_M14".
+in function getWeaponAmmo (line 737),
+server/weapons/weapon_defines.qc:744: error: Unknown value "W_BIATCH".
+server/weapons/weapon_defines.qc:747: error: Unknown value "W_KAR".
+server/weapons/weapon_defines.qc:750: error: Unknown value "W_THOMPSON".
+server/weapons/weapon_defines.qc:753: error: Unknown value "W_357".
+server/weapons/weapon_defines.qc:756: error: Unknown value "W_BAR".
+server/weapons/weapon_defines.qc:759: error: Unknown value "W_BK".
+server/weapons/weapon_defines.qc:762: error: Unknown value "W_BROWNING".
+server/weapons/weapon_defines.qc:765: error: Unknown value "W_DB".
+server/weapons/weapon_defines.qc:768: error: Unknown value "W_FG".
+server/weapons/weapon_defines.qc:771: error: Unknown value "W_GEWEHR".
+server/weapons/weapon_defines.qc:774: error: Unknown value "W_KAR_SCOPE".
+server/weapons/weapon_defines.qc:777: error: Unknown value "W_M1".
+server/weapons/weapon_defines.qc:780: error: Unknown value "W_M1A1".
+server/weapons/weapon_defines.qc:783: error: Unknown value "W_MP40".
+server/weapons/weapon_defines.qc:786: error: Unknown value "W_MG".
+server/weapons/weapon_defines.qc:789: error: Unknown value "W_PANZER".
+server/weapons/weapon_defines.qc:792: error: Unknown value "W_PPSH".
+server/weapons/weapon_defines.qc:795: error: Unknown value "W_PTRS".
+server/weapons/weapon_defines.qc:798: error: Unknown value "W_RAY".
+server/weapons/weapon_defines.qc:801: error: Unknown value "W_SAWNOFF".
+server/weapons/weapon_defines.qc:804: error: Unknown value "W_STG".
+server/weapons/weapon_defines.qc:807: error: Unknown value "W_TRENCH".
+server/weapons/weapon_defines.qc:810: error: Unknown value "W_TYPE".
+server/weapons/weapon_defines.qc:813: error: Unknown value "W_M2".
+server/weapons/weapon_defines.qc:816: error: Unknown value "W_KILLU".
+server/weapons/weapon_defines.qc:819: error: Unknown value "W_FIW".
+server/weapons/weapon_defines.qc:822: error: Unknown value "W_COMPRESSOR".
+server/weapons/weapon_defines.qc:825: error: Unknown value "W_M1000".
+server/weapons/weapon_defines.qc:828: error: Unknown value "W_GIBS".
+server/weapons/weapon_defines.qc:831: error: Unknown value "W_SAMURAI".
+server/weapons/weapon_defines.qc:834: error: Unknown value "W_AFTERBURNER".
+server/weapons/weapon_defines.qc:837: error: Unknown value "W_SPATZ".
+server/weapons/weapon_defines.qc:840: error: Unknown value "W_SNUFF".
+server/weapons/weapon_defines.qc:843: error: Unknown value "W_BORE".
+server/weapons/weapon_defines.qc:846: error: Unknown value "W_IMPELLER".
+server/weapons/weapon_defines.qc:849: error: Unknown value "W_BARRACUDA".
+server/weapons/weapon_defines.qc:852: error: Unknown value "W_ACCELERATOR".
+server/weapons/weapon_defines.qc:855: error: Unknown value "W_GUT".
+server/weapons/weapon_defines.qc:858: error: Unknown value "W_REAPER".
+server/weapons/weapon_defines.qc:861: error: Unknown value "W_HEADCRACKER".
+server/weapons/weapon_defines.qc:864: error: Unknown value "W_LONGINUS".
+server/weapons/weapon_defines.qc:867: error: Unknown value "W_PENETRATOR".
+server/weapons/weapon_defines.qc:870: error: Unknown value "W_WIDOW".
+server/weapons/weapon_defines.qc:873: error: Unknown value "W_PORTER".
+server/weapons/weapon_defines.qc:876: error: Unknown value "W_ARMAGEDDON".
+server/weapons/weapon_defines.qc:879: error: Unknown value "W_WIDDER".
+server/weapons/weapon_defines.qc:882: error: Unknown value "W_MP5".
+server/weapons/weapon_defines.qc:885: error: Unknown value "W_TESLA".
+server/weapons/weapon_defines.qc:888: error: Unknown value "W_M14".
+in function getWeaponDamage (line 895),
+server/weapons/weapon_defines.qc:902: error: Unknown value "W_BIATCH".
+server/weapons/weapon_defines.qc:905: error: Unknown value "W_KAR".
+server/weapons/weapon_defines.qc:908: error: Unknown value "W_THOMPSON".
+server/weapons/weapon_defines.qc:911: error: Unknown value "W_357".
+server/weapons/weapon_defines.qc:914: error: Unknown value "W_KILLU".
+server/weapons/weapon_defines.qc:917: error: Unknown value "W_BAR".
+server/weapons/weapon_defines.qc:920: error: Unknown value "W_BROWNING".
+server/weapons/weapon_defines.qc:923: error: Unknown value "W_DB".
+server/weapons/weapon_defines.qc:926: error: Unknown value "W_FG".
+server/weapons/weapon_defines.qc:929: error: Unknown value "W_GEWEHR".
+server/weapons/weapon_defines.qc:932: error: Unknown value "W_KAR_SCOPE".
+server/weapons/weapon_defines.qc:935: error: Unknown value "W_M1".
+server/weapons/weapon_defines.qc:938: error: Unknown value "W_M1A1".
+server/weapons/weapon_defines.qc:941: error: Unknown value "W_MP40".
+server/weapons/weapon_defines.qc:944: error: Unknown value "W_MG".
+server/weapons/weapon_defines.qc:947: error: Unknown value "W_PANZER".
+server/weapons/weapon_defines.qc:950: error: Unknown value "W_PPSH".
+server/weapons/weapon_defines.qc:953: error: Unknown value "W_PTRS".
+server/weapons/weapon_defines.qc:956: error: Unknown value "W_RAY".
+server/weapons/weapon_defines.qc:959: error: Unknown value "W_SAWNOFF".
+server/weapons/weapon_defines.qc:962: error: Unknown value "W_STG".
+server/weapons/weapon_defines.qc:965: error: Unknown value "W_TRENCH".
+server/weapons/weapon_defines.qc:968: error: Unknown value "W_TYPE".
+server/weapons/weapon_defines.qc:971: error: Unknown value "W_COMPRESSOR".
+server/weapons/weapon_defines.qc:974: error: Unknown value "W_M1000".
+server/weapons/weapon_defines.qc:977: error: Unknown value "W_GIBS".
+server/weapons/weapon_defines.qc:980: error: Unknown value "W_SAMURAI".
+server/weapons/weapon_defines.qc:983: error: Unknown value "W_AFTERBURNER".
+server/weapons/weapon_defines.qc:986: error: Unknown value "W_SPATZ".
+server/weapons/weapon_defines.qc:989: error: Unknown value "W_SNUFF".
+server/weapons/weapon_defines.qc:992: error: Unknown value "W_BORE".
+server/weapons/weapon_defines.qc:995: error: Unknown value "W_IMPELLER".
+server/weapons/weapon_defines.qc:998: error: Unknown value "W_BARRACUDA".
+server/weapons/weapon_defines.qc:1001: error: Unknown value "W_ACCELERATOR".
+server/weapons/weapon_defines.qc:1004: error: Unknown value "W_GUT".
+server/weapons/weapon_defines.qc:1007: error: Unknown value "W_REAPER".
+server/weapons/weapon_defines.qc:1010: error: Unknown value "W_HEADCRACKER".
+server/weapons/weapon_defines.qc:1013: error: Unknown value "W_LONGINUS".
+server/weapons/weapon_defines.qc:1016: error: Unknown value "W_PENETRATOR".
+server/weapons/weapon_defines.qc:1019: error: Unknown value "W_WIDOW".
+server/weapons/weapon_defines.qc:1022: error: Unknown value "W_ARMAGEDDON".
+server/weapons/weapon_defines.qc:1025: error: Unknown value "W_WIDDER".
+server/weapons/weapon_defines.qc:1028: error: Unknown value "W_MP5".
+server/weapons/weapon_defines.qc:1031: error: Unknown value "W_TESLA".
+server/weapons/weapon_defines.qc:1034: error: Unknown value "W_M14".
+in function GetWeaponShotcount (line 1042),
+server/weapons/weapon_defines.qc:1045: error: Unknown value "W_DB".
+server/weapons/weapon_defines.qc:1047: error: Unknown value "W_SAWNOFF".
+server/weapons/weapon_defines.qc:1049: error: Unknown value "W_TRENCH".
+server/weapons/weapon_defines.qc:1051: error: Unknown value "W_BORE".
+server/weapons/weapon_defines.qc:1053: error: Unknown value "W_GUT".
+server/weapons/weapon_defines.qc:1055: error: Unknown value "W_SNUFF".
+in function GetWeaponRecoil (line 1064),
+server/weapons/weapon_defines.qc:1073: error: Unknown value "W_BIATCH".
+server/weapons/weapon_defines.qc:1077: error: Unknown value "W_357".
+server/weapons/weapon_defines.qc:1081: error: Unknown value "W_KILLU".
+server/weapons/weapon_defines.qc:1085: error: Unknown value "W_THOMPSON".
+server/weapons/weapon_defines.qc:1088: error: Unknown value "W_GIBS".
+server/weapons/weapon_defines.qc:1091: error: Unknown value "W_MP40".
+server/weapons/weapon_defines.qc:1094: error: Unknown value "W_AFTERBURNER".
+server/weapons/weapon_defines.qc:1097: error: Unknown value "W_TYPE".
+server/weapons/weapon_defines.qc:1100: error: Unknown value "W_SAMURAI".
+server/weapons/weapon_defines.qc:1103: error: Unknown value "W_PPSH".
+server/weapons/weapon_defines.qc:1106: error: Unknown value "W_REAPER".
+server/weapons/weapon_defines.qc:1109: error: Unknown value "W_GEWEHR".
+server/weapons/weapon_defines.qc:1112: error: Unknown value "W_COMPRESSOR".
+server/weapons/weapon_defines.qc:1115: error: Unknown value "W_M1".
+server/weapons/weapon_defines.qc:1119: error: Unknown value "W_M1000".
+server/weapons/weapon_defines.qc:1123: error: Unknown value "W_STG".
+server/weapons/weapon_defines.qc:1126: error: Unknown value "W_SPATZ".
+server/weapons/weapon_defines.qc:1129: error: Unknown value "W_M1A1".
+server/weapons/weapon_defines.qc:1132: error: Unknown value "W_WIDDER".
+server/weapons/weapon_defines.qc:1135: error: Unknown value "W_KAR".
+server/weapons/weapon_defines.qc:1139: error: Unknown value "W_ARMAGEDDON".
+server/weapons/weapon_defines.qc:1143: error: Unknown value "W_KAR_SCOPE".
+server/weapons/weapon_defines.qc:1147: error: Unknown value "W_HEADCRACKER".
+server/weapons/weapon_defines.qc:1151: error: Unknown value "W_PTRS".
+server/weapons/weapon_defines.qc:1155: error: Unknown value "W_PENETRATOR".
+server/weapons/weapon_defines.qc:1159: error: Unknown value "W_TRENCH".
+server/weapons/weapon_defines.qc:1163: error: Unknown value "W_GUT".
+server/weapons/weapon_defines.qc:1167: error: Unknown value "W_DB".
+server/weapons/weapon_defines.qc:1171: error: Unknown value "W_BORE".
+server/weapons/weapon_defines.qc:1175: error: Unknown value "W_SAWNOFF".
+server/weapons/weapon_defines.qc:1179: error: Unknown value "W_SNUFF".
+server/weapons/weapon_defines.qc:1183: error: Unknown value "W_BAR".
+server/weapons/weapon_defines.qc:1186: error: Unknown value "W_WIDOW".
+server/weapons/weapon_defines.qc:1189: error: Unknown value "W_MG".
+server/weapons/weapon_defines.qc:1192: error: Unknown value "W_BARRACUDA".
+server/weapons/weapon_defines.qc:1195: error: Unknown value "W_FG".
+server/weapons/weapon_defines.qc:1198: error: Unknown value "W_IMPELLER".
+server/weapons/weapon_defines.qc:1201: error: Unknown value "W_BROWNING".
+server/weapons/weapon_defines.qc:1204: error: Unknown value "W_ACCELERATOR".
+server/weapons/weapon_defines.qc:1207: error: Unknown value "W_MP5".
+server/weapons/weapon_defines.qc:1210: error: Unknown value "W_TESLA".
+server/weapons/weapon_defines.qc:1213: error: Unknown value "W_M14".
+in function getWeaponRecoilReturn (line 1247),
+server/weapons/weapon_defines.qc:1253: error: Unknown value "W_BIATCH".
+server/weapons/weapon_defines.qc:1256: error: Unknown value "W_KAR".
+server/weapons/weapon_defines.qc:1259: error: Unknown value "W_ARMAGEDDON".
+server/weapons/weapon_defines.qc:1262: error: Unknown value "W_THOMPSON".
+server/weapons/weapon_defines.qc:1265: error: Unknown value "W_GIBS".
+server/weapons/weapon_defines.qc:1268: error: Unknown value "W_357".
+server/weapons/weapon_defines.qc:1271: error: Unknown value "W_KILLU".
+server/weapons/weapon_defines.qc:1274: error: Unknown value "W_BAR".
+server/weapons/weapon_defines.qc:1277: error: Unknown value "W_WIDOW".
+server/weapons/weapon_defines.qc:1280: error: Unknown value "W_BROWNING".
+server/weapons/weapon_defines.qc:1283: error: Unknown value "W_ACCELERATOR".
+server/weapons/weapon_defines.qc:1286: error: Unknown value "W_DB".
+server/weapons/weapon_defines.qc:1289: error: Unknown value "W_BORE".
+server/weapons/weapon_defines.qc:1292: error: Unknown value "W_FG".
+server/weapons/weapon_defines.qc:1295: error: Unknown value "W_IMPELLER".
+server/weapons/weapon_defines.qc:1298: error: Unknown value "W_GEWEHR".
+server/weapons/weapon_defines.qc:1301: error: Unknown value "W_COMPRESSOR".
+server/weapons/weapon_defines.qc:1304: error: Unknown value "W_KAR_SCOPE".
+server/weapons/weapon_defines.qc:1307: error: Unknown value "W_HEADCRACKER".
+server/weapons/weapon_defines.qc:1310: error: Unknown value "W_M1".
+server/weapons/weapon_defines.qc:1313: error: Unknown value "W_M1000".
+server/weapons/weapon_defines.qc:1316: error: Unknown value "W_M1A1".
+server/weapons/weapon_defines.qc:1319: error: Unknown value "W_WIDDER".
+server/weapons/weapon_defines.qc:1322: error: Unknown value "W_MP40".
+server/weapons/weapon_defines.qc:1325: error: Unknown value "W_AFTERBURNER".
+server/weapons/weapon_defines.qc:1328: error: Unknown value "W_MG".
+server/weapons/weapon_defines.qc:1331: error: Unknown value "W_BARRACUDA".
+server/weapons/weapon_defines.qc:1334: error: Unknown value "W_PANZER".
+server/weapons/weapon_defines.qc:1337: error: Unknown value "W_LONGINUS".
+server/weapons/weapon_defines.qc:1340: error: Unknown value "W_PPSH".
+server/weapons/weapon_defines.qc:1343: error: Unknown value "W_REAPER".
+server/weapons/weapon_defines.qc:1346: error: Unknown value "W_PTRS".
+server/weapons/weapon_defines.qc:1349: error: Unknown value "W_PENETRATOR".
+server/weapons/weapon_defines.qc:1352: error: Unknown value "W_RAY".
+server/weapons/weapon_defines.qc:1355: error: Unknown value "W_PORTER".
+server/weapons/weapon_defines.qc:1358: error: Unknown value "W_SAWNOFF".
+server/weapons/weapon_defines.qc:1361: error: Unknown value "W_SNUFF".
+server/weapons/weapon_defines.qc:1364: error: Unknown value "W_STG".
+server/weapons/weapon_defines.qc:1367: error: Unknown value "W_SPATZ".
+server/weapons/weapon_defines.qc:1370: error: Unknown value "W_TRENCH".
+server/weapons/weapon_defines.qc:1373: error: Unknown value "W_GUT".
+server/weapons/weapon_defines.qc:1376: error: Unknown value "W_TYPE".
+server/weapons/weapon_defines.qc:1379: error: Unknown value "W_SAMURAI".
+server/weapons/weapon_defines.qc:1382: error: Unknown value "W_MP5".
+server/weapons/weapon_defines.qc:1385: error: Unknown value "W_TESLA".
+server/weapons/weapon_defines.qc:1388: error: Unknown value "W_M14".
+in function getWeaponPenetration (line 1396),
+server/weapons/weapon_defines.qc:1405: error: Unknown value "W_BIATCH".
+server/weapons/weapon_defines.qc:1409: error: Unknown value "W_KAR".
+server/weapons/weapon_defines.qc:1413: error: Unknown value "W_ARMAGEDDON".
+server/weapons/weapon_defines.qc:1417: error: Unknown value "W_THOMPSON".
+server/weapons/weapon_defines.qc:1421: error: Unknown value "W_GIBS".
+server/weapons/weapon_defines.qc:1425: error: Unknown value "W_357".
+server/weapons/weapon_defines.qc:1429: error: Unknown value "W_KILLU".
+server/weapons/weapon_defines.qc:1433: error: Unknown value "W_BAR".
+server/weapons/weapon_defines.qc:1437: error: Unknown value "W_WIDOW".
+server/weapons/weapon_defines.qc:1441: error: Unknown value "W_BROWNING".
+server/weapons/weapon_defines.qc:1445: error: Unknown value "W_ACCELERATOR".
+server/weapons/weapon_defines.qc:1449: error: Unknown value "W_DB".
+server/weapons/weapon_defines.qc:1453: error: Unknown value "W_BORE".
+server/weapons/weapon_defines.qc:1457: error: Unknown value "W_FG".
+server/weapons/weapon_defines.qc:1461: error: Unknown value "W_IMPELLER".
+server/weapons/weapon_defines.qc:1465: error: Unknown value "W_GEWEHR".
+server/weapons/weapon_defines.qc:1469: error: Unknown value "W_COMPRESSOR".
+server/weapons/weapon_defines.qc:1473: error: Unknown value "W_KAR_SCOPE".
+server/weapons/weapon_defines.qc:1477: error: Unknown value "W_HEADCRACKER".
+server/weapons/weapon_defines.qc:1481: error: Unknown value "W_M1".
+server/weapons/weapon_defines.qc:1485: error: Unknown value "W_M1000".
+server/weapons/weapon_defines.qc:1489: error: Unknown value "W_M1A1".
+server/weapons/weapon_defines.qc:1493: error: Unknown value "W_WIDDER".
+server/weapons/weapon_defines.qc:1497: error: Unknown value "W_MP40".
+server/weapons/weapon_defines.qc:1501: error: Unknown value "W_AFTERBURNER".
+server/weapons/weapon_defines.qc:1505: error: Unknown value "W_MG".
+server/weapons/weapon_defines.qc:1509: error: Unknown value "W_BARRACUDA".
+server/weapons/weapon_defines.qc:1513: error: Unknown value "W_PPSH".
+server/weapons/weapon_defines.qc:1517: error: Unknown value "W_REAPER".
+server/weapons/weapon_defines.qc:1521: error: Unknown value "W_PTRS".
+server/weapons/weapon_defines.qc:1525: error: Unknown value "W_PENETRATOR".
+server/weapons/weapon_defines.qc:1529: error: Unknown value "W_SAWNOFF".
+server/weapons/weapon_defines.qc:1533: error: Unknown value "W_SNUFF".
+server/weapons/weapon_defines.qc:1537: error: Unknown value "W_STG".
+server/weapons/weapon_defines.qc:1541: error: Unknown value "W_SPATZ".
+server/weapons/weapon_defines.qc:1545: error: Unknown value "W_TRENCH".
+server/weapons/weapon_defines.qc:1549: error: Unknown value "W_GUT".
+server/weapons/weapon_defines.qc:1553: error: Unknown value "W_TYPE".
+server/weapons/weapon_defines.qc:1557: error: Unknown value "W_SAMURAI".
+server/weapons/weapon_defines.qc:1561: error: Unknown value "W_MP5".
+server/weapons/weapon_defines.qc:1565: error: Unknown value "W_TESLA".
+in function GetWeaponMaxSpread (line 1576),
+server/weapons/weapon_defines.qc:1580: error: Unknown value "VEC_VIEW_OFS".
+server/weapons/weapon_defines.qc:1585: error: Unknown value "W_BIATCH".
+server/weapons/weapon_defines.qc:1591: error: Unknown value "W_KAR".
+server/weapons/weapon_defines.qc:1597: error: Unknown value "W_ARMAGEDDON".
+server/weapons/weapon_defines.qc:1603: error: Unknown value "W_THOMPSON".
+server/weapons/weapon_defines.qc:1609: error: Unknown value "W_GIBS".
+server/weapons/weapon_defines.qc:1615: error: Unknown value "W_357".
+server/weapons/weapon_defines.qc:1621: error: Unknown value "W_KILLU".
+server/weapons/weapon_defines.qc:1627: error: Unknown value "W_BAR".
+server/weapons/weapon_defines.qc:1633: error: Unknown value "W_WIDOW".
+server/weapons/weapon_defines.qc:1639: error: Unknown value "W_BROWNING".
+server/weapons/weapon_defines.qc:1645: error: Unknown value "W_ACCELERATOR".
+server/weapons/weapon_defines.qc:1651: error: Unknown value "W_DB".
+server/weapons/weapon_defines.qc:1657: error: Unknown value "W_BORE".
+server/weapons/weapon_defines.qc:1663: error: Unknown value "W_FG".
+server/weapons/weapon_defines.qc:1669: error: Unknown value "W_IMPELLER".
+server/weapons/weapon_defines.qc:1675: error: Unknown value "W_GEWEHR".
+server/weapons/weapon_defines.qc:1681: error: Unknown value "W_COMPRESSOR".
+server/weapons/weapon_defines.qc:1687: error: Unknown value "W_KAR_SCOPE".
+server/weapons/weapon_defines.qc:1693: error: Unknown value "W_HEADCRACKER".
+server/weapons/weapon_defines.qc:1699: error: Unknown value "W_M1".
+server/weapons/weapon_defines.qc:1705: error: Unknown value "W_M1000".
+server/weapons/weapon_defines.qc:1711: error: Unknown value "W_M1A1".
+server/weapons/weapon_defines.qc:1717: error: Unknown value "W_WIDDER".
+server/weapons/weapon_defines.qc:1723: error: Unknown value "W_MP40".
+server/weapons/weapon_defines.qc:1729: error: Unknown value "W_AFTERBURNER".
+server/weapons/weapon_defines.qc:1735: error: Unknown value "W_MG".
+server/weapons/weapon_defines.qc:1741: error: Unknown value "W_BARRACUDA".
+server/weapons/weapon_defines.qc:1747: error: Unknown value "W_PANZER".
+server/weapons/weapon_defines.qc:1750: error: Unknown value "W_LONGINUS".
+server/weapons/weapon_defines.qc:1753: error: Unknown value "W_PPSH".
+server/weapons/weapon_defines.qc:1759: error: Unknown value "W_REAPER".
+server/weapons/weapon_defines.qc:1765: error: Unknown value "W_PTRS".
+server/weapons/weapon_defines.qc:1771: error: Unknown value "W_PENETRATOR".
+server/weapons/weapon_defines.qc:1777: error: Unknown value "W_RAY".
+server/weapons/weapon_defines.qc:1783: error: Unknown value "W_PORTER".
+server/weapons/weapon_defines.qc:1789: error: Unknown value "W_SAWNOFF".
+server/weapons/weapon_defines.qc:1795: error: Unknown value "W_SNUFF".
+server/weapons/weapon_defines.qc:1801: error: Unknown value "W_STG".
+server/weapons/weapon_defines.qc:1807: error: Unknown value "W_SPATZ".
+server/weapons/weapon_defines.qc:1813: error: Unknown value "W_TRENCH".
+server/weapons/weapon_defines.qc:1819: error: Unknown value "W_GUT".
+server/weapons/weapon_defines.qc:1825: error: Unknown value "W_TYPE".
+server/weapons/weapon_defines.qc:1831: error: Unknown value "W_SAMURAI".
+server/weapons/weapon_defines.qc:1837: error: Unknown value "W_MP5".
+server/weapons/weapon_defines.qc:1843: error: Unknown value "W_TESLA".
+server/weapons/weapon_defines.qc:1849: error: Unknown value "W_M14".
+in function GetWeaponSpread (line 1860),
+server/weapons/weapon_defines.qc:1865: error: Unknown value "VEC_VIEW_OFS".
+server/weapons/weapon_defines.qc:1870: error: Unknown value "W_BIATCH".
+server/weapons/weapon_defines.qc:1876: error: Unknown value "W_KAR".
+server/weapons/weapon_defines.qc:1882: error: Unknown value "W_ARMAGEDDON".
+server/weapons/weapon_defines.qc:1888: error: Unknown value "W_THOMPSON".
+server/weapons/weapon_defines.qc:1894: error: Unknown value "W_GIBS".
+server/weapons/weapon_defines.qc:1900: error: Unknown value "W_RAY".
+server/weapons/weapon_defines.qc:1906: error: Unknown value "W_PORTER".
+server/weapons/weapon_defines.qc:1912: error: Unknown value "W_KAR_SCOPE".
+server/weapons/weapon_defines.qc:1918: error: Unknown value "W_HEADCRACKER".
+server/weapons/weapon_defines.qc:1924: error: Unknown value "W_BAR".
+server/weapons/weapon_defines.qc:1930: error: Unknown value "W_WIDOW".
+server/weapons/weapon_defines.qc:1936: error: Unknown value "W_M1A1".
+server/weapons/weapon_defines.qc:1942: error: Unknown value "W_WIDDER".
+server/weapons/weapon_defines.qc:1948: error: Unknown value "W_M2".
+server/weapons/weapon_defines.qc:1951: error: Unknown value "W_FIW".
+server/weapons/weapon_defines.qc:1954: error: Unknown value "W_TYPE".
+server/weapons/weapon_defines.qc:1960: error: Unknown value "W_SAMURAI".
+server/weapons/weapon_defines.qc:1966: error: Unknown value "W_SAWNOFF".
+server/weapons/weapon_defines.qc:1972: error: Unknown value "W_SNUFF".
+server/weapons/weapon_defines.qc:1978: error: Unknown value "W_PPSH".
+server/weapons/weapon_defines.qc:1984: error: Unknown value "W_REAPER".
+server/weapons/weapon_defines.qc:1990: error: Unknown value "W_DB".
+server/weapons/weapon_defines.qc:1996: error: Unknown value "W_BORE".
+server/weapons/weapon_defines.qc:2002: error: Unknown value "W_FG".
+server/weapons/weapon_defines.qc:2008: error: Unknown value "W_IMPELLER".
+server/weapons/weapon_defines.qc:2014: error: Unknown value "W_TRENCH".
+server/weapons/weapon_defines.qc:2020: error: Unknown value "W_GUT".
+server/weapons/weapon_defines.qc:2026: error: Unknown value "W_MG".
+server/weapons/weapon_defines.qc:2032: error: Unknown value "W_BARRACUDA".
+server/weapons/weapon_defines.qc:2038: error: Unknown value "W_GEWEHR".
+server/weapons/weapon_defines.qc:2044: error: Unknown value "W_COMPRESSOR".
+server/weapons/weapon_defines.qc:2050: error: Unknown value "W_BROWNING".
+server/weapons/weapon_defines.qc:2056: error: Unknown value "W_ACCELERATOR".
+server/weapons/weapon_defines.qc:2062: error: Unknown value "W_357".
+server/weapons/weapon_defines.qc:2068: error: Unknown value "W_KILLU".
+server/weapons/weapon_defines.qc:2074: error: Unknown value "W_M1".
+server/weapons/weapon_defines.qc:2080: error: Unknown value "W_M1000".
+server/weapons/weapon_defines.qc:2086: error: Unknown value "W_MP40".
+server/weapons/weapon_defines.qc:2092: error: Unknown value "W_AFTERBURNER".
+server/weapons/weapon_defines.qc:2098: error: Unknown value "W_PTRS".
+server/weapons/weapon_defines.qc:2104: error: Unknown value "W_PENETRATOR".
+server/weapons/weapon_defines.qc:2110: error: Unknown value "W_STG".
+server/weapons/weapon_defines.qc:2116: error: Unknown value "W_SPATZ".
+server/weapons/weapon_defines.qc:2122: error: Unknown value "W_MP5".
+server/weapons/weapon_defines.qc:2128: error: Unknown value "W_TESLA".
+server/weapons/weapon_defines.qc:2134: error: Unknown value "W_M14".
+server/weapons/weapon_defines.qc:2142: error: Unknown field "recoil_delay" in class "entity"
+server/weapons/weapon_defines.qc:2145: error: Unknown field "cur_spread" in class "entity"
+in function getWeaponDelay (line 2149),
+server/weapons/weapon_defines.qc:2159: error: Unknown value "W_BIATCH".
+server/weapons/weapon_defines.qc:2165: error: Unknown value "W_KAR".
+server/weapons/weapon_defines.qc:2171: error: Unknown value "W_ARMAGEDDON".
+server/weapons/weapon_defines.qc:2177: error: Unknown value "W_THOMPSON".
+server/weapons/weapon_defines.qc:2183: error: Unknown value "W_GIBS".
+server/weapons/weapon_defines.qc:2189: error: Unknown value "W_357".
+server/weapons/weapon_defines.qc:2195: error: Unknown value "W_KILLU".
+server/weapons/weapon_defines.qc:2201: error: Unknown value "W_BAR".
+server/weapons/weapon_defines.qc:2207: error: Unknown value "W_WIDOW".
+server/weapons/weapon_defines.qc:2213: error: Unknown value "W_BK".
+server/weapons/weapon_defines.qc:2219: error: Unknown value "W_BROWNING".
+server/weapons/weapon_defines.qc:2225: error: Unknown value "W_ACCELERATOR".
+server/weapons/weapon_defines.qc:2231: error: Unknown value "W_DB".
+server/weapons/weapon_defines.qc:2237: error: Unknown value "W_BORE".
+server/weapons/weapon_defines.qc:2243: error: Unknown value "W_FG".
+server/weapons/weapon_defines.qc:2249: error: Unknown value "W_IMPELLER".
+server/weapons/weapon_defines.qc:2255: error: Unknown value "W_GEWEHR".
+server/weapons/weapon_defines.qc:2261: error: Unknown value "W_COMPRESSOR".
+server/weapons/weapon_defines.qc:2267: error: Unknown value "W_KAR_SCOPE".
+server/weapons/weapon_defines.qc:2273: error: Unknown value "W_HEADCRACKER".
+server/weapons/weapon_defines.qc:2279: error: Unknown value "W_M1".
+server/weapons/weapon_defines.qc:2285: error: Unknown value "W_M1000".
+server/weapons/weapon_defines.qc:2291: error: Unknown value "W_M1A1".
+server/weapons/weapon_defines.qc:2297: error: Unknown value "W_WIDDER".
+server/weapons/weapon_defines.qc:2303: error: Unknown value "W_M2".
+server/weapons/weapon_defines.qc:2309: error: Unknown value "W_FIW".
+server/weapons/weapon_defines.qc:2315: error: Unknown value "W_MP40".
+server/weapons/weapon_defines.qc:2321: error: Unknown value "W_AFTERBURNER".
+server/weapons/weapon_defines.qc:2327: error: Unknown value "W_MG".
+server/weapons/weapon_defines.qc:2333: error: Unknown value "W_BARRACUDA".
+server/weapons/weapon_defines.qc:2339: error: Unknown value "W_PANZER".
+server/weapons/weapon_defines.qc:2345: error: Unknown value "W_LONGINUS".
+server/weapons/weapon_defines.qc:2351: error: Unknown value "W_PPSH".
+server/weapons/weapon_defines.qc:2357: error: Unknown value "W_REAPER".
+server/weapons/weapon_defines.qc:2363: error: Unknown value "W_PTRS".
+server/weapons/weapon_defines.qc:2369: error: Unknown value "W_PENETRATOR".
+server/weapons/weapon_defines.qc:2375: error: Unknown value "W_RAY".
+server/weapons/weapon_defines.qc:2381: error: Unknown value "W_PORTER".
+server/weapons/weapon_defines.qc:2387: error: Unknown value "W_SAWNOFF".
+server/weapons/weapon_defines.qc:2393: error: Unknown value "W_SNUFF".
+server/weapons/weapon_defines.qc:2399: error: Unknown value "W_STG".
+server/weapons/weapon_defines.qc:2405: error: Unknown value "W_SPATZ".
+server/weapons/weapon_defines.qc:2411: error: Unknown value "W_TRENCH".
+server/weapons/weapon_defines.qc:2417: error: Unknown value "W_GUT".
+server/weapons/weapon_defines.qc:2423: error: Unknown value "W_TYPE".
+server/weapons/weapon_defines.qc:2429: error: Unknown value "W_SAMURAI".
+server/weapons/weapon_defines.qc:2435: error: Unknown value "W_MP5".
+server/weapons/weapon_defines.qc:2441: error: Unknown value "W_TESLA".
+server/weapons/weapon_defines.qc:2447: error: Unknown value "W_M14".
+in function GetFrame (line 2458),
+server/weapons/weapon_defines.qc:2461: error: Unknown field "zoom" in class "entity"
+server/weapons/weapon_defines.qc:2464: error: Unknown value "W_RAY".
+server/weapons/weapon_defines.qc:2464: error: Unknown value "W_PANZER".
+server/weapons/weapon_defines.qc:2464: error: Unknown value "W_TYPE".
+server/weapons/weapon_defines.qc:2464: error: Unknown value "W_PORTER".
+server/weapons/weapon_defines.qc:2464: error: Unknown value "W_LONGINUS".
+server/weapons/weapon_defines.qc:2464: error: Unknown value "W_SAMURAI".
+server/weapons/weapon_defines.qc:2464: error: Unknown value "W_MP5".
+server/weapons/weapon_defines.qc:2506: error: Unknown value "W_BIATCH".
+server/weapons/weapon_defines.qc:2541: error: Unknown value "W_THOMPSON".
+server/weapons/weapon_defines.qc:2572: error: Unknown value "W_GIBS".
+server/weapons/weapon_defines.qc:2603: error: Unknown value "W_357".
+server/weapons/weapon_defines.qc:2638: error: Unknown value "W_KILLU".
+server/weapons/weapon_defines.qc:2673: error: Unknown value "W_BAR".
+server/weapons/weapon_defines.qc:2704: error: Unknown value "W_WIDOW".
+server/weapons/weapon_defines.qc:2735: error: Unknown value "W_BK".
+server/weapons/weapon_defines.qc:2766: error: Unknown value "W_BROWNING".
+server/weapons/weapon_defines.qc:2797: error: Unknown value "W_ACCELERATOR".
+server/weapons/weapon_defines.qc:2828: error: Unknown value "W_DB".
+server/weapons/weapon_defines.qc:2859: error: Unknown value "W_BORE".
+server/weapons/weapon_defines.qc:2890: error: Unknown value "W_FG".
+server/weapons/weapon_defines.qc:2921: error: Unknown value "W_IMPELLER".
+server/weapons/weapon_defines.qc:2952: error: Unknown value "W_GEWEHR".
+server/weapons/weapon_defines.qc:2983: error: Unknown value "W_COMPRESSOR".
+server/weapons/weapon_defines.qc:3014: error: Unknown value "W_KAR".
+server/weapons/weapon_defines.qc:3045: error: Unknown value "W_ARMAGEDDON".
+server/weapons/weapon_defines.qc:3076: error: Unknown value "W_KAR_SCOPE".
+server/weapons/weapon_defines.qc:3103: error: Unknown value "W_HEADCRACKER".
+server/weapons/weapon_defines.qc:3130: error: Unknown value "W_M1".
+server/weapons/weapon_defines.qc:3161: error: Unknown value "W_M1000".
+server/weapons/weapon_defines.qc:3192: error: Unknown value "W_M1A1".
+server/weapons/weapon_defines.qc:3223: error: Unknown value "W_WIDDER".
+server/weapons/weapon_defines.qc:3254: error: Unknown value "W_M2".
+server/weapons/weapon_defines.qc:3281: error: Unknown value "W_FIW".
+server/weapons/weapon_defines.qc:3308: error: Unknown value "W_MP40".
+server/weapons/weapon_defines.qc:3339: error: Unknown value "W_AFTERBURNER".
+server/weapons/weapon_defines.qc:3370: error: Unknown value "W_MG".
+server/weapons/weapon_defines.qc:3401: error: Unknown value "W_BARRACUDA".
+server/weapons/weapon_defines.qc:3498: error: Unknown value "W_PPSH".
+server/weapons/weapon_defines.qc:3529: error: Unknown value "W_REAPER".
+server/weapons/weapon_defines.qc:3560: error: Unknown value "W_PTRS".
+server/weapons/weapon_defines.qc:3591: error: Unknown value "W_PENETRATOR".
+server/weapons/weapon_defines.qc:3712: error: Unknown value "W_SAWNOFF".
+server/weapons/weapon_defines.qc:3743: error: Unknown value "W_SNUFF".
+server/weapons/weapon_defines.qc:3774: error: Unknown value "W_STG".
+server/weapons/weapon_defines.qc:3805: error: Unknown value "W_SPATZ".
+server/weapons/weapon_defines.qc:3836: error: Unknown value "W_TRENCH".
+server/weapons/weapon_defines.qc:3863: error: Unknown value "W_GUT".
+server/weapons/weapon_defines.qc:3993: error: Unknown value "W_TESLA".
+server/weapons/weapon_defines.qc:4026: error: Unknown value "W_M14".
+in function GetWeaponModel (line 4061),
+server/weapons/weapon_defines.qc:4073: error: Unknown value "W_BIATCH".
+server/weapons/weapon_defines.qc:4078: error: Unknown value "W_KAR".
+server/weapons/weapon_defines.qc:4084: error: Unknown value "W_ARMAGEDDON".
+server/weapons/weapon_defines.qc:4090: error: Unknown value "W_THOMPSON".
+server/weapons/weapon_defines.qc:4096: error: Unknown value "W_GIBS".
+server/weapons/weapon_defines.qc:4102: error: Unknown value "W_357".
+server/weapons/weapon_defines.qc:4108: error: Unknown value "W_KILLU".
+server/weapons/weapon_defines.qc:4114: error: Unknown value "W_BAR".
+server/weapons/weapon_defines.qc:4120: error: Unknown value "W_WIDOW".
+server/weapons/weapon_defines.qc:4126: error: Unknown value "W_BK".
+server/weapons/weapon_defines.qc:4132: error: Unknown value "W_BROWNING".
+server/weapons/weapon_defines.qc:4138: error: Unknown value "W_ACCELERATOR".
+server/weapons/weapon_defines.qc:4144: error: Unknown value "W_DB".
+server/weapons/weapon_defines.qc:4150: error: Unknown value "W_BORE".
+server/weapons/weapon_defines.qc:4156: error: Unknown value "W_FG".
+server/weapons/weapon_defines.qc:4162: error: Unknown value "W_IMPELLER".
+server/weapons/weapon_defines.qc:4168: error: Unknown value "W_GEWEHR".
+server/weapons/weapon_defines.qc:4174: error: Unknown value "W_COMPRESSOR".
+server/weapons/weapon_defines.qc:4180: error: Unknown value "W_KAR_SCOPE".
+server/weapons/weapon_defines.qc:4186: error: Unknown value "W_HEADCRACKER".
+server/weapons/weapon_defines.qc:4192: error: Unknown value "W_M1".
+server/weapons/weapon_defines.qc:4198: error: Unknown value "W_M1000".
+server/weapons/weapon_defines.qc:4204: error: Unknown value "W_M1A1".
+server/weapons/weapon_defines.qc:4210: error: Unknown value "W_WIDDER".
+server/weapons/weapon_defines.qc:4216: error: Unknown value "W_M2".
+server/weapons/weapon_defines.qc:4222: error: Unknown value "W_FIW".
+server/weapons/weapon_defines.qc:4228: error: Unknown value "W_MP40".
+server/weapons/weapon_defines.qc:4234: error: Unknown value "W_AFTERBURNER".
+server/weapons/weapon_defines.qc:4240: error: Unknown value "W_MG".
+server/weapons/weapon_defines.qc:4246: error: Unknown value "W_BARRACUDA".
+server/weapons/weapon_defines.qc:4252: error: Unknown value "W_PANZER".
+server/weapons/weapon_defines.qc:4258: error: Unknown value "W_LONGINUS".
+server/weapons/weapon_defines.qc:4264: error: Unknown value "W_PPSH".
+server/weapons/weapon_defines.qc:4270: error: Unknown value "W_REAPER".
+server/weapons/weapon_defines.qc:4276: error: Unknown value "W_PTRS".
+server/weapons/weapon_defines.qc:4282: error: Unknown value "W_PENETRATOR".
+server/weapons/weapon_defines.qc:4288: error: Unknown value "W_RAY".
+server/weapons/weapon_defines.qc:4294: error: Unknown value "W_PORTER".
+server/weapons/weapon_defines.qc:4300: error: Unknown value "W_SAWNOFF".
+server/weapons/weapon_defines.qc:4306: error: Unknown value "W_SNUFF".
+server/weapons/weapon_defines.qc:4312: error: Unknown value "W_STG".
+server/weapons/weapon_defines.qc:4318: error: Unknown value "W_SPATZ".
+server/weapons/weapon_defines.qc:4324: error: Unknown value "W_TRENCH".
+server/weapons/weapon_defines.qc:4331: error: Unknown value "W_GUT".
+server/weapons/weapon_defines.qc:4337: error: Unknown value "W_TYPE".
+server/weapons/weapon_defines.qc:4343: error: Unknown value "W_SAMURAI".
+server/weapons/weapon_defines.qc:4349: error: Unknown value "W_BOWIE".
+server/weapons/weapon_defines.qc:4355: error: Unknown value "W_GRENADE".
+server/weapons/weapon_defines.qc:4361: error: Unknown value "W_BETTY".
+server/weapons/weapon_defines.qc:4367: error: Unknown value "W_MP5".
+server/weapons/weapon_defines.qc:4373: error: Unknown value "W_TESLA".
+server/weapons/weapon_defines.qc:4379: error: Unknown value "W_M14".
+in function GetWeaponSound (line 4402),
+server/weapons/weapon_defines.qc:4408: error: Unknown value "W_BIATCH".
+server/weapons/weapon_defines.qc:4411: error: Unknown value "W_KAR".
+server/weapons/weapon_defines.qc:4414: error: Unknown value "W_ARMAGEDDON".
+server/weapons/weapon_defines.qc:4417: error: Unknown value "W_THOMPSON".
+server/weapons/weapon_defines.qc:4420: error: Unknown value "W_GIBS".
+server/weapons/weapon_defines.qc:4423: error: Unknown value "W_357".
+server/weapons/weapon_defines.qc:4426: error: Unknown value "W_KILLU".
+server/weapons/weapon_defines.qc:4429: error: Unknown value "W_BAR".
+server/weapons/weapon_defines.qc:4432: error: Unknown value "W_WIDOW".
+server/weapons/weapon_defines.qc:4438: error: Unknown value "W_BROWNING".
+server/weapons/weapon_defines.qc:4441: error: Unknown value "W_ACCELERATOR".
+server/weapons/weapon_defines.qc:4444: error: Unknown value "W_DB".
+server/weapons/weapon_defines.qc:4447: error: Unknown value "W_BORE".
+server/weapons/weapon_defines.qc:4450: error: Unknown value "W_FG".
+server/weapons/weapon_defines.qc:4453: error: Unknown value "W_IMPELLER".
+server/weapons/weapon_defines.qc:4456: error: Unknown value "W_GEWEHR".
+server/weapons/weapon_defines.qc:4459: error: Unknown value "W_COMPRESSOR".
+server/weapons/weapon_defines.qc:4462: error: Unknown value "W_KAR_SCOPE".
+server/weapons/weapon_defines.qc:4465: error: Unknown value "W_HEADCRACKER".
+server/weapons/weapon_defines.qc:4468: error: Unknown value "W_M1".
+server/weapons/weapon_defines.qc:4471: error: Unknown value "W_M1000".
+server/weapons/weapon_defines.qc:4474: error: Unknown value "W_M1A1".
+server/weapons/weapon_defines.qc:4477: error: Unknown value "W_WIDDER".
+server/weapons/weapon_defines.qc:4480: error: Unknown value "W_M2".
+server/weapons/weapon_defines.qc:4483: error: Unknown value "W_FIW".
+server/weapons/weapon_defines.qc:4486: error: Unknown value "W_MP40".
+server/weapons/weapon_defines.qc:4489: error: Unknown value "W_AFTERBURNER".
+server/weapons/weapon_defines.qc:4492: error: Unknown value "W_MG".
+server/weapons/weapon_defines.qc:4495: error: Unknown value "W_BARRACUDA".
+server/weapons/weapon_defines.qc:4498: error: Unknown value "W_PANZER".
+server/weapons/weapon_defines.qc:4501: error: Unknown value "W_LONGINUS".
+server/weapons/weapon_defines.qc:4504: error: Unknown value "W_PPSH".
+server/weapons/weapon_defines.qc:4507: error: Unknown value "W_REAPER".
+server/weapons/weapon_defines.qc:4510: error: Unknown value "W_PTRS".
+server/weapons/weapon_defines.qc:4513: error: Unknown value "W_PENETRATOR".
+server/weapons/weapon_defines.qc:4516: error: Unknown value "W_RAY".
+server/weapons/weapon_defines.qc:4519: error: Unknown value "W_PORTER".
+server/weapons/weapon_defines.qc:4522: error: Unknown value "W_SAWNOFF".
+server/weapons/weapon_defines.qc:4525: error: Unknown value "W_SNUFF".
+server/weapons/weapon_defines.qc:4528: error: Unknown value "W_STG".
+server/weapons/weapon_defines.qc:4531: error: Unknown value "W_SPATZ".
+server/weapons/weapon_defines.qc:4534: error: Unknown value "W_TRENCH".
+server/weapons/weapon_defines.qc:4537: error: Unknown value "W_GUT".
+server/weapons/weapon_defines.qc:4540: error: Unknown value "W_TYPE".
+server/weapons/weapon_defines.qc:4543: error: Unknown value "W_SAMURAI".
+server/weapons/weapon_defines.qc:4546: error: Unknown value "W_MP5".
+server/weapons/weapon_defines.qc:4549: error: Unknown value "W_TESLA".
+in function PlayWeaponSound (line 4557),
+server/weapons/weapon_defines.qc:4570: error: Unknown value "KNIFE".
+server/weapons/weapon_defines.qc:4589: error: Unknown value "W_KAR".
+server/weapons/weapon_defines.qc:4589: error: Unknown value "W_ARMAGEDDON".
+server/weapons/weapon_defines.qc:4600: error: Unknown value "W_KAR_SCOPE".
+server/weapons/weapon_defines.qc:4600: error: Unknown value "W_HEADCRACKER".
+server/weapons/weapon_defines.qc:4611: error: Unknown value "W_TRENCH".
+server/weapons/weapon_defines.qc:4611: error: Unknown value "W_GUT".
+server/weapons/weapon_defines.qc:4619: error: Unknown value "W_BIATCH".
+server/weapons/weapon_defines.qc:4628: error: Unknown value "W_THOMPSON".
+server/weapons/weapon_defines.qc:4628: error: Unknown value "W_GIBS".
+server/weapons/weapon_defines.qc:4637: error: Unknown value "W_357".
+server/weapons/weapon_defines.qc:4637: error: Unknown value "W_KILLU".
+server/weapons/weapon_defines.qc:4648: error: Unknown value "W_BK".
+server/weapons/weapon_defines.qc:4653: error: Unknown value "W_BAR".
+server/weapons/weapon_defines.qc:4653: error: Unknown value "W_WIDOW".
+server/weapons/weapon_defines.qc:4662: error: Unknown value "W_BROWNING".
+server/weapons/weapon_defines.qc:4662: error: Unknown value "W_ACCELERATOR".
+server/weapons/weapon_defines.qc:4685: error: Unknown value "W_DB".
+server/weapons/weapon_defines.qc:4685: error: Unknown value "W_SAWNOFF".
+server/weapons/weapon_defines.qc:4685: error: Unknown value "W_BORE".
+server/weapons/weapon_defines.qc:4685: error: Unknown value "W_SNUFF".
+server/weapons/weapon_defines.qc:4696: error: Unknown value "W_FG".
+server/weapons/weapon_defines.qc:4696: error: Unknown value "W_IMPELLER".
+server/weapons/weapon_defines.qc:4707: error: Unknown value "W_GEWEHR".
+server/weapons/weapon_defines.qc:4707: error: Unknown value "W_COMPRESSOR".
+server/weapons/weapon_defines.qc:4746: error: Unknown value "W_M1A1".
+server/weapons/weapon_defines.qc:4746: error: Unknown value "W_WIDDER".
+server/weapons/weapon_defines.qc:4757: error: Unknown value "W_M1".
+server/weapons/weapon_defines.qc:4757: error: Unknown value "W_M1000".
+server/weapons/weapon_defines.qc:4768: error: Unknown value "W_MG".
+server/weapons/weapon_defines.qc:4768: error: Unknown value "W_BARRACUDA".
+server/weapons/weapon_defines.qc:4777: error: Unknown value "W_MP40".
+server/weapons/weapon_defines.qc:4784: error: Unknown value "W_PANZER".
+server/weapons/weapon_defines.qc:4784: error: Unknown value "W_LONGINUS".
+server/weapons/weapon_defines.qc:4791: error: Unknown value "W_PPSH".
+server/weapons/weapon_defines.qc:4791: error: Unknown value "W_REAPER".
+server/weapons/weapon_defines.qc:4804: error: Unknown value "W_PTRS".
+server/weapons/weapon_defines.qc:4804: error: Unknown value "W_PENETRATOR".
+server/weapons/weapon_defines.qc:4815: error: Unknown value "W_RAY".
+server/weapons/weapon_defines.qc:4815: error: Unknown value "W_PORTER".
+server/weapons/weapon_defines.qc:4837: error: Unknown value "W_STG".
+server/weapons/weapon_defines.qc:4837: error: Unknown value "W_SPATZ".
+server/weapons/weapon_defines.qc:4844: error: Unknown value "W_TESLA".
+server/weapons/weapon_defines.qc:4864: error: Unknown value "W_TYPE".
+server/weapons/weapon_defines.qc:4864: error: Unknown value "W_SAMURAI".
+
+************ ERROR ************
+Errors have occured
+
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+in function getWeaponPenetration (line 43),
+server/weapons/weapon_defines.qc:53: warning Q206: getWeaponPenetration: not all control paths return a value
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function FireTrace (line 67),
+server/weapons/weapon_core.qc:100: error: Unknown field "larm" in class "entity"
+server/weapons/weapon_core.qc:100: error: Unknown field "rarm" in class "entity"
+server/weapons/weapon_core.qc:100: error: Unknown field "head" in class "entity"
+server/weapons/weapon_core.qc:111: error: Unknown value "TraceAttack".
+server/weapons/weapon_core.qc:126: error: Unknown value "Parse_Damage".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function FireTrace (line 67),
+server/weapons/weapon_core.qc:100: error: Unknown field "larm" in class "entity"
+server/weapons/weapon_core.qc:100: error: Unknown field "rarm" in class "entity"
+server/weapons/weapon_core.qc:100: error: Unknown field "head" in class "entity"
+server/weapons/weapon_core.qc:111: error: Unknown value "TraceAttack".
+server/weapons/weapon_core.qc:126: error: Unknown value "Parse_Damage".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function FireTrace (line 90),
+server/weapons/weapon_core.qc:143: error: Unknown value "Parse_Damage".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 107),
+server/weapons/weapon_core.qc:146: warning F302: Potentially uninitialised variable damage
+server/weapons/weapon_core.qc:154: warning F302: Potentially uninitialised variable tempf
+compiling server/player.qc
+in function PlayerPreThink (line 27),
+server/player.qc:30: error: Unknown field "ready" in class "entity"
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 107),
+server/weapons/weapon_core.qc:146: warning F302: Potentially uninitialised variable damage
+server/weapons/weapon_core.qc:154: warning F302: Potentially uninitialised variable tempf
+compiling server/player.qc
+in function PlayerPreThink (line 27),
+server/player.qc:47: error: Unknown field "ready" in class "entity"
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 107),
+server/weapons/weapon_core.qc:146: warning F302: Potentially uninitialised variable damage
+server/weapons/weapon_core.qc:154: warning F302: Potentially uninitialised variable tempf
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+at global scope,
+server/customdefs.qc:50: warning Q302: .float anim_weapon_time = anim_weapon_time+698 used, but not referenced.
+in function TraceAttack (line 25),
+server/weapons/weapon_core.qc:27: warning Q302: float f_damage  no references.
+server/weapons/weapon_core.qc:28: warning Q302: entity oldself  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 5 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+in function W_Frame_Update (line 4),
+server/weapons/frames_core.qc:32: error: Unknown value "SUB_Null".
+server/weapons/frames_core.qc:38: error: Unknown value "false".
+server/weapons/frames_core.qc:67: error: Unknown field "weapon2frame" in class "entity"
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+in function W_Frame_Update (line 4),
+server/weapons/frames_core.qc:37: error: Unknown value "SUB_Null".
+server/weapons/frames_core.qc:43: error: Unknown value "false".
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+in function W_Frame_Update (line 4),
+server/weapons/frames_core.qc:43: error: Unknown value "false".
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 105),
+server/weapons/weapon_core.qc:144: warning F302: Potentially uninitialised variable damage
+server/weapons/weapon_core.qc:152: warning F302: Potentially uninitialised variable tempf
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 2 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 105),
+server/weapons/weapon_core.qc:142: error: Unknown value "damage".
+server/weapons/weapon_core.qc:150: error: Unknown value "tempf".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 105),
+server/weapons/weapon_core.qc:131: error: Unknown value "getWeaponDamage".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+in function getWeaponDamage (line 38),
+server/weapons/weapon_defines.qc:45: warning Q206: getWeaponDamage: not all control paths return a value
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 105),
+server/weapons/weapon_core.qc:153: warning F302: Potentially uninitialised variable tempf
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 2 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 105),
+server/weapons/weapon_core.qc:136: error: Unknown value "delay".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+Compile finished: ../csprogs.dat (id format)
+Done. 0 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling server/customdefs.qc
+compiling server/weapons/weapon_defines.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+in function getWeaponDelay (line 77),
+shared/weapon_defines.qc:82: error: Unknown value "RELOAD".
+shared/weapon_defines.qc:84: error: Unknown value "FIRE".
+in function GetFrame (line 92),
+shared/weapon_defines.qc:98: error: Unknown value "FIRE_START".
+shared/weapon_defines.qc:100: error: Unknown value "FIRE_END".
+shared/weapon_defines.qc:102: error: Unknown value "RELOAD_START".
+shared/weapon_defines.qc:104: error: Unknown value "RELOAD_END".
+shared/weapon_defines.qc:106: error: Unknown value "SPRINT_IN_START".
+shared/weapon_defines.qc:108: error: Unknown value "SPRINT_IN_END".
+shared/weapon_defines.qc:110: error: Unknown value "SPRINT_START".
+shared/weapon_defines.qc:112: error: Unknown value "SPRINT_END".
+shared/weapon_defines.qc:114: error: Unknown value "SPRINT_OUT_START".
+shared/weapon_defines.qc:116: error: Unknown value "SPRINT_OUT_END".
+shared/weapon_defines.qc:118: error: Unknown value "TAKE_OUT_START".
+shared/weapon_defines.qc:120: error: Unknown value "TAKE_OUT_END".
+shared/weapon_defines.qc:122: error: Unknown value "PUT_OUT_START".
+shared/weapon_defines.qc:124: error: Unknown value "PUT_OUT_END".
+shared/weapon_defines.qc:126: error: Unknown value "RELOAD_CANCEL".
+in function PlayWeaponSound (line 163),
+shared/weapon_defines.qc:164: error: Unknown field "weaponframe" in class "entity"
+shared/weapon_defines.qc:165: error: Unknown field "weapon" in class "entity"
+
+************ ERROR ************
+Errors have occured
+
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+in function PlayWeaponSound (line 163),
+shared/weapon_defines.qc:164: error: Unknown field "weaponframe" in class "entity"
+shared/weapon_defines.qc:165: error: Unknown field "weapon" in class "entity"
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+in function PlayWeaponSound (line 163),
+shared/weapon_defines.qc:164: error: Unknown field "weaponframe" in class "entity"
+shared/weapon_defines.qc:165: error: Unknown field "weapon" in class "entity"
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+in function PlayWeaponSound (line 163),
+shared/weapon_defines.qc:164: error: Unknown field "weapon" in class "entity"
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+in function PlayWeaponSound (line 163),
+shared/weapon_defines.qc:176: error: Cannot cast from string to void
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+
+************ ERROR ************
+compilation errors
+Error in shared/weapon_defines.qc on line 176
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+in function W_Frame_Update (line 4),
+server/weapons/frames_core.qc:43: werror Q105: too few parameters on call to PlayWeaponSound
+shared/weapon_defines.qc:163:    const void(float wep, float anim_style, float dualwep, float curweaponframe) PlayWeaponSound  is defined here
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+in function CSQC_UpdateView (line 120),
+client/main.qc:181: error: Unknown value "curammo".
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+in function CSQC_UpdateView (line 120),
+client/main.qc:186: error: Cannot cast from vector to string
+
+************ ERROR ************
+compilation errors
+Error in client/main.qc on line 186
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+in function CSQC_UpdateView (line 120),
+client/main.qc:184: error: expected ), found ;
+
+************ ERROR ************
+compilation errors
+Error in client/main.qc on line 184
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+in function CSQC_UpdateView (line 120),
+client/main.qc:184: error: expected ), found ;
+
+************ ERROR ************
+compilation errors
+Error in client/main.qc on line 184
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+in function CSQC_UpdateView (line 120),
+client/main.qc:187: warning: "string" keyword used as variable name - coexisting
+client/main.qc:187: error: Unknown value "string".
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+in function CSQC_UpdateView (line 120),
+client/main.qc:188: warning: "string" keyword used as variable name - coexisting
+client/main.qc:188: error: Unknown value "string".
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+in function CSQC_UpdateView (line 120),
+client/main.qc:188: warning: "string" keyword used as variable name - coexisting
+client/main.qc:188: error: Unknown value "string".
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+in function CSQC_UpdateView (line 120),
+client/main.qc:188: warning: "string" keyword used as variable name - coexisting
+client/main.qc:188: error: Unknown value "string".
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+in function CSQC_UpdateView (line 120),
+client/main.qc:188: warning: "string" keyword used as variable name - coexisting
+client/main.qc:188: error: Unknown value "string".
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function Weapon_Logic (line 163),
+server/weapons/weapon_core.qc:172: error: Unknown field "semireload" in class "entity"
+server/weapons/weapon_core.qc:172: error: Type mismatch: !__variant
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Error in server/weapons/weapon_core.qc on line 172
