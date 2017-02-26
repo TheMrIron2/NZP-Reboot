@@ -1,6 +1,9 @@
 
 // put custom server-only globals and fields here
 
+#define true 1
+#define false 0
+
 const float FL_JUMPRELEASED = 4096;
 
 float framecount;
@@ -9,6 +12,19 @@ float deathmatch;
 .float lastsound_time;
 .float isspec;
 
+//money
+.float points;
+.float cost;
+
+//doors
+.float state;
+float STATE_TOP		= 0;
+float STATE_BOTTOM	= 1;
+float STATE_UP		= 2;
+float STATE_DOWN		= 3;
+.float /*worldtype,*/ delay, wait, lip, /*light_lev,*/ speed, style/*, skill*/;
+
+entity activator;
 
 
 
@@ -33,3 +49,24 @@ float deathmatch;
 //Null functions
 void() SUB_Null = {};
 void() SUB_Null2 = {};
+
+
+vector	VEC_HULL2_MIN = '-32 -32 -24';
+vector	VEC_HULL2_MAX = '32 32 64';
+
+//AI
+.string target2;
+.string target3;
+.string target4;
+.string target5;
+.string target6;
+.string target7;
+.string target8;
+.void()		th_die;
+
+
+// Door
+.string killtarget;
+.void() think1;
+.vector finaldest;
+.vector pos1, pos2/*, mangle*/;

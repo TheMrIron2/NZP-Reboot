@@ -38,10 +38,10 @@ void() menu_back =
 	time_in_menu = 0;
 };
 
-void() menu_loadtest =
+void() menu_loadndu =
 {
-	print("loading test\n");
-	localcmd("map test_lms\n");
+	print("loading ndu\n");
+	localcmd("map ndu\n");
 };
 
 void() menu_join =
@@ -81,7 +81,7 @@ var struct
 	{[0.025, 0.725, 0], [0.25, 0.05, 0], "About", -1, menu_about, MENU_MAIN},
 	{[0.025, 0.925, 0], [0.25, 0.05, 0], "Quit", -1, menu_quit, MENU_MAIN},
 	{[0.025, 0.925, 0], [0.25, 0.05, 0], "Back", -1, menu_back, MENU_SINGLE + MENU_MULTI + MENU_SETTINGS + MENU_ABOUT},
-	{[0.025, 0.500, 0], [0.25, 0.05, 0], "Load test", -1, menu_loadtest, MENU_SINGLE},
+	{[0.025, 0.500, 0], [0.25, 0.05, 0], "Load NDU", -1, menu_loadndu, MENU_SINGLE},
 	{[0.475, 0.500, 0], [0.25, 0.05, 0], "Join", -1, game_join, MENU_JOIN},
 	{[0.475, 0.575, 0], [0.25, 0.05, 0], "Spectate", -1, game_spec, MENU_JOIN}
 };

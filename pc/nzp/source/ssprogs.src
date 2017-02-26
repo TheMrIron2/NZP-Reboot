@@ -4,6 +4,11 @@ shared/customdefs.qc
 shared/weapon_defines.qc
 server/customdefs.qc
 
+server/entities/sub_functions.qc
+server/entities/triggers.qc
+server/entities/map_entities.qc
+server/entities/lights.qc
+
 server/weapons/frames_core.qc
 server/weapons/weapon_core.qc
 

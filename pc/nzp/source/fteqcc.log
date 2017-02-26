@@ -2793,3 +2793,2110 @@ compiling server/items.qc
 ************ ERROR ************
 compilation errors
 Error in server/weapons/weapon_core.qc on line 172
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function CheckReload (line 15),
+server/weapons/weapon_core.qc:17: error: Unknown value "W_Reload".
+in function W_Reload (line 22),
+server/weapons/weapon_core.qc:33: error: Unknown field "zoom" in class "entity"
+server/weapons/weapon_core.qc:47: error: Unknown value "W_Give_Ammo".
+server/weapons/weapon_core.qc:47: error: Unknown value "false".
+server/weapons/weapon_core.qc:50: error: QCC_StoreToPointer doesn't know how to store to that type
+in function Weapon_Logic (line 204),
+server/weapons/weapon_core.qc:216: error: Unknown value "true".
+server/weapons/weapon_core.qc:219: error: Unknown value "false".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Error in server/weapons/weapon_core.qc on line 50
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Reload (line 14),
+server/weapons/weapon_core.qc:39: error: Unknown value "W_Give_Ammo".
+server/weapons/weapon_core.qc:39: error: Unknown value "false".
+server/weapons/weapon_core.qc:42: error: Unknown field "zoom" in class "entity"
+server/weapons/weapon_core.qc:42: error: QCC_StoreToPointer doesn't know how to store to that type
+in function Weapon_Logic (line 204),
+server/weapons/weapon_core.qc:216: error: Unknown value "true".
+server/weapons/weapon_core.qc:219: error: Unknown value "false".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Error in server/weapons/weapon_core.qc on line 42
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Reload (line 14),
+server/weapons/weapon_core.qc:38: error: Unknown value "W_Give_Ammo".
+server/weapons/weapon_core.qc:41: error: Unknown field "zoom" in class "entity"
+server/weapons/weapon_core.qc:42: error: Unknown field "NeedLoad" in class "entity"
+in function Weapon_Logic (line 199),
+server/weapons/weapon_core.qc:211: error: Unknown value "true".
+server/weapons/weapon_core.qc:214: error: Unknown value "false".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Reload (line 14),
+server/weapons/weapon_core.qc:38: error: Unknown value "W_Give_Ammo".
+server/weapons/weapon_core.qc:41: error: Unknown field "zoom" in class "entity"
+server/weapons/weapon_core.qc:42: error: Unknown field "NeedLoad" in class "entity"
+in function Weapon_Logic (line 199),
+server/weapons/weapon_core.qc:211: error: Unknown value "true".
+server/weapons/weapon_core.qc:214: error: Unknown value "false".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Give_Ammo (line 14),
+server/weapons/weapon_core.qc:22: error: Unknown value "gungame".
+server/weapons/weapon_core.qc:22: error: Type mismatch: !__variant
+in function W_Reload (line 36),
+server/weapons/weapon_core.qc:63: error: Unknown field "zoom" in class "entity"
+server/weapons/weapon_core.qc:64: error: Unknown field "NeedLoad" in class "entity"
+in function Weapon_Logic (line 221),
+server/weapons/weapon_core.qc:233: error: Unknown value "true".
+server/weapons/weapon_core.qc:236: error: Unknown value "false".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Error in server/weapons/weapon_core.qc on line 22
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Give_Ammo (line 14),
+server/weapons/weapon_core.qc:22: error: Unknown value "gungame".
+server/weapons/weapon_core.qc:22: error: Type mismatch: !__variant
+in function W_Reload (line 36),
+server/weapons/weapon_core.qc:63: error: Unknown field "zoom" in class "entity"
+server/weapons/weapon_core.qc:64: error: Unknown field "NeedLoad" in class "entity"
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Error in server/weapons/weapon_core.qc on line 22
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Reload (line 35),
+server/weapons/weapon_core.qc:62: error: Unknown field "zoom" in class "entity"
+server/weapons/weapon_core.qc:63: error: Unknown field "NeedLoad" in class "entity"
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+client/main.qc:100: error: "renderscene" is not a type
+client/main.qc:102: error: "if" is not a type
+client/main.qc:135: error: "switch" is not a type
+client/main.qc:157: error: "}" is not a type
+client/main.qc:185: error: "}" is not a type
+client/main.qc:199: error: "local" is not a type
+client/main.qc:200: error: "R_BeginPolygon" is not a type
+client/main.qc:202: error: "R_PolygonVertex" is not a type
+client/main.qc:203: error: "R_PolygonVertex" is not a type
+client/main.qc:204: error: "R_PolygonVertex" is not a type
+client/main.qc:206: error: "R_PolygonVertex" is not a type
+
+************ ERROR ************
+Errors have occured
+
+Error in client/main.qc on line 100
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+
+************ ERROR ************
+Couldn't open file entities/map_entities.qc
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+
+************ ERROR ************
+Couldn't open file entities/map_entities.qc
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+
+************ ERROR ************
+Couldn't open file entities/map_entities.qc
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/map_entities.qc
+in function place_model (line 2),
+server/entities/map_entities.qc:9: error: Unknown value "VEC_HULL2_MIN".
+server/entities/map_entities.qc:9: error: Unknown value "VEC_HULL2_MAX".
+server/entities/map_entities.qc:12: error: Unknown field "sequence" in class "entity"
+compiling server/entities/lights.qc
+in function light_globe (line 39),
+server/entities/lights.qc:40: error: Unknown value "Precache_Set".
+in function light_torch_small_walltorch (line 45),
+server/entities/lights.qc:46: error: Unknown value "Precache_Set".
+in function light_flame_small_yellow (line 52),
+server/entities/lights.qc:53: error: Unknown value "Precache_Set".
+in function light_flame_large_yellow (line 59),
+server/entities/lights.qc:60: error: Unknown value "Precache_Set".
+in function light_flame_small_white (line 67),
+server/entities/lights.qc:68: error: Unknown value "Precache_Set".
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/map_entities.qc
+in function place_model (line 2),
+server/entities/map_entities.qc:12: error: Unknown field "sequence" in class "entity"
+compiling server/entities/lights.qc
+in function light_globe (line 39),
+server/entities/lights.qc:40: error: Unknown value "Precache_Set".
+in function light_torch_small_walltorch (line 45),
+server/entities/lights.qc:46: error: Unknown value "Precache_Set".
+in function light_flame_small_yellow (line 52),
+server/entities/lights.qc:53: error: Unknown value "Precache_Set".
+in function light_flame_large_yellow (line 59),
+server/entities/lights.qc:60: error: Unknown value "Precache_Set".
+in function light_flame_small_white (line 67),
+server/entities/lights.qc:68: error: Unknown value "Precache_Set".
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/map_entities.qc
+in function place_model (line 2),
+server/entities/map_entities.qc:12: error: Unknown field "sequence" in class "entity"
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/entities/lights.qc:14: error: function doambient has no body
+server/entities/lights.qc:14:    const void(string soundfile, float volume) doambient  is defined here
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/map_entities.qc
+in function addmoney (line 22),
+server/entities/map_entities.qc:26: error: Unknown field "downed" in class "entity"
+server/entities/map_entities.qc:29: error: Unknown value "x2_finished".
+server/entities/map_entities.qc:30: error: Unknown field "points" in class "entity"
+in function button_wait (line 41),
+server/entities/map_entities.qc:42: error: Unknown field "state" in class "entity"
+server/entities/map_entities.qc:42: error: Unknown value "STATE_TOP".
+server/entities/map_entities.qc:42: error: QCC_StoreToPointer doesn't know how to store to that type
+in function button_done (line 51),
+server/entities/map_entities.qc:52: error: Unknown field "state" in class "entity"
+server/entities/map_entities.qc:52: error: Unknown value "STATE_BOTTOM".
+server/entities/map_entities.qc:52: error: QCC_StoreToPointer doesn't know how to store to that type
+in function button_return (line 56),
+server/entities/map_entities.qc:57: error: Unknown field "state" in class "entity"
+server/entities/map_entities.qc:57: error: Unknown value "STATE_DOWN".
+server/entities/map_entities.qc:57: error: QCC_StoreToPointer doesn't know how to store to that type
+
+************ ERROR ************
+Errors have occured
+
+Error in server/entities/map_entities.qc on line 42
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/map_entities.qc
+in function button_wait (line 38),
+server/entities/map_entities.qc:39: error: Unknown field "state" in class "entity"
+server/entities/map_entities.qc:39: error: Unknown value "STATE_TOP".
+server/entities/map_entities.qc:39: error: QCC_StoreToPointer doesn't know how to store to that type
+in function button_done (line 48),
+server/entities/map_entities.qc:49: error: Unknown field "state" in class "entity"
+server/entities/map_entities.qc:49: error: Unknown value "STATE_BOTTOM".
+server/entities/map_entities.qc:49: error: QCC_StoreToPointer doesn't know how to store to that type
+in function button_return (line 53),
+server/entities/map_entities.qc:54: error: Unknown field "state" in class "entity"
+server/entities/map_entities.qc:54: error: Unknown value "STATE_DOWN".
+server/entities/map_entities.qc:54: error: QCC_StoreToPointer doesn't know how to store to that type
+in function button_fire (line 68),
+server/entities/map_entities.qc:69: error: Unknown field "state" in class "entity"
+server/entities/map_entities.qc:69: error: Unknown value "STATE_UP".
+server/entities/map_entities.qc:69: error: Unknown value "STATE_TOP".
+server/entities/map_entities.qc:74: error: QCC_StoreToPointer doesn't know how to store to that type
+
+************ ERROR ************
+Errors have occured
+
+Error in server/entities/map_entities.qc on line 39
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/map_entities.qc
+in function button_wait (line 38),
+server/entities/map_entities.qc:40: error: Unknown field "wait" in class "entity"
+server/entities/map_entities.qc:42: error: Unknown value "activator".
+server/entities/map_entities.qc:43: error: Unknown value "SUB_UseTargets".
+in function button_return (line 53),
+server/entities/map_entities.qc:55: error: Unknown value "SUB_CalcMove".
+server/entities/map_entities.qc:55: error: Unknown field "pos1" in class "entity"
+server/entities/map_entities.qc:55: error: Unknown field "speed" in class "entity"
+in function button_fire (line 68),
+server/entities/map_entities.qc:75: error: Unknown value "SUB_CalcMove".
+server/entities/map_entities.qc:75: error: Unknown field "pos2" in class "entity"
+server/entities/map_entities.qc:75: error: Unknown field "speed" in class "entity"
+in function button_use (line 80),
+server/entities/map_entities.qc:81: error: Unknown value "activator".
+in function button_touch (line 86),
+server/entities/map_entities.qc:90: error: Unknown field "cost" in class "entity"
+server/entities/map_entities.qc:90: warning: conditional type mismatch: variant
+in function button_killed (line 123),
+server/entities/map_entities.qc:124: error: Unknown value "damage_attacker".
+in function func_button (line 148),
+server/entities/map_entities.qc:149: error: Unknown value "SetMovedir".
+server/entities/map_entities.qc:161: error: Unknown field "th_die" in class "entity"
+server/entities/map_entities.qc:167: error: Unknown field "speed" in class "entity"
+server/entities/map_entities.qc:167: error: Type mismatch: !__variant
+
+************ ERROR ************
+Errors have occured
+
+Error in server/entities/map_entities.qc on line 167
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/map_entities.qc
+in function button_wait (line 38),
+server/entities/map_entities.qc:42: error: Unknown value "activator".
+server/entities/map_entities.qc:43: error: Unknown value "SUB_UseTargets".
+in function button_return (line 53),
+server/entities/map_entities.qc:55: error: Unknown value "SUB_CalcMove".
+server/entities/map_entities.qc:55: error: Unknown field "pos1" in class "entity"
+in function button_fire (line 68),
+server/entities/map_entities.qc:75: error: Unknown value "SUB_CalcMove".
+server/entities/map_entities.qc:75: error: Unknown field "pos2" in class "entity"
+in function button_use (line 80),
+server/entities/map_entities.qc:81: error: Unknown value "activator".
+in function button_touch (line 86),
+server/entities/map_entities.qc:90: error: Unknown field "cost" in class "entity"
+server/entities/map_entities.qc:90: warning: conditional type mismatch: variant
+in function button_killed (line 123),
+server/entities/map_entities.qc:124: error: Unknown value "damage_attacker".
+in function func_button (line 148),
+server/entities/map_entities.qc:149: error: Unknown value "SetMovedir".
+server/entities/map_entities.qc:161: error: Unknown field "th_die" in class "entity"
+server/entities/map_entities.qc:176: error: Unknown field "pos1" in class "entity"
+server/entities/map_entities.qc:177: error: Unknown field "pos2" in class "entity"
+
+************ ERROR ************
+Errors have occured
+
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+in function SUB_UseTargets (line 31),
+server/entities/sub_functions.qc:36: error: Unknown field "target2" in class "entity"
+server/entities/sub_functions.qc:36: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:38: error: Unknown field "target3" in class "entity"
+server/entities/sub_functions.qc:38: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:40: error: Unknown field "target4" in class "entity"
+server/entities/sub_functions.qc:40: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:42: error: Unknown field "target5" in class "entity"
+server/entities/sub_functions.qc:42: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:44: error: Unknown field "target6" in class "entity"
+server/entities/sub_functions.qc:44: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:46: error: Unknown field "target7" in class "entity"
+server/entities/sub_functions.qc:46: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:48: error: Unknown field "target8" in class "entity"
+server/entities/sub_functions.qc:48: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:95: error: Unknown field "killtarget" in class "entity"
+server/entities/sub_functions.qc:95: error: QCC_StoreToPointer doesn't know how to store to that type
+in function SUB_CalcMove (line 192),
+server/entities/sub_functions.qc:199: error: Unknown field "think1" in class "entity"
+server/entities/sub_functions.qc:200: error: Unknown field "finaldest" in class "entity"
+in function SUB_CalcMoveDone (line 239),
+server/entities/sub_functions.qc:240: error: Unknown field "finaldest" in class "entity"
+server/entities/sub_functions.qc:243: error: Unknown field "think1" in class "entity"
+server/entities/sub_functions.qc:243: warning: conditional type mismatch: variant
+in function EqualPapWeapon (line 248),
+server/entities/sub_functions.qc:252: error: Unknown value "W_BIATCH".
+server/entities/sub_functions.qc:255: error: Unknown value "W_ARMAGEDDON".
+server/entities/sub_functions.qc:256: error: Unknown value "W_KAR".
+server/entities/sub_functions.qc:258: error: Unknown value "W_GIBS".
+server/entities/sub_functions.qc:259: error: Unknown value "W_THOMPSON".
+server/entities/sub_functions.qc:261: error: Unknown value "W_KILLU".
+server/entities/sub_functions.qc:262: error: Unknown value "W_357".
+server/entities/sub_functions.qc:264: error: Unknown value "W_WIDOW".
+server/entities/sub_functions.qc:265: error: Unknown value "W_BAR".
+server/entities/sub_functions.qc:267: error: Unknown value "W_ACCELERATOR".
+server/entities/sub_functions.qc:268: error: Unknown value "W_BROWNING".
+server/entities/sub_functions.qc:270: error: Unknown value "W_BORE".
+server/entities/sub_functions.qc:271: error: Unknown value "W_DB".
+server/entities/sub_functions.qc:273: error: Unknown value "W_IMPELLER".
+server/entities/sub_functions.qc:274: error: Unknown value "W_FG".
+server/entities/sub_functions.qc:276: error: Unknown value "W_COMPRESSOR".
+server/entities/sub_functions.qc:277: error: Unknown value "W_GEWEHR".
+server/entities/sub_functions.qc:279: error: Unknown value "W_HEADCRACKER".
+server/entities/sub_functions.qc:280: error: Unknown value "W_KAR_SCOPE".
+server/entities/sub_functions.qc:282: error: Unknown value "W_M1000".
+server/entities/sub_functions.qc:283: error: Unknown value "W_M1".
+server/entities/sub_functions.qc:285: error: Unknown value "W_WIDDER".
+server/entities/sub_functions.qc:286: error: Unknown value "W_M1A1".
+server/entities/sub_functions.qc:288: error: Unknown value "W_AFTERBURNER".
+server/entities/sub_functions.qc:289: error: Unknown value "W_MP40".
+server/entities/sub_functions.qc:291: error: Unknown value "W_BARRACUDA".
+server/entities/sub_functions.qc:292: error: Unknown value "W_MG".
+server/entities/sub_functions.qc:294: error: Unknown value "W_LONGINUS".
+server/entities/sub_functions.qc:295: error: Unknown value "W_PANZER".
+server/entities/sub_functions.qc:297: error: Unknown value "W_REAPER".
+server/entities/sub_functions.qc:298: error: Unknown value "W_PPSH".
+server/entities/sub_functions.qc:300: error: Unknown value "W_PENETRATOR".
+server/entities/sub_functions.qc:301: error: Unknown value "W_PTRS".
+server/entities/sub_functions.qc:303: error: Unknown value "W_PORTER".
+server/entities/sub_functions.qc:304: error: Unknown value "W_RAY".
+server/entities/sub_functions.qc:306: error: Unknown value "W_SNUFF".
+server/entities/sub_functions.qc:307: error: Unknown value "W_SAWNOFF".
+server/entities/sub_functions.qc:309: error: Unknown value "W_SPATZ".
+server/entities/sub_functions.qc:310: error: Unknown value "W_STG".
+server/entities/sub_functions.qc:312: error: Unknown value "W_GUT".
+server/entities/sub_functions.qc:313: error: Unknown value "W_TRENCH".
+server/entities/sub_functions.qc:315: error: Unknown value "W_SAMURAI".
+server/entities/sub_functions.qc:316: error: Unknown value "W_TYPE".
+server/entities/sub_functions.qc:318: error: Unknown value "W_MP5".
+server/entities/sub_functions.qc:321: error: Unknown value "W_M14".
+in function revEqualPapWeapon (line 329),
+server/entities/sub_functions.qc:334: error: Unknown value "W_BIATCH".
+server/entities/sub_functions.qc:336: error: Unknown value "W_KAR".
+server/entities/sub_functions.qc:337: error: Unknown value "W_ARMAGEDDON".
+server/entities/sub_functions.qc:339: error: Unknown value "W_THOMPSON".
+server/entities/sub_functions.qc:340: error: Unknown value "W_GIBS".
+server/entities/sub_functions.qc:342: error: Unknown value "W_357".
+server/entities/sub_functions.qc:343: error: Unknown value "W_KILLU".
+server/entities/sub_functions.qc:345: error: Unknown value "W_BAR".
+server/entities/sub_functions.qc:346: error: Unknown value "W_WIDOW".
+server/entities/sub_functions.qc:348: error: Unknown value "W_BROWNING".
+server/entities/sub_functions.qc:349: error: Unknown value "W_ACCELERATOR".
+server/entities/sub_functions.qc:351: error: Unknown value "W_DB".
+server/entities/sub_functions.qc:352: error: Unknown value "W_BORE".
+server/entities/sub_functions.qc:354: error: Unknown value "W_FG".
+server/entities/sub_functions.qc:355: error: Unknown value "W_IMPELLER".
+server/entities/sub_functions.qc:357: error: Unknown value "W_GEWEHR".
+server/entities/sub_functions.qc:358: error: Unknown value "W_COMPRESSOR".
+server/entities/sub_functions.qc:360: error: Unknown value "W_KAR_SCOPE".
+server/entities/sub_functions.qc:361: error: Unknown value "W_HEADCRACKER".
+server/entities/sub_functions.qc:363: error: Unknown value "W_M1".
+server/entities/sub_functions.qc:364: error: Unknown value "W_M1000".
+server/entities/sub_functions.qc:366: error: Unknown value "W_M1A1".
+server/entities/sub_functions.qc:367: error: Unknown value "W_WIDDER".
+server/entities/sub_functions.qc:369: error: Unknown value "W_MP40".
+server/entities/sub_functions.qc:370: error: Unknown value "W_AFTERBURNER".
+server/entities/sub_functions.qc:372: error: Unknown value "W_MG".
+server/entities/sub_functions.qc:373: error: Unknown value "W_BARRACUDA".
+server/entities/sub_functions.qc:375: error: Unknown value "W_PANZER".
+server/entities/sub_functions.qc:376: error: Unknown value "W_LONGINUS".
+server/entities/sub_functions.qc:378: error: Unknown value "W_PPSH".
+server/entities/sub_functions.qc:379: error: Unknown value "W_REAPER".
+server/entities/sub_functions.qc:381: error: Unknown value "W_PTRS".
+server/entities/sub_functions.qc:382: error: Unknown value "W_PENETRATOR".
+server/entities/sub_functions.qc:384: error: Unknown value "W_RAY".
+server/entities/sub_functions.qc:385: error: Unknown value "W_PORTER".
+server/entities/sub_functions.qc:387: error: Unknown value "W_SAWNOFF".
+server/entities/sub_functions.qc:388: error: Unknown value "W_SNUFF".
+server/entities/sub_functions.qc:390: error: Unknown value "W_STG".
+server/entities/sub_functions.qc:391: error: Unknown value "W_SPATZ".
+server/entities/sub_functions.qc:393: error: Unknown value "W_TRENCH".
+server/entities/sub_functions.qc:394: error: Unknown value "W_GUT".
+server/entities/sub_functions.qc:396: error: Unknown value "W_TYPE".
+server/entities/sub_functions.qc:397: error: Unknown value "W_SAMURAI".
+server/entities/sub_functions.qc:399: error: Unknown value "W_MP5".
+server/entities/sub_functions.qc:402: error: Unknown value "W_TESLA".
+server/entities/sub_functions.qc:405: error: Unknown value "W_M14".
+in function pap_detr (line 413),
+server/entities/sub_functions.qc:420: error: Unknown value "W_BIATCH".
+server/entities/sub_functions.qc:423: error: Unknown value "W_KAR".
+server/entities/sub_functions.qc:426: error: Unknown value "W_ARMAGEDDON".
+server/entities/sub_functions.qc:429: error: Unknown value "W_THOMPSON".
+server/entities/sub_functions.qc:432: error: Unknown value "W_GIBS".
+server/entities/sub_functions.qc:435: error: Unknown value "W_357".
+server/entities/sub_functions.qc:438: error: Unknown value "W_KILLU".
+server/entities/sub_functions.qc:441: error: Unknown value "W_BAR".
+server/entities/sub_functions.qc:444: error: Unknown value "W_WIDOW".
+server/entities/sub_functions.qc:447: error: Unknown value "W_BK".
+server/entities/sub_functions.qc:450: error: Unknown value "W_BROWNING".
+server/entities/sub_functions.qc:453: error: Unknown value "W_ACCELERATOR".
+server/entities/sub_functions.qc:456: error: Unknown value "W_DB".
+server/entities/sub_functions.qc:459: error: Unknown value "W_BORE".
+server/entities/sub_functions.qc:462: error: Unknown value "W_FG".
+server/entities/sub_functions.qc:465: error: Unknown value "W_IMPELLER".
+server/entities/sub_functions.qc:468: error: Unknown value "W_GEWEHR".
+server/entities/sub_functions.qc:471: error: Unknown value "W_COMPRESSOR".
+server/entities/sub_functions.qc:474: error: Unknown value "W_KAR_SCOPE".
+server/entities/sub_functions.qc:477: error: Unknown value "W_HEADCRACKER".
+server/entities/sub_functions.qc:480: error: Unknown value "W_M1".
+server/entities/sub_functions.qc:483: error: Unknown value "W_M1000".
+server/entities/sub_functions.qc:486: error: Unknown value "W_M1A1".
+server/entities/sub_functions.qc:489: error: Unknown value "W_WIDDER".
+server/entities/sub_functions.qc:492: error: Unknown value "W_M2".
+server/entities/sub_functions.qc:495: error: Unknown value "W_FIW".
+server/entities/sub_functions.qc:498: error: Unknown value "W_MP40".
+server/entities/sub_functions.qc:501: error: Unknown value "W_AFTERBURNER".
+server/entities/sub_functions.qc:504: error: Unknown value "W_MG".
+server/entities/sub_functions.qc:507: error: Unknown value "W_BARRACUDA".
+server/entities/sub_functions.qc:510: error: Unknown value "W_PANZER".
+server/entities/sub_functions.qc:513: error: Unknown value "W_LONGINUS".
+server/entities/sub_functions.qc:516: error: Unknown value "W_PPSH".
+server/entities/sub_functions.qc:519: error: Unknown value "W_REAPER".
+server/entities/sub_functions.qc:522: error: Unknown value "W_PTRS".
+server/entities/sub_functions.qc:525: error: Unknown value "W_PENETRATOR".
+server/entities/sub_functions.qc:528: error: Unknown value "W_RAY".
+server/entities/sub_functions.qc:531: error: Unknown value "W_PORTER".
+server/entities/sub_functions.qc:534: error: Unknown value "W_SAWNOFF".
+server/entities/sub_functions.qc:537: error: Unknown value "W_SNUFF".
+server/entities/sub_functions.qc:540: error: Unknown value "W_STG".
+server/entities/sub_functions.qc:543: error: Unknown value "W_SPATZ".
+server/entities/sub_functions.qc:546: error: Unknown value "W_TRENCH".
+server/entities/sub_functions.qc:549: error: Unknown value "W_GUT".
+server/entities/sub_functions.qc:552: error: Unknown value "W_TYPE".
+server/entities/sub_functions.qc:555: error: Unknown value "W_SAMURAI".
+server/entities/sub_functions.qc:558: error: Unknown value "W_MP5".
+server/entities/sub_functions.qc:561: error: Unknown value "W_TESLA".
+server/entities/sub_functions.qc:564: error: Unknown value "W_M14".
+
+************ ERROR ************
+Errors have occured
+
+Error in server/entities/sub_functions.qc on line 95
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+in function SUB_UseTargets (line 31),
+server/entities/sub_functions.qc:36: error: Unknown field "target2" in class "entity"
+server/entities/sub_functions.qc:36: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:38: error: Unknown field "target3" in class "entity"
+server/entities/sub_functions.qc:38: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:40: error: Unknown field "target4" in class "entity"
+server/entities/sub_functions.qc:40: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:42: error: Unknown field "target5" in class "entity"
+server/entities/sub_functions.qc:42: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:44: error: Unknown field "target6" in class "entity"
+server/entities/sub_functions.qc:44: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:46: error: Unknown field "target7" in class "entity"
+server/entities/sub_functions.qc:46: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:48: error: Unknown field "target8" in class "entity"
+server/entities/sub_functions.qc:48: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:95: error: Unknown field "killtarget" in class "entity"
+server/entities/sub_functions.qc:95: error: QCC_StoreToPointer doesn't know how to store to that type
+in function SUB_CalcMove (line 192),
+server/entities/sub_functions.qc:199: error: Unknown field "think1" in class "entity"
+server/entities/sub_functions.qc:200: error: Unknown field "finaldest" in class "entity"
+in function SUB_CalcMoveDone (line 239),
+server/entities/sub_functions.qc:240: error: Unknown field "finaldest" in class "entity"
+server/entities/sub_functions.qc:243: error: Unknown field "think1" in class "entity"
+server/entities/sub_functions.qc:243: warning: conditional type mismatch: variant
+
+************ ERROR ************
+Errors have occured
+
+Error in server/entities/sub_functions.qc on line 95
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+in function SUB_UseTargets (line 31),
+server/entities/sub_functions.qc:38: error: Unknown field "target3" in class "entity"
+server/entities/sub_functions.qc:38: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:40: error: Unknown field "target4" in class "entity"
+server/entities/sub_functions.qc:40: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:42: error: Unknown field "target5" in class "entity"
+server/entities/sub_functions.qc:42: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:44: error: Unknown field "target6" in class "entity"
+server/entities/sub_functions.qc:44: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:46: error: Unknown field "target7" in class "entity"
+server/entities/sub_functions.qc:46: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:48: error: Unknown field "target8" in class "entity"
+server/entities/sub_functions.qc:48: warning: conditional type mismatch: variant
+server/entities/sub_functions.qc:95: error: Unknown field "killtarget" in class "entity"
+server/entities/sub_functions.qc:95: error: QCC_StoreToPointer doesn't know how to store to that type
+in function SUB_CalcMove (line 192),
+server/entities/sub_functions.qc:199: error: Unknown field "think1" in class "entity"
+server/entities/sub_functions.qc:200: error: Unknown field "finaldest" in class "entity"
+in function SUB_CalcMoveDone (line 239),
+server/entities/sub_functions.qc:240: error: Unknown field "finaldest" in class "entity"
+server/entities/sub_functions.qc:243: error: Unknown field "think1" in class "entity"
+server/entities/sub_functions.qc:243: warning: conditional type mismatch: variant
+
+************ ERROR ************
+Errors have occured
+
+Error in server/entities/sub_functions.qc on line 95
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+in function SUB_UseTargets (line 31),
+server/entities/sub_functions.qc:95: error: Unknown field "killtarget" in class "entity"
+server/entities/sub_functions.qc:95: error: QCC_StoreToPointer doesn't know how to store to that type
+in function SUB_CalcMove (line 192),
+server/entities/sub_functions.qc:199: error: Unknown field "think1" in class "entity"
+server/entities/sub_functions.qc:200: error: Unknown field "finaldest" in class "entity"
+in function SUB_CalcMoveDone (line 239),
+server/entities/sub_functions.qc:240: error: Unknown field "finaldest" in class "entity"
+server/entities/sub_functions.qc:243: error: Unknown field "think1" in class "entity"
+server/entities/sub_functions.qc:243: warning: conditional type mismatch: variant
+compiling server/entities/map_entities.qc
+in function button_return (line 53),
+server/entities/map_entities.qc:55: error: Unknown field "pos1" in class "entity"
+in function button_fire (line 68),
+server/entities/map_entities.qc:75: error: Unknown field "pos2" in class "entity"
+in function button_touch (line 86),
+server/entities/map_entities.qc:90: error: Unknown field "cost" in class "entity"
+server/entities/map_entities.qc:90: warning: conditional type mismatch: variant
+in function button_killed (line 123),
+server/entities/map_entities.qc:124: error: Unknown value "damage_attacker".
+in function func_button (line 148),
+server/entities/map_entities.qc:149: error: Unknown value "SetMovedir".
+server/entities/map_entities.qc:161: error: Unknown field "th_die" in class "entity"
+server/entities/map_entities.qc:176: error: Unknown field "pos1" in class "entity"
+server/entities/map_entities.qc:177: error: Unknown field "pos2" in class "entity"
+
+************ ERROR ************
+Errors have occured
+
+Error in server/entities/sub_functions.qc on line 95
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+in function SUB_UseTargets (line 31),
+server/entities/sub_functions.qc:119: error: Cannot cast from entity to string
+in function SUB_CalcMove (line 192),
+server/entities/sub_functions.qc:199: error: Unknown field "think1" in class "entity"
+server/entities/sub_functions.qc:200: error: Unknown field "finaldest" in class "entity"
+in function SUB_CalcMoveDone (line 239),
+server/entities/sub_functions.qc:240: error: Unknown field "finaldest" in class "entity"
+server/entities/sub_functions.qc:243: error: Unknown field "think1" in class "entity"
+server/entities/sub_functions.qc:243: warning: conditional type mismatch: variant
+compiling server/entities/map_entities.qc
+in function button_return (line 53),
+server/entities/map_entities.qc:55: error: Unknown field "pos1" in class "entity"
+in function button_fire (line 68),
+server/entities/map_entities.qc:75: error: Unknown field "pos2" in class "entity"
+in function button_touch (line 86),
+server/entities/map_entities.qc:90: error: Unknown field "cost" in class "entity"
+server/entities/map_entities.qc:90: warning: conditional type mismatch: variant
+in function button_killed (line 123),
+server/entities/map_entities.qc:124: error: Unknown value "damage_attacker".
+in function func_button (line 148),
+server/entities/map_entities.qc:149: error: Unknown value "SetMovedir".
+server/entities/map_entities.qc:161: error: Unknown field "th_die" in class "entity"
+server/entities/map_entities.qc:176: error: Unknown field "pos1" in class "entity"
+server/entities/map_entities.qc:177: error: Unknown field "pos2" in class "entity"
+
+************ ERROR ************
+Errors have occured
+
+Error in server/entities/sub_functions.qc on line 119
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+in function SUB_UseTargets (line 31),
+server/entities/sub_functions.qc:121: error: Unknown value "true".
+compiling server/entities/map_entities.qc
+in function button_return (line 53),
+server/entities/map_entities.qc:55: error: Unknown field "pos1" in class "entity"
+in function button_fire (line 68),
+server/entities/map_entities.qc:75: error: Unknown field "pos2" in class "entity"
+in function button_touch (line 86),
+server/entities/map_entities.qc:90: error: Unknown field "cost" in class "entity"
+server/entities/map_entities.qc:90: warning: conditional type mismatch: variant
+in function button_killed (line 123),
+server/entities/map_entities.qc:124: error: Unknown value "damage_attacker".
+in function func_button (line 148),
+server/entities/map_entities.qc:149: error: Unknown value "SetMovedir".
+server/entities/map_entities.qc:161: error: Unknown field "th_die" in class "entity"
+server/entities/map_entities.qc:176: error: Unknown field "pos1" in class "entity"
+server/entities/map_entities.qc:177: error: Unknown field "pos2" in class "entity"
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+in function SUB_UseTargets (line 31),
+server/entities/sub_functions.qc:121: error: Unknown value "true".
+compiling server/entities/map_entities.qc
+in function button_touch (line 86),
+server/entities/map_entities.qc:90: error: Unknown field "cost" in class "entity"
+server/entities/map_entities.qc:90: warning: conditional type mismatch: variant
+in function button_killed (line 123),
+server/entities/map_entities.qc:124: error: Unknown value "damage_attacker".
+in function func_button (line 148),
+server/entities/map_entities.qc:149: error: Unknown value "SetMovedir".
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+in function SUB_UseTargets (line 31),
+server/entities/sub_functions.qc:64: warning F302: Potentially uninitialised variable temptotal
+server/entities/sub_functions.qc:123: warning F302: Potentially uninitialised variable breakthis
+server/entities/sub_functions.qc:96: warning F302: Potentially uninitialised variable tempstring
+compiling server/entities/map_entities.qc
+in function button_touch (line 86),
+server/entities/map_entities.qc:90: error: Unknown field "cost" in class "entity"
+server/entities/map_entities.qc:90: warning: conditional type mismatch: variant
+in function button_killed (line 123),
+server/entities/map_entities.qc:124: error: Unknown value "damage_attacker".
+in function func_button (line 148),
+server/entities/map_entities.qc:149: error: Unknown value "SetMovedir".
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+in function SUB_UseTargets (line 31),
+server/entities/sub_functions.qc:64: warning F302: Potentially uninitialised variable temptotal
+server/entities/sub_functions.qc:123: warning F302: Potentially uninitialised variable breakthis
+server/entities/sub_functions.qc:96: warning F302: Potentially uninitialised variable tempstring
+compiling server/entities/map_entities.qc
+in function button_touch (line 86),
+server/entities/map_entities.qc:90: error: Unknown field "cost" in class "entity"
+server/entities/map_entities.qc:90: warning: conditional type mismatch: variant
+in function button_killed (line 123),
+server/entities/map_entities.qc:124: error: Unknown value "damage_attacker".
+in function func_button (line 148),
+server/entities/map_entities.qc:149: error: Unknown value "SetMovedir".
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+in function SUB_UseTargets (line 31),
+server/entities/sub_functions.qc:99: warning F302: Potentially uninitialised variable tempstring
+compiling server/entities/map_entities.qc
+in function button_touch (line 86),
+server/entities/map_entities.qc:90: error: Unknown field "cost" in class "entity"
+server/entities/map_entities.qc:90: warning: conditional type mismatch: variant
+in function button_killed (line 123),
+server/entities/map_entities.qc:124: error: Unknown value "damage_attacker".
+in function func_button (line 148),
+server/entities/map_entities.qc:149: error: Unknown value "SetMovedir".
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/map_entities.qc
+in function button_touch (line 86),
+server/entities/map_entities.qc:90: error: Unknown field "cost" in class "entity"
+server/entities/map_entities.qc:90: warning: conditional type mismatch: variant
+in function button_killed (line 123),
+server/entities/map_entities.qc:124: error: Unknown value "damage_attacker".
+in function func_button (line 148),
+server/entities/map_entities.qc:149: error: Unknown value "SetMovedir".
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/map_entities.qc
+in function button_killed (line 123),
+server/entities/map_entities.qc:124: error: Unknown value "damage_attacker".
+in function func_button (line 148),
+server/entities/map_entities.qc:149: error: Unknown value "SetMovedir".
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/map_entities.qc
+in function func_button (line 147),
+server/entities/map_entities.qc:148: error: Unknown value "SetMovedir".
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/map_entities.qc
+in function func_button (line 147),
+server/entities/map_entities.qc:148: error: Unknown value "SetMovedir".
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:25: warning Q302: .float t_length = t_length+743 used, but not referenced.
+server/customdefs.qc:25: warning Q302: .float t_width = t_width+744 used, but not referenced.
+server/entities/sub_functions.qc:63: warning F210: Model "progs/way/normal_way.spr" was used but not directly precached
+server/entities/sub_functions.qc:152: warning F210: Model "progs/ai/zfull.mdl" was used but not directly precached
+server/entities/sub_functions.qc:112: warning F210: Sound "misc/talk.wav" was used but not directly precached
+server/entities/map_entities.qc:109: warning F210: Sound "misc/denybuy.wav" was used but not directly precached
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/entities/sub_functions.qc:63: warning F210: Model "progs/way/normal_way.spr" was used but not directly precached
+server/entities/sub_functions.qc:152: warning F210: Model "progs/ai/zfull.mdl" was used but not directly precached
+server/entities/sub_functions.qc:112: warning F210: Sound "misc/talk.wav" was used but not directly precached
+server/entities/map_entities.qc:109: warning F210: Sound "misc/denybuy.wav" was used but not directly precached
+Compile finished: ../qwprogs.dat (id format)
+Done. 4 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/entities/sub_functions.qc:99: warning F210: Sound "misc/talk.wav" was used but not directly precached
+Compile finished: ../qwprogs.dat (id format)
+Done. 1 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings

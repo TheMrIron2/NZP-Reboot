@@ -10,6 +10,59 @@ void(float to) SwitchWeapon =
 	
 }
 
+void() W_Give_Ammo =
+{
+	float ammo_shot, max_mag;
+	
+	max_mag = getWeaponMag(self.weapon);
+
+	ammo_shot = max_mag - self.currentmag;
+	if (ammo_shot < self.currentammo)
+	{
+    	self.currentammo = self.currentammo - ammo_shot;
+      
+		self.currentmag = max_mag;
+	}
+	else
+	{
+		self.currentmag = self.currentmag + self.currentammo;
+		self.currentammo = 0;
+	}
+	//UpdateWeapons(0);
+};
+
+void() W_Reload =
+{
+	//blubs remove me, for testing rendering zombie models=============
+	/*
+	local entity z;
+	z = find(world,classname,"test_zombie");
+	while(z)
+	{
+		remove(z);
+		z = find(z,classname,"test_zombie");
+	}*/
+	//==============================================================
+	if (self.reload_delay > time || self.new_anim_stop || self.currentmag >= getWeaponMag(self.weapon))
+		return;
+
+	float endframe, startframe, reloadcancelframe;
+	string modelname;
+	modelname = GetWeaponModel(self.weapon, 0);
+	
+	if (self.currentammo)
+	{
+		startframe = GetFrame(self.weapon,RELOAD_START);
+		endframe = GetFrame(self.weapon,RELOAD_END);
+		reloadcancelframe = GetFrame(self.weapon,RELOAD_CANCEL);
+
+		Set_W_Frame (startframe, endframe, 0, reloadcancelframe, RELOAD, W_Give_Ammo, modelname, TRUE);
+		self.reload_delay = getWeaponDelay(self.weapon,RELOAD);
+
+		self.reload_delay = self.reload_delay + time;
+	}
+};
+
 
 void () CheckReload = 
 {
@@ -17,6 +70,8 @@ void () CheckReload =
 		W_Reload();
 	}
 }
+
+
 void Parse_Damage () = // DO NOT TOUCH
 {
 }
@@ -172,8 +227,8 @@ void () Weapon_Logic =
 	if (self.button5 && !self.semireload)
 	{
 		W_Reload();
-		self.semireload = true;
+		self.semireload = TRUE;
 	}
 	else if (!self.button5)
-		self.semireload = false;
+		self.semireload = FALSE;
 }

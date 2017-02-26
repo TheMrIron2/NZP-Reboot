@@ -14,6 +14,8 @@ void() StartFrame =
 {
 	deathmatch = cvar("deathmatch");
 	framecount = framecount + 1;
+
+	
 }
 
 //called when map loaded
@@ -41,6 +43,7 @@ void() worldspawn =
 	precache_model ("models/weapons/m1911/v_colt.mdl");
 
 	clientstat(50, EV_FLOAT, currentmag);
+	
 }
 
 void() SpectatorConnect =

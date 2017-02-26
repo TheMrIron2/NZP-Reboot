@@ -144,6 +144,7 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 		//vmodel.origin -= vorg;
 		//vmodel.angles -= vang;
 		//addentity(vmodel);
+		vmodel.frame = getstatf(STAT_WEAPONFRAME);
 		if(mzlflash.alpha > 0.09)
 		{
 			makevectors(view_angles);
