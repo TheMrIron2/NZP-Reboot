@@ -367,7 +367,7 @@ noref void() CSQC_Parse_Event =
 			}
 
 			
-			mzlflash.alpha = 1;
+			//mzlflash.alpha = 1;
 
 			mzlflash.angles_z = random() * 360;
 		}
