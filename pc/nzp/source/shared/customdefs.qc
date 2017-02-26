@@ -5,9 +5,68 @@ const float EVENT_PISTOLFIRE = 10;
 
 //nzp weapon defines
 //id list
-const float  W_COLT = 1;
+#define W_COLT 		1
+#define W_KAR 		2
+#define W_THOMPSON 	3
+#define W_357		4
+#define W_BAR		5
+#define W_BK		6
+#define W_BROWNING	7
+#define W_DB		8
+#define W_FG		9
+#define W_GEWEHR	10
+#define W_KAR_SCOPE	11
+#define W_M1		12
+#define W_M1A1		13
+#define W_M2		14
+#define W_MP40		15
+#define W_MG		16
+#define W_PANZER	17
+#define W_PPSH		18
+#define W_PTRS		19
+#define W_RAY		20
+#define W_SAWNOFF	21
+#define W_STG		22
+#define W_TRENCH	23
+#define W_TYPE		24
+#define W_BOWIE		25
+#define W_GRENADE	26
+#define W_BETTY		27
+#define W_BIATCH  28
+#define W_KILLU   29 //357
+#define W_COMPRESSOR 30 // Gewehr
+#define W_M1000  31 //garand
+//#define W_KOLLIDER  32
+#define W_PORTER  33 // Ray
+#define W_WIDDER  34 // M1A1
+#define W_FIW  35 //upgraded flamethrower
+#define W_ARMAGEDDON  36 //Kar
+#define W_WUNDER  37
+#define W_GIBS  38 // thompson
+#define W_SAMURAI  39 //Type
+#define W_AFTERBURNER  40 //mp40
+#define W_SPATZ  41 // stg
+#define W_SNUFF  42 // sawn off
+#define W_BORE  43 // double barrel
+#define W_IMPELLER  44 //fg
+#define W_BARRACUDA  45 //mg42
+#define W_ACCELERATOR  46 //M1919 browning
+#define W_GUT  47 //trench
+#define W_REAPER  48 //ppsh
+#define W_HEADCRACKER  49 //scoped kar
+#define W_LONGINUS  50 //panzer
+#define W_PENETRATOR  51 //ptrs
+#define W_WIDOW  52 //bar
+//#define W_KRAUS  53 //ballistic
+#define W_MP5   54
+#define W_M14   55
 
-const float  W_NOWEP = 420;
+#define W_TESLA  56
+
+#define W_NOWEP   420
+
+
+#define W_NOWEP             420
 
 #define BASE_FRAME			1
 #define FIRE_START 			2
@@ -33,8 +92,17 @@ const float  W_NOWEP = 420;
 #define AIM_FIRE_START      36
 #define AIM_FIRE_END        37
 
-
-#define RELOAD		        1
-#define FIRE		        3
+//Animation types
+#define RELOAD		1
+#define GRENADE		2
+#define FIRE		3
+#define SWITCHWEP	4
+#define KNIFE		5
+#define ZOOM		6
+#define SPRINT		7
+#define PERK		8
+#define KNIFE2		9
+#define REVIVE		10
 
 #define STAT_CURRENTMAG    50
+#define STAT_POINTS        51

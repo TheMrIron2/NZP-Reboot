@@ -15,6 +15,7 @@ float deathmatch;
 //money
 .float points;
 .float cost;
+.float cost2;
 
 //doors
 .float state;
@@ -32,8 +33,14 @@ entity activator;
 .float fire_delay;
 .float reload_delay;
 .float currentmag;
+.float secondaryammo;
 .float semi;
+.float semiuse;
+.float semiswitch;
 .float semireload;
+.float secondarymag;
+.float secondaryweapon;
+.float NeedLoad;
 
 //weapon frames
 .float weapon_animduration;
@@ -70,3 +77,11 @@ vector	VEC_HULL2_MAX = '32 32 64';
 .void() think1;
 .vector finaldest;
 .vector pos1, pos2/*, mangle*/;
+.float sequence;
+
+
+
+//FIXME(Jukki) Place in better place
+void(entity client, float type, float cost, float weapon) useprint = {
+    centerprint(client, "Buy dis");
+}

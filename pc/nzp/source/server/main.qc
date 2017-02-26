@@ -42,7 +42,8 @@ void() worldspawn =
 	
 	precache_model ("models/weapons/m1911/v_colt.mdl");
 
-	clientstat(50, EV_FLOAT, currentmag);
+	clientstat(STAT_CURRENTMAG, EV_FLOAT, currentmag);
+	clientstat(STAT_POINTS, EV_FLOAT, points);
 	
 }
 

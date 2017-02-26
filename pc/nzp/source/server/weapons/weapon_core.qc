@@ -9,6 +9,65 @@ void(float to) SwitchWeapon =
 	multicast('0 0 0', MULTICAST_ONE);
 	
 }
+void() W_Switch =
+{
+	if (self.secondaryweapon && self.secondaryweapon !=0 && !self.new_anim_stop && !other.button1)
+	{      
+		float tempf,tempf1,tempf2;
+		float startframe;
+		float endframe;
+		string modelname;
+			
+		tempf = self.currentammo;
+		self.currentammo = self.secondaryammo;
+		self.secondaryammo = tempf;
+
+		tempf1 = self.currentmag;
+		self.currentmag = self.secondarymag;
+		self.secondarymag = tempf1;
+
+		tempf2 = self.weapon;
+		self.weapon = self.secondaryweapon;
+		self.secondaryweapon = tempf2;
+
+		startframe = GetFrame(self.weapon,TAKE_OUT_START);
+		endframe = GetFrame(self.weapon,TAKE_OUT_END);
+		modelname = GetWeaponModel(self.weapon, 0);
+
+		SwitchWeapon(self.weapon);
+		
+		/*if ((self.weapon == W_DB && self.secondaryweapon == W_SAWNOFF) || (self.weapon == W_SAWNOFF && self.secondaryweapon == W_DB))
+      self.currentammo = self.secondaryammo;*/
+		
+		//UpdateWeapons(1);
+		//if (self.weaponslot1.dualwield)
+		//	Set_W2_Frame (self.weaponslot1.TakeWeaponStart, self.weaponslot1.TakeWeaponEnd, 0, 0, 0, SUB_Null, self.weaponslot1.v_model2, false);//FIXME
+		Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+		
+		/*self.reload_delay2 = self.fire_delay2 = */self.reload_delay = self.fire_delay = 0;
+	}
+}
+
+void() W_PutOut =
+{
+	if (self.secondaryweapon && !self.new_anim_stop)
+	{
+		float startframe;
+		float endframe;
+		string modelname;
+		startframe = GetFrame(self.weapon,PUT_OUT_START);
+		endframe = GetFrame(self.weapon,PUT_OUT_END);
+		modelname = GetWeaponModel(self.weapon, 0);
+		//UpdateWeapons(1);
+		//if (self.weaponslot1.dualwield)
+		//	Set_W2_Frame (self.weaponslot1.PutOutStart, self.weaponslot1.PutOutEnd, (self.weaponslot1.PutOutEnd - self.weaponslot1.PutOutStart)/10, 0, SWITCHWEP, W_Switch, self.weaponslot1.v_model2, false);//FIXME
+		Set_W_Frame (startframe, endframe, (endframe - startframe)/10, 0, SWITCHWEP, W_Switch, modelname, false);//FIXME
+		/*self.reload_delay2 = self.fire_delay2 = */self.reload_delay = self.fire_delay = 0;
+	}
+}
+
+
+//RELOAD
 
 void() W_Give_Ammo =
 {
@@ -63,6 +122,34 @@ void() W_Reload =
 	}
 };
 
+void () W_LoadAmmoDone =
+{
+	self.NeedLoad = false;
+}
+void () W_LoadAmmo =
+{
+	string modelname;
+	if (!self.NeedLoad)
+		return;
+	if (!self.currentmag)
+	{
+		W_Reload();
+		return;
+	}
+
+	modelname = GetWeaponModel(self.weapon, 0);
+
+	if (self.weapon == W_TRENCH || self.weapon == W_GUT)
+	{
+		Set_W_Frame (4, 14, 0, 12, FIRE, W_LoadAmmoDone, modelname, false);
+		self.fire_delay = 1 + time;
+	}
+	else if (self.weapon == W_KAR || self.weapon == W_ARMAGEDDON || self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER)
+	{
+		Set_W_Frame (4, 13, 1.1, 9, FIRE, W_LoadAmmoDone, modelname, false);
+		self.fire_delay = 0.9 + time;
+	}	
+}
 
 void () CheckReload = 
 {
@@ -198,16 +285,24 @@ void() W_Fire =
 		if (self.semi)
 			return;
 		
-		FireTrace(shotcount, spread, damage/* , self.weaponslot1.headx, self.weaponslot1.legx */);
-
 		self.semi = TRUE;
 	}
+
+	FireTrace(shotcount, spread, damage/* , self.weaponslot1.headx, self.weaponslot1.legx */);
 
 
 	//Play weapon animation and sound
 	startframe = GetFrame(self.weapon,FIRE_START);
 	endframe = GetFrame(self.weapon,FIRE_END);
-	Set_W_Frame (startframe, endframe, delay, 0, FIRE, CheckReload, modelname, FALSE);
+	if (self.weapon == W_GUT || self.weapon == W_KAR_SCOPE || self.weapon == W_TRENCH || self.weapon == W_KAR || self.weapon == W_ARMAGEDDON || self.weapon == W_HEADCRACKER)
+	{
+		Set_W_Frame (startframe, endframe, delay, 0, FIRE, W_LoadAmmo, modelname, FALSE);
+		self.NeedLoad = true;
+	} else {
+		Set_W_Frame (startframe, endframe, delay, 0, FIRE, CheckReload, modelname, FALSE);
+	}
+
+
 	sound (self, CHAN_WEAPON, soundname, 1, ATTN_NORM);
 
 	self.currentmag = self.currentmag - 1;
@@ -223,12 +318,26 @@ void () Weapon_Logic =
 	} else {
 		self.semi = FALSE;
 	}
+	
+	if (!self.button1) {
+		self.semiuse = false;
+	}
+
+	
+	if (self.button4 && !self.semiswitch && self.secondaryweapon && self.secondaryweapon !=0)
+	{
+		W_PutOut();
+		self.semiswitch = true;
+	} else if (!self.button4) {
+		self.semiswitch = false;
+	}
 
 	if (self.button5 && !self.semireload)
 	{
 		W_Reload();
 		self.semireload = TRUE;
 	}
-	else if (!self.button5)
+	else if (!self.button5) {
 		self.semireload = FALSE;
+	}
 }

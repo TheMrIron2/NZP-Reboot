@@ -17,9 +17,6 @@ void() PlayerJump =
 
 void() CheckImpulses =
 {
-	if(self.impulse == 1)
-		SwitchWeapon(W_COLT);
-	
 	self.impulse = 0;
 }
 
@@ -138,9 +135,15 @@ void() PlayerSpawn =
 	self.currentmag = 8;
 	self.weapon = W_COLT;
 
+	self.secondaryammo = 200;
+	self.secondarymag = 20;
+	self.secondaryweapon = W_THOMPSON;
+
+	addmoney(self, 500, 0);
+
 	self.weaponmodel = GetWeaponModel(self.weapon, 0);// Give weapon model
 
-	SwitchWeapon(W_COLT);
+	SwitchWeapon(self.weapon);
 	stuffcmd(self, "cl_gunx 8;cl_guny 16;cl_gunz 25\n");
 };
 

@@ -176,15 +176,19 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 	}
 	else
 	{
-		local float health, ammo, curmag;
+		local float health, ammo, curmag, points;
 		string ammostring;
 		health = getstatf(STAT_HEALTH);
 		// fix me: change the 51 and 50 to human readable const floats like STAT_PISTOLAMMO, STAT_MGAMMO or something
 		curmag = getstatf(STAT_CURRENTMAG);
+		points = getstatf(STAT_POINTS);
 		ammo = getstatf(STAT_AMMO);
 
 		ammostring = strcat(ftos(curmag), strcat("/",ftos(ammo)));
 		drawstring([0.01*width, 0.94*height, 0], strcat("+",ftos(health)), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+
+
+		drawstring([0.80*width, 0.90*height, 0], ftos(points), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
 		
 		drawstring([0.75*width, 0.94*height, 0], ammostring, [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
 	}
@@ -364,17 +368,7 @@ noref void() CSQC_Parse_Event =
 
 			
 			mzlflash.alpha = 1;
-			if(weapon == W_COLT)
-			{
-				mzlflash.scale = 0.1 + random() * 0.35;
-				vmodel_velocity_x = -2.5;
-				vmodel_velocity_y = (random() - 0.5) * 0.6;
-				vmodel_velocity_z = (random() - 0.5) * 0.6 + 2;
-				
-				vmodel_avelocity_x = 8;
-				vmodel_avelocity_y = (random() - 0.5) * 0.5;
-				vmodel_avelocity_z = (random() - 0.5) * 0.5;
-			}
+
 			mzlflash.angles_z = random() * 360;
 		}
 		
@@ -403,15 +397,13 @@ noref void() CSQC_Parse_Event =
 	{
 		local float to;
 		to = readbyte();
-		if(to == W_COLT)
-		{
-			vmodel.origin = '0 0 -6';
-			vmodel.angles = '-60 0 0';
-			vmodel_currentpos = vmodel.origin + '0 0 -24';
-			vmodel_targetpos = vmodel.origin;
-			vmodel_muzzleoffset = '12 0 1';
-			setmodel(vmodel,"models/weapons/m1911/v_colt.mdl");
-			weapon = to;
-		}
+		setmodel(vmodel,GetWeaponModel(to, FALSE));
+
+		vmodel.origin = '0 0 0';
+		vmodel.angles = '-60 0 0';
+		vmodel_currentpos = vmodel.origin + '0 0 -24';
+		vmodel_targetpos = vmodel.origin;
+		vmodel_muzzleoffset = '12 0 1';
+		weapon = to;
 	}
 }

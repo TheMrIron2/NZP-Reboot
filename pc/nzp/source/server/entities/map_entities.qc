@@ -175,7 +175,6 @@ void() func_button =
 	self.pos2 = self.pos1 + self.movedir*(fabs(self.movedir*self.size) - self.lip);
 };
 
-.float sequence;
 void() flame_update = {
 	particle (self.origin, v_up*8, 111, 0);
 	self.think = flame_update;
@@ -188,7 +187,6 @@ void() place_fire =
 	self.nextthink = time + random()+0.1;
 };
 
-.float sequence;
 void() place_model =
 {
   //beta_removal();
@@ -204,4 +202,85 @@ void() place_model =
 	
 	if (self.spawnflags & 1)
 		self.effects = self.effects | EF_FULLBRIGHT;
+};
+
+
+
+
+void () buy_weapon_touch =
+{
+	entity oldent;
+	entity old_Self;
+	local float tempf, tempf1, tempf2;
+	local float startframe,endframe;
+	local string modelname;
+	//float fromwhateverto62;
+	//float fromwhateverto62start;
+
+	if (other.classname != "player") {
+		return;
+	}
+	
+	
+	
+	if (!self.spawnflags)
+	{
+		useprint (other, 4, self.cost, self.weapon);
+	}
+	
+	if (!other.button1 || other.semiuse) {
+		return;
+	}
+	other.semiuse = 1;
+
+	if (other.points < self.cost)
+	{
+		centerprint (other, "Not enough points\n");
+		return;
+	}
+
+	if (other.weapon && !other.secondaryweapon)
+	{
+		tempf = other.currentammo;
+		other.currentammo = other.secondaryammo;
+		other.secondaryammo = tempf;
+
+		tempf1 = other.currentmag;
+		other.currentmag = other.secondarymag;
+		other.secondarymag = tempf1;
+
+		tempf2 = other.weapon;
+		other.weapon = other.secondaryweapon;
+		other.secondaryweapon = tempf2;
+	}
+	
+};
+
+void() buy_weapon_link_wall =
+{
+	entity ent;
+	
+	ent = find (world, targetname, self.target);
+	
+	if (ent.classname == "weapon_wall")
+		self.enemy = ent;
+}
+
+void() buy_weapon =
+{
+	local string weaponname;
+	InitTrigger ();
+	weaponname = GetWeaponModel (self.weapon, 0);
+	if (weaponname != "")
+		precache_model (weaponname);
+	weaponname = GetWeaponModel(self.weapon, 1);
+	if (weaponname != "")
+		precache_model (weaponname);
+	
+	
+	precache_extra (self.weapon);
+	self.touch = buy_weapon_touch;
+	
+	self.think = buy_weapon_link_wall;
+	self.nextthink = time + 0.2; 
 };

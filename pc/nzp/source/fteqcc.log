@@ -4900,3 +4900,2188 @@ compiling server/main.qc
 compiling server/items.qc
 Compile finished: ../qwprogs.dat (id format)
 Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+in function precache_extra (line 211),
+server/entities/map_entities.qc:212: error: Unknown value "gungame".
+server/entities/map_entities.qc:212: warning: conditional type mismatch: variant
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+in function buy_weapon (line 234),
+server/entities/map_entities.qc:236: error: Unknown value "InitTrigger".
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+in function use_wall_weapon (line 30),
+server/entities/triggers.qc:41: error: Unknown field "sequence" in class "entity"
+in function weapon_wall (line 49),
+server/entities/triggers.qc:53: error: Unknown field "sequence" in class "entity"
+server/entities/triggers.qc:63: error: Unknown value "EF_WEPLIGHT".
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+Compile finished: ../qwprogs.dat (id format)
+Done. 0 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+in function buy_weapon_touch (line 221),
+server/entities/map_entities.qc:235: error: Unknown field "secondaryweapon" in class "entity"
+server/entities/map_entities.qc:241: error: Unknown value "useprint".
+server/entities/map_entities.qc:241: error: Unknown field "cost2" in class "entity"
+server/entities/map_entities.qc:243: error: Unknown field "semiuse" in class "entity"
+server/entities/map_entities.qc:245: error: Unknown field "secondaryammo" in class "entity"
+at global scope,
+server/entities/map_entities.qc:290: error: "else" is not a type
+server/entities/map_entities.qc:389: error: "ent" is not a type
+server/entities/map_entities.qc:391: error: "if" is not a type
+server/entities/map_entities.qc:393: error: "}" is not a type
+server/entities/map_entities.qc:398: error: "InitTrigger" is not a type
+server/entities/map_entities.qc:399: error: "weaponname" is not a type
+
+************ ERROR ************
+Errors have occured
+
+Error in server/entities/map_entities.qc on line 290
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+in function buy_weapon_touch (line 221),
+server/entities/map_entities.qc:241: error: Unknown value "useprint".
+server/entities/map_entities.qc:241: error: Unknown field "cost2" in class "entity"
+server/entities/map_entities.qc:243: error: Unknown field "semiuse" in class "entity"
+server/entities/map_entities.qc:245: error: Unknown field "secondaryammo" in class "entity"
+at global scope,
+server/entities/map_entities.qc:290: error: "else" is not a type
+server/entities/map_entities.qc:389: error: "ent" is not a type
+server/entities/map_entities.qc:391: error: "if" is not a type
+server/entities/map_entities.qc:393: error: "}" is not a type
+server/entities/map_entities.qc:398: error: "InitTrigger" is not a type
+server/entities/map_entities.qc:399: error: "weaponname" is not a type
+server/entities/map_entities.qc:400: error: "if" is not a type
+
+************ ERROR ************
+Errors have occured
+
+Error in server/entities/map_entities.qc on line 290
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+in function buy_weapon_touch (line 221),
+server/entities/map_entities.qc:241: error: Unknown field "cost2" in class "entity"
+server/entities/map_entities.qc:243: error: Unknown field "semiuse" in class "entity"
+server/entities/map_entities.qc:245: error: Unknown field "secondaryammo" in class "entity"
+at global scope,
+server/entities/map_entities.qc:290: error: "else" is not a type
+server/entities/map_entities.qc:389: error: "ent" is not a type
+server/entities/map_entities.qc:391: error: "if" is not a type
+server/entities/map_entities.qc:393: error: "}" is not a type
+server/entities/map_entities.qc:398: error: "InitTrigger" is not a type
+server/entities/map_entities.qc:399: error: "weaponname" is not a type
+server/entities/map_entities.qc:400: error: "if" is not a type
+server/entities/map_entities.qc:402: error: "weaponname" is not a type
+
+************ ERROR ************
+Errors have occured
+
+Error in server/entities/map_entities.qc on line 290
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+in function buy_weapon_touch (line 221),
+server/entities/map_entities.qc:243: error: Unknown field "semiuse" in class "entity"
+server/entities/map_entities.qc:245: error: Unknown field "secondaryammo" in class "entity"
+at global scope,
+server/entities/map_entities.qc:290: error: "else" is not a type
+server/entities/map_entities.qc:389: error: "ent" is not a type
+server/entities/map_entities.qc:391: error: "if" is not a type
+server/entities/map_entities.qc:393: error: "}" is not a type
+server/entities/map_entities.qc:398: error: "InitTrigger" is not a type
+server/entities/map_entities.qc:399: error: "weaponname" is not a type
+server/entities/map_entities.qc:400: error: "if" is not a type
+server/entities/map_entities.qc:402: error: "weaponname" is not a type
+server/entities/map_entities.qc:403: error: "if" is not a type
+
+************ ERROR ************
+Errors have occured
+
+Error in server/entities/map_entities.qc on line 290
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+server/entities/map_entities.qc:290: error: "else" is not a type
+server/entities/map_entities.qc:389: error: "ent" is not a type
+server/entities/map_entities.qc:391: error: "if" is not a type
+server/entities/map_entities.qc:393: error: "}" is not a type
+server/entities/map_entities.qc:398: error: "InitTrigger" is not a type
+server/entities/map_entities.qc:399: error: "weaponname" is not a type
+server/entities/map_entities.qc:400: error: "if" is not a type
+server/entities/map_entities.qc:402: error: "weaponname" is not a type
+server/entities/map_entities.qc:403: error: "if" is not a type
+server/entities/map_entities.qc:407: error: "precache_extra" is not a type
+server/entities/map_entities.qc:410: error: "self" is not a type
+
+************ ERROR ************
+Errors have occured
+
+Error in server/entities/map_entities.qc on line 290
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+739 used, but not referenced.
+server/customdefs.qc:36: warning Q302: .float secondaryammo = secondaryammo+753 used, but not referenced.
+server/customdefs.qc:38: warning Q302: .float semiuse = semiuse+755 used, but not referenced.
+server/customdefs.qc:40: warning Q302: .float secondarymag = secondarymag+757 used, but not referenced.
+server/customdefs.qc:41: warning Q302: .float secondaryweapon = secondaryweapon+758 used, but not referenced.
+in function buy_weapon_touch (line 221),
+server/entities/map_entities.qc:222: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:223: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf1  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf2  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf3  no references.
+server/entities/map_entities.qc:225: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:225: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:226: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 14 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:36: warning Q302: .float secondaryammo = secondaryammo+753 used, but not referenced.
+server/customdefs.qc:38: warning Q302: .float semiuse = semiuse+755 used, but not referenced.
+server/customdefs.qc:40: warning Q302: .float secondarymag = secondarymag+757 used, but not referenced.
+in function buy_weapon_touch (line 221),
+server/entities/map_entities.qc:222: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:223: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf1  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf2  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf3  no references.
+server/entities/map_entities.qc:225: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:225: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:226: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 12 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:36: warning Q302: .float secondaryammo = secondaryammo+753 used, but not referenced.
+server/customdefs.qc:38: warning Q302: .float semiuse = semiuse+755 used, but not referenced.
+server/customdefs.qc:40: warning Q302: .float secondarymag = secondarymag+757 used, but not referenced.
+in function buy_weapon_touch (line 221),
+server/entities/map_entities.qc:222: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:223: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf1  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf2  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf3  no references.
+server/entities/map_entities.qc:225: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:225: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:226: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 12 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:36: warning Q302: .float secondaryammo = secondaryammo+753 used, but not referenced.
+server/customdefs.qc:38: warning Q302: .float semiuse = semiuse+755 used, but not referenced.
+server/customdefs.qc:40: warning Q302: .float secondarymag = secondarymag+757 used, but not referenced.
+in function buy_weapon_touch (line 221),
+server/entities/map_entities.qc:222: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:223: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf1  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf2  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf3  no references.
+server/entities/map_entities.qc:225: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:225: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:226: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 12 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:36: warning Q302: .float secondaryammo = secondaryammo+753 used, but not referenced.
+server/customdefs.qc:38: warning Q302: .float semiuse = semiuse+755 used, but not referenced.
+server/customdefs.qc:40: warning Q302: .float secondarymag = secondarymag+757 used, but not referenced.
+in function buy_weapon_touch (line 221),
+server/entities/map_entities.qc:222: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:223: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf1  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf2  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf3  no references.
+server/entities/map_entities.qc:225: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:225: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:226: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 12 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:36: warning Q302: .float secondaryammo = secondaryammo+753 used, but not referenced.
+server/customdefs.qc:38: warning Q302: .float semiuse = semiuse+755 used, but not referenced.
+server/customdefs.qc:40: warning Q302: .float secondarymag = secondarymag+757 used, but not referenced.
+in function buy_weapon_touch (line 221),
+server/entities/map_entities.qc:222: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:223: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf1  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf2  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf3  no references.
+server/entities/map_entities.qc:225: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:225: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:226: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 12 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:36: warning Q302: .float secondaryammo = secondaryammo+753 used, but not referenced.
+server/customdefs.qc:38: warning Q302: .float semiuse = semiuse+755 used, but not referenced.
+server/customdefs.qc:40: warning Q302: .float secondarymag = secondarymag+757 used, but not referenced.
+in function buy_weapon_touch (line 221),
+server/entities/map_entities.qc:222: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:223: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf1  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf2  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf3  no references.
+server/entities/map_entities.qc:225: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:225: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:226: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 12 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:36: warning Q302: .float secondaryammo = secondaryammo+753 used, but not referenced.
+server/customdefs.qc:38: warning Q302: .float semiuse = semiuse+755 used, but not referenced.
+server/customdefs.qc:40: warning Q302: .float secondarymag = secondarymag+757 used, but not referenced.
+in function buy_weapon_touch (line 221),
+server/entities/map_entities.qc:222: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:223: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf1  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf2  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf3  no references.
+server/entities/map_entities.qc:225: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:225: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:226: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 12 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:36: warning Q302: .float secondaryammo = secondaryammo+753 used, but not referenced.
+server/customdefs.qc:38: warning Q302: .float semiuse = semiuse+755 used, but not referenced.
+server/customdefs.qc:40: warning Q302: .float secondarymag = secondarymag+757 used, but not referenced.
+in function buy_weapon_touch (line 221),
+server/entities/map_entities.qc:222: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:223: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf1  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf2  no references.
+server/entities/map_entities.qc:224: warning Q302: float tempf3  no references.
+server/entities/map_entities.qc:225: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:225: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:226: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 12 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+in function buy_weapon_touch (line 221),
+server/entities/map_entities.qc:266: error: Unknown field "weaponskin" in class "entity"
+server/entities/map_entities.qc:267: error: Unknown field "secondaryweaponskin" in class "entity"
+server/entities/map_entities.qc:267: error: QCC_StoreToPointer doesn't know how to store to that type
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Error in server/entities/map_entities.qc on line 267
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+739 used, but not referenced.
+in function buy_weapon_touch (line 221),
+server/entities/map_entities.qc:222: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:223: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:225: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:225: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:226: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function Weapon_Logic (line 218),
+server/weapons/weapon_core.qc:232: error: Unknown field "semiswitch" in class "entity"
+server/weapons/weapon_core.qc:232: error: Type mismatch: !__variant
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Error in server/weapons/weapon_core.qc on line 232
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Switch (line 13),
+server/weapons/weapon_core.qc:33: error: Unknown field "weaponskin" in class "entity"
+server/weapons/weapon_core.qc:34: error: Unknown field "secondaryweaponskin" in class "entity"
+server/weapons/weapon_core.qc:34: error: QCC_StoreToPointer doesn't know how to store to that type
+in function W_Reload (line 100),
+server/weapons/weapon_core.qc:124: error: Unknown value "W_Give_Ammo".
+in function Weapon_Logic (line 283),
+server/weapons/weapon_core.qc:297: error: Unknown field "zoom" in class "entity"
+server/weapons/weapon_core.qc:299: error: Unknown value "W_PutOut".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Error in server/weapons/weapon_core.qc on line 34
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Switch (line 13),
+server/weapons/weapon_core.qc:46: error: Unknown value "isSwitching".
+in function W_PutOut (line 51),
+server/weapons/weapon_core.qc:52: error: Unknown field "downed" in class "entity"
+server/weapons/weapon_core.qc:52: warning: conditional type mismatch: variant
+server/weapons/weapon_core.qc:66: error: Unknown value "SWITCHWEP".
+in function Weapon_Logic (line 279),
+server/weapons/weapon_core.qc:293: error: Unknown field "zoom" in class "entity"
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function Weapon_Logic (line 275),
+server/weapons/weapon_core.qc:289: error: Unknown field "zoom" in class "entity"
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:167: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:169: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:171: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 3 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+739 used, but not referenced.
+in function buy_weapon_touch (line 221),
+server/entities/map_entities.qc:222: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:223: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:225: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:225: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:226: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+in function PlayWeaponSound (line 218),
+shared/weapon_defines.qc:221: error: Unknown field "weapon" in class "entity"
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:224: warning F210: Sound "sounds/weapons/kar/boltup.wav" was used but not directly precached
+shared/weapon_defines.qc:226: warning F210: Sound "sounds/weapons/kar/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:228: warning F210: Sound "sounds/weapons/kar/boltforward.wav" was used but not directly precached
+shared/weapon_defines.qc:230: warning F210: Sound "sounds/weapons/kar/boltdown.wav" was used but not directly precached
+shared/weapon_defines.qc:240: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:242: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:244: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+shared/weapon_defines.qc:249: warning F210: Sound "weapons/kar/boltup.wav" was used but not directly precached
+shared/weapon_defines.qc:251: warning F210: Sound "weapons/kar/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:253: warning F210: Sound "weapons/kar/clipin.wav" was used but not directly precached
+shared/weapon_defines.qc:255: warning F210: Sound "weapons/kar/boltforward.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 13 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+760 used, but not referenced.
+in function buy_weapon_touch (line 230),
+server/entities/map_entities.qc:231: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:232: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:234: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:234: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:235: warning Q302: string modelname  no references.
+at global scope,
+shared/weapon_defines.qc:249: warning F210: Sound "weapons/kar/boltup.wav" was used but not directly precached
+shared/weapon_defines.qc:251: warning F210: Sound "weapons/kar/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:253: warning F210: Sound "weapons/kar/clipin.wav" was used but not directly precached
+shared/weapon_defines.qc:255: warning F210: Sound "weapons/kar/boltforward.wav" was used but not directly precached
+shared/weapon_defines.qc:257: warning F210: Sound "weapons/kar/clipoff.wav" was used but not directly precached
+shared/weapon_defines.qc:259: warning F210: Sound "weapons/kar/boltdown.wav" was used but not directly precached
+Compile finished: ../qwprogs.dat (id format)
+Done. 12 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:224: warning F210: Sound "sounds/weapons/kar/boltup.wav" was used but not directly precached
+shared/weapon_defines.qc:226: warning F210: Sound "sounds/weapons/kar/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:228: warning F210: Sound "sounds/weapons/kar/boltforward.wav" was used but not directly precached
+shared/weapon_defines.qc:230: warning F210: Sound "sounds/weapons/kar/boltdown.wav" was used but not directly precached
+shared/weapon_defines.qc:240: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:242: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:244: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+shared/weapon_defines.qc:253: warning F210: Sound "sounds/weapons/kar/clipin.wav" was used but not directly precached
+shared/weapon_defines.qc:257: warning F210: Sound "sounds/weapons/kar/clipoff.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 9 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+756 used, but not referenced.
+in function buy_weapon_touch (line 230),
+server/entities/map_entities.qc:231: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:232: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:234: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:234: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:235: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:224: warning F210: Sound "sounds/weapons/kar/boltup.wav" was used but not directly precached
+shared/weapon_defines.qc:226: warning F210: Sound "sounds/weapons/kar/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:228: warning F210: Sound "sounds/weapons/kar/boltforward.wav" was used but not directly precached
+shared/weapon_defines.qc:230: warning F210: Sound "sounds/weapons/kar/boltdown.wav" was used but not directly precached
+shared/weapon_defines.qc:240: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:242: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:244: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+shared/weapon_defines.qc:253: warning F210: Sound "sounds/weapons/kar/clipin.wav" was used but not directly precached
+shared/weapon_defines.qc:257: warning F210: Sound "sounds/weapons/kar/clipoff.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 9 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+756 used, but not referenced.
+in function buy_weapon_touch (line 230),
+server/entities/map_entities.qc:231: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:232: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:234: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:234: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:235: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:224: warning F210: Sound "sounds/weapons/kar/boltup.wav" was used but not directly precached
+shared/weapon_defines.qc:226: warning F210: Sound "sounds/weapons/kar/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:228: warning F210: Sound "sounds/weapons/kar/boltforward.wav" was used but not directly precached
+shared/weapon_defines.qc:230: warning F210: Sound "sounds/weapons/kar/boltdown.wav" was used but not directly precached
+shared/weapon_defines.qc:240: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:242: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:244: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+shared/weapon_defines.qc:253: warning F210: Sound "sounds/weapons/kar/clipin.wav" was used but not directly precached
+shared/weapon_defines.qc:257: warning F210: Sound "sounds/weapons/kar/clipoff.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 9 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+756 used, but not referenced.
+in function buy_weapon_touch (line 230),
+server/entities/map_entities.qc:231: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:232: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:234: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:234: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:235: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:224: warning F210: Sound "sounds/weapons/kar/boltup.wav" was used but not directly precached
+shared/weapon_defines.qc:226: warning F210: Sound "sounds/weapons/kar/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:228: warning F210: Sound "sounds/weapons/kar/boltforward.wav" was used but not directly precached
+shared/weapon_defines.qc:230: warning F210: Sound "sounds/weapons/kar/boltdown.wav" was used but not directly precached
+shared/weapon_defines.qc:240: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:242: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:244: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+shared/weapon_defines.qc:253: warning F210: Sound "sounds/weapons/kar/clipin.wav" was used but not directly precached
+shared/weapon_defines.qc:257: warning F210: Sound "sounds/weapons/kar/clipoff.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 9 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+756 used, but not referenced.
+in function buy_weapon_touch (line 230),
+server/entities/map_entities.qc:231: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:232: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:234: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:234: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:235: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:224: warning F210: Sound "sounds/weapons/kar/boltup.wav" was used but not directly precached
+shared/weapon_defines.qc:226: warning F210: Sound "sounds/weapons/kar/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:228: warning F210: Sound "sounds/weapons/kar/boltforward.wav" was used but not directly precached
+shared/weapon_defines.qc:230: warning F210: Sound "sounds/weapons/kar/boltdown.wav" was used but not directly precached
+shared/weapon_defines.qc:240: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:242: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:244: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+shared/weapon_defines.qc:253: warning F210: Sound "sounds/weapons/kar/clipin.wav" was used but not directly precached
+shared/weapon_defines.qc:257: warning F210: Sound "sounds/weapons/kar/clipoff.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 9 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+756 used, but not referenced.
+in function buy_weapon_touch (line 230),
+server/entities/map_entities.qc:231: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:232: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:234: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:234: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:235: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:224: warning F210: Sound "sounds/weapons/kar/boltup.wav" was used but not directly precached
+shared/weapon_defines.qc:226: warning F210: Sound "sounds/weapons/kar/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:228: warning F210: Sound "sounds/weapons/kar/boltforward.wav" was used but not directly precached
+shared/weapon_defines.qc:230: warning F210: Sound "sounds/weapons/kar/boltdown.wav" was used but not directly precached
+shared/weapon_defines.qc:240: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:242: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:244: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+shared/weapon_defines.qc:253: warning F210: Sound "sounds/weapons/kar/clipin.wav" was used but not directly precached
+shared/weapon_defines.qc:257: warning F210: Sound "sounds/weapons/kar/clipoff.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 9 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+756 used, but not referenced.
+in function buy_weapon_touch (line 230),
+server/entities/map_entities.qc:231: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:232: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:234: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:234: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:235: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:224: warning F210: Sound "sounds/weapons/kar/boltup.wav" was used but not directly precached
+shared/weapon_defines.qc:226: warning F210: Sound "sounds/weapons/kar/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:228: warning F210: Sound "sounds/weapons/kar/boltforward.wav" was used but not directly precached
+shared/weapon_defines.qc:230: warning F210: Sound "sounds/weapons/kar/boltdown.wav" was used but not directly precached
+shared/weapon_defines.qc:240: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:242: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:244: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+shared/weapon_defines.qc:253: warning F210: Sound "sounds/weapons/kar/clipin.wav" was used but not directly precached
+shared/weapon_defines.qc:257: warning F210: Sound "sounds/weapons/kar/clipoff.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 9 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+756 used, but not referenced.
+in function buy_weapon_touch (line 230),
+server/entities/map_entities.qc:231: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:232: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:234: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:234: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:235: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:224: warning F210: Sound "sounds/weapons/kar/boltup.wav" was used but not directly precached
+shared/weapon_defines.qc:226: warning F210: Sound "sounds/weapons/kar/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:228: warning F210: Sound "sounds/weapons/kar/boltforward.wav" was used but not directly precached
+shared/weapon_defines.qc:230: warning F210: Sound "sounds/weapons/kar/boltdown.wav" was used but not directly precached
+shared/weapon_defines.qc:240: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:242: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:244: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+shared/weapon_defines.qc:253: warning F210: Sound "sounds/weapons/kar/clipin.wav" was used but not directly precached
+shared/weapon_defines.qc:257: warning F210: Sound "sounds/weapons/kar/clipoff.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 9 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 219),
+server/weapons/weapon_core.qc:271: error: Unknown value "tempf".
+server/weapons/weapon_core.qc:271: error: Unknown value "W_LoadAmmo".
+server/weapons/weapon_core.qc:272: error: Unknown field "NeedLoad" in class "entity"
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:224: warning F210: Sound "sounds/weapons/kar/boltup.wav" was used but not directly precached
+shared/weapon_defines.qc:226: warning F210: Sound "sounds/weapons/kar/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:228: warning F210: Sound "sounds/weapons/kar/boltforward.wav" was used but not directly precached
+shared/weapon_defines.qc:230: warning F210: Sound "sounds/weapons/kar/boltdown.wav" was used but not directly precached
+shared/weapon_defines.qc:240: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:242: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:244: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+shared/weapon_defines.qc:253: warning F210: Sound "sounds/weapons/kar/clipin.wav" was used but not directly precached
+shared/weapon_defines.qc:257: warning F210: Sound "sounds/weapons/kar/clipoff.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 9 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_Fire (line 219),
+server/weapons/weapon_core.qc:271: error: Unknown value "W_LoadAmmo".
+server/weapons/weapon_core.qc:272: error: Unknown field "NeedLoad" in class "entity"
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:224: warning F210: Sound "sounds/weapons/kar/boltup.wav" was used but not directly precached
+shared/weapon_defines.qc:226: warning F210: Sound "sounds/weapons/kar/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:228: warning F210: Sound "sounds/weapons/kar/boltforward.wav" was used but not directly precached
+shared/weapon_defines.qc:230: warning F210: Sound "sounds/weapons/kar/boltdown.wav" was used but not directly precached
+shared/weapon_defines.qc:240: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:242: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:244: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+shared/weapon_defines.qc:253: warning F210: Sound "sounds/weapons/kar/clipin.wav" was used but not directly precached
+shared/weapon_defines.qc:257: warning F210: Sound "sounds/weapons/kar/clipoff.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 9 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_LoadAmmoDone (line 126),
+server/weapons/weapon_core.qc:127: error: Unknown field "NeedLoad" in class "entity"
+server/weapons/weapon_core.qc:127: error: QCC_StoreToPointer doesn't know how to store to that type
+in function FireTrace (line 197),
+server/weapons/weapon_core.qc:235: error: Unknown value "TraceAttack".
+server/weapons/weapon_core.qc:250: error: Unknown value "Parse_Damage".
+in function W_Fire (line 256),
+server/weapons/weapon_core.qc:308: error: Unknown value "W_LoadAmmo".
+server/weapons/weapon_core.qc:309: error: Unknown field "NeedLoad" in class "entity"
+server/weapons/weapon_core.qc:311: error: Unknown value "CheckReload".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Error in server/weapons/weapon_core.qc on line 127
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:224: warning F210: Sound "sounds/weapons/kar/boltup.wav" was used but not directly precached
+shared/weapon_defines.qc:226: warning F210: Sound "sounds/weapons/kar/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:228: warning F210: Sound "sounds/weapons/kar/boltforward.wav" was used but not directly precached
+shared/weapon_defines.qc:230: warning F210: Sound "sounds/weapons/kar/boltdown.wav" was used but not directly precached
+shared/weapon_defines.qc:240: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:242: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:244: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+shared/weapon_defines.qc:253: warning F210: Sound "sounds/weapons/kar/clipin.wav" was used but not directly precached
+shared/weapon_defines.qc:257: warning F210: Sound "sounds/weapons/kar/clipoff.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 9 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+in function W_LoadAmmo (line 130),
+server/weapons/weapon_core.qc:140: error: Unknown field "zoom" in class "entity"
+server/weapons/weapon_core.qc:148: error: Unknown field "perks" in class "entity"
+server/weapons/weapon_core.qc:148: error: Unknown value "P_DOUBLE".
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:224: warning F210: Sound "sounds/weapons/kar/boltup.wav" was used but not directly precached
+shared/weapon_defines.qc:226: warning F210: Sound "sounds/weapons/kar/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:228: warning F210: Sound "sounds/weapons/kar/boltforward.wav" was used but not directly precached
+shared/weapon_defines.qc:230: warning F210: Sound "sounds/weapons/kar/boltdown.wav" was used but not directly precached
+shared/weapon_defines.qc:240: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:242: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:244: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+shared/weapon_defines.qc:253: warning F210: Sound "sounds/weapons/kar/clipin.wav" was used but not directly precached
+shared/weapon_defines.qc:257: warning F210: Sound "sounds/weapons/kar/clipoff.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 9 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+758 used, but not referenced.
+in function buy_weapon_touch (line 230),
+server/entities/map_entities.qc:231: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:232: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:234: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:234: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:235: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:224: warning F210: Sound "sounds/weapons/kar/boltup.wav" was used but not directly precached
+shared/weapon_defines.qc:226: warning F210: Sound "sounds/weapons/kar/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:228: warning F210: Sound "sounds/weapons/kar/boltforward.wav" was used but not directly precached
+shared/weapon_defines.qc:230: warning F210: Sound "sounds/weapons/kar/boltdown.wav" was used but not directly precached
+shared/weapon_defines.qc:240: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:242: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:244: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+shared/weapon_defines.qc:253: warning F210: Sound "sounds/weapons/kar/clipin.wav" was used but not directly precached
+shared/weapon_defines.qc:257: warning F210: Sound "sounds/weapons/kar/clipoff.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 9 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+758 used, but not referenced.
+in function buy_weapon_touch (line 230),
+server/entities/map_entities.qc:231: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:232: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:234: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:234: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:235: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:224: warning F210: Sound "sounds/weapons/kar/boltup.wav" was used but not directly precached
+shared/weapon_defines.qc:226: warning F210: Sound "sounds/weapons/kar/boltback.wav" was used but not directly precached
+shared/weapon_defines.qc:228: warning F210: Sound "sounds/weapons/kar/boltforward.wav" was used but not directly precached
+shared/weapon_defines.qc:230: warning F210: Sound "sounds/weapons/kar/boltdown.wav" was used but not directly precached
+shared/weapon_defines.qc:240: warning F210: Sound "sounds/weapons/colt/magout.wav" was used but not directly precached
+shared/weapon_defines.qc:242: warning F210: Sound "sounds/weapons/colt/magin.wav" was used but not directly precached
+shared/weapon_defines.qc:244: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+shared/weapon_defines.qc:253: warning F210: Sound "sounds/weapons/kar/clipin.wav" was used but not directly precached
+shared/weapon_defines.qc:257: warning F210: Sound "sounds/weapons/kar/clipoff.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 9 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+758 used, but not referenced.
+in function buy_weapon_touch (line 230),
+server/entities/map_entities.qc:231: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:232: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:234: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:234: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:235: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+in function PlayWeaponSound (line 272),
+shared/weapon_defines.qc:316: error: Unknown value "W_THOMP".
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+
+************ ERROR ************
+compilation errors
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:298: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 1 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+770 used, but not referenced.
+in function buy_weapon_touch (line 211),
+server/entities/map_entities.qc:212: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:213: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:215: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:215: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:216: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:298: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 1 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+770 used, but not referenced.
+in function buy_weapon_touch (line 211),
+server/entities/map_entities.qc:212: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:213: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:215: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:215: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:216: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
+Args: win32-fteqcc.exe
+FTEQCC: Feb 22 2017
+Source file: progs.src
+nothing to write
+-------------------------------------
+Source file: csprogs.src
+outputfile: ../csprogs.dat
+compiling client/csdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling client/math.qc
+compiling client/customdefs.qc
+compiling client/menu.qc
+compiling client/main.qc
+shared/weapon_defines.qc:298: warning F210: Sound "sounds/weapons/colt/slide.wav" was used but not directly precached
+Compile finished: ../csprogs.dat (id format)
+Done. 1 warnings
+-------------------------------------
+Source file: ssprogs.src
+outputfile: ../qwprogs.dat
+compiling server/ssdefs.qc
+compiling shared/customdefs.qc
+compiling shared/weapon_defines.qc
+compiling server/customdefs.qc
+compiling server/entities/sub_functions.qc
+compiling server/entities/triggers.qc
+compiling server/entities/map_entities.qc
+compiling server/entities/lights.qc
+compiling server/weapons/frames_core.qc
+compiling server/weapons/weapon_core.qc
+compiling server/player.qc
+compiling server/main.qc
+compiling server/items.qc
+server/customdefs.qc:18: warning Q302: .float cost2 = cost2+770 used, but not referenced.
+in function buy_weapon_touch (line 211),
+server/entities/map_entities.qc:212: warning Q302: entity oldent  no references.
+server/entities/map_entities.qc:213: warning Q302: entity old_Self  no references.
+server/entities/map_entities.qc:215: warning Q302: float startframe  no references.
+server/entities/map_entities.qc:215: warning Q302: float endframe  no references.
+server/entities/map_entities.qc:216: warning Q302: string modelname  no references.
+Compile finished: ../qwprogs.dat (id format)
+Done. 6 warnings
