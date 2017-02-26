@@ -90,6 +90,28 @@ void() W_Give_Ammo =
 	//UpdateWeapons(0);
 };
 
+void() ContinueReload = //Special reloads
+{
+	float delay;
+	if (self.new_anim_stop)
+		return;
+	string modelname;
+	modelname = GetWeaponModel(self.weapon, 0);
+	
+	if (self.weapon == W_GUT && self.currentmag == 10)
+    return;
+	
+	if (self.currentmag < getWeaponMag(self.weapon))
+	{
+		if (self.weapon == W_BROWNING || self.weapon == W_ACCELERATOR)
+		{
+			delay = 4; 
+			self.reload_delay = time + delay;
+			Set_W_Frame (45, 77, delay, 50, RELOAD, W_Give_Ammo, modelname, false);
+		}
+	}
+}
+
 void() W_Reload =
 {
 	//blubs remove me, for testing rendering zombie models=============
@@ -115,10 +137,25 @@ void() W_Reload =
 		endframe = GetFrame(self.weapon,RELOAD_END);
 		reloadcancelframe = GetFrame(self.weapon,RELOAD_CANCEL);
 
-		Set_W_Frame (startframe, endframe, 0, reloadcancelframe, RELOAD, W_Give_Ammo, modelname, TRUE);
-		self.reload_delay = getWeaponDelay(self.weapon,RELOAD);
+		if (self.weapon == W_BROWNING || self.weapon ==  W_ACCELERATOR)
+		{
+			if (!self.currentmag)
+			{
+				Set_W_Frame (26, 77, 0, 45, RELOAD, W_Give_Ammo, modelname, false);
+				self.reload_delay = 6 + time;
+			}
+			else if (self.currentmag > 0)
+			{
+				Set_W_Frame (4, 25, 0, 0, RELOAD, ContinueReload, modelname, false);
+				self.reload_delay = 3.5 + time;
+			}
+		} else {
+			Set_W_Frame (startframe, endframe, 0, reloadcancelframe, RELOAD, W_Give_Ammo, modelname, TRUE);
+			self.reload_delay = getWeaponDelay(self.weapon,RELOAD);
+			self.reload_delay = self.reload_delay + time;
+		}
 
-		self.reload_delay = self.reload_delay + time;
+
 	}
 };
 

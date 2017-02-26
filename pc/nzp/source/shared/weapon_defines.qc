@@ -13,6 +13,8 @@ float(float wep) GetFiretype =
 			return 1;
 		case W_BAR:
 			return 0;
+		case W_BROWNING:
+			return 0;
     }
 
     return 0;
@@ -33,6 +35,8 @@ float(float wep) getWeaponMag =
 			return 6;
 		case W_BAR:
 			return 20;
+		case W_BROWNING:
+			return 125;
 	}
 	return 0;
 }
@@ -52,6 +56,8 @@ float(float wep) getWeaponAmmo =
 			return 80;
 		case W_BAR:
 			return 140;
+		case W_BROWNING:
+			return 500;
 	}
 	return 0;
 }
@@ -72,6 +78,8 @@ float(float wep) getWeaponDamage =
 			return 1000;
 		case W_BAR:
 			return 100;
+		case W_BROWNING:
+			return 130;
     }
 
     return 0;
@@ -105,6 +113,10 @@ float(float wep, float penetration_times) getWeaponPenetration =
 			if (penetration_times >= 3)
 				return 0;
 		case W_BAR:
+			if (penetration_times >= 3)
+				return 0;
+			return 1;
+		case W_BROWNING:
 			if (penetration_times >= 3)
 				return 0;
 			return 1;
@@ -149,6 +161,11 @@ float(float wep, float delaytype) getWeaponDelay =
 				return 3.5;
 			else if (delaytype == FIRE)
 				return 0.16;
+		case W_BROWNING:
+			if (delaytype == RELOAD)
+				return 3.3;
+			else if (delaytype == FIRE)
+				return 0.096;
     }
 
     return 0;
@@ -321,6 +338,37 @@ float(float wep, float frametype) GetFrame =
 					return 21;
 			}
 			break;
+		case W_BROWNING:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return 1;
+				case FIRE_END:
+					return 3;
+				case RELOAD_START:
+					return 4;
+				case RELOAD_END:
+					return 37;
+				case SPRINT_IN_START:
+					return 92;
+				case SPRINT_IN_END:
+					return 93;
+				case SPRINT_OUT_START:
+					return 95;
+				case SPRINT_OUT_END:
+					return 96;
+				case TAKE_OUT_START:
+					return 100;
+				case TAKE_OUT_END:
+					return 103;
+				case PUT_OUT_START:
+					return 97;
+				case PUT_OUT_END:
+					return 100;
+				case RELOAD_CANCEL:
+					return 16;
+			}
+			break;
 		
 	}
 
@@ -357,6 +405,11 @@ string(float wep, float gorvmodel) GetWeaponModel =
 				return ("models/weapons/bar/g_bar.mdl");
 			else
 				return ("models/weapons/bar/v_bar.mdl");
+		case W_BROWNING:
+			if (gorvmodel)
+				return ("models/weapons/browning/g_browning.mdl");
+			else
+				return ("models/weapons/browning/v_browning.mdl");
     }
 
     return "";
@@ -377,6 +430,8 @@ string(float wep) GetWeaponSound =
 			return "sounds/weapons/357/shoot.wav";
 		case W_BAR:
 			return "sounds/weapons/bar/shoot.wav";
+		case W_BROWNING:
+			return "sounds/weapons/browning/shoot.wav";
     }
 
     return "";
@@ -456,6 +511,29 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 				sound (self ,5, "sounds/weapons/bar/maghit.wav", 1, ATTN_NORM);
 			}
 			break;
+		case W_BROWNING:
+			if (curweaponframe == 9) {
+				sound (self ,5, "sounds/weapons/browning/boltback.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 16) {
+				sound (self ,5, "sounds/weapons/browning/topopen.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 22) {
+				sound (self ,5, "sounds/weapons/browning/chainoff.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 32) {
+				sound (self ,5, "sounds/weapons/browning/boltback.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 39) {
+				sound (self ,5, "sounds/weapons/browning/topopen.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 49) {
+				sound (self ,5, "sounds/weapons/browning/chainon.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 53) {
+				sound (self ,5, "sounds/weapons/browning/chainplace.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 58) {
+				sound (self ,5, "sounds/weapons/browning/topclose.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 61) {
+				sound (self ,5, "sounds/weapons/browning/tophit.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 70) {
+				sound (self ,5, "sounds/weapons/browning/boltforward.wav", 1, ATTN_NORM);
+			}
+			break;
 	}
 }
 
@@ -495,6 +573,19 @@ void(float weptype) precache_extra =
 			precache_sound("sounds/weapons/bar/magout.wav");
 			precache_sound("sounds/weapons/bar/magin.wav");
 			precache_sound("sounds/weapons/bar/maghit.wav");
+			break;
+		case W_BROWNING:
+			precache_sound ("sounds/weapons/browning/boltback.wav");
+			precache_sound ("sounds/weapons/browning/topopen.wav");
+			precache_sound ("sounds/weapons/browning/chainoff.wav");
+			precache_sound ("sounds/weapons/browning/boltback.wav");
+			precache_sound ("sounds/weapons/browning/topopen.wav");
+			precache_sound ("sounds/weapons/browning/chainon.wav");
+			precache_sound ("sounds/weapons/browning/chainplace.wav");
+			precache_sound ("sounds/weapons/browning/topclose.wav");
+			precache_sound ("sounds/weapons/browning/tophit.wav");
+			precache_sound ("sounds/weapons/browning/boltforward.wav");
+			precache_sound ("sounds/weapons/browning/shoot.wav");
 			break;
 	}
 }
