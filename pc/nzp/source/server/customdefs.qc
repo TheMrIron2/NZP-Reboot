@@ -63,6 +63,7 @@ void() SUB_Null2 = {};
 
 vector	VEC_HULL2_MIN = '-32 -32 -24';
 vector	VEC_HULL2_MAX = '32 32 64';
+vector  VEC_VIEW_OFS  = '0 0 32';
 
 //AI
 .string target2;
