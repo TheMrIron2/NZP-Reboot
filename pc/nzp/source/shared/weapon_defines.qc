@@ -27,6 +27,28 @@ float(float wep) GetFiretype =
 			return 1;
 		case W_M1A1:
 			return 1;
+		case W_M2:
+			return 6;
+		case W_MP40:
+			return 0;
+		case W_MG:
+			return 0;
+		case W_PANZER:
+			return 3;
+		case W_PPSH:
+			return 0;
+		case W_PTRS:
+			return 0;
+		case W_RAY:
+			return 4;
+		case W_SAWNOFF:
+			return 1;
+		case W_STG:
+			return 0;
+		case W_TRENCH:
+			return 1;
+		case W_TYPE:
+			return 0;
     }
 
     return 0;
@@ -61,6 +83,28 @@ float(float wep) getWeaponMag =
 			return 8;
 		case W_M1A1:
 			return 15;
+		case W_M2:
+			return 200;
+		case W_MP40:
+			return 32;
+		case W_MG:
+			return 125;
+		case W_PANZER:
+			return 1;
+		case W_PPSH:
+			return 71;
+		case W_PTRS:
+			return 5;
+		case W_RAY:
+			return 20;
+		case W_SAWNOFF:
+			return 2;
+		case W_STG:
+			return 30;
+		case W_TRENCH:
+			return 6;
+		case W_TYPE:
+			return 30;
 	}
 	return 0;
 }
@@ -94,6 +138,28 @@ float(float wep) getWeaponAmmo =
 			return 128;
 		case W_M1A1:
 			return 120;
+		case W_M2:
+      		return 200;
+		case W_MP40:
+			return 192;
+		case W_MG:
+			return 500;
+		case W_PANZER:
+			return 20;
+		case W_PPSH:
+			return 355;
+		case W_PTRS:
+			return 60;
+		case W_RAY:
+			return 160;
+		case W_SAWNOFF:
+			return 60;
+		case W_STG:
+			return 180;
+		case W_TRENCH:
+			return 60;
+		case W_TYPE:
+			return 160;
 	}
 	return 0;
 }
@@ -126,6 +192,26 @@ float(float wep) getWeaponDamage =
 			return 200;
 		case W_M1A1:
 			return 120;
+		case W_MP40:
+			return 100;
+		case W_MG:
+			return 130;
+		case W_PANZER:
+			return 600;
+		case W_PPSH:
+			return 100;
+		case W_PTRS:
+			return 1000;
+		case W_RAY:
+			return 1000;
+		case W_SAWNOFF:
+			return 240;
+		case W_STG:
+			return 180;
+		case W_TRENCH:
+			return 120;
+		case W_TYPE:
+			return 100;
     }
 
     return 0;
@@ -136,6 +222,10 @@ float(float wep) GetWeaponShotcount =
 	switch(wep)
 	{
 		case W_DB:
+			return 8;
+		case W_SAWNOFF:
+			return 8;
+		case W_TRENCH:
 			return 8;
 	}
 
@@ -195,6 +285,38 @@ float(float wep, float penetration_times) getWeaponPenetration =
 			if (penetration_times >= 2)
 				return 0;
 			return 0.9;
+		case W_MP40:
+			if (penetration_times >= 2)
+				return 0;
+			return 0.8;
+		case W_MG:
+			if (penetration_times >= 3)
+				return 0;
+			return 1;
+		case W_PPSH:
+			if (penetration_times >= 2)
+				return 0;
+			return 0.75;
+		case W_PTRS:
+			if (penetration_times >= 5)
+				return 0;
+			return 1;
+		case W_SAWNOFF:
+			if (penetration_times >= 1)
+				return 0;
+			return 0.4;
+		case W_STG:
+			if (penetration_times >= 2)
+				return 0;
+			return 0.8;
+		case W_TRENCH:
+			if (penetration_times >= 1)
+				return 0;
+			return 0.7;
+		case W_TYPE:
+			if (penetration_times >= 2)
+				return 0;
+			return 0.8;
     }
     
 	return 0;
@@ -266,6 +388,61 @@ float(float wep, float delaytype) getWeaponDelay =
 				return 2.9;
 			else if (delaytype == FIRE)
 				return 0.135;
+		case W_M2:
+			if (delaytype == RELOAD)
+				return 2.7;
+			else if (delaytype == FIRE)
+				return 0.02;
+		case W_MP40:
+			if (delaytype == RELOAD)
+				return 2.2;
+			else if (delaytype == FIRE)
+				return 0.112;
+		case W_MG:
+			if (delaytype == RELOAD)
+				return 3.6;
+			else if (delaytype == FIRE)
+				return 0.01;
+		case W_PANZER:
+			if (delaytype == RELOAD)
+				return 1.55;
+			else if (delaytype == FIRE)
+				return 0.331;
+		case W_PPSH:
+			if (delaytype == RELOAD)
+				return 3.3;
+			else if (delaytype == FIRE)
+				return 0.048;
+		case W_PTRS:
+			if (delaytype == RELOAD)
+				return 2.8;
+			else if (delaytype == FIRE)
+				return 0.8;
+		case W_RAY:
+			if (delaytype == RELOAD)
+				return 3.1;
+			else if (delaytype == FIRE)
+				return 0.331;
+		case W_SAWNOFF:
+			if (delaytype == RELOAD)
+				return 2.8;
+			else if (delaytype == FIRE)
+				return 0.283;
+		case W_STG:
+			if (delaytype == RELOAD)
+				return 2.5;
+			else if (delaytype == FIRE)
+				return 0.102;
+		case W_TRENCH:
+			if (delaytype == RELOAD)
+				return 2.2;
+			else if (delaytype == FIRE)
+				return 0.283;
+		case W_TYPE:
+			if (delaytype == RELOAD)
+				return 2.3;
+			else if (delaytype == FIRE)
+				return 0.08;
     }
 
     return 0;
@@ -653,6 +830,359 @@ float(float wep, float frametype) GetFrame =
 					return 17;
 			}
 			break;
+		case W_M2:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return 0;
+				case FIRE_END:
+					return 0;
+				case SPRINT_IN_START:
+					return 0;
+				case SPRINT_IN_END:
+					return 0;
+				case SPRINT_OUT_START:
+					return 8;
+				case SPRINT_OUT_END:
+					return 0;
+				case TAKE_OUT_START:
+					return 0;
+				case TAKE_OUT_END:
+					return 0;
+				case PUT_OUT_START:
+					return 0;
+				case PUT_OUT_END:
+					return 0;
+				case RELOAD_CANCEL:
+					return 0;
+			}
+			break;
+		case W_MP40:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return 1;
+				case FIRE_END:
+					return 2;
+				case RELOAD_START:
+					return 3;
+				case RELOAD_END:
+					return 21;
+				case SPRINT_IN_START:
+					return 37;
+				case SPRINT_IN_END:
+					return 38;
+				case SPRINT_OUT_START:
+					return 39;
+				case SPRINT_OUT_END:
+					return 40;
+				case TAKE_OUT_START:
+					return 32;
+				case TAKE_OUT_END:
+					return 35;
+				case PUT_OUT_START:
+					return 30;
+				case PUT_OUT_END:
+					return 32;
+				case RELOAD_CANCEL:
+					return 16;
+			}
+			break;
+		case W_MG:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return 1;
+				case FIRE_END:
+					return 2;
+				case RELOAD_START:
+					return 3;
+				case RELOAD_END:
+					return 38;
+				case SPRINT_IN_START:
+					return 39;
+				case SPRINT_IN_END:
+					return 40;
+				case SPRINT_OUT_START:
+					return 40;
+				case SPRINT_OUT_END:
+					return 38;
+				case TAKE_OUT_START:
+					return 43;
+				case TAKE_OUT_END:
+					return 47;
+				case PUT_OUT_START:
+					return 42;
+				case PUT_OUT_END:
+					return 43;
+				case RELOAD_CANCEL:
+					return 21;
+			}
+			break;
+		case W_PANZER:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return 1;
+				case FIRE_END:
+					return 6;
+				case RELOAD_START:
+					return 7;
+				case RELOAD_END:
+					return 28;
+				case SPRINT_IN_START:
+					return 37;
+				case SPRINT_IN_END:
+					return 38;
+				case SPRINT_OUT_START:
+					return 45;
+				case SPRINT_OUT_END:
+					return 45;
+				case TAKE_OUT_START:
+					return 44;
+				case TAKE_OUT_END:
+					return 45;
+				case PUT_OUT_START:
+					return 39;
+				case PUT_OUT_END:
+					return 42;
+				case RELOAD_CANCEL:
+					return 16;
+				case AIM_IN_END:
+					return 33;
+			}
+			break;
+		case W_PPSH:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return 0;
+				case FIRE_END:
+					return 0;
+				case RELOAD_START:
+					return 4;
+				case RELOAD_END:
+					return 34;
+				case SPRINT_IN_START:
+					return 44;
+				case SPRINT_IN_END:
+					return 45;
+				case SPRINT_OUT_START:
+					return 47;
+				case SPRINT_OUT_END:
+					return 49;
+				case TAKE_OUT_START:
+					return 46;
+				case TAKE_OUT_END:
+					return 49;
+				case PUT_OUT_START:
+					return 43;
+				case PUT_OUT_END:
+					return 46;
+				case RELOAD_CANCEL:
+					return 16;
+			}
+			break;
+		case W_PTRS:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return 1;
+				case FIRE_END:
+					return 4;
+				case RELOAD_START:
+					return 5;
+				case RELOAD_END:
+					return 32;
+				case SPRINT_IN_START:
+					return 48;
+				case SPRINT_IN_END:
+					return 50;
+				case SPRINT_OUT_START:
+					return 51;
+				case SPRINT_OUT_END:
+					return 54;
+				case TAKE_OUT_START:
+					return 44;
+				case TAKE_OUT_END:
+					return 47;
+				case PUT_OUT_START:
+					return 41;
+				case PUT_OUT_END:
+					return 44;
+				case RELOAD_CANCEL:
+					return 16;
+			}
+			break;
+    	case W_RAY:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return 1;
+				case FIRE_END:
+					return 3;
+				case RELOAD_START:
+					return 4;
+				case RELOAD_END:
+					return 30;
+				case SPRINT_IN_START:
+					return 42;
+				case SPRINT_IN_END:
+					return 42;
+				case SPRINT_OUT_START:
+					return 42;
+				case SPRINT_OUT_END:
+					return 42;
+				case TAKE_OUT_START:
+					return 42;
+				case TAKE_OUT_END:
+					return 42;
+				case PUT_OUT_START:
+					return 42;
+				case PUT_OUT_END:
+					return 42;
+				case RELOAD_CANCEL:
+					return 16;
+				case AIM_IN_START:
+					return 30;
+				case AIM_IN_END:
+					return 34;
+				case AIM_LOOP:
+					return 35;
+				case AIM_OUT_START:
+					return 36;
+				case AIM_OUT_END:
+					return 40;
+				case AIM_FIRE_START:
+					return 34;
+				case AIM_FIRE_END:
+					return 35;
+			}
+			break;
+		case W_SAWNOFF:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return 1;
+				case FIRE_END:
+					return 4;
+				case RELOAD_START:
+					return 5;
+				case RELOAD_END:
+					return 31;
+				case SPRINT_IN_START:
+					return 32;
+				case SPRINT_IN_END:
+					return 33;
+				case SPRINT_OUT_START:
+					return 33;
+				case SPRINT_OUT_END:
+					return 31;
+				case TAKE_OUT_START:
+					return 38;
+				case TAKE_OUT_END:
+					return 41;
+				case PUT_OUT_START:
+					return 35;
+				case PUT_OUT_END:
+					return 37;
+				case RELOAD_CANCEL:
+					return 22;
+			}
+			break;
+		case W_STG:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return 1;
+				case FIRE_END:
+					return 2;
+				case RELOAD_START:
+					return 3;
+				case RELOAD_END:
+					return 24;
+				case SPRINT_IN_START:
+					return 40;
+				case SPRINT_IN_END:
+					return 42;
+				case SPRINT_OUT_START:
+					return 43;
+				case SPRINT_OUT_END:
+					return 45;
+				case TAKE_OUT_START:
+					return 42;
+				case TAKE_OUT_END:
+					return 46;
+				case PUT_OUT_START:
+					return 39;
+				case PUT_OUT_END:
+					return 42;
+				case RELOAD_CANCEL:
+					return 16;
+			}
+			break;
+		case W_TRENCH:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return 1;
+				case FIRE_END:
+					return 3;
+				case SPRINT_IN_START:
+					return 27;
+				case SPRINT_IN_END:
+					return 28;
+				case SPRINT_OUT_START:
+					return 27;
+				case SPRINT_OUT_END:
+					return 26;
+				case TAKE_OUT_START:
+					return 32;
+				case TAKE_OUT_END:
+					return 36;
+				case PUT_OUT_START:
+					return 30;
+				case PUT_OUT_END:
+					return 32;
+				case RELOAD_CANCEL:
+					return 20;
+			}
+			break;
+		case W_TYPE:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return 0;
+				case FIRE_END:
+					return 1;
+				case RELOAD_START:
+					return 2;
+				case RELOAD_END:
+					return 24;
+				case SPRINT_IN_START:
+					return 35;
+				case SPRINT_IN_END:
+					return 37;
+				case SPRINT_OUT_START:
+					return 38;
+				case SPRINT_OUT_END:
+					return 40;
+				case TAKE_OUT_START:
+					return 38;
+				case TAKE_OUT_END:
+					return 41;
+				case PUT_OUT_START:
+					return 35;
+				case PUT_OUT_END:
+					return 38;
+				case RELOAD_CANCEL:
+					return 16;
+				case AIM_IN_END:
+					return 28;
+				case AIM_IN_START:
+					return 27;
+			}
+			break;
 	}
 
     return 0;
@@ -723,6 +1253,61 @@ string(float wep, float gorvmodel) GetWeaponModel =
 				return ("models/weapons/m1carbine/g_m1a1.mdl");
 			else
 				return ("models/weapons/m1carbine/v_m1a1.mdl");
+		case W_M2:
+			if (gorvmodel)
+				return ("models/weapons/m2flame/g_m2flame.mdl");
+			else
+				return ("models/weapons/m2flame/v_m2flame.mdl");
+		case W_MP40:
+			if (gorvmodel)
+				return ("models/weapons/mp40/g_mp40.mdl");
+			else
+				return ("models/weapons/mp40/v_mp40.mdl");
+		case W_MG:
+			if (gorvmodel)
+				return ("models/weapons/mg/g_mg.mdl");
+			else
+				return ("models/weapons/mg/v_mg.mdl");
+		case W_PANZER:
+			if (gorvmodel)
+				return ("models/weapons/panzer/g_panzer.mdl");
+			else
+				return ("models/weapons/panzer/v_panzer.mdl");
+		case W_PPSH:
+			if (gorvmodel)
+				return ("models/weapons/ppsh/g_ppsh.mdl");
+			else
+				return ("models/weapons/ppsh/v_ppsh.mdl");
+		case W_PTRS:
+			if (gorvmodel)
+				return ("models/weapons/ptrs/g_ptrs.mdl");
+			else
+				return ("models/weapons/ptrs/v_ptrs.mdl");
+		case W_RAY:
+			if (gorvmodel)
+				return ("models/weapons/ray/g_ray.mdl");
+			else
+				return ("models/weapons/ray/v_ray.mdl");
+		case W_SAWNOFF:
+			if (gorvmodel)
+				return ("models/weapons/sawnoff/g_sawnoff.mdl");
+			else
+				return ("models/weapons/sawnoff/v_sawnoff.mdl");
+		case W_STG:
+			if (gorvmodel)
+				return ("models/weapons/stg/g_stg.mdl");
+			else
+				return ("models/weapons/stg/v_stg.mdl");
+		case W_TRENCH:
+			if (gorvmodel)
+				return ("models/weapons/trench/g_trench.mdl");
+			else
+				return ("models/weapons/trench/v_trench.mdl");
+		case W_TYPE:
+			if (gorvmodel)
+				return ("models/weapons/type/g_type.mdl");
+			else
+				return ("models/weapons/type/v_type.mdl");
     }
 
     return "";
@@ -757,6 +1342,28 @@ string(float wep) GetWeaponSound =
 			return "sounds/weapons/garand/shoot.wav";
 		case W_M1A1:
 			return "sounds/weapons/m1carbine/shoot.wav";
+		case W_M2:
+			return "sounds/weapons/m2flame/flamethrower.wav";
+		case W_MP40:
+			return "sounds/weapons/mp40/shoot.wav";
+		case W_MG:
+			return "sounds/weapons/mg42/shoot.wav";
+		case W_PANZER:
+			return "sounds/weapons/panzer/shoot.wav";
+		case W_PPSH:
+			return "sounds/weapons/ppsh/shoot.wav";
+		case W_PTRS:
+			return "sounds/weapons/ptrs/shoot.wav";
+		case W_RAY:
+			return "sounds/weapons/raygun/shoot.wav";
+		case W_SAWNOFF:
+			return "sounds/weapons/shotgun/shoot.wav";
+		case W_STG:
+			return "sounds/weapons/stg/shoot.wav";
+		case W_TRENCH:
+			return "sounds/weapons/shotgun/shoot.wav";
+		case W_TYPE:
+			return "sounds/weapons/type100/shoot.wav";
     }
 
     return "";
@@ -776,6 +1383,11 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 				sound (self ,5, "sounds/weapons/kar/boltforward.wav", 1, ATTN_NORM);
 			else if (curweaponframe == 10)
 				sound (self ,5, "sounds/weapons/kar/boltdown.wav", 1, ATTN_NORM);
+		}
+		else if (wep == W_TRENCH || wep == W_GUT)
+		{
+			if (curweaponframe == 7)
+				sound (self ,5, "sounds/weapons/shotgun/pump.wav", 1, ATTN_NORM);
 		}
 	} else if (anim_style != RELOAD) {
 		return;
@@ -860,6 +1472,7 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 			}
 			break;
 		case W_DB:
+		case W_SAWNOFF:
 			if (curweaponframe == 6) {
 				sound (self ,5, "sounds/weapons/shotgun/open.wav", 1, ATTN_NORM);
 			} else if (curweaponframe == 12) {
@@ -927,6 +1540,84 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 				sound (self ,5, "sounds/weapons/m1carbine/bolt.wav", 1, ATTN_NORM);
 			}
 			break;
+		case W_MG:
+			if (curweaponframe == 8) {
+				sound (self ,5, "sounds/weapons/mg42/magout.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 19) {
+				sound (self ,5, "sounds/weapons/mg42/magin.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 29) {
+				sound (self ,5, "sounds/weapons/mg42/charge.wav", 1, ATTN_NORM);
+			}
+			break;
+		case W_MP40:
+			if (curweaponframe == 10) {
+				sound (self ,5, "sounds/weapons/mp40/magout.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 17) {
+				sound (self ,5, "sounds/weapons/mp40/magin.wav", 1, ATTN_NORM);
+			}
+			break;
+		case W_PANZER:
+			if (curweaponframe == 12) {
+				sound (self ,5, "sounds/weapons/panzer/move.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 16) {
+				sound (self ,5, "sounds/weapons/panzer/insert.wav", 1, ATTN_NORM);
+			}
+			break;
+		case W_PPSH:
+				if (curweaponframe == 7) {
+				sound (self ,5, "sounds/weapons/ppsh/magout.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 15) {
+				sound (self ,5, "sounds/weapons/ppsh/magin.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 19) {
+				sound (self ,5, "sounds/weapons/ppsh/maghit.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 26) {
+				sound (self ,5, "sounds/weapons/ppsh/boltback.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 28) {
+				sound (self ,5, "sounds/weapons/ppsh/boltrelease.wav", 1, ATTN_NORM);
+			}
+			break;
+		case W_PTRS:
+			if (curweaponframe == 6) {
+				sound (self ,5, "sounds/weapons/ptrs/open.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 18) {
+				sound (self ,5, "sounds/weapons/ptrs/magin.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 21) {
+				sound (self ,5, "sounds/weapons/ptrs/maghit.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 27) {
+				sound (self ,5, "sounds/weapons/ptrs/close.wav", 1, ATTN_NORM);
+			}
+			break;
+		case W_RAY:
+			if (curweaponframe == 7) {
+				sound (self ,5, "sounds/weapons/raygun/open.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 12) {
+				sound (self ,5, "sounds/weapons/raygun/out.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 21) {
+				sound (self ,5, "sounds/weapons/raygun/in.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 26) {
+				sound (self ,5, "sounds/weapons/raygun/close.wav", 1, ATTN_NORM);
+			}
+			break;
+		case W_STG:
+			if (curweaponframe == 11) {
+				sound (self ,5, "sounds/weapons/stg/magout.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 21) {
+				sound (self ,5, "sounds/weapons/stg/magin.wav", 1, ATTN_NORM);
+			}
+			break;
+		case W_TRENCH:
+			if (curweaponframe == 19) {
+				sound (self ,5, "sounds/weapons/shotgun/insert.wav", 1, ATTN_NORM);
+			}
+		case W_TYPE:
+			if (curweaponframe == 6) {
+				sound (self ,5, "sounds/weapons/type100/magout.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 15) {
+				sound (self ,5, "sounds/weapons/type100/magin.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 20) {
+				sound (self ,5, "sounds/weapons/type100/boltpull.wav", 1, ATTN_NORM);
+			}
+			break;
 	}
 }
 
@@ -983,6 +1674,7 @@ void(float weptype) precache_extra =
 			precache_sound ("sounds/weapons/browning/boltforward.wav");
 			precache_sound ("sounds/weapons/browning/shoot.wav");
 			break;
+		case W_SAWNOFF:
 		case W_DB:
 			precache_sound("sounds/weapons/shotgun/open.wav");
 			precache_sound("sounds/weapons/shotgun/out.wav");
@@ -1017,6 +1709,66 @@ void(float weptype) precache_extra =
 			precache_sound("sounds/weapons/m1carbine/magin.wav");
 			precache_sound("sounds/weapons/m1carbine/maghit.wav");
 			precache_sound("sounds/weapons/m1carbine/bolt.wav");
+			break;
+		case W_M2:
+			precache_sound("sounds/weapons/m2flame/flamethrower.wav");
+			//precache_model ("progs/flame_main2.spr");	// sprite explosion
+			break;
+		case W_MP40:
+			precache_sound ("sounds/weapons/mp40/shoot.wav");
+			precache_sound ("sounds/weapons/mp40/magout.wav");
+			precache_sound ("sounds/weapons/mp40/magin.wav");
+			break;
+		case W_MG:
+			precache_sound("sounds/weapons/mg42/magout.wav");
+			precache_sound("sounds/weapons/mg42/magin.wav");
+			precache_sound("sounds/weapons/mg42/charge.wav");
+			precache_sound("sounds/weapons/mg42/shoot.wav");
+			break;
+		case W_PANZER:
+			precache_sound ("sounds/weapons/panzer/move.wav");
+			precache_sound ("sounds/weapons/panzer/insert.wav");
+			precache_sound ("sounds/weapons/panzer/shoot.wav");
+			//precache_model ("progs/shark.mdl");
+			break;
+		case W_PPSH:
+			precache_sound("sounds/weapons/ppsh/magout.wav");
+			precache_sound("sounds/weapons/ppsh/magin.wav");
+			precache_sound("sounds/weapons/ppsh/maghit.wav");
+			precache_sound("sounds/weapons/ppsh/boltback.wav");
+			precache_sound("sounds/weapons/ppsh/boltrelease.wav");
+			precache_sound("sounds/weapons/ppsh/shoot.wav");
+			break;
+		case W_PTRS:
+			precache_sound ("sounds/weapons/ptrs/open.wav");
+			precache_sound ("sounds/weapons/ptrs/maghit.wav");
+			precache_sound ("sounds/weapons/ptrs/magin.wav");
+			precache_sound ("sounds/weapons/ptrs/close.wav");
+			precache_sound ("sounds/weapons/ptrs/shoot.wav");
+			break;
+		case W_RAY:
+			precache_sound("sounds/weapons/raygun/open.wav");
+			precache_sound("sounds/weapons/raygun/out.wav");
+			precache_sound("sounds/weapons/raygun/in.wav");
+			precache_sound("sounds/weapons/raygun/close.wav");
+			precache_sound("sounds/weapons/raygun/shoot.wav");
+			//precache_model ("progs/raybeam.mdl");
+			break;
+		case W_STG:
+			precache_sound ("sounds/weapons/stg/magout.wav");
+			precache_sound ("sounds/weapons/stg/magin.wav");
+			precache_sound ("sounds/weapons/stg/shoot.wav");
+			break;
+		case W_TRENCH:
+			precache_sound ("sounds/weapons/shotgun/pump.wav");
+			precache_sound ("sounds/weapons/shotgun/insert.wav");
+			precache_sound ("sounds/weapons/shotgun/shoot.wav");
+			break;
+		case W_TYPE:
+			precache_sound("sounds/weapons/type100/magout.wav");
+			precache_sound("sounds/weapons/type100/magin.wav");
+			precache_sound("sounds/weapons/type100/boltpull.wav");
+			precache_sound("sounds/weapons/type100/shoot.wav");
 			break;
 	}
 }

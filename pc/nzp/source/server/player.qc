@@ -135,9 +135,9 @@ void() PlayerSpawn =
 	self.currentmag = 8;
 	self.weapon = W_COLT;
 
-	self.secondaryammo = 1000;
-	self.secondarymag = 8;
-	self.secondaryweapon = W_M1A1;
+	self.secondaryweapon = W_TRENCH;
+	self.secondaryammo = getWeaponAmmo(self.secondaryweapon);
+	self.secondarymag = getWeaponMag(self.secondaryweapon);
 
 	addmoney(self, 500, 0);
 
