@@ -25,6 +25,8 @@ float(float wep) GetFiretype =
 			return 1;
 		case W_M1:
 			return 1;
+		case W_M1A1:
+			return 1;
     }
 
     return 0;
@@ -57,6 +59,8 @@ float(float wep) getWeaponMag =
 			return 5;
 		case W_M1:
 			return 8;
+		case W_M1A1:
+			return 15;
 	}
 	return 0;
 }
@@ -88,6 +92,8 @@ float(float wep) getWeaponAmmo =
 			return 50;
 		case W_M1:
 			return 128;
+		case W_M1A1:
+			return 120;
 	}
 	return 0;
 }
@@ -118,6 +124,8 @@ float(float wep) getWeaponDamage =
 			return 800;
 		case W_M1:
 			return 200;
+		case W_M1A1:
+			return 120;
     }
 
     return 0;
@@ -180,6 +188,10 @@ float(float wep, float penetration_times) getWeaponPenetration =
 				return 0;
 			return 1;
 		case W_M1:
+			if (penetration_times >= 2)
+				return 0;
+			return 0.9;
+		case W_M1A1:
 			if (penetration_times >= 2)
 				return 0;
 			return 0.9;
@@ -247,6 +259,11 @@ float(float wep, float delaytype) getWeaponDelay =
 		case W_M1:
 			if (delaytype == RELOAD)
 				return 3.8;
+			else if (delaytype == FIRE)
+				return 0.135;
+		case W_M1A1:
+			if (delaytype == RELOAD)
+				return 2.9;
 			else if (delaytype == FIRE)
 				return 0.135;
     }
@@ -604,6 +621,38 @@ float(float wep, float frametype) GetFrame =
 					return 16;
 			}
 			break;
+	
+		case W_M1A1:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return 1;
+				case FIRE_END:
+					return 2;
+				case RELOAD_START:
+					return 3;
+				case RELOAD_END:
+					return 29;
+				case SPRINT_IN_START:
+					return 37;
+				case SPRINT_IN_END:
+					return 38;
+				case SPRINT_OUT_START:
+					return 38;
+				case SPRINT_OUT_END:
+					return 37;
+				case TAKE_OUT_START:
+					return 33;
+				case TAKE_OUT_END:
+					return 36;
+				case PUT_OUT_START:
+					return 30;
+				case PUT_OUT_END:
+					return 33;
+				case RELOAD_CANCEL:
+					return 17;
+			}
+			break;
 	}
 
     return 0;
@@ -669,7 +718,11 @@ string(float wep, float gorvmodel) GetWeaponModel =
 				return ("models/weapons/garand/g_m1.mdl");
 			else
 				return ("models/weapons/garand/v_m1.mdl");
-
+		case W_M1A1:
+			if (gorvmodel)
+				return ("models/weapons/m1carbine/g_m1a1.mdl");
+			else
+				return ("models/weapons/m1carbine/v_m1a1.mdl");
     }
 
     return "";
@@ -702,6 +755,8 @@ string(float wep) GetWeaponSound =
 			return "sounds/weapons/kar/shoot.wav";
 		case W_M1:
 			return "sounds/weapons/garand/shoot.wav";
+		case W_M1A1:
+			return "sounds/weapons/m1carbine/shoot.wav";
     }
 
     return "";
@@ -860,6 +915,18 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 			} else if (curweaponframe == 37) {
 				sound (self ,5, "sounds/weapons/garand/boltrelease.wav", 1, ATTN_NORM);
 			}
+			break;
+		case W_M1A1:
+			if (curweaponframe == 6) {
+				sound (self ,5, "sounds/weapons/m1carbine/magout.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 14) {
+				sound (self ,5, "sounds/weapons/m1carbine/magin.wav", 1, ATTN_NORM);
+			} else if(curweaponframe == 16) {
+				sound (self ,5, "sounds/weapons/m1carbine/maghit.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 24) {
+				sound (self ,5, "sounds/weapons/m1carbine/bolt.wav", 1, ATTN_NORM);
+			}
+			break;
 	}
 }
 
@@ -943,6 +1010,13 @@ void(float weptype) precache_extra =
 			precache_sound ("sounds/weapons/garand/clippush.wav");
 			precache_sound ("sounds/weapons/garand/boltrelease.wav");
 			precache_sound ("sounds/weapons/garand/shoot.wav");
+			break;
+		case W_M1A1:
+			precache_sound("sounds/weapons/m1carbine/shoot.wav");
+			precache_sound("sounds/weapons/m1carbine/magout.wav");
+			precache_sound("sounds/weapons/m1carbine/magin.wav");
+			precache_sound("sounds/weapons/m1carbine/maghit.wav");
+			precache_sound("sounds/weapons/m1carbine/bolt.wav");
 			break;
 	}
 }

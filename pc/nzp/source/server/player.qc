@@ -137,7 +137,7 @@ void() PlayerSpawn =
 
 	self.secondaryammo = 1000;
 	self.secondarymag = 8;
-	self.secondaryweapon = W_M1;
+	self.secondaryweapon = W_M1A1;
 
 	addmoney(self, 500, 0);
 
