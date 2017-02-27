@@ -200,6 +200,57 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 		drawstring([0.80*width, 0.90*height, 0], ftos(points), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
 		
 		drawstring([0.75*width, 0.94*height, 0], ammostring, [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+
+
+		//Draw useprint
+		if (useprint_time > time) {
+			string usestring;
+			float print_width, x;
+
+			switch (useprint_type) {
+				case 0://clear
+					usestring = "";
+					break;
+				case 1://door
+					usestring = strcat("Hold ","BUTTON", " to open door [Cost:", ftos(useprint_cost),"]");
+					break;
+				case 2://debris
+					usestring = strcat("Hold ","BUTTON", " to remove debris [Cost:", ftos(useprint_cost),"]");
+					break;
+				case 3://ammo
+					usestring = strcat("Hold ","BUTTON", " to buy ammo for ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
+					break;
+				case 4://weapon
+					usestring = strcat("Hold ","BUTTON", "  to buy ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
+					break;
+				case 5://window
+					usestring = strcat("Hold ","BUTTON", " to Rebuild Barrier");
+					break;
+				case 6://box
+					usestring = strcat("Hold ","BUTTON", " to buy a random weapon [Cost:", ftos(useprint_cost),"]");
+					break;
+				case 7://box take
+					usestring = strcat("Hold ","BUTTON", " to take weapon");
+					break;
+				case 8://power
+					usestring = "The power must be activated first";
+					break;
+				case 9://perk
+					usestring = strcat("Hold ","BUTTON", "  to buy ", "PERK", " [Cost:", ftos(useprint_cost),"]");
+					break;
+				case 10://turn on power
+					usestring = strcat("Hold ","BUTTON", " to turn on the power");
+					break;
+				default:
+					usestring = "This should not happen you dum fuck";
+					break;
+			}
+
+			print_width = stringwidth (usestring, 0, [0.015*width, 0.015*width, 0]);
+			x = (width - print_width)/2;
+
+			drawstring([x, 0.70*height, 0], usestring, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+		}
 	}
 	if(serverkey("constate") != "active" && serverkey("disconnected"))
 	{
@@ -420,5 +471,14 @@ noref void() CSQC_Parse_Event =
 		v2model_targetpos = vmodel_targetpos = vmodel.origin;
 		v2model_muzzleoffset = vmodel_muzzleoffset = '12 0 1';
 		weapon = to;
+	}
+	else if(first == EVENT_USEPRINT)
+	{
+		useprint_type = readbyte();
+		useprint_cost = readshort();
+		useprint_weapon = readbyte();
+
+		useprint_time = time + 0.1;
+		
 	}
 }
