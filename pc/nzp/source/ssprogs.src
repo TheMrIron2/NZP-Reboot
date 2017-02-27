@@ -8,6 +8,7 @@ server/entities/sub_functions.qc
 server/entities/triggers.qc
 server/entities/map_entities.qc
 server/entities/lights.qc
+server/entities/doors.qc
 
 server/weapons/frames_core.qc
 server/weapons/weapon_core.qc
