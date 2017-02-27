@@ -129,7 +129,7 @@ void() PlayerSpawn =
 	self.origin = spawnpoint.origin + [0,0,1];
 	self.fixangle = TRUE;
 	setsize(self, [-16, -16, -24], [16, 16, 32]);
-	self.view_ofs = '0 0 22';
+	self.view_ofs = VEC_VIEW_OFS; // naievil -- set view_ofs to 32 to maintain half life (64) sizes
 
 	self.currentammo = 32;
 	self.currentmag = 8;
@@ -137,7 +137,7 @@ void() PlayerSpawn =
 
 	self.secondaryammo = 1000;
 	self.secondarymag = 8;
-	self.secondaryweapon = W_M1;
+	self.secondaryweapon = W_M1A1;
 
 	addmoney(self, 500, 0);
 
