@@ -30,6 +30,7 @@ entity activator;
 
 
 //Weaponsystem defines
+void SwitchWeapon(float to);
 .float fire_delay;
 .float reload_delay;
 .float currentmag;
@@ -46,6 +47,7 @@ entity activator;
 .float reloadinterupted;
 
 //weapon frames
+void Set_W_Frame (float startframe, float endframe, float duration, float funccalledin, float animtype, void() endanimfunc, string set_model, float dontstartnew);
 .float weapon_animduration;
 .float weapon_anim_type;
 .float anim_weapon_time;

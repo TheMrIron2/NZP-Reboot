@@ -11,7 +11,7 @@ void(float to) SwitchWeapon =
 }
 void() W_Switch =
 {
-	if (self.secondaryweapon && self.secondaryweapon !=0 && !self.new_anim_stop && !other.button1)
+	if (self.secondaryweapon && self.secondaryweapon !=0 && !self.new_anim_stop && !other.button7)
 	{      
 		float tempf,tempf1,tempf2;
 		float startframe;
@@ -398,7 +398,7 @@ void () Weapon_Logic =
 		self.semi = FALSE;
 	}
 	
-	if (!self.button1) {
+	if (!self.button7) {
 		self.semiuse = false;
 	}
 

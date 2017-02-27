@@ -94,7 +94,7 @@ void() button_touch =
 			centerprint(other,"Press use to buy [cost:");
 			centerprint(other,ftos(self.cost));
 			centerprint(other,"]\n");
-			if (other.button1)
+			if (other.button7)
 			{
 				if(other.points >= self.cost)
 				{
@@ -210,7 +210,6 @@ void() place_model =
 void () buy_weapon_touch =
 {
 	entity oldent;
-	entity old_Self;
 	local float tempf, tempf1, tempf2;
 	local float startframe,endframe;
 	local string modelname;
@@ -221,16 +220,100 @@ void () buy_weapon_touch =
 		return;
 	}
 	
-	
-	
-	if (!self.spawnflags) {
-		useprint (other, 4, self.cost, self.weapon);
+	if (self.weapon == other.weapon || self.weapon == other.secondaryweapon) {
+
+		useprint (other, 3, self.cost2, self.weapon);
+
+		if (!other.button7 || other.semiuse) {
+			return;
+		}
+		if ((self.weapon == other.weapon && other.currentammo >= getWeaponAmmo(self.weapon))
+			||(self.weapon == other.secondaryweapon && other.secondaryammo >= getWeaponAmmo(self.weapon))) {
+				return;
+			}
+
+		other.semiuse = true;
+		if (other.points < self.cost2) {
+			centerprint(other, "You do not have enough points\n");
+			return;
+		}
+
+		if (self.weapon == other.weapon) {
+			other.currentammo = getWeaponAmmo(self.weapon);
+		} else if (self.weapon == other.secondaryweapon) {
+			other.secondaryammo = getWeaponAmmo(self.weapon);
+		}
+
+		sound(self, 0,"sounds/misc/ching.wav", 1, 1);
+		other.reload_delay = 0;
+		addmoney(other, -1*self.cost2, 0);
+		if (self.enemy) {
+			oldent = self;
+			self = self.enemy;
+			self.use();
+			self = oldent;
+		}
 	}
-	
-	if (!other.button1 || other.semiuse) {
-		return;
+	else
+	{
+		entity tempe;
+      
+		//centerprint(other, self.message);
+      	useprint (other, 4, self.cost, self.weapon);
+
+		if (!other.button7 || other.semiuse) {
+			return;
+		}
+
+		other.semiuse = 1;
+		if (other.points < self.cost) {
+			centerprint (other, "Not enough points\n");
+			return;
+		}
+
+		if (other.weapon && !other.secondaryweapon) {
+			tempf = other.currentammo;
+			other.currentammo = other.secondaryammo;
+			other.secondaryammo = tempf;
+
+			tempf1 = other.currentmag;
+			other.currentmag = other.secondarymag;
+			other.secondarymag = tempf1;
+
+			tempf2 = other.weapon;
+			other.weapon = other.secondaryweapon;
+			other.secondaryweapon = tempf2;
+		} else if (other.weapon && other.secondaryweapon) {
+		
+			other.currentammo = 0;
+			other.currentmag = 0;
+			other.weapon = 0;
+			
+		}
+		
+		/* insert here mule kick thingy*/
+		sound(self, 0,"sounds/misc/ching.wav", 1, 1);
+		other.reload_delay = 0;
+		addmoney(other, -1*self.cost, 0);
+		if (self.enemy) {
+			oldent = self;
+			self = self.enemy;
+			self.use();
+			self = oldent;
+		}
+		other.weapon = self.weapon;
+		
+		other.currentammo = getWeaponAmmo(self.weapon);
+		other.currentmag = getWeaponMag(self.weapon);
+		tempe = self;
+		self = other;
+		startframe = GetFrame(self.weapon,TAKE_OUT_START);
+		endframe = GetFrame(self.weapon,TAKE_OUT_END);
+		modelname = GetWeaponModel(self.weapon, 0);
+		SwitchWeapon(self.weapon);
+		Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+		self = tempe;
 	}
-	
 };
 
 void() buy_weapon_link_wall =
@@ -260,4 +343,6 @@ void() buy_weapon =
 	
 	self.think = buy_weapon_link_wall;
 	self.nextthink = time + 0.2; 
+
+	precache_sound("sounds/misc/ching.wav");
 };
