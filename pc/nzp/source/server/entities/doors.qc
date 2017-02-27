@@ -573,7 +573,7 @@ void() func_door_nzp =
 	self.target8 = self.target;
 
 	self.max_health = self.health;
-	self.solid = SOLID_BSP;
+  self.solid = SOLID_BSP;
 	self.movetype = MOVETYPE_PUSH;
 	setorigin (self, self.origin);	
 	setmodel (self, self.model);
@@ -581,7 +581,6 @@ void() func_door_nzp =
 	self.blocked = door_blocked;
 	self.use = door_use;
 	
-
 	if (self.cost)
 	{
 		self.classname = "door_nzp_cost";
