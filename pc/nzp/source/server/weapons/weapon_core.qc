@@ -165,7 +165,16 @@ void() W_Reload =
 		} else if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER ){
 			Set_W_Frame (14, 18, 0, 0, RELOAD, ContinueReload, modelname, false);
 			self.reload_delay = 0.8 + time;
-		} else {
+		} else if (self.weapon == W_M1 || self.weapon == W_M1000) {
+			if (self.currentmag > 0) {
+				Set_W_Frame (4, 44, 0, 25, RELOAD, W_Give_Ammo, modelname, false);
+				self.reload_delay = 3.9;
+			} else {
+				Set_W_Frame (8, 44, 0, 25, RELOAD, W_Give_Ammo, modelname, false);
+				self.reload_delay = 3.6;
+			}
+		}
+		else {
 			Set_W_Frame (startframe, endframe, 0, reloadcancelframe, RELOAD, W_Give_Ammo, modelname, TRUE);
 			self.reload_delay = getWeaponDelay(self.weapon,RELOAD);
 			self.reload_delay = self.reload_delay + time;
