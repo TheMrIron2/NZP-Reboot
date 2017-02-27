@@ -43,7 +43,6 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 
 noref void() CSQC_WorldLoaded =
 {
-	precache_model("models/weapons/m1911/v_colt.mdl");
 	precache_model("models/weapons/mg/mzl.iqm");
 	precache_model("models/blood.iqm");
 	
@@ -51,15 +50,18 @@ noref void() CSQC_WorldLoaded =
 	//	player = edict_num(player_localentnum);
 	if(!vmodel)
 		vmodel = spawn();
+	if(!v2model)
+		v2model = spawn();
 	if(!mzlflash)
 		mzlflash = spawn();
 		
-	vmodel.renderflags = RF_VIEWMODEL;
-	vmodel.origin = '24 -12 -18';
-	vmodel_targetpos = vmodel_currentpos = vmodel.origin;
-	vmodel_velocity = '0 0 0';
-	vmodel_muzzleoffset = '48 -1 2';
+	v2model.renderflags = vmodel.renderflags = RF_VIEWMODEL;
+	v2model.origin = vmodel.origin = '24 -12 -18';
+	v2model_targetpos = v2model_currentpos = v2model.origin = vmodel_targetpos = vmodel_currentpos = vmodel.origin;
+	v2model_velocity = vmodel_velocity = '0 0 0';
+	v2model_muzzleoffset = vmodel_muzzleoffset = '48 -1 2';
 	setmodel(vmodel,"");
+	setmodel(v2model,"");
 	mzlflash.renderflags = vmodel.renderflags;
 	mzlflash.origin = vmodel.origin + vmodel_muzzleoffset;
 	setmodel(mzlflash,"models/weapons/mg/mzl.iqm");
@@ -80,10 +82,12 @@ void() Update_Vmodel =
 	else
 		vmodel_currentpos += (dir * 0.15 * 128) * frametime;
 	
+
 	if(vlen(vmodel.angles) < (0.1 * 128 * frametime))
 		vmodel.angles = '0 0 0';
 	else
 		vmodel.angles += (-vmodel.angles * 0.2 * 128) * frametime;
+
 		
 	vmodel_currentpos += (vmodel_velocity * 128) * frametime;
 	vmodel_velocity *= 1 - frametime * 30;
@@ -92,6 +96,7 @@ void() Update_Vmodel =
 	vmodel_avelocity *= 1 - frametime * 30;
 	
 	vmodel.origin = vmodel_currentpos + offset;
+
 	if(weapon == 1)
 	{
 		if(mzlflash.scale < 1)
@@ -125,7 +130,7 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 
 	//disable quake status bar and quake crosshair
 	setviewprop(VF_DRAWENGINESBAR, 0);	
-	setviewprop(VF_DRAWCROSSHAIR, 0);
+	setviewprop(VF_DRAWCROSSHAIR, 1);
 	
 	//autoadd entities received from servers for drawing	
 	addentities(MASK_ENGINE);
@@ -141,10 +146,14 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 		//vmodel.origin += vorg;
 		//vmodel.angles += vang;
 		addentity(vmodel);
+		addentity(v2model);
 		//vmodel.origin -= vorg;
 		//vmodel.angles -= vang;
 		//addentity(vmodel);
 		vmodel.frame = getstatf(STAT_WEAPONFRAME);
+		v2model.frame = getstatf(STAT_WEAPON2FRAME);
+		v2model.angles = vmodel.angles;
+		v2model.origin = vmodel.origin;
 		if(mzlflash.alpha > 0.09)
 		{
 			makevectors(view_angles);
@@ -399,11 +408,17 @@ noref void() CSQC_Parse_Event =
 		to = readbyte();
 		setmodel(vmodel,GetWeaponModel(to, FALSE));
 
-		vmodel.origin = '0 0 0';
-		vmodel.angles = '-60 0 0';
-		vmodel_currentpos = vmodel.origin + '0 0 -24';
-		vmodel_targetpos = vmodel.origin;
-		vmodel_muzzleoffset = '12 0 1';
+		if (to == W_KAR_SCOPE && vmodel.model == "models/weapons/kar/v_kar.mdl") {
+			setmodel(v2model,"models/weapons/kar/v_karscope.mdl");
+		} else {
+			setmodel(v2model,"");
+		}
+
+		v2model.origin = vmodel.origin = '0 0 0';
+		v2model.angles = vmodel.angles = '-60 0 0';
+		v2model_currentpos = vmodel_currentpos = vmodel.origin + '0 0 -24';
+		v2model_targetpos = vmodel_targetpos = vmodel.origin;
+		v2model_muzzleoffset = vmodel_muzzleoffset = '12 0 1';
 		weapon = to;
 	}
 }

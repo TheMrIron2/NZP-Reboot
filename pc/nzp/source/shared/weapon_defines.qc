@@ -21,6 +21,8 @@ float(float wep) GetFiretype =
 			return 0;
 		case W_GEWEHR:
 			return 1;
+		case W_KAR_SCOPE:
+			return 1;
     }
 
     return 0;
@@ -49,6 +51,8 @@ float(float wep) getWeaponMag =
 			return 32;
 		case W_GEWEHR:
 			return 10;
+		case W_KAR_SCOPE:
+			return 5;
 	}
 	return 0;
 }
@@ -76,6 +80,8 @@ float(float wep) getWeaponAmmo =
 			return 200;
 		case W_GEWEHR:
 			return 120;
+		case W_KAR_SCOPE:
+			return 50;
 	}
 	return 0;
 }
@@ -102,6 +108,8 @@ float(float wep) getWeaponDamage =
 			return 100;
 		case W_GEWEHR:
 			return 90;
+		case W_KAR_SCOPE:
+			return 800;
     }
 
     return 0;
@@ -159,6 +167,10 @@ float(float wep, float penetration_times) getWeaponPenetration =
 			if (penetration_times >= 2)
 				return 0;
 			return 0.9;
+		case W_KAR_SCOPE:
+			if (penetration_times >= 3)
+				return 0;
+			return 1;
     }
     
 	return 0;
@@ -516,7 +528,34 @@ float(float wep, float frametype) GetFrame =
 					return 16;
 			}
 			break;
-	}
+		case W_KAR_SCOPE:
+				switch (frametype)
+				{
+					case FIRE_START:
+						return 1;
+					case FIRE_END:
+						return 3;
+					case SPRINT_IN_START:
+						return 36;
+					case SPRINT_IN_END:
+						return 37;
+					case SPRINT_OUT_START:
+						return 37;
+					case SPRINT_OUT_END:
+						return 36;
+					case TAKE_OUT_START:
+						return 33;
+					case TAKE_OUT_END:
+						return 35;
+					case PUT_OUT_START:
+						return 32;
+					case PUT_OUT_END:
+						return 33;
+					case RELOAD_CANCEL:
+						return 21;
+				}
+				break;
+		}
 
     return 0;
 }
@@ -571,6 +610,12 @@ string(float wep, float gorvmodel) GetWeaponModel =
 				return ("models/weapons/gewehr/g_gewehr.mdl");
 			else
 				return ("models/weapons/gewehr/v_gewehr.mdl");
+		case W_KAR_SCOPE:
+			if (gorvmodel)
+				return ("models/weapons/kar/g_kars.mdl");
+			else
+				return ("models/weapons/kar/v_kar.mdl");
+			break;
 
     }
 
@@ -600,6 +645,8 @@ string(float wep) GetWeaponSound =
 			return "sounds/weapons/fg42/shoot.wav";
 		case W_GEWEHR:
 			return "sounds/weapons/gewehr/shoot.wav";
+		case W_KAR_SCOPE:
+			return "sounds/weapons/kar/shoot.wav";
     }
 
     return "";
@@ -609,7 +656,7 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 {
 	if (anim_style == FIRE)
 	{
-		if (wep == W_KAR)
+		if (wep == W_KAR || wep == W_KAR_SCOPE)
 		{
 			if (curweaponframe == 6)
 				sound (self ,5, "sounds/weapons/kar/boltup.wav", 1, ATTN_NORM);
@@ -734,6 +781,20 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 			} else if (curweaponframe == 33) {
 				sound (self ,5, "sounds/weapons/gewehr/boltrelease.wav", 1, ATTN_NORM);
 			}
+			break;
+		case W_KAR_SCOPE:
+			if (curweaponframe == 15) {
+				sound (self ,5, "sounds/weapons/kar/boltup.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 16) {
+				sound (self ,5, "sounds/weapons/kar/boltback.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 20) {
+				sound (self ,5, "sounds/weapons/kar/insert.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 25) {
+				sound (self ,5, "sounds/weapons/kar/boltforward.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 27) {
+				sound (self ,5, "sounds/weapons/kar/boltdown.wav", 1, ATTN_NORM);
+			}
+			break;
 	}
 }
 
@@ -746,6 +807,7 @@ void(float weptype) precache_extra =
 			precache_sound("sounds/weapons/colt/magout.wav");
 			precache_sound("sounds/weapons/colt/magin.wav");
 			break;
+		case W_KAR_SCOPE:
 		case W_KAR:
 			precache_sound ("sounds/weapons/kar/boltup.wav");
 			precache_sound ("sounds/weapons/kar/boltback.wav");
@@ -754,6 +816,8 @@ void(float weptype) precache_extra =
 			precache_sound ("sounds/weapons/kar/clipin.wav");
 			precache_sound ("sounds/weapons/kar/clipoff.wav");
 			precache_sound ("sounds/weapons/kar/shoot.wav");
+			precache_sound ("sounds/weapons/kar/insert.wav");
+			precache_model ("models/weapons/kar/v_karscope.mdl");
 			break;
 		case W_THOMPSON:
 			precache_sound("sounds/weapons/thomp/magout.wav");

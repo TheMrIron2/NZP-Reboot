@@ -104,5 +104,7 @@ const float EVENT_PISTOLFIRE = 10;
 #define KNIFE2		9
 #define REVIVE		10
 
-#define STAT_CURRENTMAG    50
-#define STAT_POINTS        51
+#define STAT_CURRENTMAG     50
+#define STAT_POINTS         51
+#define STAT_WEAPON2FRAME   52
+#define STAT_WEAPON2MODEL   53

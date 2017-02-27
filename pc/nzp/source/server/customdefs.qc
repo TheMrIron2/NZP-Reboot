@@ -41,6 +41,9 @@ entity activator;
 .float secondarymag;
 .float secondaryweapon;
 .float NeedLoad;
+.string weapon2model;
+.float weapon2frame;
+.float reloadinterupted;
 
 //weapon frames
 .float weapon_animduration;

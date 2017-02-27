@@ -27,6 +27,14 @@ void () W_Frame_Update =
         } else {
 		    self.weaponframe = self.weaponframe + 1;
         }
+
+		if (self.weaponmodel == "models/weapons/kar/v_kar.mdl" && (self.weapon == W_KAR_SCOPE ||  self.weapon == W_HEADCRACKER))
+		{
+			self.weapon2model = "models/weapons/kar/v_karscope.mdl";
+			self.weapon2frame = self.weaponframe;
+			//self.weapon2skin = self.weaponskin;
+		}
+
 		if (self.callfuncat)
 		{
 			if (self.weaponframe == self.callfuncat)

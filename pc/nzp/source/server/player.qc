@@ -136,8 +136,8 @@ void() PlayerSpawn =
 	self.weapon = W_COLT;
 
 	self.secondaryammo = 1000;
-	self.secondarymag = 10;
-	self.secondaryweapon = W_GEWEHR;
+	self.secondarymag = 5;
+	self.secondaryweapon = W_KAR_SCOPE;
 
 	addmoney(self, 500, 0);
 
