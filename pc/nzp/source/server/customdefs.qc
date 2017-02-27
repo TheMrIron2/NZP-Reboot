@@ -86,6 +86,13 @@ vector  VEC_VIEW_OFS  = '0 0 32';
 
 
 //FIXME(Jukki) Place in better place
-void(entity client, float type, float cost, float weapon) useprint = {
-    centerprint(client, "Buy dis");
+void(entity to, float type, float cost, float weapon) useprint = {
+	
+    
+    msg_entity = to;
+	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
+	WriteByte(MSG_ONE, EVENT_USEPRINT);
+	WriteByte(MSG_ONE, type);
+	WriteShort(MSG_ONE, cost);
+	WriteByte(MSG_ONE, weapon);
 }

@@ -40,3 +40,9 @@ const float MENU_MULTI = 4;
 const float MENU_SETTINGS = 8;
 const float MENU_ABOUT = 16;
 const float MENU_JOIN = 32;
+
+
+float useprint_type;
+float useprint_weapon;
+float useprint_cost;
+float useprint_time;

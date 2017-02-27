@@ -223,35 +223,12 @@ void () buy_weapon_touch =
 	
 	
 	
-	if (!self.spawnflags)
-	{
+	if (!self.spawnflags) {
 		useprint (other, 4, self.cost, self.weapon);
 	}
 	
 	if (!other.button1 || other.semiuse) {
 		return;
-	}
-	other.semiuse = 1;
-
-	if (other.points < self.cost)
-	{
-		centerprint (other, "Not enough points\n");
-		return;
-	}
-
-	if (other.weapon && !other.secondaryweapon)
-	{
-		tempf = other.currentammo;
-		other.currentammo = other.secondaryammo;
-		other.secondaryammo = tempf;
-
-		tempf1 = other.currentmag;
-		other.currentmag = other.secondarymag;
-		other.secondarymag = tempf1;
-
-		tempf2 = other.weapon;
-		other.weapon = other.secondaryweapon;
-		other.secondaryweapon = tempf2;
 	}
 	
 };

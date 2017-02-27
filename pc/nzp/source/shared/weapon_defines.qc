@@ -1,3 +1,121 @@
+
+string(float wep) GetWeaponName =
+{
+	switch (wep)
+	{
+		case W_COLT:
+			return "Colt M1911";
+		case W_KAR:
+			return "Kar 98k";
+		case W_THOMPSON:
+			return "Thompson";
+		case W_357:
+			return ".357 Magnum";
+		case W_BAR:
+			return "BAR";
+		case W_BK:
+			return "Ballistic Knife";
+		case W_BROWNING:
+			return "Browning M1919";
+		case W_DB:
+			return "Double-Barreled Shotgun";
+		case W_FG:
+			return "FG42";
+		case W_GEWEHR:
+			return "Gewehr 43";
+		case W_KAR_SCOPE:
+			return "Scoped Kar 98k";
+		case W_M1:
+			return "M1 Garand";
+		case W_M1A1:
+			return "M1A1 Carbine";
+		case W_M2:
+			return "M2 Flamethrower";
+		case W_MP40:
+			return "MP40";
+		case W_MG:
+			return "MG42";
+		case W_PANZER:
+			return "Panzerschrek";
+		case W_PPSH:
+			return "PPSh-41";
+		case W_PTRS:
+			return "PTRS-41";
+		case W_RAY:
+			return "Ray Gun";
+		case W_SAWNOFF:
+			return "Sawnoff shotgun";
+		case W_STG:
+			return "STG-44";
+		case W_TRENCH:
+			return "M1897 Trench Gun";
+		case W_TYPE:
+			return "Type 100";
+		case 25:
+			return "Bowie Knife";
+		case 26:
+			return "Grenades";
+		case 27:
+			return "Bouncing Betty";
+		case W_BIATCH:
+      		return "C3000 Biatch";
+    	case W_ARMAGEDDON:
+			return "Armageddon";
+		case W_GIBS:
+			return "Gibs-O-Matic";
+		case W_KILLU:
+			return ".357 Plus 1 K1L-u";
+		case W_WIDOW:
+			return "The Widow Maker";
+		case W_ACCELERATOR:
+			return "B115 Accelerator";
+		case W_BORE:
+			return "24 Bore Long Range";
+		case W_IMPELLER:
+			return "420 Impeller";
+		case W_COMPRESSOR:
+			return "G115 Compressor";
+		case W_HEADCRACKER:
+			return "Headcracker";
+		case W_M1000:
+			return "M1000";
+		case W_WIDDER:
+			return "Widdershins RC-1";
+		case W_FIW:
+			return "F1W Nitrogen Cooled";
+		case W_AFTERBURNER:
+			return "The Afterburner";
+		case W_BARRACUDA:
+			return "Barracuda FU-A11";
+		case W_LONGINUS:
+			return "Longinus";
+		case W_REAPER:
+			return "The Reaper";
+		case W_PENETRATOR:
+			return "The Penetrator";
+		case W_PORTER:
+			return "Porter's X2 Ray Gun";
+		case W_SNUFF:
+			return "The Snuff Box";
+		case W_SPATZ:
+			return "Spatz-447 +";
+		case W_GUT:
+			return "Gut Shot";
+		case W_SAMURAI:
+			return "1001 Samurais";
+		case W_NOWEP:
+      		return " ";
+    	case W_MP5:
+      		return "MP5K";
+    	case W_TESLA:
+      		return "Wunderwaffe DG-2";
+    	case W_M14:
+      		return "M14";
+		default:
+			return " ";
+	}
+}
+
 float(float wep) GetFiretype =
 {
 
