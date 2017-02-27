@@ -30,6 +30,7 @@ entity activator;
 
 
 //Weaponsystem defines
+.float downed;
 .float fire_delay;
 .float reload_delay;
 .float currentmag;
@@ -82,6 +83,10 @@ vector  VEC_VIEW_OFS  = '0 0 32';
 .vector finaldest;
 .vector pos1, pos2/*, mangle*/;
 .float sequence;
+.entity active_door;
+
+//Perk and Power system
+float isPowerOn; // naievil (FIXME) implement
 
 
 
