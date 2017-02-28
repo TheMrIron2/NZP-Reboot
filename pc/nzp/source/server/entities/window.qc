@@ -32,7 +32,7 @@ void() Window_repaired =
 {
 	if (maxreward > totalreward)
 	{
-		sound(self, 0,"misc/ching.wav", 1, 0);
+		sound(self, 0,"sounds/misc/ching.wav", 1, 0);
 		addmoney(self.enemy, 10, 1);
 		totalreward = totalreward + 10;
 	}
@@ -42,7 +42,7 @@ void() Window_repaired =
 
 void() Barricade_hit_window =
 {
-	sound(self, 0,"misc/barricade.wav", 1, 0);
+	sound(self, 0,"sounds/misc/barricade.wav", 1, 0);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////  ANIMATIONS
@@ -254,8 +254,8 @@ void() item_barricade =
 	else
 	{
 		precache_model("progs/Misc/window.mdl");
-		precache_sound("misc/barricade.wav");
-		precache_sound("misc/barricade_destroy.wav");
+		precache_sound("sounds/misc/barricade.wav");
+		precache_sound("sounds/misc/barricade_destroy.wav");
 	}
 	self.classname = "window";
 	self.touch = window_touch;
