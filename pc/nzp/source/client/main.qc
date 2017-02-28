@@ -207,42 +207,47 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 
 		//Draw useprint
 		if (useprint_time > time) {
-			string usestring;
+			string usestring, usebutton;
 			float print_width, x;
+			
+			tokenize(findkeysforcommand("+button7"));
+			usebutton = strtoupper(keynumtostring(stof(argv(0))));
+			//usebutton = keynumtostring(-1);
+
 
 			switch (useprint_type) {
 				case 0://clear
 					usestring = "";
 					break;
 				case 1://door
-					usestring = strcat("Hold ","BUTTON", " to open door [Cost:", ftos(useprint_cost),"]");
+					usestring = strcat("Hold ",usebutton, " to open door [Cost:", ftos(useprint_cost),"]");
 					break;
 				case 2://debris
-					usestring = strcat("Hold ","BUTTON", " to remove debris [Cost:", ftos(useprint_cost),"]");
+					usestring = strcat("Hold ",usebutton, " to remove debris [Cost:", ftos(useprint_cost),"]");
 					break;
 				case 3://ammo
-					usestring = strcat("Hold ","BUTTON", " to buy ammo for ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
+					usestring = strcat("Hold ",usebutton, " to buy ammo for ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
 					break;
 				case 4://weapon
-					usestring = strcat("Hold ","BUTTON", "  to buy ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
+					usestring = strcat("Hold ",usebutton, " to buy ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
 					break;
 				case 5://window
-					usestring = strcat("Hold ","BUTTON", " to Rebuild Barrier");
+					usestring = strcat("Hold ",usebutton, " to Rebuild Barrier");
 					break;
 				case 6://box
-					usestring = strcat("Hold ","BUTTON", " to buy a random weapon [Cost:", ftos(useprint_cost),"]");
+					usestring = strcat("Hold ",usebutton, " to buy a random weapon [Cost:", ftos(useprint_cost),"]");
 					break;
 				case 7://box take
-					usestring = strcat("Hold ","BUTTON", " to take weapon");
+					usestring = strcat("Hold ",usebutton, " to take weapon");
 					break;
 				case 8://power
 					usestring = "The power must be activated first";
 					break;
 				case 9://perk
-					usestring = strcat("Hold ","BUTTON", "  to buy ", "PERK", " [Cost:", ftos(useprint_cost),"]");
+					usestring = strcat("Hold ",usebutton, " to buy ", "PERK", " [Cost:", ftos(useprint_cost),"]");
 					break;
 				case 10://turn on power
-					usestring = strcat("Hold ","BUTTON", " to turn on the power");
+					usestring = strcat("Hold ",usebutton, " to turn on the power");
 					break;
 				default:
 					usestring = "This should not happen you dum fuck";
