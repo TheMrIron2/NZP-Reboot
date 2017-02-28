@@ -150,7 +150,28 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 		//vmodel.origin -= vorg;
 		//vmodel.angles -= vang;
 		//addentity(vmodel);
-		vmodel.frame = getstatf(STAT_WEAPONFRAME);
+		float weaponframe;
+		weaponframe = getstatf(STAT_WEAPONFRAME);
+		
+
+		if (curweaponframe != weaponframe) {
+			interpolating = TRUE;
+			vmodel.lerpfrac = 0;
+			curweaponframe = weaponframe;
+		}
+		
+		if (interpolating == TRUE) {
+			vmodel.lerpfrac += frametime * 10;
+
+			if (vmodel.lerpfrac >= 1.0) {
+				oldweaponframe = curweaponframe;
+				vmodel.lerpfrac = 0;
+				interpolating = FALSE;	
+			}
+			
+		}
+		vmodel.frame = oldweaponframe;
+		vmodel.frame2 = curweaponframe;
 		v2model.frame = getstatf(STAT_WEAPON2FRAME);
 		v2model.angles = vmodel.angles;
 		v2model.origin = vmodel.origin;

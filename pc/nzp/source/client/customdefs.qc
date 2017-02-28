@@ -46,3 +46,8 @@ float useprint_type;
 float useprint_weapon;
 float useprint_cost;
 float useprint_time;
+
+float weaponframetime;
+float oldweaponframe;
+float curweaponframe;
+float interpolating;
