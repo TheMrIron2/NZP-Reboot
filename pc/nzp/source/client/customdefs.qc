@@ -40,6 +40,9 @@ const float MENU_MULTI = 4;
 const float MENU_SETTINGS = 8;
 const float MENU_ABOUT = 16;
 const float MENU_JOIN = 32;
+const float MENU_PAUSE = 64;
+const float MENU_IGS = 128;
+const float MENU_RES = 256;
 
 
 float useprint_type;
