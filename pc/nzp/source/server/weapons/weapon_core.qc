@@ -661,9 +661,30 @@ void() W_Grenade =
    }    
 }
 
+void () Impulse_Functions =
+{
+	switch (self.impulse)
+	{		
+		case 22:
+			entity benis;
+			benis = find (world, classname, "player");
+			addmoney(benis, 10000, 0);
+			//crouchset();
+			break;
+	}
+	
+	self.impulse = 0;
+};
+
+void() CheckImpulses =
+{
+	self.impulse = 0;
+}
+
 void () Weapon_Logic =
 {
 	W_Frame_Update ();
+	Impulse_Functions();
 
 	if (self.button0) {
 		W_Fire();
@@ -699,4 +720,6 @@ void () Weapon_Logic =
 	else if (!self.button5) {
 		self.semireload = FALSE;
 	}
+	
+	CheckImpulses();
 }
