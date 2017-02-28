@@ -109,7 +109,7 @@ void() ClientKill =
 //called when a client connects to the server
 void() ClientConnect =
 {
-	stuffcmd(self, "fog 0\n"); //FIXME fog
+	stuffcmd(self, "fog 0.075\n"); // naievil -- temp reliable fog
 
 	bprint(PRINT_HIGH, self.netname); //print player name
 	bprint(PRINT_HIGH, " connected.\n");
