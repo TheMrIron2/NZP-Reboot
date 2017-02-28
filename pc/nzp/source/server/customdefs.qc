@@ -8,6 +8,7 @@ const float FL_JUMPRELEASED = 4096;
 
 float framecount;
 float deathmatch;
+float coop;
 .vector oldvelocity;
 .float lastsound_time;
 .float isspec;
@@ -27,7 +28,13 @@ float STATE_DOWN		= 3;
 
 entity activator;
 
-
+//player funcs
+.float zoom;
+.float weaponskin;
+void() sprintstop;
+.float stamina;
+.float into_sprint;
+float yeahIamrunning;
 
 //Weaponsystem defines
 void SwitchWeapon(float to);
@@ -46,6 +53,15 @@ void SwitchWeapon(float to);
 .string weapon2model;
 .float weapon2frame;
 .float reloadinterupted;
+
+//Grenades
+.float grenades;
+.float pri_grenade_state;
+.float bk_nade;
+.float grenade_delay;
+.float secondary_grenades;
+.float primary_grenades;
+.float throw_delay;
 
 //weapon frames
 void Set_W_Frame (float startframe, float endframe, float duration, float funccalledin, float animtype, void() endanimfunc, string set_model, float dontstartnew);
@@ -88,7 +104,11 @@ vector  VEC_VIEW_OFS  = '0 0 32';
 .entity active_door;
 
 //Perk and Power system
-float isPowerOn; // naievil (FIXME) implement
+float isPowerOn;
+float isBuying; // naievil -- used for checking if a perk is being consumed, limits glitching
+.float perks;
+.float perk_delay;
+.float revivesoda;
 
 
 
@@ -103,3 +123,6 @@ void(entity to, float type, float cost, float weapon) useprint = {
 	WriteShort(MSG_ONE, cost);
 	WriteByte(MSG_ONE, weapon);
 }
+
+//naievil (FIXME) No idea where this should go, maybe a dummys
+void() SUB_Remove = {remove(self);}

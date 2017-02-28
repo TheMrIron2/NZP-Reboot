@@ -185,16 +185,19 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 	}
 	else
 	{
-		local float health, ammo, curmag, points;
+		local float health, ammo, curmag, points, grenades;
 		string ammostring;
 		health = getstatf(STAT_HEALTH);
 		// fix me: change the 51 and 50 to human readable const floats like STAT_PISTOLAMMO, STAT_MGAMMO or something
 		curmag = getstatf(STAT_CURRENTMAG);
 		points = getstatf(STAT_POINTS);
 		ammo = getstatf(STAT_AMMO);
+		grenades = getstatf(STAT_GRENADES);
 
 		ammostring = strcat(ftos(curmag), strcat("/",ftos(ammo)));
 		drawstring([0.01*width, 0.94*height, 0], strcat("+",ftos(health)), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+		
+		drawstring([0.97*width, 0.94*height, 0], ftos(grenades), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1); // nai -- draw grenade val
 
 
 		drawstring([0.80*width, 0.90*height, 0], ftos(points), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);

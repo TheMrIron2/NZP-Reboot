@@ -109,7 +109,7 @@ void() ClientKill =
 //called when a client connects to the server
 void() ClientConnect =
 {
-	stuffcmd(self, "fog 0\n"); //FIXME fog
+	stuffcmd(self, "fog 0.075\n"); // naievil -- temp reliable fog
 
 	bprint(PRINT_HIGH, self.netname); //print player name
 	bprint(PRINT_HIGH, " connected.\n");
@@ -134,6 +134,10 @@ void() PlayerSpawn =
 	self.currentammo = 32;
 	self.currentmag = 8;
 	self.weapon = W_COLT;
+	self.grenades = self.grenades | 1;  // add frag grenades to player inventory
+	self.primary_grenades = 0; 			// start off without grenades
+	self.pri_grenade_state = 0; 		// defines that frag grenades are for player first, not betty
+	self.secondary_grenades = 0;
 
 	/*self.secondaryweapon = W_TRENCH;
 	self.secondaryammo = getWeaponAmmo(self.secondaryweapon);

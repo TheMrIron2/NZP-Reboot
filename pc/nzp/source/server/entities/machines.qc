@@ -1,0 +1,561 @@
+float isBuying;
+float backupWepSkin;
+float sound_perk_delay; 
+void() W_Switch;
+void() give_revive =
+{ 
+  sound_perk_delay = time + 4.5;
+  
+	isBuying = false;
+	string modelname;
+	float startframe;
+	float endframe;
+	self.perks = self.perks | 8;
+	self.weaponskin = backupWepSkin;
+	self.perk_delay = self.fire_delay;
+	startframe = GetFrame(self.weapon,TAKE_OUT_START);
+	endframe = GetFrame(self.weapon,TAKE_OUT_END);
+	modelname = GetWeaponModel(self.weapon, 0);
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+}
+void() give_juggernog =
+{
+
+  sound_perk_delay = time + 4.5;
+
+	isBuying = false;
+	string modelname;
+	float startframe;
+	float endframe;
+	self.perks = self.perks | 1;
+	self.weaponskin = backupWepSkin;
+	startframe = GetFrame(self.weapon,TAKE_OUT_START);
+	endframe = GetFrame(self.weapon,TAKE_OUT_END);
+	modelname = GetWeaponModel(self.weapon, 0);
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+}
+
+void() give_doubletap =
+{
+
+  sound_perk_delay = time + 4.5;
+
+	isBuying = false;
+  string modelname;
+	float startframe;
+	float endframe;
+	self.perks = self.perks | 2;
+	self.weaponskin = backupWepSkin;
+	startframe = GetFrame(self.weapon,TAKE_OUT_START);
+	endframe = GetFrame(self.weapon,TAKE_OUT_END);
+	modelname = GetWeaponModel(self.weapon, 0);
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+}
+void() give_speedcola =
+{
+  sound_perk_delay = time + 4.5;
+
+	isBuying = false;
+	string modelname;
+	float startframe;
+	float endframe;
+	self.perks = self.perks | 4;
+	self.weaponskin = backupWepSkin;
+	startframe = GetFrame(self.weapon,TAKE_OUT_START);
+	endframe = GetFrame(self.weapon,TAKE_OUT_END);
+	modelname = GetWeaponModel(self.weapon, 0);
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+	
+	/*if (sound_perk_delay < time)
+			return;
+    else
+       sound(other,CHAN_ITEM,"player/talk/fast.wav",1,ATTN_NONE);*/
+}
+void() give_flopper =
+{
+
+  sound_perk_delay = time + 4.5;
+
+	isBuying = false;
+	string modelname;
+	float startframe;
+	float endframe;
+	self.perks = self.perks | 16;
+	self.weaponskin = backupWepSkin;
+	startframe = GetFrame(self.weapon,TAKE_OUT_START);
+	endframe = GetFrame(self.weapon,TAKE_OUT_END);
+	modelname = GetWeaponModel(self.weapon, 0);
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+}
+void() give_staminup =
+{
+
+  sound_perk_delay = time + 4.5;
+
+	isBuying = false;
+	string modelname;
+	float startframe;
+	float endframe;
+	self.perks = self.perks | 32;
+	self.weaponskin = backupWepSkin;
+	startframe = GetFrame(self.weapon,TAKE_OUT_START);
+	endframe = GetFrame(self.weapon,TAKE_OUT_END);
+	modelname = GetWeaponModel(self.weapon, 0);
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+}
+
+.float requirespower;
+void() touch_perk =
+{  
+	entity tempe;
+	if (other.classname != "player" || other.downed)
+		return;
+
+	if (isBuying == true)
+    return;
+  
+	if (self.requirespower == true && !isPowerOn)
+	{
+		useprint (other, 8, 0, 0);
+		return;
+	}
+	  if (other.weaponskin == 0)
+      backupWepSkin = 0;
+    else 
+      backupWepSkin = 1;
+
+	
+	if (self.classname == "perk_revive" && !(other.perks & P_REVIVE) && self.fire_delay < time)
+	{
+		if (!deathmatch && !coop)
+		{
+			useprint (other, 9, 500, 1);
+		}
+		else if ((coop || deathmatch))
+		{
+			useprint (other, 9, 1500, 1);
+		}
+		if (!deathmatch && !coop && other.points >= 500 && other.button7)
+		{
+			isBuying = true;
+			self.fire_delay = time + 4.5;
+			addmoney (other, -500, 0);
+			tempe = self;
+			self = other;
+			sprintstop();
+			self.fire_delay = self.reload_delay = 4.5 + time;
+			Set_W_Frame (0, 22, 0, 0, PERK, give_revive, "progs/VModels/v_perk.mdl", true);
+			self = tempe;
+			other.weaponskin = 3;
+			sound (other, CHAN_ITEM, "perkmachine/quickrevive.wav", 1, ATTN_NORM);
+			self.revivesoda++;
+			if (self.revivesoda == 3)
+				remove (self);
+		}
+		else if ((coop || deathmatch) && other.points >= 1500 && other.button7)
+		{
+			isBuying = true;
+			self.fire_delay = time + 4;
+			addmoney (other, -1500, 0);
+			tempe = self;
+			self = other;
+			sprintstop();
+			self.fire_delay = self.reload_delay = 4.0 + time;
+			Set_W_Frame (0, 39, 0, 0, PERK, give_revive, "progs/VModels/v_perk.mdl", true);
+			self = tempe;
+			other.weaponskin = 3;
+			sound (other, CHAN_ITEM, "perkmachine/quickrevive.wav", 1, ATTN_NORM);
+		}
+		else if (other.button7)
+		{
+			centerprint (other, "Not enough points\n");
+		  sound (other, CHAN_ITEM, "perkmachine/denyperk.wav", 1, ATTN_NORM);
+		}
+	}
+	if (self.classname == "perk_flopper" && !(other.perks & P_FLOP) && self.fire_delay < time)
+	{
+		useprint (other, 9, 2000, 6);
+		if (other.points >= 2000 && other.button7)
+		{
+			isBuying = true;
+			self.fire_delay = time + 3;
+			addmoney (other, -2000, 0);
+			tempe = self;
+			self = other;
+			sprintstop();
+			self.fire_delay = self.reload_delay = 4.0 + time;
+			Set_W_Frame (0, 39, 0, 0, PERK, give_flopper, "progs/VModels/v_perk.mdl", true);
+			self = tempe;
+			other.weaponskin = 4;
+			sound (other, CHAN_ITEM, "perkmachine/flopper.wav", 1, ATTN_NORM);
+		}
+		else if (other.button7)
+		{
+			centerprint (other, "Not enough points\n");
+      sound (other, CHAN_ITEM, "perkmachine/denyperk.wav", 1, ATTN_NORM);
+		}
+	}
+	if (self.classname == "perk_juggernog" && !(other.perks & P_JUG) && self.fire_delay < time)
+	{
+		useprint (other, 9, 2500, 2);
+		if (other.points >= 2500 && other.button7)
+		{
+			isBuying = true;
+			self.fire_delay = time + 3;
+			addmoney (other, -2500, 0);
+			tempe = self;
+			self = other;
+			sprintstop();
+			self.fire_delay = self.reload_delay = 4.0 + time;
+			Set_W_Frame (0, 39, 0, 0, PERK, give_juggernog, "progs/VModels/v_perk.mdl", true);
+			self = tempe;
+			other.weaponskin = 2;
+			sound (other, CHAN_ITEM, "perkmachine/juggernog.wav", 1, ATTN_NORM);
+		}
+		else if (other.button7)
+		{
+			centerprint (other, "Not enough points\n");
+      sound (other, CHAN_ITEM, "perkmachine/denyperk.wav", 1, ATTN_NORM);
+		}
+	}
+	if (self.classname == "perk_staminup" && !(other.perks & P_STAMIN) && self.fire_delay < time)
+	{
+		useprint (other, 9, 2000, 5);
+		if (other.points >= 2000 && other.button7)
+		{
+			isBuying = true;
+			self.fire_delay = time + 3;
+			addmoney (other, -2000, 0);
+			tempe = self;
+			self = other;
+			sprintstop();
+			self.fire_delay = self.reload_delay = 4.0 + time;
+			Set_W_Frame (0, 39, 0, 0, PERK, give_staminup, "progs/VModels/v_perk.mdl", true);
+			self = tempe;
+			other.weaponskin = 0;
+			sound (other, CHAN_ITEM, "perkmachine/staminup.wav", 1, ATTN_NORM);
+		}
+		else if (other.button7)
+		{
+			centerprint (other, "Not enough points\n");
+      sound (other, CHAN_ITEM, "perkmachine/denyperk.wav", 1, ATTN_NORM);
+		}
+	}
+	if (self.classname == "perk_speed" && !(other.perks & P_SPEED) && self.fire_delay < time)
+	{
+		useprint (other, 9, 3000, 3);
+		if (other.points >= 3000 && other.button7)
+		{
+			isBuying = true;
+			self.fire_delay = time + 3;
+			addmoney (other, -3000, 0);
+			tempe = self;
+			self = other;
+			sprintstop();
+			self.fire_delay = self.reload_delay = 4.0 + time;
+			Set_W_Frame (0, 39, 0, 0, PERK, give_speedcola, "progs/VModels/v_perk.mdl", true);
+			self = tempe;
+			other.weaponskin = 1;
+			sound (other, CHAN_ITEM, "perkmachine/speedcola.wav", 1, ATTN_NORM);
+		}
+		else if (other.button7)
+		{
+			centerprint (other, "Not enough points\n");
+      sound (other, CHAN_ITEM, "perkmachine/denyperk.wav", 1, ATTN_NORM);
+		}
+	}
+	if (self.classname == "perk_double" && !(other.perks & P_DOUBLE) && self.fire_delay < time)
+	{
+		useprint (other, 9, 2000, 4);
+		if (other.points >= 2000 && other.button7)
+		{
+			isBuying = true;
+			self.fire_delay = time + 3;
+			addmoney (other, -2000, 0);
+			tempe = self;
+			self = other;
+			sprintstop();
+			self.fire_delay = self.reload_delay = 4.0 + time;
+			Set_W_Frame (0, 39, 0, 0, PERK, give_doubletap, "progs/VModels/v_perk.mdl", true);
+			self = tempe;
+			other.weaponskin = 0;
+			sound (other, CHAN_ITEM, "perkmachine/doubletap.wav", 1, ATTN_NORM);
+		}
+		else if (other.button7)
+		{
+			centerprint (other, "Not enough points\n");
+      sound (other, CHAN_ITEM, "perkmachine/denyperk.wav", 1, ATTN_NORM);
+		}
+	}
+}
+
+void() setup_perk =
+{
+	/*if (find (world, classname, "power_switch"))
+	{
+		if (self.classname == "perk_revive" && !coop && !deathmatch)
+			self.effects = EF_BLUELIGHT;
+		else
+			self.requirespower = true;
+	}
+	else
+	{
+		if (self.classname == "perk_revive")
+			self.effects = EF_BLUELIGHT;
+		else if (self.classname == "perk_flopper")
+			self.effects = EF_PURPLELIGHT;
+		else if (self.classname == "perk_juggernog")
+			self.effects = EF_REDLIGHT;
+		else if (self.classname == "perk_staminup")
+			self.effects = EF_ORANGELIGHT;
+		else if (self.classname == "perk_speed")
+			self.effects = EF_GREENLIGHT;
+		else if (self.classname == "perk_double")
+			self.effects = EF_ORANGELIGHT;
+		else if (self.classname == "perk_pap")
+      self.effects = EF_BLUELIGHT;
+    else if (self.classname == "perk_ammo")
+      self.effects = EF_BLUELIGHT;
+    else if (self.classname == "perk_dead")
+      self.effects = EF_GREENLIGHT;
+	} */
+	
+		// naievil (FIXME) light effects 
+}
+void() perk_revive =
+{
+	self.solid = SOLID_TRIGGER;
+	precache_model ("progs/Misc/quick_revive.mdl");
+	precache_model ("progs/VModels/v_perk.mdl");
+	precache_sound("perkmachine/quickrevive.wav");
+	precache_sound("perkmachine/denyperk.wav");
+  precache_sound ("weapons/papfire.wav");
+	setorigin (self, self.origin);
+	setmodel (self, "progs/Misc/quick_revive.mdl");
+	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	self.classname = "perk_revive";
+	self.touch = touch_perk;
+
+	self.think = setup_perk;
+	self.nextthink = time + 0.1;
+	precache_model ("progs/shark.mdl");
+	/*precache_model ("progs/VModels/v_biatch_left.mdl");
+	precache_model ("progs/VModels/v_biatch_right.mdl");*/ //naievil (FIXME) dual wield weapons
+};
+void() perk_flopper =
+{
+	self.solid = SOLID_TRIGGER;
+	precache_model ("progs/Misc/flopper.mdl");
+	precache_model ("progs/VModels/v_perk.mdl");
+	precache_sound("perkmachine/flopper.wav");
+	precache_sound("perkmachine/denyperk.wav");
+	setorigin (self, self.origin);
+	setmodel (self, "progs/Misc/flopper.mdl");
+	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	self.classname = "perk_flopper";
+	self.touch = touch_perk;
+
+	self.think = setup_perk;
+	self.nextthink = time + 0.1;
+};
+
+void() perk_juggernog =
+{
+	self.solid = SOLID_TRIGGER;
+	precache_model ("progs/Misc/juggernog.mdl");
+	precache_model ("progs/VModels/v_perk.mdl");
+	precache_sound("perkmachine/juggernog.wav");
+	precache_sound("perkmachine/denyperk.wav");
+	setorigin (self, self.origin);
+	setmodel (self, "progs/Misc/juggernog.mdl");
+	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	self.classname = "perk_juggernog";
+	self.touch = touch_perk;
+
+	self.think = setup_perk;
+	self.nextthink = time + 0.1;
+};
+
+void() perk_staminup =
+{
+	self.solid = SOLID_TRIGGER;
+	precache_model ("progs/Misc/staminup.mdl");
+	precache_model ("progs/VModels/v_perk.mdl");
+	precache_sound("perkmachine/staminup.wav");
+	precache_sound("perkmachine/denyperk.wav");
+	setorigin (self, self.origin);
+	setmodel (self, "progs/Misc/staminup.mdl");
+	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	self.classname = "perk_staminup";
+	self.touch = touch_perk;
+
+	self.think = setup_perk;
+	self.nextthink = time + 0.1;
+};
+
+void() perk_speed =
+{
+	self.solid = SOLID_TRIGGER;
+	precache_model ("progs/Misc/speed_cola.mdl");
+	precache_model ("progs/VModels/v_perk.mdl");
+	precache_sound("perkmachine/speedcola.wav");
+	precache_sound("perkmachine/denyperk.wav");
+	precache_sound("player/talk/fast.wav");
+	setorigin (self, self.origin);
+	setmodel (self, "progs/Misc/speed_cola.mdl");
+	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	self.classname = "perk_speed";
+	self.touch = touch_perk;
+
+	self.think = setup_perk;
+	self.nextthink = time + 0.1;
+};
+
+void() perk_double =
+{
+	self.solid = SOLID_TRIGGER;
+	precache_model ("progs/Misc/double_tap.mdl");
+	precache_model ("progs/VModels/v_perk.mdl");
+	precache_sound("perkmachine/doubletap.wav");	
+	precache_sound("perkmachine/denyperk.wav");
+	setorigin (self, self.origin);
+	setmodel (self, "progs/Misc/double_tap.mdl");
+	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	self.classname = "perk_double";
+	self.touch = touch_perk;
+
+	self.think = setup_perk;
+	self.nextthink = time + 0.1;
+};
+
+void() perk_ammo =
+{
+	self.solid = SOLID_TRIGGER;
+	precache_model ("progs/Misc/ammomatic.mdl");
+	precache_model ("progs/VModels/v_perk.mdl");
+	precache_sound("perkmachine/perk_drink.wav");
+	setorigin (self, self.origin);
+	setmodel (self, "progs/Misc/ammomatic.mdl");
+	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	self.classname = "perk_ammo";
+	self.touch = touch_perk;
+	self.requirespower = true;
+
+	self.think = setup_perk;
+	self.nextthink = time + 0.1;
+};
+
+void() perk_dead =
+{
+	self.solid = SOLID_TRIGGER;
+	precache_model ("progs/Misc/deadshot.mdl");
+	precache_model ("progs/VModels/v_perk.mdl");
+	precache_sound("perkmachine/perk_drink.wav");
+	setorigin (self, self.origin);
+	setmodel (self, "progs/Misc/deadshot.mdl");
+	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	self.classname = "perk_dead";
+	self.touch = touch_perk;
+	self.requirespower = true;
+
+	self.think = setup_perk;
+	self.nextthink = time + 0.1;
+};
+
+void()	turnpower1	=[	1,		turnpower2	] {self.frame = 1;};
+void()	turnpower2	=[	2,		turnpower3	] {self.frame = 2;};
+void()	turnpower3	=[	3,		turnpower4	] {self.frame = 3;};
+void()	turnpower4	=[	4,		turnpower4	] {self.frame = 4;};
+
+void() Turn_Lights =
+{
+	/*entity tempe;
+	SUB_UseTargets();
+
+	tempe = findfloat (world, requirespower, 1);// trigger all paired doors
+	while (tempe)
+	{
+		if (tempe.classname == "perk_revive")
+			tempe.effects = EF_BLUELIGHT;
+		else if (tempe.classname == "perk_flopper")
+			tempe.effects = EF_PURPLELIGHT;
+		else if (tempe.classname == "perk_juggernog")
+			tempe.effects = EF_REDLIGHT;
+		else if (tempe.classname == "perk_staminup")
+			tempe.effects = EF_ORANGELIGHT;
+		else if (tempe.classname == "perk_speed")
+			tempe.effects = EF_GREENLIGHT;
+		else if (tempe.classname == "perk_double")
+			tempe.effects = EF_ORANGELIGHT;
+    else if (tempe.classname == "perk_pap")
+      tempe.effects = EF_BLUELIGHT;
+    else if (tempe.classname == "perk_ammo")
+      tempe.effects = EF_BLUELIGHT;
+    else if (tempe.classname == "perk_dead")
+      tempe.effects = EF_GREENLIGHT;
+      
+		tempe = findfloat (tempe, requirespower, 1);// trigger all paired doors
+	} */ // naievil (FIXME) redo light effects 
+} 
+
+void() touch_power_Switch =
+{
+	entity tempe;
+	entity old_self;
+
+	if (other.classname != "player" || other.downed)
+		return;
+
+	if (isPowerOn == true)
+    return;
+	useprint (other, 10, 0, 0);
+	if (other.button7 && !isPowerOn)
+	{
+		turnpower1();
+		isPowerOn = true;
+		sound (self, CHAN_ITEM, "misc/power.wav", 1, ATTN_NONE);
+
+		tempe = find (world, classname, "door_nzp");// trigger all paired doors
+		while (tempe)
+		{
+			local entity starte;
+
+      if (!tempe.targetname)
+      {
+        if (!tempe.cost)
+        {
+          old_self = self;
+          self = tempe;
+          starte = self;
+          door_go_up ();
+          tempe.classname = "door_open";
+          tempe = find (tempe, classname, "door_nzp");// trigger all paired doors
+          self = old_self;
+        }
+      }
+      if (tempe.targetname)
+      {
+        old_self = self;
+        self = tempe;
+        remove(self);
+        self = old_self;
+        tempe = find (tempe, classname, "door_nzp");// trigger all paired doors
+       }
+		}
+
+		Turn_Lights ();
+		
+	}
+}
+void() power_switch =
+{
+	self.solid = SOLID_TRIGGER;
+	precache_model ("progs/Misc/power_switch.mdl");
+	precache_sound ("misc/power.wav");
+	setorigin (self, self.origin);
+	setmodel (self, "progs/Misc/power_switch.mdl");
+	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	self.classname = "power_switch";
+	isPowerOn = false;
+	self.touch = touch_power_Switch;
+}

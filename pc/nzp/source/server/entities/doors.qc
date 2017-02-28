@@ -81,7 +81,7 @@ void() door_blocked =
 void() door_hit_top =
 {
 	self.state = STATE_TOP;
-	if ((self.classname == "door_nzp_cost" || self.classname == "door_nzp" || self.classname == "door_open") && (!self.spawnflags & 128))
+	if ((self.classname == "door_nzp_cost" || self.classname == "door_nzp" || self.classname == "door_open") && (!(self.spawnflags & 128)))
 	{
 		remove (self.owner.trigger_field);
 		remove(self);
@@ -100,7 +100,7 @@ void() door_hit_bottom =
 
 void() door_go_down =
 {
-	if ((self.classname == "door_nzp_cost" || self.classname == "door_nzp" || self.classname == "door_open") && (!self.spawnflags & 128))
+	if ((self.classname == "door_nzp_cost" || self.classname == "door_nzp" || self.classname == "door_open") && (!(self.spawnflags & 128)))
 	{
 		remove(self);
 		return;//so we dont have to reopen doors
@@ -216,7 +216,7 @@ if (self.state == STATE_TOP || self.state == STATE_UP)
 		}
 	}
 
-	if (other.button1)
+	if (other.button7)
 	{
 		if (other.points >= self.cost)
 		{
@@ -248,7 +248,7 @@ if (self.state == STATE_TOP || self.state == STATE_UP)
 			}
 		}
 	}
-	else if (!other.button1)
+	else if (!other.button7)
 	{
 		if(other.classname == "player" && !other.downed)
 		{
@@ -331,7 +331,7 @@ void() door_touch =
 {
 	if (other.classname != "player")
 		return;
-	if (other.button1)
+	if (other.button7)
 	{
 		return;
 	}

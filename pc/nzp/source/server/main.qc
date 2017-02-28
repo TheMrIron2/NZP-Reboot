@@ -13,6 +13,7 @@ void() main =
 void() StartFrame =
 {
 	deathmatch = cvar("deathmatch");
+	coop = cvar("coop");
 	framecount = framecount + 1;
 
 	
@@ -39,6 +40,9 @@ void() worldspawn =
 	precache_sound("sounds/weapons/colt/shoot.wav");
 	precache_sound("sounds/weapons/colt/slide.wav");
 	
+	precache_sound("sounds/weapons/grenade/prime.wav");
+	precache_sound("sounds/weapons/grenade/throw.wav");
+	
 	precache_sound("sounds/misc/ching.wav");
 	precache_sound("sounds/misc/buy.wav");
 	precache_sound("sounds/misc/wood_door.wav");
@@ -46,11 +50,16 @@ void() worldspawn =
 
 	
 	precache_model ("models/weapons/m1911/v_colt.mdl");
+	precache_model ("progs/VModels/v_nade.mdl");
+	precache_model ("progs/GModels/g_grenade.mdl");
+	precache_model ("progs/GModels/g_betty.mdl");
 
 	clientstat(STAT_CURRENTMAG, EV_FLOAT, currentmag);
 	clientstat(STAT_POINTS, EV_FLOAT, points);
 	clientstat(STAT_WEAPON2FRAME, EV_FLOAT, weapon2frame);
 	clientstat(STAT_WEAPON2MODEL, EV_STRING, weapon2model);
+	clientstat(STAT_GRENADES, EV_FLOAT, primary_grenades);
+	clientstat(STAT_SECGRENADES, EV_FLOAT, secondary_grenades);
 	
 }
 
