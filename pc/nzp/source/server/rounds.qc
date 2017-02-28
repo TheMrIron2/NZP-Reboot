@@ -6,10 +6,10 @@ void() Spawn_Enemy =
 {
 	if (roundtype == 1)
 	{
-		/*if (spawn_a_zombieA())
+		if (spawn_a_zombieA())
 		{
 			Current_Zombies = Current_Zombies + 1;
-		}*/
+		}
 	}
 }
 
@@ -62,7 +62,7 @@ void() NewRound =
 		}
 		tempe = find(tempe, classname, "player");
 	}
-	//set_z_health();
+	set_z_health();
 	if(rounds < 10)
 	{
 		if (rounds == 1)
@@ -160,12 +160,11 @@ void() Round_Core =
 
 void() InitRounds =
 {
-	sound (world, CHAN_AUTO, "sounds/rounds/splash.wav", 1, ATTN_NONE);//temporarily here.
 	roundtype = 1;
 	delay_at_round = 2/0.95;
 	totalpowerups = 0;
 	powerup_activate = 2000/1.14;
-	//spawnAllZombEnts();
+	spawnAllZombEnts();
 	round_changetime = time + 6;
 	rounds_change = 1;
 	roundinit = 1;

@@ -80,7 +80,7 @@ void () W_Frame_Update =
 	}
 };
 
-void Set_W_Frame (float startframe, float endframe, float duration, float funccalledin, float animtype, void() endanimfunc, string set_model, float dontstartnew) = //FIXME
+void Set_W_Frame (float startframe, float endframe, float duration, float funccalledin, float animtype, void() endanimfunc, string set_model, float dontstartnew) =
 {
 	self.weaponframe = startframe;
 	self.weaponframe_end = endframe;

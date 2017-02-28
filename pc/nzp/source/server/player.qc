@@ -116,7 +116,7 @@ void() PlayerSpawn =
 	self.isspec = FALSE;
 	self.classname = "player";
 	self.solid = SOLID_SLIDEBOX;
-	setmodel(self, "models/humanoid_simplerig.iqm");
+	setmodel(self, "models/player.mdl");
 	self.movetype = MOVETYPE_WALK;
 	self.health = 100;
 	self.origin = spawnpoint.origin + [0,0,1];
@@ -144,6 +144,10 @@ void() PlayerSpawn =
 	stuffcmd(self, "cl_gunx 8;cl_guny 16;cl_gunz 25\n");
 
 	SetRound(self, rounds);
+
+	if (rounds < 1) {
+		sound (self, CHAN_AUTO, "sounds/rounds/splash.wav", 1, ATTN_NONE);//temporarily here.
+	}
 };
 
 void() SpectatorSpawn =

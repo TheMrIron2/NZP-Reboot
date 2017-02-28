@@ -27,7 +27,19 @@ void() StartFrame =
 //called when map loaded
 void() worldspawn =
 {
-	precache_model("models/humanoid_simplerig.iqm");
+	precache_model ("models/player.mdl");
+	
+	precache_model ("models/ai/zfull.mdl");
+	precache_model ("models/ai/zb#.mdl");
+	precache_model ("models/ai/zal(.mdl");
+	precache_model ("models/ai/zar(.mdl");
+	precache_model ("models/ai/zh^.mdl");
+	
+	precache_model ("models/ai/zcfull.mdl");
+	precache_model ("models/ai/zbc#.mdl");
+	precache_model ("models/ai/zalc(.mdl");
+	precache_model ("models/ai/zarc(.mdl");
+	precache_model ("models/ai/zhc^.mdl");
 	
 	precache_sound("sounds/player/footstep1.wav");
 	precache_sound("sounds/player/footstep2.wav");
@@ -61,12 +73,82 @@ void() worldspawn =
 	precache_model ("progs/GModels/g_grenade.mdl");
 	precache_model ("progs/GModels/g_betty.mdl");
 
+	
+	
+	//sprites
+	precache_model ("models/way/current_way.spr");
+	precache_model ("models/way/current_way_door.spr");
+	precache_model ("models/way/last_way.spr");
+	precache_model ("models/way/last_way_door.spr");
+	precache_model ("models/way/normal_way.spr");
+	precache_model ("models/way/normal_way_door.spr");
+	precache_model ("models/way/way_jump.spr");
+	precache_model ("models/way/way_land.spr");
+
+
+	
+	//Walk
+	
+	precache_sound ("sounds/zombie/w0.wav");
+	precache_sound ("sounds/zombie/w1.wav");
+	precache_sound ("sounds/zombie/w2.wav");
+	precache_sound ("sounds/zombie/w3.wav");
+	precache_sound ("sounds/zombie/w4.wav");
+	precache_sound ("sounds/zombie/w5.wav");
+	precache_sound ("sounds/zombie/w6.wav");
+	precache_sound ("sounds/zombie/w7.wav");
+	precache_sound ("sounds/zombie/w8.wav");
+	precache_sound ("sounds/zombie/w9.wav");
+	//Run
+	precache_sound ("sounds/zombie/r0.wav");
+	precache_sound ("sounds/zombie/r1.wav");
+	precache_sound ("sounds/zombie/r2.wav");
+	precache_sound ("sounds/zombie/r3.wav");
+	precache_sound ("sounds/zombie/r4.wav");
+	precache_sound ("sounds/zombie/r5.wav");
+	precache_sound ("sounds/zombie/r6.wav");
+	precache_sound ("sounds/zombie/r7.wav");
+	precache_sound ("sounds/zombie/r8.wav");
+	precache_sound ("sounds/zombie/r9.wav");
+	//Attack
+	precache_sound ("sounds/zombie/a0.wav");
+	precache_sound ("sounds/zombie/a1.wav");
+	precache_sound ("sounds/zombie/a2.wav");
+	precache_sound ("sounds/zombie/a3.wav");
+	precache_sound ("sounds/zombie/a4.wav");
+	precache_sound ("sounds/zombie/a5.wav");
+	precache_sound ("sounds/zombie/a6.wav");
+	precache_sound ("sounds/zombie/a7.wav");
+	//Death
+	precache_sound ("sounds/zombie/d0.wav");
+	precache_sound ("sounds/zombie/d1.wav");
+	precache_sound ("sounds/zombie/d2.wav");
+	precache_sound ("sounds/zombie/d3.wav");
+	precache_sound ("sounds/zombie/d4.wav");
+	precache_sound ("sounds/zombie/d5.wav");
+	precache_sound ("sounds/zombie/d6.wav");
+	precache_sound ("sounds/zombie/d7.wav");
+	//Taunt
+	precache_sound ("sounds/zombie/t0.wav");
+	precache_sound ("sounds/zombie/t1.wav");
+	precache_sound ("sounds/zombie/t2.wav");
+	precache_sound ("sounds/zombie/t3.wav");
+	precache_sound ("sounds/zombie/t4.wav");
+	//Footsteps
+	precache_sound ("sounds/zombie/s0.wav");
+	precache_sound ("sounds/zombie/s1.wav");
+	precache_sound ("sounds/zombie/sc0.wav");
+	precache_sound ("sounds/zombie/sc1.wav");
+
 	clientstat(STAT_CURRENTMAG, EV_FLOAT, currentmag);
 	clientstat(STAT_POINTS, EV_FLOAT, points);
 	clientstat(STAT_WEAPON2FRAME, EV_FLOAT, weapon2frame);
 	clientstat(STAT_WEAPON2MODEL, EV_STRING, weapon2model);
 	clientstat(STAT_GRENADES, EV_FLOAT, primary_grenades);
 	clientstat(STAT_SECGRENADES, EV_FLOAT, secondary_grenades);
+
+	mappath = strcat("maps/", mapname);
+	mappath = strzone(mappath);
 }
 
 void() SpectatorConnect =

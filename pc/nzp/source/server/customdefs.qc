@@ -11,6 +11,8 @@ float coop;
 .vector oldvelocity;
 .float lastsound_time;
 .float isspec;
+string mappath;
+
 
 //money
 .float points;
@@ -79,10 +81,20 @@ void() SUB_Null = {};
 void() SUB_Null2 = {};
 
 
+
+vector	VEC_HULL_MIN = '-16 -16 -32';
+vector	VEC_HULL_MAX = '16 16 40';
 vector	VEC_HULL2_MIN = '-32 -32 -24';
 vector	VEC_HULL2_MAX = '32 32 64';
 vector  VEC_VIEW_OFS  = '0 0 32';
 
+
+// AI definitions
+//Used for global one-zombie-at-a-time type ai
+//void Do_Zombie_AI();
+float ai_delay_time;
+.string aistatus;
+entity lastzombie;
 //Other AI definitions
 .vector box1, box2, box3;//used for windows and zombies
 .vector idlebox;
@@ -96,7 +108,19 @@ const float WBOX3 = 8;
 const float WIDLEBOX = 16;
 //========================
 
-//AI
+//we're using usedent for who is currently hopping the window
+//Used for windows to keep track of what zombies are at windows
+.entity box1owner, box2owner, box3owner;
+
+.entity usedent;
+//.float used;//used for the window boxes//not anymore
+.float outside;//used for knowing if a zomibe has hopped window yet
+.float chase_enemy_time;
+.float chase_time;
+.float enemy_timeout;
+//.float pathing;
+.float calc_time; //used as a delay thing (so zombie ai doesn't run 100% of the time
+.string waynum; //reserved for only waypoints, do not use on any other entities
 .string target2;
 .string target3;
 .string target4;
@@ -104,7 +128,59 @@ const float WIDLEBOX = 16;
 .string target6;
 .string target7;
 .string target8;
-.void()		th_die;
+.string wayTarget;
+.entity active_door;//Set in waypoint mode
+.string targetname;//the name of an entitys
+entity lastspawn;//last spawn point used by spawning code
+.entity goaldummy; //Used to store the origin of the zombies target
+.float walktype;//decides animations and moving speeds for zombies
+.void() th_walk;
+//.void() th_run;
+.void() th_die;
+.void() th_melee;
+.void() th_idle;
+.void() th_windowhop;
+.void() th_diewunder;
+
+.void() th_fall;
+.void() th_falling;
+.void() th_land;
+
+.void() th_jump;
+.void() th_grabledge;
+.float tries;
+.float hop_step;//KEEPS TRACK OF WHERE WE ARE ON THE HOPPING PART
+
+float INACTIVE = 1;
+
+
+.float sound_time;
+.float s_time;
+float sounds_playing;
+
+.float fall;
+//.vector lastOrg;//Zombie's last origin, for checking stuckness
+//.float OrgStuckCount;
+.float crawling;
+
+.float washit;
+.float hitamount;
+
+.float currentHitBoxSetup;
+.float laststep;
+.vector		bbmins, bbmaxs;		// Used for zombie hitboxes
+//void(entity who) makeCrawler;
+.float state;//used to delay making a crawler, ex) when zombie is rising from ground or climbing over barrier, turn zombie into a crawler afterwards
+
+void() spawnAllZombEnts;
+void() set_z_health;
+float() spawn_a_zombieA;
+float z_health;
+.float bleedingtime;
+.float time_to_die;
+
+
+float crandom();
 
 
 // Door
@@ -147,9 +223,6 @@ float spawn_delay;
 float maxreward;
 float totalreward;
 float totalpowerups;
-//void() spawnAllZombEnts;
-//void() set_z_health;
-//float() spawn_a_zombieA;
 float sounds_playing;
 
 float		rounds;
