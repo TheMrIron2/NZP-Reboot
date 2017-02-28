@@ -84,6 +84,19 @@ vector	VEC_HULL2_MIN = '-32 -32 -24';
 vector	VEC_HULL2_MAX = '32 32 64';
 vector  VEC_VIEW_OFS  = '0 0 32';
 
+//Other AI definitions
+.vector box1, box2, box3;//used for windows and zombies
+.vector idlebox;
+.vector hop_spot;//used for windows (zombies hop to these)
+.vector goalorigin;
+//==== Reference Vars ====
+const float WWINDOW = 1; 
+const float WBOX1 = 2;
+const float WBOX2 = 4;
+const float WBOX3 = 8;
+const float WIDLEBOX = 16;
+//========================
+
 //AI
 .string target2;
 .string target3;
@@ -110,6 +123,19 @@ float isBuying; // naievil -- used for checking if a perk is being consumed, lim
 .float perk_delay;
 .float revivesoda;
 
+//powerups
+float instakill_finished;
+float insta_blink;
+float x2_finished;
+float x2_blink;
+float total_windows_down;
+float total_powerup_points;
+float powerup_activate;
+
+//rounds
+float maxreward;
+float totalreward;
+
 
 
 //FIXME(Jukki) Place in better place
@@ -122,6 +148,11 @@ void(entity to, float type, float cost, float weapon) useprint = {
 	WriteByte(MSG_ONE, type);
 	WriteShort(MSG_ONE, cost);
 	WriteByte(MSG_ONE, weapon);
+}
+
+float() crandom =
+{
+	return 2*(random() - 0.5);
 }
 
 //naievil (FIXME) No idea where this should go, maybe a dummys
