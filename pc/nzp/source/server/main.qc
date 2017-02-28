@@ -17,6 +17,13 @@ void() StartFrame =
 	framecount = framecount + 1;
 
 	
+	if (!roundinitfinal)
+	{
+		if (roundinit == 10)// Create a delay for the round start to make sure the player has fully loaded in
+			InitRounds();
+		else
+			roundinit = roundinit + 1;
+	}
 }
 
 //called when map loaded
@@ -43,7 +50,10 @@ void() worldspawn =
 	precache_sound("sounds/weapons/grenade/prime.wav");
 	precache_sound("sounds/weapons/grenade/throw.wav");
 	
-	precache_sound("sounds/misc/ching.wav");
+	precache_sound("sounds/rounds/eround.wav");
+	precache_sound("sounds/rounds/nround.wav");
+	precache_sound("sounds/rounds/splash.wav");
+
 	precache_sound("sounds/misc/buy.wav");
 	precache_sound("sounds/misc/wood_door.wav");
 	precache_sound("sounds/misc/debris.wav");

@@ -132,9 +132,29 @@ float total_powerup_points;
 float powerup_activate;
 
 //rounds
+float roundinit;
+float roundinitfinal;
+float roundtype;
+float Current_Zombies;
+float Total_Zombies;
+float Remaining_Zombies;
+float Delay_Time;
+float spawn_time;
+float round_changetime;
+float game_over;
+float blink_return;
+float delay_at_round;
+float spawn_delay;
 float maxreward;
 float totalreward;
+float totalpowerups;
+//void() spawnAllZombEnts;
+//void() set_z_health;
+//float() spawn_a_zombieA;
+float sounds_playing;
 
+float		rounds;
+float rounds_change;
 
 
 //FIXME(Jukki) Place in better place
