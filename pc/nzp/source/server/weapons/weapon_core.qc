@@ -401,7 +401,6 @@ void () Weapon_Logic =
 	if (!self.button7) {
 		self.semiuse = false;
 	}
-
 	
 	if (self.button4 && !self.semiswitch && self.secondaryweapon && self.secondaryweapon !=0)
 	{
