@@ -400,7 +400,7 @@ void() W_Fire =
 
 void() switch_nade = 
 {
-    float tempf, tempf1;
+    float tempf1;
     
     if (isBuying == true)
       return;
@@ -427,7 +427,7 @@ void() switch_nade =
 		
     tempf1 = self.pri_grenade_state;
 		self.pri_grenade_state = self.bk_nade;
-		self.bk_nade = tempf;
+		//self.bk_nade = tempf;
 
 };
 
