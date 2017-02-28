@@ -15,11 +15,6 @@ void() PlayerJump =
 	self.button2 = 0;
 }
 
-void() CheckImpulses =
-{
-	self.impulse = 0;
-}
-
 void() PlayerPreThink =
 {
 	if(self.isspec != 0)
@@ -51,8 +46,6 @@ void() PlayerPreThink =
 		}
 		return;
 	}
-	
-	CheckImpulses();
 	
 	Weapon_Logic();
 	

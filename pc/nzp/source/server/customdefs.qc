@@ -1,4 +1,3 @@
-
 // put custom server-only globals and fields here
 
 #define true 1
