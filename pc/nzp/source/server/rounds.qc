@@ -28,7 +28,6 @@ void() EndRound =
 {
 	rounds_change = 4;
 	playSoundAtPlayers("sounds/rounds/eround.wav");
-	//sound (world, CHAN_AUTO, "rounds/round_end_zombie.wav", 1, ATTN_NONE);
 	round_changetime = time + 5;
 }
 void() NewRound =
@@ -46,11 +45,12 @@ void() NewRound =
 	if (rounds != 0)
 	{
 		playSoundAtPlayers("sounds/rounds/nround.wav");
-		//sound (world, CHAN_AUTO, "rounds/nround.wav", 1, ATTN_NONE);
 		rounds_change = 6;
 		blink_return = time + 2;
 	}
 	rounds = rounds + 1;
+
+	NotifyNewRound(rounds);
 	tempe = find(world, classname, "player");
 	while (tempe)
 	{
@@ -115,11 +115,12 @@ void() NewRound =
 }
 void() Round_Core =
 {
-	if (!roundinitfinal || game_over)
+	if (game_over)
 		return;
 	
-	if (round_changetime <= (time + 2) && !rounds && round_changetime)
+	if (round_changetime <= (time + 2) && !rounds && round_changetime) {
 		rounds_change = 2;
+	}
 
 	if (round_changetime <= (time + 2) && rounds && round_changetime)
 		rounds_change = 5;
@@ -159,8 +160,7 @@ void() Round_Core =
 
 void() InitRounds =
 {
-	sound (self, CHAN_AUTO, "sounds/rounds/splash.wav", 1, ATTN_NONE);//temporarily here.
-	roundinitfinal = true;
+	sound (world, CHAN_AUTO, "sounds/rounds/splash.wav", 1, ATTN_NONE);//temporarily here.
 	roundtype = 1;
 	delay_at_round = 2/0.95;
 	totalpowerups = 0;
@@ -168,4 +168,5 @@ void() InitRounds =
 	//spawnAllZombEnts();
 	round_changetime = time + 6;
 	rounds_change = 1;
+	roundinit = 1;
 }

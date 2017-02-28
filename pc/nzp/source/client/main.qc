@@ -217,6 +217,7 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 
 		ammostring = strcat(ftos(curmag), strcat("/",ftos(ammo)));
 		drawstring([0.01*width, 0.94*height, 0], strcat("+",ftos(health)), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+		drawstring([0.01*width, 0.90*height, 0], ftos(rounds), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
 		
 		drawstring([0.97*width, 0.94*height, 0], ftos(grenades), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1); // nai -- draw grenade val
 
@@ -501,13 +502,16 @@ noref void() CSQC_Parse_Event =
 		v2model_muzzleoffset = vmodel_muzzleoffset = '12 0 1';
 		weapon = to;
 	}
-	else if(first == EVENT_USEPRINT)
-	{
+	else if(first == EVENT_USEPRINT) {
 		useprint_type = readbyte();
 		useprint_cost = readshort();
 		useprint_weapon = readbyte();
 
 		useprint_time = time + 0.1;
 		
+	} else if(first == EVENT_NEWROUND) {
+		rounds = readbyte();
+	} else if (first == EVENT_SETROUND) {
+		rounds = readbyte();
 	}
 }

@@ -133,7 +133,6 @@ float powerup_activate;
 
 //rounds
 float roundinit;
-float roundinitfinal;
 float roundtype;
 float Current_Zombies;
 float Total_Zombies;
@@ -172,6 +171,19 @@ void(entity to, float type, float cost, float weapon) useprint = {
 float() crandom =
 {
 	return 2*(random() - 0.5);
+}
+
+void NotifyNewRound(float to) {
+	WriteByte(MSG_ALL, SVC_CGAMEPACKET);
+	WriteByte(MSG_ALL, EVENT_NEWROUND);
+	WriteByte(MSG_ALL, to);
+}
+
+void SetRound(entity client, float to) {
+    msg_entity = client;
+	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
+	WriteByte(MSG_ONE, EVENT_SETROUND);
+	WriteByte(MSG_ONE, to);
 }
 
 //naievil (FIXME) No idea where this should go, maybe a dummys

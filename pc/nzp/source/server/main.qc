@@ -15,14 +15,12 @@ void() StartFrame =
 	deathmatch = cvar("deathmatch");
 	coop = cvar("coop");
 	framecount = framecount + 1;
-
 	
-	if (!roundinitfinal)
-	{
-		if (roundinit == 10)// Create a delay for the round start to make sure the player has fully loaded in
-			InitRounds();
-		else
-			roundinit = roundinit + 1;
+	if (roundinit) {
+		Round_Core();
+	} else {
+
+	InitRounds();
 	}
 }
 
@@ -69,7 +67,6 @@ void() worldspawn =
 	clientstat(STAT_WEAPON2MODEL, EV_STRING, weapon2model);
 	clientstat(STAT_GRENADES, EV_FLOAT, primary_grenades);
 	clientstat(STAT_SECGRENADES, EV_FLOAT, secondary_grenades);
-	
 }
 
 void() SpectatorConnect =

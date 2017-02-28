@@ -51,3 +51,6 @@ float weaponframetime;
 float oldweaponframe;
 float curweaponframe;
 float interpolating;
+
+
+float rounds;

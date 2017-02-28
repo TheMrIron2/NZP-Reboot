@@ -3,6 +3,8 @@
 const float EVENT_WEAPONCHANGE = 9;
 const float EVENT_PISTOLFIRE = 10;
 const float EVENT_USEPRINT = 11;
+const float EVENT_NEWROUND = 12;
+const float EVENT_SETROUND = 13;
 
 //nzp weapon defines
 //id list
