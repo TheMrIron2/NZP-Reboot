@@ -5,7 +5,7 @@ void() ToggleMenu =
 	{
 		if(in_menu == MENU_NONE)
 		{
-			in_menu = MENU_MAIN;
+			in_menu = MENU_PAUSE;
 			time_in_menu = 0;
 			local float i;
 			for(i = 0; i < BUTTONS_COUNT; i++)
