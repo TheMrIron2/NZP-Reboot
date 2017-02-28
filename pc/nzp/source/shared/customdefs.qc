@@ -105,6 +105,14 @@ const float EVENT_USEPRINT = 11;
 #define KNIFE2		9
 #define REVIVE		10
 
+//Perk types
+#define 	P_JUG		1
+#define 	P_DOUBLE	2
+#define 	P_SPEED		4
+#define 	P_REVIVE	8
+#define 	P_FLOP		16
+#define 	P_STAMIN	32
+
 #define STAT_CURRENTMAG     50
 #define STAT_POINTS         51
 #define STAT_WEAPON2FRAME   52

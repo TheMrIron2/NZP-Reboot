@@ -5,6 +5,20 @@ void() ReturnWeaponModel =
 		self.weapon2model = "progs/VModels/v_karscope.mdl";
 }
 
+void() sprintstop =
+{
+	float startframe;
+	float endframe;
+	string modelname;
+	startframe = GetFrame(self.weapon,SPRINT_OUT_START);
+	endframe = GetFrame(self.weapon,SPRINT_OUT_END);
+	modelname = GetWeaponModel(self.weapon, 0);
+	Set_W_Frame (startframe, endframe, 0, 0, SPRINT, /*ContinueRun*/ SUB_Null, modelname, false);//FIXME
+	self.zoom = 0;
+	self.into_sprint = 0;
+	/*self.reload_delay2 = self.fire_delay2 = */self.reload_delay = self.fire_delay = 0;
+	yeahIamrunning = false;
+}
 
 void(float to) SwitchWeapon =
 {

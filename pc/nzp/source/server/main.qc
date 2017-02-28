@@ -13,6 +13,7 @@ void() main =
 void() StartFrame =
 {
 	deathmatch = cvar("deathmatch");
+	coop = cvar("coop");
 	framecount = framecount + 1;
 
 	

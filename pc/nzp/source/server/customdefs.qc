@@ -8,6 +8,7 @@ const float FL_JUMPRELEASED = 4096;
 
 float framecount;
 float deathmatch;
+float coop;
 .vector oldvelocity;
 .float lastsound_time;
 .float isspec;
@@ -29,7 +30,11 @@ entity activator;
 
 //player funcs
 .float zoom;
-
+.float weaponskin;
+void() sprintstop;
+.float stamina;
+.float into_sprint;
+float yeahIamrunning;
 
 //Weaponsystem defines
 void SwitchWeapon(float to);
@@ -99,8 +104,11 @@ vector  VEC_VIEW_OFS  = '0 0 32';
 .entity active_door;
 
 //Perk and Power system
-float isPowerOn; // naievil (FIXME) implement
+float isPowerOn;
 float isBuying; // naievil -- used for checking if a perk is being consumed, limits glitching
+.float perks;
+.float perk_delay;
+.float revivesoda;
 
 
 
