@@ -109,3 +109,5 @@ const float EVENT_USEPRINT = 11;
 #define STAT_POINTS         51
 #define STAT_WEAPON2FRAME   52
 #define STAT_WEAPON2MODEL   53
+#define STAT_GRENADES   	54
+#define STAT_SECGRENADES   	55

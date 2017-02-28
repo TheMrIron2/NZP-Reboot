@@ -1,3 +1,10 @@
+void() ReturnWeaponModel =
+{
+	self.weaponmodel = GetWeaponModel(self.weapon, 0);
+	if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER)
+		self.weapon2model = "progs/VModels/v_karscope.mdl";
+}
+
 
 void(float to) SwitchWeapon =
 {
@@ -387,6 +394,258 @@ void() W_Fire =
 	self.currentmag = self.currentmag - 1;
 	self.fire_delay = getWeaponDelay(self.weapon, FIRE) + time;
 }
+/******************************
+* W_Grenade                   *
+******************************/
+
+void() switch_nade = 
+{
+    float tempf, tempf1;
+    
+    if (isBuying == true)
+      return;
+      
+    if (!(self.grenades & 2))
+      return;
+      
+    if (self.semiswitch == true)
+      return;
+/*		tempf = self.primary_grenades;
+		self.primary_grenades = self.secondary_grenades;
+		self.secondary_grenades = tempf;*/
+
+		if (self.pri_grenade_state == 0)
+		{
+      centerprint (self, "Bouncing Betties Selected");
+      self.bk_nade = 1;
+    }
+    if (self.pri_grenade_state == 1)
+    {
+      centerprint (self, "Frag Grenades Selected");
+      self.bk_nade = 0;
+    }  	
+		
+    tempf1 = self.pri_grenade_state;
+		self.pri_grenade_state = self.bk_nade;
+		self.bk_nade = tempf;
+
+};
+
+void() GrenadeExplode =
+{
+	/*DamgageExplode (self, self.owner, 225, 75, 128);//was 256 inch radius, kicked it down to 128 because 21 feet exploding radius is... a bit overkill...
+	
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
+	WriteCoord (MSG_BROADCAST, self.origin_x);
+	WriteCoord (MSG_BROADCAST, self.origin_y);
+	WriteCoord (MSG_BROADCAST, self.origin_z);*/ 	// naievil (FIXME) Everything
+
+	SUB_Remove ();
+};
+void() NadeStraighten =
+{
+	self.angles_x = (self.angles_x > 0) ? 90 : -90;	
+	
+	if (self.pri_grenade_state == 1)
+    return;
+};
+void() Velocity_reduce =
+{
+	if (!other.solid || other.solid == SOLID_TRIGGER)
+		if (other != world)
+			return;
+
+	self.velocity = self.velocity*0.5;
+	
+	NadeStraighten();
+};
+
+void() betty_touch = 
+{
+  //centerprint (other, "wow\n");
+  if (other == self.owner || other.solid == SOLID_TRIGGER)
+    if (other != world)
+      return;
+  
+  GrenadeExplode();
+}
+
+void() W_ThrowGrenade =
+{
+	string modelname;
+	float startframe;
+	float endframe;
+	local	entity nade;
+	local entity betty;
+	
+if (self.pri_grenade_state == 0)
+{
+	nade = spawn ();
+	nade.owner = self;
+	nade.grenade_delay = nade.owner.grenade_delay;
+	nade.owner.grenade_delay = 0;
+	nade.movetype = MOVETYPE_BOUNCE;
+	nade.solid = SOLID_BBOX;
+	nade.classname = "grenade";
+		
+// set nade speed	
+
+	makevectors (self.v_angle);
+
+	nade.velocity = v_forward*800;
+
+	nade.avelocity = '400 -400 400';
+
+	//nade.angles = vectoangles(nade.velocity);
+	//nade.angles_z += (nade.angles_z + 180 < 360)? 180 : -180;
+	nade.angles = vectoangles(v_forward);
+	nade.angles_z -= 35;
+// set nade duration
+	nade.nextthink = nade.grenade_delay;
+	nade.think = GrenadeExplode;
+
+	nade.touch = Velocity_reduce;
+	setmodel (nade, "progs/GModels/g_grenade.mdl");
+	setsize (nade, '0 0 0', '0 0 0');
+	nade.origin = self.origin + self.view_ofs;
+	nade.origin += v_forward * 12;
+	setorigin (nade, nade.origin);
+	
+	self.animend = ReturnWeaponModel;
+	self.callfuncat = 0;
+	isBuying = false;
+ }
+else if (self.pri_grenade_state == 1)
+{
+	if (!(self.flags & FL_ONGROUND))
+	{
+    self.semiswitch = false;
+    centerprint (self, "You cannot place a bouncing betty here");
+    self.animend = ReturnWeaponModel;
+    self.callfuncat = 0;
+    isBuying = false; 
+  }
+  if (self.flags & FL_ONGROUND)
+  {
+	betty = spawn ();
+	betty.owner = self;
+	betty.grenade_delay = betty.owner.grenade_delay;
+	betty.owner.grenade_delay = 0;
+	betty.movetype = MOVETYPE_NONE;
+	betty.solid = SOLID_TRIGGER;
+	betty.classname = "betty";
+		
+// set betty speed	
+	betty.velocity = v_forward*0;
+
+	//nade.angles = vectoangles(nade.velocity);
+	//nade.angles_z += (nade.angles_z + 180 < 360)? 180 : -180;
+// set nade duration
+	betty.think = GrenadeExplode;
+
+	betty.touch = betty_touch;
+	setmodel (betty, "progs/GModels/g_betty.mdl");
+	setsize (betty, '-16 -16 -4', '16 16 1');
+	betty.origin = betty.owner.origin - self.view_ofs + '0 0 1';
+	betty.origin += v_forward * 0;
+	setorigin (betty, betty.origin);
+	
+	self.animend = ReturnWeaponModel;
+	self.callfuncat = 0;
+	isBuying = false;  
+	}
+ }
+ else 
+ {
+  centerprint (other, "No grenadetype defined...\n");
+ }
+    if (!(self.flags & FL_ONGROUND))
+      self.secondary_grenades = self.secondary_grenades + 1;
+      
+ 		startframe = GetFrame(self.weapon,TAKE_OUT_START);
+		endframe = GetFrame(self.weapon,TAKE_OUT_END);
+		modelname = GetWeaponModel(self.weapon, 0);
+		Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+		self.semiswitch = false;
+}
+
+void() checkHold =
+{
+ if (self.pri_grenade_state == 0)
+ {
+	if (!self.button3 || self.grenade_delay < time)
+	{
+		if(self.grenade_delay < time)
+			self.grenade_delay = time + 0.05;
+			
+		isBuying = true;  
+		Set_W_Frame (3, 6, 0, 5, GRENADE, W_ThrowGrenade, "progs/VModels/v_nade.mdl", true);
+		sound (self, CHAN_WEAPON, "sounds/weapons/grenade/throw.wav", 1, ATTN_NORM);
+		self.reload_delay = self.fire_delay = time + 0.4;
+		self.throw_delay = time + 0.9;
+	}
+	else
+	{
+    isBuying = true;
+		Set_W_Frame (2, 2, 0, 0, GRENADE, checkHold, "progs/VModels/v_nade.mdl", true);
+		//self.weaponframe = 12;
+		//self.weapon_anim_end = 12;
+		//self.animend = checkHold;
+		//self.weapon_anim_type = GRENADE;
+	}
+ }
+  else if (self.pri_grenade_state == 1)
+ {    
+	if (!self.button3)
+	{
+		if(self.grenade_delay < time)
+			self.grenade_delay = time + 0.05;
+		isBuying = true;
+		Set_W_Frame (18, 23, 0, 5, GRENADE, W_ThrowGrenade, "progs/VModels/v_betty.mdl", true);
+		sound (self, CHAN_WEAPON, "sounds/weapons/grenade/throw.wav", 1, ATTN_NORM);
+		self.reload_delay = self.fire_delay = time + 0.4;
+		self.throw_delay = time + 0.9;
+	}
+	else
+	{    
+		isBuying = true;
+		Set_W_Frame (18, 18, 0, 0, GRENADE, checkHold, "progs/VModels/v_betty.mdl", true);
+	}
+ }
+ else
+	centerprint (other, "grenades switched up...\n");
+		
+}
+
+void() W_Grenade =
+{
+	if (self.throw_delay > time || self.zoom || self.downed)
+		return;
+
+	if (self.primary_grenades > 0 || self.secondary_grenades > 0)
+  {         
+	  if (self.pri_grenade_state == 0 && self.primary_grenades > 0)
+      {    
+      Set_W_Frame (0, 2, 0, 0, GRENADE, checkHold, "progs/VModels/v_nade.mdl", true);
+      sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
+      self.primary_grenades = self.primary_grenades - 1;
+      self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
+      self.grenade_delay = time + 5;
+      //self.holdnade = TRUE;
+      }
+    else if (self.pri_grenade_state == 1 && self.secondary_grenades > 0)
+      {  
+      Set_W_Frame (0, 18, 0, 0, GRENADE, checkHold, "progs/VModels/v_betty.mdl", true);
+      sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
+      self.secondary_grenades = self.secondary_grenades - 1;
+      self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
+//	 	self.grenade_delay = time + 5;
+      //self.holdnade = TRUE;
+      }
+    self.semiswitch = true;
+   }    
+}
 
 void () Weapon_Logic =
 {
@@ -409,6 +668,14 @@ void () Weapon_Logic =
 	} else if (!self.button4) {
 		self.semiswitch = false;
 	}
+	
+	if (self.button3 && isBuying != true && self.semiswitch != true)
+	{
+		W_Grenade();
+		self.semiswitch = true;
+	}
+	else if (!self.button3)
+		self.semiswitch = false;
 
 	if (self.button5 && !self.semireload)
 	{
