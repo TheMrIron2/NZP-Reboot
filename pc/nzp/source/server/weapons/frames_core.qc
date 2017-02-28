@@ -12,8 +12,23 @@ void () W_Frame_Update =
 	
 	if (self.weapon_animduration)
 	{
-		self.anim_weapon_time = time + self.weapon_animduration;
+		if (self.weapon_anim_type == RELOAD && self.perks & P_SPEED)
+			self.anim_weapon_time = time + self.weapon_animduration * 0.45;
+		else if (self.weapon_anim_type == FIRE && self.perks & P_DOUBLE)
+			self.anim_weapon_time = time + self.weapon_animduration * 0.75;
+		else
+			self.anim_weapon_time = time + self.weapon_animduration;
 	}
+	else if (self.weapon_anim_type == RELOAD && self.perks & P_SPEED)
+		self.anim_weapon_time = time + 0.05;
+	else if (self.weapon_anim_type == FIRE && self.perks & P_DOUBLE)	
+		self.anim_weapon_time = time + 0.075;
+	else if (self.weapon_anim_type == REVIVE && self.perks & P_REVIVE)	
+		self.anim_weapon_time = time + 0.05;
+	else if (self.weapon_anim_type == KNIFE2)	
+		self.anim_weapon_time = time + 0.05;
+	else
+		self.anim_weapon_time = time + 0.1;
 	
     self.anim_weapon_time = time + 0.1;
 
@@ -53,7 +68,7 @@ void () W_Frame_Update =
 	}
 	else
 	{
-
+		self.weapon2frame = self.weaponframe_end = self.weaponframe = GetFrame(self.weapon,BASE_FRAME);
 		self.new_anim_stop = FALSE;
 		self.weapon_anim_type = 0;
 		self.weapon_animduration = 0;

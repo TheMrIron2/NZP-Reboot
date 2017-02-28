@@ -213,8 +213,6 @@ void () buy_weapon_touch =
 	local float tempf, tempf1, tempf2;
 	local float startframe,endframe;
 	local string modelname;
-	//float fromwhateverto62;
-	//float fromwhateverto62start;
 
 	if (other.classname != "player") {
 		return;

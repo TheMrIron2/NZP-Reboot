@@ -1,4 +1,3 @@
-
 void() ToggleMenu =
 {
 	if(serverkey("constate") != "disconnected")
@@ -34,6 +33,7 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	registercommand("startwalk");
 	registercommand("stopwalk");
 	registercommand("promptjoin");
+	
 	print("CSQC Started\n");
 	dummy = spawn();
 	if(serverkey("constate") == "disconnected")
