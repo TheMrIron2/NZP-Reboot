@@ -210,8 +210,10 @@ void() W_Reload =
 			self.reload_delay = getWeaponDelay(self.weapon,RELOAD);
 			self.reload_delay = self.reload_delay + time;
 		}
-
-
+	}
+	
+	if (self.weapon != W_TRENCH) {
+		self.NeedLoad = false;
 	}
 };
 
