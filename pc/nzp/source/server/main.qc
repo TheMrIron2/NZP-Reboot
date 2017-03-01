@@ -62,6 +62,7 @@ void() worldspawn =
 	precache_sound("sounds/rounds/eround.wav");
 	precache_sound("sounds/rounds/nround.wav");
 	precache_sound("sounds/rounds/splash.wav");
+	precache_sound("sounds/null.wav");
 
 	precache_sound("sounds/misc/buy.wav");
 	precache_sound("sounds/misc/wood_door.wav");
