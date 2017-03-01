@@ -510,12 +510,12 @@ noref void() CSQC_Parse_Event =
 		local string new;
 		new = readstring();
 		setmodel(vmodel,new);
-
-		v2model.origin = vmodel.origin = '0 0 0';
-		v2model.angles = vmodel.angles = '-60 0 0';
-		v2model_currentpos = vmodel_currentpos = vmodel.origin + '0 0 -24';
-		v2model_targetpos = vmodel_targetpos = vmodel.origin;
-		v2model_muzzleoffset = vmodel_muzzleoffset = '12 0 1';
+	}
+	else if(first == EVENT_UPDATEV2MODEL)
+	{
+		local string new2;
+		new2 = readstring();
+		setmodel(v2model,new2);
 	}
 	else if(first == EVENT_USEPRINT) {
 		useprint_type = readbyte();

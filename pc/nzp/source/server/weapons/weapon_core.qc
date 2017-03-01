@@ -1,10 +1,12 @@
-void(string to) UpdateVmodel;
+void(string to) UpdateV2model;
 
 void() ReturnWeaponModel =
 {
 	self.weaponmodel = GetWeaponModel(self.weapon, 0);
 	if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER)
 		self.weapon2model = "progs/VModels/v_karscope.mdl";
+		
+	UpdateV2model(self.weapon2model);
 }
 
 void() sprintstop =
@@ -73,7 +75,7 @@ void() W_Switch =
 }
 
 void() W_PutOut =
-{
+{		
 	if (self.secondaryweapon && !self.new_anim_stop)
 	{
 		float startframe;
@@ -82,6 +84,7 @@ void() W_PutOut =
 		startframe = GetFrame(self.weapon,PUT_OUT_START);
 		endframe = GetFrame(self.weapon,PUT_OUT_END);
 		modelname = GetWeaponModel(self.weapon, 0);
+	
 		//UpdateWeapons(1);
 		//if (self.weaponslot1.dualwield)
 		//	Set_W2_Frame (self.weaponslot1.PutOutStart, self.weaponslot1.PutOutEnd, (self.weaponslot1.PutOutEnd - self.weaponslot1.PutOutStart)/10, 0, SWITCHWEP, W_Switch, self.weaponslot1.v_model2, false);//FIXME
@@ -437,14 +440,12 @@ void() W_Fire =
 ******************************/
 
 void() switch_nade = 
-{
-    float tempf1;
-    
+{ 
     if (isBuying == true)
-      return;
+		return;
       
     if (!(self.grenades & 2))
-      return;
+		return;
       
     if (self.semiswitch == true)
       return;
@@ -452,20 +453,18 @@ void() switch_nade =
 		self.primary_grenades = self.secondary_grenades;
 		self.secondary_grenades = tempf;*/
 
-		if (self.pri_grenade_state == 0)
-		{
-      centerprint (self, "Bouncing Betties Selected");
-      self.bk_nade = 1;
+	if (self.pri_grenade_state == 0)
+	{
+		centerprint (self, "Bouncing Betties Selected");
+		self.bk_nade = 1;
     }
     if (self.pri_grenade_state == 1)
     {
-      centerprint (self, "Frag Grenades Selected");
-      self.bk_nade = 0;
+		centerprint (self, "Frag Grenades Selected");
+		self.bk_nade = 0;
     }  	
 		
-    tempf1 = self.pri_grenade_state;
 		self.pri_grenade_state = self.bk_nade;
-		//self.bk_nade = tempf;
 
 };
 
@@ -622,8 +621,6 @@ void() checkHold =
 		sound (self, CHAN_WEAPON, "sounds/weapons/grenade/throw.wav", 1, ATTN_NORM);
 		self.reload_delay = self.fire_delay = time + 0.4;
 		self.throw_delay = time + 0.9;
-		UpdateVmodel(GetWeaponModel(self.weapon, false));
-		W_PutOut();
 	}
 	else
 	{
@@ -646,8 +643,6 @@ void() checkHold =
 		sound (self, CHAN_WEAPON, "sounds/weapons/grenade/throw.wav", 1, ATTN_NORM);
 		self.reload_delay = self.fire_delay = time + 0.4;
 		self.throw_delay = time + 0.9;
-		UpdateVmodel(GetWeaponModel(self.weapon, false));
-		W_PutOut();
 	}
 	else
 	{    
@@ -669,7 +664,6 @@ void() W_Grenade =
   {         
 	  if (self.pri_grenade_state == 0 && self.primary_grenades > 0)
       {
-		UpdateVmodel("progs/VModels/v_nade.mdl");
 		Set_W_Frame (0, 2, 0, 0, GRENADE, checkHold, "progs/VModels/v_nade.mdl", true);
 		sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
 		self.primary_grenades = self.primary_grenades - 1;
@@ -679,7 +673,6 @@ void() W_Grenade =
       }
     else if (self.pri_grenade_state == 1 && self.secondary_grenades > 0)
       {  
-	  	UpdateVmodel("progs/VModels/v_betty.mdl");
 		Set_W_Frame (0, 18, 0, 0, GRENADE, checkHold, "progs/VModels/v_betty.mdl", true);
 		sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
 		self.secondary_grenades = self.secondary_grenades - 1;
