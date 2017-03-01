@@ -998,6 +998,7 @@ void(entity where) spawn_a_zombieB =
 	szombie.movetype = MOVETYPE_WALK;
 	setmodel(szombie, "models/ai/zfull.mdl");
 	szombie.hop_step = 0;
+	szombie.gravity = 1.0;
 	
 	szombie.mins = '-8 -8 -32';//-16 16 -32
 	szombie.maxs = '8 8 30';//16 16 40
@@ -1071,7 +1072,7 @@ void(entity where) spawn_a_zombieB =
 	local entity old_self;
 	old_self = self;
 	self = szombie;
-	//droptofloor(0,0);
+	droptofloor();
 	if (self.spawnflags & 2)//RISER
 	{
 		zombieRise();

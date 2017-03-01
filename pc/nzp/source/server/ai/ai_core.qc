@@ -487,42 +487,43 @@ void(float dist) Window_Hop =
 	}
 };
 
-void(float dist) Zombie_Walk = 
-{
+.float droptime;
+void(float dist) Zombie_Walk =  {
 	//Resetting velocity from last frame (except for vertical)
 	self.velocity_x = 0;
 	self.velocity_y = 0;
 	//self.flags = self.flags | FL_PARTIALGROUND;
+
 	//check_onfire();
-	/*if (!(self.flags & FL_ONGROUND))
-	{
-	//	bprint(PRINT_HIGH, "not on ground\n");
-		self.th_fall();
-		return;
-	}*/
-	//else
-	//	bprint(PRINT_HIGH, "on ground\n");
+	if (!(self.flags & FL_ONGROUND)) {
+
+		if (!self.droptime) {
+			self.droptime = time + 1;
+		} else if (self.droptime < time) {
+			self.droptime = 0;
+			bprint(PRINT_HIGH, "not on ground\n");
+			self.th_fall();
+			return;
+		}
+	} else {
+		bprint(PRINT_HIGH, "on ground\n");
+	}
 	
-	if(self.outside == TRUE)
-	{
+	if(self.outside == TRUE) {
 		//handle special walk case for walking to org
 		Window_Walk(dist);
 		return;
 	}
 	
-	if(self.outside == 2)
-	{
+	if(self.outside == 2) {
 		//play_sound_z(2);
 		Window_Hop(dist);
 		//handle special walk case for walking to org
 		return;
 	}
-	if(self.outside == FALSE)
-	{
-		if(self.goalentity == self.enemy)
-		{
-			if(vlen(self.origin - self.enemy.origin) < 60)
-			{
+	if(self.outside == FALSE) {
+		if(self.goalentity == self.enemy) {
+			if(vlen(self.origin - self.enemy.origin) < 60) {
 				return;
 			}
 		}
