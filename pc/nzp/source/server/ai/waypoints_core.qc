@@ -333,6 +333,122 @@ void() Save_Waypoints
 	fclose(file);
 }
 
+void (vector here, float which, string special, string trg, string trg2, string trg3, string trg4, string trg5, string trg6, string trg7, string trg8) Create_Waypoint =
+{
+	entity new_way;
+	new_way = spawn();
+
+	setorigin(new_way, here);
+	
+	
+	//new_way.flags = FL_ITEM;
+	new_way.solid = SOLID_TRIGGER;
+
+	if (cvar("waypoint_mode"))
+		setmodel(new_way, "models/way/normal_way.spr");
+	new_way.classname = "waypoint";
+	new_way.classname = strzone(new_way.classname);
+
+	new_way.waynum = ftos(which);
+	new_way.waynum = strzone(new_way.waynum);
+	dprint ("Created waypoint  ");
+	dprint (new_way.waynum);
+	dprint ("\n");
+	
+	if (special != "")
+	{
+		if (!cvar("waypoint_mode"))
+			new_way.classname = "waypoint_s";
+		if (cvar("waypoint_mode"))
+			setmodel(new_way, "models/way/normal_way_door.spr");
+		new_way.targetname = special;
+		new_way.targetname = strzone(new_way.targetname);
+		dprint ("Special waypoint  ");
+		dprint (new_way.targetname);
+		dprint ("\n");
+		//current_special++;
+	}
+
+	new_way.targets[0] = trg;
+	new_way.targets[1] = trg2;
+	new_way.targets[2] = trg3;
+	new_way.targets[3] = trg4;
+	new_way.targets[4] = trg5;
+	new_way.targets[5] = trg6;
+	new_way.targets[6] = trg7;
+	new_way.targets[7] = trg8;
+
+	new_way.touch = creator_way_touch;
+}
+
+void() Load_Waypoints_Legacy
+{
+	float file, which;
+	string h, special, trg, trg2, trg3, trg4, trg5, trg6, trg7, trg8;
+	local vector where;
+
+	h = strcat(mappath, ".way");
+	file = fopen (h, FILE_READ);
+
+	if (file == -1)
+	{
+		dprint("Error: file not found \n");
+		return;
+	}
+
+	while (1)
+	{
+		dprint("Loading waypoint\n");
+		// the first line is just a comment, ignore it
+		h = fgets(file);	
+		if (h != "Waypoint")
+		{
+			bprint(PRINT_HIGH, "Last waypoint\n");
+			fclose(file);
+			return;
+		}
+		h = fgets(file);
+		h = fgets(file);
+		h = substring(h, 9, 20);
+		where = stov(h);
+		
+		h = (fgets(file));
+		h = substring(h, 5, 20);
+		which = stof(h);
+	
+		h = (fgets(file));
+		special = substring(h, 10, 20);
+	
+		h = (fgets(file));
+		trg = substring(h, 9, 20);
+
+		h = (fgets(file));
+		trg2 = substring(h, 10, 20);
+
+		h = (fgets(file));
+		trg3 = substring(h, 10, 20);
+
+		h = (fgets(file));
+		trg4 = substring(h, 10, 20);
+
+		h = (fgets(file));
+		trg5 = substring(h, 10, 20);
+
+		h = (fgets(file));
+		trg6 = substring(h, 10, 20);
+
+		h = (fgets(file));
+		trg7 = substring(h, 10, 20);
+
+		h = (fgets(file));
+		trg8 = substring(h, 10, 20);
+		
+		Create_Waypoint(where, which, special, trg, trg2, trg3, trg4, trg5, trg6, trg7, trg8);
+
+		h = (fgets(file));
+		h = (fgets(file));
+	}
+}
 
 //Waypoint logic functions
 void () Waypoint_Functions =
@@ -360,9 +476,12 @@ void () Waypoint_Functions =
 			Save_Waypoints();
 			break;
 		case 107:
-			//Remove_Waypoint();
+			Load_Waypoints_Legacy();
 			break;
 		case 108:
+			Load_Waypoints_Legacy();
+			break;
+		case 109:
 			Remove_Waypoint();
 			break;
 	}
