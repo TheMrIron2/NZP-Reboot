@@ -19,6 +19,7 @@ void(entity attacker, float d_style) DieHandler =
 void(entity victim,entity attacker, float damage, float d_style) DamageHandler = {
 	entity old_self;
 	if (victim.classname == "ai_zombie") {
+
 		if (attacker.classname == "player" && (victim.health - damage)> 0) {
 			addmoney(attacker, 10, 1);
         }

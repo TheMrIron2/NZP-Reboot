@@ -266,7 +266,6 @@ void Parse_Damage () = // DO NOT TOUCH
 	while (ent) {
 		if (ent.classname == "ai_zombie") {
 			total_dmg = ent.hitamount;
-
 			//Clear hit
 			ent.washit = 0;
 			ent.hitamount = 0;
@@ -313,7 +312,7 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 
 void (float shotcount, float sprd, float Damage/*, float headmulti, float legmulti*/) FireTrace =
 {
-	float count, r, ru, do_break, penetration_times;
+	float count, r, ru, penetration_times;
 	vector dir, src, trace_start_org;
 	entity hitent;
 	
@@ -334,33 +333,25 @@ void (float shotcount, float sprd, float Damage/*, float headmulti, float legmul
 		dir = dir*2048;
 		dir = dir + v_right*r + v_up*ru;
 		trace_start_org = src;
-		trace_ent = self;
-		do_break = 0;
 		penetration_times = 0;
-		hitent = world;
-		while (!do_break && random() < getWeaponPenetration(self.weapon, penetration_times))
+		trace_ent = self;
+		while (random() < getWeaponPenetration(self.weapon, penetration_times))
 		{
-			while (1)
-			{
-				traceline (trace_start_org, trace_start_org + dir, 0, trace_ent);
-				if (hitent == world)
-					break;
-				
+			traceline (trace_start_org, trace_start_org + dir, 0, trace_ent);
+			
+			if (trace_ent == world) {
 				break;
 			}
 			
-			if (trace_fraction != 1.0)
+			if (trace_fraction != 1.0) {
 				TraceAttack (Damage, dir, trace_endpos, trace_plane_normal, trace_ent);
+			}
 			trace_start_org = trace_endpos;
 			penetration_times++;
-			if (!trace_ent.takedamage)
-				do_break = 1;
-			if (trace_ent.classname == "ai_zombie_head" || trace_ent.classname == "ai_zombie_larm" || trace_ent.classname == "ai_zombie_rarm")
-				hitent = trace_ent.owner;
-			else
-				hitent = trace_ent;
+			if (!trace_ent.takedamage) {
+				break;
+			}
 		}
-		hitent = world;
 
 		count++;
 	}
