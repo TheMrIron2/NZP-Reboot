@@ -63,6 +63,10 @@ void() worldspawn =
 	precache_sound("sounds/weapons/grenade/prime.wav");
 	precache_sound("sounds/weapons/grenade/throw.wav");
 	
+	precache_sound("sounds/weapons/knife/knife_hitbod.wav");
+	precache_sound("sounds/weapons/knife/knife.wav");
+	precache_sound("sounds/weapons/knife/knife_hit.wav");
+	
 	precache_sound("sounds/rounds/eround.wav");
 	precache_sound("sounds/rounds/nround.wav");
 	precache_sound("sounds/rounds/splash.wav");

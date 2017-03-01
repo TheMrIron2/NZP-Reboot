@@ -56,6 +56,12 @@ void Weapon_Logic();
 .string weapon2model;
 .float weapon2frame;
 .float reloadinterupted;
+.float hitcount;
+
+//Knife 
+.float semiknife;
+.float knife_delay;
+.float bowie;
 
 //Grenades
 .float grenades;
@@ -89,6 +95,7 @@ vector	VEC_HULL_MAX = '16 16 40';
 vector	VEC_HULL2_MIN = '-32 -32 -24';
 vector	VEC_HULL2_MAX = '32 32 64';
 vector  VEC_VIEW_OFS  = '0 0 32';
+vector	trace_plane_normal;
 
 
 // AI definitions
