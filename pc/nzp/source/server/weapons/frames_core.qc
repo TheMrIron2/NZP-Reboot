@@ -82,9 +82,12 @@ void () W_Frame_Update =
 
 void(string to) UpdateVmodel =
 {
+	float wepskin = self.weaponskin;
+	
 	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 	WriteByte(MSG_MULTICAST, EVENT_UPDATEVMODEL);
 	WriteString(MSG_MULTICAST, to);
+	WriteByte(MSG_MULTICAST, wepskin);
 	msg_entity = self;
 	multicast('0 0 0', MULTICAST_ONE);
 }
