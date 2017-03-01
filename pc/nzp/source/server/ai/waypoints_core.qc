@@ -288,6 +288,53 @@ void() Dual_Link_Waypoints =
 	}
 }
 
+
+string tempstest;
+void() Save_Waypoints
+{
+	float file;
+	string h;
+	float i;
+	entity tempe;
+
+	h = strcat(mappath, ".way");
+	file = fopen (h, FILE_WRITE);
+	dprint ("Saving waypoints ", h, "\n");
+	
+	local entity dway;
+	//fputs(file, "begin\n");
+	dway = find(world, classname, "waypoint");
+	while (dway)
+	{
+		fputs(file,"waypoint\n");
+		fputs(file,"{\n");
+		fputs(file, " id: ", dway.waynum, "\n");
+		if (dway.targetname != "") {
+			fputs(file, " door: ", dway.targetname, "\n");
+		}
+
+		fputs(file, " targets:\n");
+		fputs(file, " [\n");
+		for (i = 0; i < MAX_WAY_TARGETS; i++) {
+			tempe = find (world, waynum, dway.targets[i]);
+
+			if (tempe != world) {
+				fputs(file, "  ", dway.targets[i], "\n");
+			}
+		}
+		fputs(file, " ]\n");
+		fputs(file,"}\n");
+		
+		
+		dway = find(dway, classname, "waypoint");
+		if (dway)
+			fputs(file,"\n");
+	}
+	fclose(file);
+}
+
+
+//Waypoint logic functions
 void () Waypoint_Functions =
 {
 	switch (self.impulse) {
@@ -310,6 +357,12 @@ void () Waypoint_Functions =
 			Dual_Link_Waypoints();
 			break;
 		case 106:
+			Save_Waypoints();
+			break;
+		case 107:
+			//Remove_Waypoint();
+			break;
+		case 108:
 			Remove_Waypoint();
 			break;
 	}
