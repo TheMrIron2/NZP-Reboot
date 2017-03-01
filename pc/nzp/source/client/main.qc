@@ -505,6 +505,18 @@ noref void() CSQC_Parse_Event =
 		v2model_muzzleoffset = vmodel_muzzleoffset = '12 0 1';
 		weapon = to;
 	}
+	else if(first == EVENT_UPDATEVMODEL)
+	{
+		local string new;
+		new = readstring();
+		setmodel(vmodel,new);
+
+		v2model.origin = vmodel.origin = '0 0 0';
+		v2model.angles = vmodel.angles = '-60 0 0';
+		v2model_currentpos = vmodel_currentpos = vmodel.origin + '0 0 -24';
+		v2model_targetpos = vmodel_targetpos = vmodel.origin;
+		v2model_muzzleoffset = vmodel_muzzleoffset = '12 0 1';
+	}
 	else if(first == EVENT_USEPRINT) {
 		useprint_type = readbyte();
 		useprint_cost = readshort();
