@@ -508,8 +508,11 @@ noref void() CSQC_Parse_Event =
 	else if(first == EVENT_UPDATEVMODEL)
 	{
 		local string new;
+		local float skin2;
 		new = readstring();
+		skin2 = readbyte();
 		setmodel(vmodel,new);
+		vmodel.skin = skin2;
 	}
 	else if(first == EVENT_UPDATEV2MODEL)
 	{
