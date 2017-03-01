@@ -526,5 +526,49 @@ void(float dist) Zombie_Walk =  {
 			}
 		}
 	}
-	//do_walk(dist);
+	do_walk(dist);
+};
+
+
+void() Zombie_AI =
+{
+	//dist = 0;
+	float dist = 0;
+	self.flags = self.flags | FL_PARTIALGROUND;
+	//check_onfire();
+	
+	if(self.outside == TRUE) {
+		play_sound_z(2);
+		//self.calc_time = time + (0.3 * random());
+		//Window_Walk(dist);
+		return;
+	} else if(self.outside == 2) {
+		play_sound_z(2);
+		//Window_Hop(0);
+		return;
+	} else if(self.outside == FALSE) {
+		play_sound_z(2);
+		//self.calc_time = time + (0.25 + (0.15 * random()));
+		//Inside_Walk(dist);
+	}
+};
+
+//This function ensures that only one zombie's ai is done at a time, brings down lag significantly
+void() Do_Zombie_AI = {
+	local entity z;
+	
+	z = find(lastzombie,aistatus,"1");
+	if(z == world) {
+		z = find(world,aistatus,"1");
+		if(z == world) {
+			return;//no zombies alive.
+		}
+	}
+	local entity oself;	
+	oself = self;
+	self = z;
+	//if(z.classname == "ai_zombie")//removed because only zombies atm
+	Zombie_AI();
+	self = oself;
+	lastzombie = z;
 };

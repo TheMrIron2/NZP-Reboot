@@ -93,7 +93,7 @@ vector  VEC_VIEW_OFS  = '0 0 32';
 
 // AI definitions
 //Used for global one-zombie-at-a-time type ai
-//void Do_Zombie_AI();
+void Do_Zombie_AI();
 float ai_delay_time;
 .string aistatus;
 entity lastzombie;

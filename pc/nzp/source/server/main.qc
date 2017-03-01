@@ -18,9 +18,9 @@ void() StartFrame =
 	
 	if (roundinit) {
 		Round_Core();
+		Do_Zombie_AI ();
 	} else {
-
-	InitRounds();
+		InitRounds();
 	}
 }
 
