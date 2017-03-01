@@ -501,12 +501,10 @@ void(float dist) Zombie_Walk =  {
 			self.droptime = time + 1;
 		} else if (self.droptime < time) {
 			self.droptime = 0;
-			bprint(PRINT_HIGH, "not on ground\n");
+			//bprint(PRINT_HIGH, "not on ground\n");
 			self.th_fall();
 			return;
 		}
-	} else {
-		bprint(PRINT_HIGH, "on ground\n");
 	}
 	
 	if(self.outside == TRUE) {
