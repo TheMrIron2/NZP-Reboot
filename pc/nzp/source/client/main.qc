@@ -43,8 +43,8 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 
 noref void() CSQC_WorldLoaded =
 {
-	precache_model("models/weapons/mg/mzl.iqm");
-	precache_model("models/blood.iqm");
+	//precache_model("models/weapons/mg/mzl.iqm");
+	//precache_model("models/blood.iqm");
 	
 	//if(!player)
 	//	player = edict_num(player_localentnum);
@@ -64,7 +64,7 @@ noref void() CSQC_WorldLoaded =
 	setmodel(v2model,"");
 	mzlflash.renderflags = vmodel.renderflags;
 	mzlflash.origin = vmodel.origin + vmodel_muzzleoffset;
-	setmodel(mzlflash,"models/weapons/mg/mzl.iqm");
+	//setmodel(mzlflash,"models/weapons/mg/mzl.iqm");
 };
 
 void() Update_Vmodel =
@@ -473,8 +473,7 @@ noref void() CSQC_Parse_Event =
 			entorg = getentity(traceent, GE_ORIGIN);
 			norm = (norm * 0.25) + (normalize(pos - (entorg + '0 0 12')) * 0.75);
 			local entity splat = spawn();
-			setmodel(splat, "models/blood.iqm");
-			setorigin(splat, pos + '0 0 0');
+//			setorigin(splat, pos + '0 0 0');
 			splat.drawmask = 1;
 			splat.alpha = 1;
 			splat.scale = 0.05;

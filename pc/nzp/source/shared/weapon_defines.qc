@@ -1747,6 +1747,7 @@ void(float weptype) precache_extra =
 			precache_sound("sounds/weapons/colt/shoot.wav");
 			precache_sound("sounds/weapons/colt/magout.wav");
 			precache_sound("sounds/weapons/colt/magin.wav");
+			precache_sound("sounds/weapons/colt/slide.wav");
 			break;
 		case W_KAR_SCOPE:
 		case W_KAR:
