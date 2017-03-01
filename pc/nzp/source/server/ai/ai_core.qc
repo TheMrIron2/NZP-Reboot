@@ -43,27 +43,25 @@ entity(entity blarg) find_new_enemy =
 	local float bestdist;
 	local float dist;
 	bestdist = 10000;
-	if(self.classname == "ai_zombie")
-	{
+	if(self.classname == "ai_zombie") {
 		player = find(world,classname,"monkey");
-		if(player)
+		if(player) {
 			return player;
+		}
 		
 		player = find(world,classname,"player");
 		///////////////////////////////
-		if(!player)
-		{
+		if(!player) {
 			return world;
 		}
 		//////////////////////////////
-		while(player)
-		{
-      if (player.downed == true)
-        return world;
+		while(player) {
+      		if (player.downed == true) {
+        		return world;
+			  }
         
 			dist = vlen(self.origin - player.origin);
-			if (dist < bestdist)
-			{
+			if (dist < bestdist) {
 				closest = player;
 				bestdist = dist;
 				
@@ -71,35 +69,6 @@ entity(entity blarg) find_new_enemy =
 			player = find(player,classname,"player");
 		}
 		return closest;
-		
-	}
-	else if(self.classname == "ai_hellhound")
-	{
-		if(self.enemy.classname == "player")
-			return self.enemy;
-		else
-		{
-			player = find(world,classname,"player");
-			///////////////////////////////
-			if(!player)
-			{
-				return world;
-			}
-			//////////////////////////////
-			while(player)
-			{
-				dist = vlen(self.origin - player.origin);
-				if (dist < bestdist)
-				{
-					closest = player;
-					bestdist = dist;
-					
-				}
-				player = find(player,classname,"player");
-			}
-			return closest;
-			
-		}	
 		
 	}
 	bprint(PRINT_HIGH, "Error: Find_New_Enemy returns world! \n");
@@ -407,22 +376,16 @@ void(float dist) Window_Walk =
 
 void(float dist) Window_Hop =
 {
-	if(self.hop_step == 0)
-	{
-		if(self.goalentity.box1owner == self)//we're at center box.
-		{
+	if(self.hop_step == 0) {
+		if(self.goalentity.box1owner == self) {//we're at center box.
 			self.hop_step = 4;
-		}
-		else
-		{
+		} else {
 			self.hop_step = 1;//wait for box1 to be free so we can claim it and walk to it.
 			self.th_idle();
 		}
 	}
-	if(self.hop_step == 1)//waiting idly for box1 to be free, when free, we will claim it.
-	{
-		if(!self.goalentity.box1owner || self.goalentity.box1owner == self)
-		{
+	if(self.hop_step == 1) {//waiting idly for box1 to be free, when free, we will claim it.
+		if(!self.goalentity.box1owner || self.goalentity.box1owner == self) {
 			self.goalentity.box1owner = self;
 			
 			if(self.goalentity.box2owner == self)
@@ -437,23 +400,17 @@ void(float dist) Window_Hop =
 			self.th_walk();
 		}
 	}
-	if(self.hop_step == 2)//we've claimed it, walk to box1
-	{
-		if(nearby(self.goalorigin))
-		{
+	if(self.hop_step == 2) {//we've claimed it, walk to box1
+		if(nearby(self.goalorigin)) {
 			self.hop_step = 4;
 			self.angles = self.goalentity.angles;
-		}
-		else
-		{
+		} else {
 			walk_to_window(dist);
 		}
 	}
 	
-	if(self.hop_step == 4 && self.chase_time < time)//we're at this step because we already own box1, so don't even check if window is busy...
-	{
-		if(!self.goalentity.usedent)
-		{
+	if(self.hop_step == 4 && self.chase_time < time) {//we're at this step because we already own box1, so don't even check if window is busy...
+		if(!self.goalentity.usedent) {
 			self.hop_step = 5;
 			self.angles = self.goalentity.angles;
 			self.goalentity.box1owner = world;//free box1
@@ -463,20 +420,16 @@ void(float dist) Window_Hop =
 			self.chase_time = 0;
 			self.th_windowhop();
 			return;
-		}
-		else
-		{
+		} else {
 			self.tries++;
 			self.chase_time = time + 0.2;
-			if(self.tries > 10)
-			{
+			if(self.tries > 10) {
 				self.goalentity.usedent = world;//free up the window if we've been waiting to hop
 			}
 		}
 	}
 	
-	if(self.hop_step == 6)
-	{
+	if(self.hop_step == 6) {
 		self.outside = FALSE;
 		self.goalentity.usedent = world;//free up the window, we're done hopping it
 		//self.used = 0;
@@ -485,7 +438,102 @@ void(float dist) Window_Hop =
 		//self.th_die();
 		self.th_walk();
 	}
+}
+
+void() PathfindToEnemy =
+{
+	//FIXME
+}
+
+void() NextPathfindToEnemy =
+{
+	//FIXME
+}
+
+//
+float(vector start, vector min, vector max, vector end, float nomonsters, entity forent) tracemove
+{
+	//was tracebox
+	traceline(start,end,nomonsters,forent);
+	
+	if(trace_ent == forent || trace_endpos == end) {
+		return 1;
+	} else {	
+		return 0;	
+	}		
+}
+
+float() TryWalkToEnemy =
+{
+	//was tracebox
+	float TraceResult;
+	TraceResult = tracemove(self.origin,VEC_HULL_MIN,VEC_HULL_MAX,self.enemy.origin,TRUE,self);
+	if(TraceResult == 1) {
+		self.goalentity = self.enemy;
+		self.chase_time = time + 7;
+		return 1;
+	} else {	
+		return 0;	
+	}		
 };
+
+
+void(float dist) Inside_Walk = {
+	if(self.enemy_timeout < time || self.enemy == world) {
+		self.enemy_timeout = time + 5;
+		local entity oldEnemy;
+		oldEnemy = self.enemy;
+		self.enemy = find_new_enemy(self);
+	}
+	//================Check for proximity to player ===========
+	if(vlen(self.enemy.origin - self.origin) < 60) {
+		if(self.enemy.classname == "monkey") {
+			self.th_idle();
+		}
+		
+		if(self.attack_delay < time) {
+			self.attack_delay = time + 1 + (1 * random());
+			self.th_melee();  
+			self.goalentity = self.enemy;
+			self.chase_time = time + 5;
+		}
+		return;
+	}
+	
+	if(vlen(self.enemy.origin - self.origin) < 600) {//50 feet
+		if(self.goalentity == self.enemy && self.chase_enemy_time > time) {
+			return;
+		}
+		if(TryWalkToEnemy())
+		{
+			self.chase_enemy_time = time + 0.5;
+			return;
+		}
+	}
+
+	if(self.goalentity == self.enemy) {
+		self.goalentity = self.goaldummy;
+		self.chase_time = 0;
+	}
+	//============= No Target ====================
+	if(self.goalentity == world) {//not sure when this would ever occur... but whatever.
+		self.goalentity = self.goaldummy;
+	}
+	//============ GoalDummy is Target ============
+	if(self.goalentity == self.goaldummy) {
+		if(nearby(self.goaldummy.origin)) {
+			NextPathfindToEnemy();
+		}
+
+		if(self.chase_time < time) {
+			if(self.goaldummy.origin != world.origin && tracemove(self.origin,VEC_HULL_MIN,VEC_HULL_MAX,self.goalentity.origin,TRUE,self) == 1) {
+				self.chase_time = time + 7;
+			} else {
+				PathfindToEnemy();
+			}
+		}
+	}
+}
 
 .float droptime;
 void(float dist) Zombie_Walk =  {
@@ -527,11 +575,10 @@ void(float dist) Zombie_Walk =  {
 		}
 	}
 	do_walk(dist);
-};
+}
 
 
-void() Zombie_AI =
-{
+void() Zombie_AI = {
 	//dist = 0;
 	float dist = 0;
 	self.flags = self.flags | FL_PARTIALGROUND;
@@ -549,9 +596,9 @@ void() Zombie_AI =
 	} else if(self.outside == FALSE) {
 		play_sound_z(2);
 		//self.calc_time = time + (0.25 + (0.15 * random()));
-		//Inside_Walk(dist);
+		Inside_Walk(dist);
 	}
-};
+}
 
 //This function ensures that only one zombie's ai is done at a time, brings down lag significantly
 void() Do_Zombie_AI = {
@@ -571,4 +618,4 @@ void() Do_Zombie_AI = {
 	Zombie_AI();
 	self = oself;
 	lastzombie = z;
-};
+}
