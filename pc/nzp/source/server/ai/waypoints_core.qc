@@ -5,7 +5,7 @@ void() creator_way_touch =
 		if (other.classname != "player") {
 			return;
 		}
-
+		
 		current_way = self;
 	}
 }
@@ -29,6 +29,7 @@ void () Create_New_Waypoint =
 	setmodel(new_way, "models/way/normal_way.spr");
 	new_way.classname = "waypoint";
 
+	way_count = 0;
 	tempe = find (world, classname, "waypoint");
 	while (tempe) {
 		tempf = stof (tempe.waynum);
@@ -49,6 +50,55 @@ void () Create_New_Waypoint =
 	new_way.touch = creator_way_touch;
 }
 
+
+void () Make_Special_Waypoint =
+{
+	if (self.classname != "player" || !active_way) {
+		return;
+	}
+	if (active_way.targetname != "") {//Toggling it back off
+		setmodel(active_way, "models/way/current_way.spr");
+		active_way.targetname = "";
+		bprint (PRINT_HIGH, "Waypoint ");
+		bprint (PRINT_HIGH, active_way.waynum);
+		bprint (PRINT_HIGH, " is no longer a special waypoint\n");
+		return;
+	}
+
+	if (active_way) {
+		if(self.active_door == world) {
+			bprint (PRINT_HIGH, "Error: no door selected!\n");
+			return;
+		}
+
+		if(self.active_door.wayTarget == "") {
+			bprint (PRINT_HIGH, "Error: Door has no wayTarget value!\n");
+			return;
+		}
+		setmodel(active_way, "models/way/current_way_door.spr");
+		active_way.targetname = self.active_door.wayTarget;
+
+		bprint (PRINT_HIGH, "special waypoint ");
+		bprint (PRINT_HIGH, active_way.waynum);
+		bprint (PRINT_HIGH, " named ");
+		bprint (PRINT_HIGH, active_way.targetname);
+		bprint (PRINT_HIGH, "\n");
+	}
+}
+
+
+void () Move_Waypoint =
+{
+	if (!active_way)
+		return;
+
+	setorigin (active_way, self.origin);
+	bprint (PRINT_HIGH, "Moved waypoint ");
+	bprint (PRINT_HIGH, active_way.waynum);
+	bprint (PRINT_HIGH, "\n");
+	
+}
+
 void () Select_Waypoint =
 {
 	if (self.classname != "player")
@@ -67,17 +117,17 @@ void () Select_Waypoint =
 	while (tempe)
 	{
 		if (tempe.targetname != "")
-			setmodel(tempe, "progs/way/normal_way_door.spr");
+			setmodel(tempe, "models/way/normal_way_door.spr");
 		else
-			setmodel(tempe, "progs/way/normal_way.spr");
+			setmodel(tempe, "models/way/normal_way.spr");
 		tempe = find (tempe, classname, "waypoint");
 	}
 	if (active_way)
 	{
 		if (active_way.targetname != "")
-			setmodel(active_way, "progs/way/current_way_door.spr");
+			setmodel(active_way, "models/way/current_way_door.spr");
 		else
-			setmodel(active_way, "progs/way/current_way.spr");
+			setmodel(active_way, "models/way/current_way.spr");
 		
 		bprint (PRINT_HIGH, "Selected waypoint ");
 		bprint (PRINT_HIGH, active_way.waynum);
@@ -88,144 +138,152 @@ void () Select_Waypoint =
 		}
 		bprint (PRINT_HIGH, "\n");
 		
-		int i;
+		float i;
 		for	(i = 0; i < MAX_WAY_TARGETS; i++) {
+			tempe = find (world, waynum, active_way.targets[i]);
+
+			if (tempe) {
+				if (tempe.targetname != "")
+					setmodel(tempe, "models/way/last_way_door.spr");
+				else
+					setmodel(tempe, "models/way/last_way.spr");
+				bprint(PRINT_HIGH, active_way.targets[i]);
+				bprint(PRINT_HIGH, "\n");
+			} else {
+				active_way.targets[i] = "";
+			}
+		}
+	}
+}
+
+
+void() Remove_Waypoint =
+{
+	entity tempe;
+	float i;
+	if (!active_way)
+		return;
+		
+	tempe = find (world, classname, "waypoint");
+	while (tempe) {
+	
+		for	(i = 0; i < MAX_WAY_TARGETS; i++) {
+			if (tempe.targets[i] == active_way.waynum) {
+				tempe.targets[i] = "";
+			}
+		}
+
+		tempe = find (tempe, classname, "waypoint");
+	}
+		
+	bprint(PRINT_HIGH, "Removed waypoint ");
+	bprint(PRINT_HIGH, active_way.waynum);
+	bprint(PRINT_HIGH, "\n");
+	remove (active_way);
+}
+
+float Waypoint_Linked_To(entity from, entity to) {
+	float i;
+	for	(i = 0; i < MAX_WAY_TARGETS; i++) {
+		if (from.waynum == to.targets[i]) {
+			bprint(PRINT_HIGH, "These waypoints are already linked!\n");
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+float Link (entity from, entity to) {
+	float i;
+	entity tempe;
+	for	(i = 0; i < MAX_WAY_TARGETS; i++) {
+		tempe = find (world, waynum, from.targets[i]);
+
+		if (tempe == world || tempe == to) {
+			from.targets[i] = to.waynum;
+			bprint(PRINT_HIGH, "Linked waypoint ");
+			bprint(PRINT_HIGH, to.waynum);
+			bprint(PRINT_HIGH, " to ");
+			bprint(PRINT_HIGH, from.waynum);
+			bprint(PRINT_HIGH, "\n");
+
+			if (to.targetname != "") {
+				setmodel(to, "models/way/last_way_door.spr");
+			} else {
+				setmodel(to, "models/way/last_way.spr");
+			}
 			
+			return 1;
 		}
-		if(active_way.target != "")
-		{
-			tempe = find (world, waynum, active_way.target);
-			if (tempe)
-			{
-				if (tempe.targetname != "")
-					setmodel(tempe, "progs/way/last_way_door.spr");
-				else
-					setmodel(tempe, "progs/way/last_way.spr");
-				bprint(PRINT_HIGH, active_way.target);
-				bprint(PRINT_HIGH, "\n");
-			}
-			else
-			{
-				active_way.target = "";
-			}
-		}
-		if(active_way.target2 != "")
-		{
-			tempe = find (world, waynum, active_way.target2);
-			if (tempe)
-			{
-				if (tempe.targetname != "")
-					setmodel(tempe, "progs/way/last_way_door.spr");
-				else
-					setmodel(tempe, "progs/way/last_way.spr");
-				bprint(PRINT_HIGH, active_way.target2);
-				bprint(PRINT_HIGH, "\n");
-			}
-			else
-			{
-				active_way.target2 = "";
+	}
+
+	return 0;
+}
+
+void () Link_Waypoints =
+{
+	if (self.classname != "player")
+		return;
+	if (!current_way)
+		return;
+	if (!active_way)
+		return;
+	if (current_way == active_way)
+		return;
+	
+	if (Waypoint_Linked_To(current_way, active_way)) {
+		bprint(PRINT_HIGH, "These waypoints are already linked!\n");
+		return;
+	}
+	
+	float i;
+	entity tempe;
+	for	(i = 0; i < MAX_WAY_TARGETS; i++) {
+		tempe = find (world, waynum, active_way.targets[i]);
+
+		if (tempe == world) {
+			if (Link(active_way, current_way)) {
+				return;
 			}
 		}
-		if(active_way.target3 != "")
-		{
-			tempe = find (world, waynum, active_way.target3);
-			if (tempe)
-			{
-				if (tempe.targetname != "")
-					setmodel(tempe, "progs/way/last_way_door.spr");
-				else
-					setmodel(tempe, "progs/way/last_way.spr");
-				bprint(PRINT_HIGH, tempe.target3);
-				bprint(PRINT_HIGH, "\n");
-			}
-			else
-			{
-				active_way.target3 = "";
-			}
+	}
+
+	
+	bprint(PRINT_HIGH, "no targets remaining!\n");
+}
+
+
+
+void() Dual_Link_Waypoints =
+{
+	if (self.classname != "player" || !current_way || !active_way || current_way == active_way) {
+		return;
+	}
+	
+	float result1,result2;
+	result1 = Waypoint_Linked_To(current_way,active_way);
+	result2 = Waypoint_Linked_To(active_way,current_way);
+	
+	if(result1 && result2) {
+		bprint(PRINT_HIGH, "Both waypoints already linked!\n");
+		return;
+	}
+	
+	if(!result1)
+	{
+		if (Link(current_way,active_way)) {
+			bprint(PRINT_HIGH, "Linked waypoint ", current_way.waynum, " to ", active_way.waynum, "\n");
+		} else {
+			bprint(PRINT_HIGH, "ERROR: Could not link waypoint ", current_way.waynum, " to ", active_way.waynum, "\n");
 		}
-		if(active_way.target4 != "")
-		{
-			tempe = find (world, waynum, active_way.target4);
-			if (tempe)
-			{
-				if (tempe.targetname != "")
-					setmodel(tempe, "progs/way/last_way_door.spr");
-				else
-					setmodel(tempe, "progs/way/last_way.spr");
-				bprint(PRINT_HIGH, active_way.target4);
-				bprint(PRINT_HIGH, "\n");
-			}
-			else
-			{
-				active_way.target4 = "";
-			}
-		}
-		if(active_way.target5 != "")
-		{
-			tempe = find (world, waynum, active_way.target5);
-			if (tempe)
-			{
-				if (tempe.targetname != "")
-					setmodel(tempe, "progs/way/last_way_door.spr");
-				else
-					setmodel(tempe, "progs/way/last_way.spr");
-				bprint(PRINT_HIGH, active_way.target5);
-				bprint(PRINT_HIGH, "\n");
-			}
-			else
-			{
-				active_way.target5 = "";
-			}
-		}
-		if(active_way.target6 != "")
-		{
-			tempe = find (world, waynum, active_way.target6);
-			if (tempe)
-			{
-				if (tempe.targetname != "")
-					setmodel(tempe, "progs/way/last_way_door.spr");
-				else
-					setmodel(tempe, "progs/way/last_way.spr");
-				bprint(PRINT_HIGH, "\n");
-			}
-			else
-			{
-				active_way.target6 = "";
-			}
-		}
-		if(active_way.target7 != "")
-		{
-			tempe = find (world, waynum, active_way.target7);
-			if (tempe)
-			{
-				if (tempe.targetname != "")
-					setmodel(tempe, "progs/way/last_way_door.spr");
-				else
-					setmodel(tempe, "progs/way/last_way.spr");
-				bprint(PRINT_HIGH, active_way.target7);
-				bprint(PRINT_HIGH, "\n");
-			}
-			else
-			{
-				active_way.target7 = "";
-			}
-		}
-		if(active_way.target8 != "")
-		{
-			tempe = find (world, waynum, active_way.target8);
-			if (tempe)
-			{
-				if (tempe.targetname != "")
-					setmodel(tempe, "progs/way/last_way_door.spr");
-				else
-					setmodel(tempe, "progs/way/last_way.spr");
-				bprint(PRINT_HIGH, active_way.target8);
-				bprint(PRINT_HIGH, "\n");
-			}
-			else
-			{
-				active_way.target8 = "";
-			}
+	}
+	if(!result2)
+	{
+		if (Link(active_way,current_way)) {
+			bprint(PRINT_HIGH, "Linked waypoint ", active_way.waynum, " to ", current_way.waynum, "\n");
+		} else {
+			bprint(PRINT_HIGH, "ERROR: Could not link waypoint ", active_way.waynum, " to ", current_way.waynum, "\n");
 		}
 	}
 }
@@ -236,8 +294,23 @@ void () Waypoint_Functions =
 		case 100:	
 			Create_New_Waypoint();
 			break;
-		case 100:	
+		case 101:	
+			Make_Special_Waypoint();
+			break;
+		case 102:	
 			Select_Waypoint();
+			break;
+		case 103:
+			Move_Waypoint();
+			break;
+		case 104:
+			Link_Waypoints ();
+			break;
+		case 105:
+			Dual_Link_Waypoints();
+			break;
+		case 106:
+			Remove_Waypoint();
 			break;
 	}
 	
