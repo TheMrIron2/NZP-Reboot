@@ -47,7 +47,11 @@ void() PlayerPreThink =
 		return;
 	}
 	
-	Weapon_Logic();
+	if (cvar("waypoint_mode")) {
+		Waypoint_Logic();
+	} else {
+		Weapon_Logic();
+	}
 	
 
 	if(self.button2)

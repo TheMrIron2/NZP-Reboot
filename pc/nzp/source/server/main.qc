@@ -15,6 +15,10 @@ void() StartFrame =
 	deathmatch = cvar("deathmatch");
 	coop = cvar("coop");
 	framecount = framecount + 1;
+
+	if (waypoint_mode) {
+		return;
+	}
 	
 	if (roundinit) {
 		Round_Core();

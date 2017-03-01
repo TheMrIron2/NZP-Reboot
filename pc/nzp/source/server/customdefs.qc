@@ -231,6 +231,12 @@ float		rounds;
 float rounds_change;
 
 
+//Waypoints
+void () Waypoint_Logic;
+entity current_way;
+float waypoint_mode;
+
+
 //FIXME(Jukki) Place in better place
 void(entity to, float type, float cost, float weapon) useprint = {
 	
