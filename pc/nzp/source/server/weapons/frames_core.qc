@@ -80,6 +80,24 @@ void () W_Frame_Update =
 	}
 };
 
+void(string to) UpdateVmodel =
+{
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_UPDATEVMODEL);
+	WriteString(MSG_MULTICAST, to);
+	msg_entity = self;
+	multicast('0 0 0', MULTICAST_ONE);
+}
+
+void(string to) UpdateV2model =
+{
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_UPDATEV2MODEL);
+	WriteString(MSG_MULTICAST, to);
+	msg_entity = self;
+	multicast('0 0 0', MULTICAST_ONE);
+}
+
 void Set_W_Frame (float startframe, float endframe, float duration, float funccalledin, float animtype, void() endanimfunc, string set_model, float dontstartnew) =
 {
 	self.weaponframe = startframe;
@@ -105,17 +123,21 @@ void Set_W_Frame (float startframe, float endframe, float duration, float funcca
 	{
 		self.weapon_animduration = 0;
 	}
-	if (set_model)
+	
+	if (set_model && (startframe != endframe)) // naievil -- latter used for checkhold 
+	{
 		self.weaponmodel = set_model;
-
-}
-
-void(string to) UpdateVmodel =
-{
-	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
-	WriteByte(MSG_MULTICAST, EVENT_UPDATEVMODEL);
-	WriteString(MSG_MULTICAST, to);
-	msg_entity = self;
-	multicast('0 0 0', MULTICAST_ONE);
-
+		UpdateVmodel(self.weaponmodel);
+		
+		if (set_model == "progs/VModels/v_nade.mdl" || set_model == "progs/VModels/v_betty.mdl")
+		{
+			self.weapon2model = "";
+			UpdateV2model(self.weapon2model);
+		}
+		else if (self.weapon == W_KAR_SCOPE)
+		{	
+			self.weapon2model = "progs/Vmodels/v_karscope.mdl"; 
+			UpdateV2model(self.weapon2model);		// naievil (FIXME) probably better way to do this
+		}
+	}
 }
