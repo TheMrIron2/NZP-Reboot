@@ -2,6 +2,7 @@ float isBuying;
 float backupWepSkin;
 float sound_perk_delay; 
 void() W_Switch;
+void(string to) UpdateVmodel;
 void() give_revive =
 { 
   sound_perk_delay = time + 4.5;
@@ -16,6 +17,7 @@ void() give_revive =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
+	UpdateVmodel(modelname);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
 }
 void() give_juggernog =
@@ -32,6 +34,7 @@ void() give_juggernog =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
+	UpdateVmodel(modelname);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
 }
 
@@ -49,6 +52,7 @@ void() give_doubletap =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
+	UpdateVmodel(modelname);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
 }
 void() give_speedcola =
@@ -64,6 +68,7 @@ void() give_speedcola =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
+	UpdateVmodel(modelname);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
 	
 	/*if (sound_perk_delay < time)
@@ -85,6 +90,7 @@ void() give_flopper =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
+	UpdateVmodel(modelname);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
 }
 void() give_staminup =
@@ -101,6 +107,7 @@ void() give_staminup =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
+	UpdateVmodel(modelname);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
 }
 
@@ -143,10 +150,11 @@ void() touch_perk =
 			tempe = self;
 			self = other;
 			sprintstop();
-			self.fire_delay = self.reload_delay = 4.5 + time;
+			self.fire_delay = self.reload_delay = 4.5 + time;	
+			other.weaponskin = 3;			
+			UpdateVmodel("progs/VModels/v_perk.mdl");
 			Set_W_Frame (0, 22, 0, 0, PERK, give_revive, "progs/VModels/v_perk.mdl", true);
 			self = tempe;
-			other.weaponskin = 3;
 			sound (other, CHAN_ITEM, "perkmachine/quickrevive.wav", 1, ATTN_NORM);
 			self.revivesoda++;
 			if (self.revivesoda == 3)
@@ -161,9 +169,10 @@ void() touch_perk =
 			self = other;
 			sprintstop();
 			self.fire_delay = self.reload_delay = 4.0 + time;
+			other.weaponskin = 3;
+			UpdateVmodel("progs/VModels/v_perk.mdl");
 			Set_W_Frame (0, 39, 0, 0, PERK, give_revive, "progs/VModels/v_perk.mdl", true);
 			self = tempe;
-			other.weaponskin = 3;
 			sound (other, CHAN_ITEM, "perkmachine/quickrevive.wav", 1, ATTN_NORM);
 		}
 		else if (other.button7)
@@ -184,9 +193,10 @@ void() touch_perk =
 			self = other;
 			sprintstop();
 			self.fire_delay = self.reload_delay = 4.0 + time;
+			other.weaponskin = 4;
+			UpdateVmodel("progs/VModels/v_perk.mdl");
 			Set_W_Frame (0, 39, 0, 0, PERK, give_flopper, "progs/VModels/v_perk.mdl", true);
 			self = tempe;
-			other.weaponskin = 4;
 			sound (other, CHAN_ITEM, "perkmachine/flopper.wav", 1, ATTN_NORM);
 		}
 		else if (other.button7)
@@ -207,9 +217,10 @@ void() touch_perk =
 			self = other;
 			sprintstop();
 			self.fire_delay = self.reload_delay = 4.0 + time;
+			other.weaponskin = 2;
+			UpdateVmodel("progs/VModels/v_perk.mdl");
 			Set_W_Frame (0, 39, 0, 0, PERK, give_juggernog, "progs/VModels/v_perk.mdl", true);
 			self = tempe;
-			other.weaponskin = 2;
 			sound (other, CHAN_ITEM, "perkmachine/juggernog.wav", 1, ATTN_NORM);
 		}
 		else if (other.button7)
@@ -230,6 +241,8 @@ void() touch_perk =
 			self = other;
 			sprintstop();
 			self.fire_delay = self.reload_delay = 4.0 + time;
+			other.weaponskin = 2;
+			UpdateVmodel("progs/VModels/v_perk.mdl");
 			Set_W_Frame (0, 39, 0, 0, PERK, give_staminup, "progs/VModels/v_perk.mdl", true);
 			self = tempe;
 			other.weaponskin = 0;
@@ -253,9 +266,10 @@ void() touch_perk =
 			self = other;
 			sprintstop();
 			self.fire_delay = self.reload_delay = 4.0 + time;
+			other.weaponskin = 1;
+			UpdateVmodel("progs/VModels/v_perk.mdl");
 			Set_W_Frame (0, 39, 0, 0, PERK, give_speedcola, "progs/VModels/v_perk.mdl", true);
 			self = tempe;
-			other.weaponskin = 1;
 			sound (other, CHAN_ITEM, "perkmachine/speedcola.wav", 1, ATTN_NORM);
 		}
 		else if (other.button7)
@@ -276,9 +290,10 @@ void() touch_perk =
 			self = other;
 			sprintstop();
 			self.fire_delay = self.reload_delay = 4.0 + time;
+			other.weaponskin = 0;
+			UpdateVmodel("progs/VModels/v_perk.mdl");
 			Set_W_Frame (0, 39, 0, 0, PERK, give_doubletap, "progs/VModels/v_perk.mdl", true);
 			self = tempe;
-			other.weaponskin = 0;
 			sound (other, CHAN_ITEM, "perkmachine/doubletap.wav", 1, ATTN_NORM);
 		}
 		else if (other.button7)

@@ -215,9 +215,11 @@ void(string com) SV_ParseClientCommand =
 			return;
 		else
 		{
-			SpectatorSpawn();
+			/*SpectatorSpawn();
 			bprint(PRINT_HIGH, self.netname); //print player name
-			bprint(PRINT_HIGH, " has joined the spectators.\n");
+			bprint(PRINT_HIGH, " has joined the spectators.\n");*/
+			
+			PlayerSpawn();
 		}
 	}
 };

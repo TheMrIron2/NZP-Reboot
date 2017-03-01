@@ -109,3 +109,13 @@ void Set_W_Frame (float startframe, float endframe, float duration, float funcca
 		self.weaponmodel = set_model;
 
 }
+
+void(string to) UpdateVmodel =
+{
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_UPDATEVMODEL);
+	WriteString(MSG_MULTICAST, to);
+	msg_entity = self;
+	multicast('0 0 0', MULTICAST_ONE);
+
+}

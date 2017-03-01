@@ -162,17 +162,21 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 		
 		if (interpolating == TRUE) {
 			vmodel.lerpfrac += frametime * 10;
+			v2model.lerpfrac += frametime * 10;
 
 			if (vmodel.lerpfrac >= 1.0) {
 				oldweaponframe = curweaponframe;
 				vmodel.lerpfrac = 0;
+				v2model.lerpfrac = 0;
 				interpolating = FALSE;	
 			}
 			
 		}
 		vmodel.frame = oldweaponframe;
 		vmodel.frame2 = curweaponframe;
-		v2model.frame = getstatf(STAT_WEAPON2FRAME);
+		//v2model.frame = getstatf(STAT_WEAPON2FRAME);
+		v2model.frame = oldweaponframe;
+		v2model.frame2 = curweaponframe;
 		v2model.angles = vmodel.angles;
 		v2model.origin = vmodel.origin;
 		if(mzlflash.alpha > 0.09)
@@ -500,6 +504,18 @@ noref void() CSQC_Parse_Event =
 		v2model_targetpos = vmodel_targetpos = vmodel.origin;
 		v2model_muzzleoffset = vmodel_muzzleoffset = '12 0 1';
 		weapon = to;
+	}
+	else if(first == EVENT_UPDATEVMODEL)
+	{
+		local string new;
+		new = readstring();
+		setmodel(vmodel,new);
+
+		v2model.origin = vmodel.origin = '0 0 0';
+		v2model.angles = vmodel.angles = '-60 0 0';
+		v2model_currentpos = vmodel_currentpos = vmodel.origin + '0 0 -24';
+		v2model_targetpos = vmodel_targetpos = vmodel.origin;
+		v2model_muzzleoffset = vmodel_muzzleoffset = '12 0 1';
 	}
 	else if(first == EVENT_USEPRINT) {
 		useprint_type = readbyte();

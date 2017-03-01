@@ -1,3 +1,5 @@
+void(string to) UpdateVmodel;
+
 void() ReturnWeaponModel =
 {
 	self.weaponmodel = GetWeaponModel(self.weapon, 0);
@@ -30,6 +32,7 @@ void(float to) SwitchWeapon =
 	multicast('0 0 0', MULTICAST_ONE);
 	
 }
+
 void() W_Switch =
 {
 	if (self.secondaryweapon && self.secondaryweapon !=0 && !self.new_anim_stop && !other.button7)
@@ -628,6 +631,8 @@ void() checkHold =
 		sound (self, CHAN_WEAPON, "sounds/weapons/grenade/throw.wav", 1, ATTN_NORM);
 		self.reload_delay = self.fire_delay = time + 0.4;
 		self.throw_delay = time + 0.9;
+		UpdateVmodel(GetWeaponModel(self.weapon, false));
+		W_PutOut();
 	}
 	else
 	{
@@ -650,6 +655,8 @@ void() checkHold =
 		sound (self, CHAN_WEAPON, "sounds/weapons/grenade/throw.wav", 1, ATTN_NORM);
 		self.reload_delay = self.fire_delay = time + 0.4;
 		self.throw_delay = time + 0.9;
+		UpdateVmodel(GetWeaponModel(self.weapon, false));
+		W_PutOut();
 	}
 	else
 	{    
@@ -670,20 +677,22 @@ void() W_Grenade =
 	if (self.primary_grenades > 0 || self.secondary_grenades > 0)
   {         
 	  if (self.pri_grenade_state == 0 && self.primary_grenades > 0)
-      {    
-      Set_W_Frame (0, 2, 0, 0, GRENADE, checkHold, "progs/VModels/v_nade.mdl", true);
-      sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
-      self.primary_grenades = self.primary_grenades - 1;
-      self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
-      self.grenade_delay = time + 5;
-      //self.holdnade = TRUE;
+      {
+		UpdateVmodel("progs/VModels/v_nade.mdl");
+		Set_W_Frame (0, 2, 0, 0, GRENADE, checkHold, "progs/VModels/v_nade.mdl", true);
+		sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
+		self.primary_grenades = self.primary_grenades - 1;
+		self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
+		self.grenade_delay = time + 5;
+		//self.holdnade = TRUE;
       }
     else if (self.pri_grenade_state == 1 && self.secondary_grenades > 0)
       {  
-      Set_W_Frame (0, 18, 0, 0, GRENADE, checkHold, "progs/VModels/v_betty.mdl", true);
-      sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
-      self.secondary_grenades = self.secondary_grenades - 1;
-      self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
+	  	UpdateVmodel("progs/VModels/v_betty.mdl");
+		Set_W_Frame (0, 18, 0, 0, GRENADE, checkHold, "progs/VModels/v_betty.mdl", true);
+		sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
+		self.secondary_grenades = self.secondary_grenades - 1;
+		self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
 //	 	self.grenade_delay = time + 5;
       //self.holdnade = TRUE;
       }
