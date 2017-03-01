@@ -18,6 +18,7 @@ string mappath;
 .float points;
 .float cost;
 .float cost2;
+void(entity person, float expamt , float doublepoint) addmoney;
 
 //doors
 .float state;
@@ -39,6 +40,7 @@ float yeahIamrunning;
 
 //Weaponsystem defines
 void SwitchWeapon(float to);
+void Weapon_Logic();
 .float downed;
 .float fire_delay;
 .float reload_delay;

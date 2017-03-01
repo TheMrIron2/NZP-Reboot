@@ -107,6 +107,12 @@ const float EVENT_SETROUND = 13;
 #define KNIFE2		9
 #define REVIVE		10
 
+#define S_HEADSHOT	1
+#define S_KNIFE		2
+#define S_NORMAL	3
+#define S_ZOMBIE	4
+#define S_EXPLOSIVE	5
+
 //Perk types
 #define 	P_JUG		1
 #define 	P_DOUBLE	2

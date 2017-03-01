@@ -256,15 +256,44 @@ void () CheckReload =
 
 void Parse_Damage () = // DO NOT TOUCH
 {
+	entity ent;
+	float total_dmg;
+	ent = findfloat (world, washit, 1);
+
+	while (ent) {
+		if (ent.classname == "ai_zombie") {
+			total_dmg = ent.hitamount;
+
+			//Clear hit
+			ent.washit = 0;
+			ent.hitamount = 0;
+
+			
+			DamageHandler(ent,self, total_dmg, S_NORMAL);
+		}
+		ent = findfloat (ent, washit, 1);
+	}
 }
 
-void(float Damage, vector dir, vector org, vector plane, entity hit_ent) TraceAttack =
+void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAttack =
 {
 	vector  vel;
+	float f_damage;
   
 	vel = normalize(dir);
 	vel = vel + 2*plane;
 	vel = vel * 200;
+
+	if (hit_ent.takedamage) {
+		if (trace_fraction >= 1) {
+			return;
+		}
+
+		f_damage = damage;
+
+		hit_ent.washit = 1;
+		hit_ent.hitamount = hit_ent.hitamount + f_damage;
+	}
 
 	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 	WriteByte(MSG_MULTICAST, EVENT_PISTOLFIRE);
@@ -323,7 +352,6 @@ void (float shotcount, float sprd, float Damage/*, float headmulti, float legmul
 			penetration_times++;
 			if (!trace_ent.takedamage)
 				do_break = 1;
-			
 			if (trace_ent.classname == "ai_zombie_head" || trace_ent.classname == "ai_zombie_larm" || trace_ent.classname == "ai_zombie_rarm")
 				hitent = trace_ent.owner;
 			else

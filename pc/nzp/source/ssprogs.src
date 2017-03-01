@@ -5,6 +5,10 @@ shared/weapon_defines.qc
 server/customdefs.qc
 
 server/rounds.qc
+server/main.qc
+server/player.qc
+server/damage.qc
+
 
 server/entities/sub_functions.qc
 server/entities/triggers.qc
@@ -23,6 +27,4 @@ server/weapons/frames_core.qc
 server/weapons/weapon_core.qc
 
 
-server/player.qc
-server/main.qc
 server/items.qc
