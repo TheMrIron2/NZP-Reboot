@@ -309,6 +309,7 @@ void() Save_Waypoints
 		fputs(file,"waypoint\n");
 		fputs(file,"{\n");
 		fputs(file, " id: ", dway.waynum, "\n");
+		fputs(file, " origin: ", vtos(dway.origin), "\n");
 		if (dway.targetname != "") {
 			fputs(file, " door: ", dway.targetname, "\n");
 		}
@@ -347,10 +348,8 @@ void (vector here, float which, string special, string trg, string trg2, string 
 	if (cvar("waypoint_mode"))
 		setmodel(new_way, "models/way/normal_way.spr");
 	new_way.classname = "waypoint";
-	new_way.classname = strzone(new_way.classname);
 
 	new_way.waynum = ftos(which);
-	new_way.waynum = strzone(new_way.waynum);
 	dprint ("Created waypoint  ");
 	dprint (new_way.waynum);
 	dprint ("\n");
@@ -362,7 +361,6 @@ void (vector here, float which, string special, string trg, string trg2, string 
 		if (cvar("waypoint_mode"))
 			setmodel(new_way, "models/way/normal_way_door.spr");
 		new_way.targetname = special;
-		new_way.targetname = strzone(new_way.targetname);
 		dprint ("Special waypoint  ");
 		dprint (new_way.targetname);
 		dprint ("\n");
@@ -379,6 +377,122 @@ void (vector here, float which, string special, string trg, string trg2, string 
 	new_way.targets[7] = trg8;
 
 	new_way.touch = creator_way_touch;
+}
+
+
+void() Load_Waypoints
+{
+	float file, which, point;
+	string h;
+	local vector where;
+	float targetcount, loop;
+
+	entity new_way;
+
+	h = strcat(mappath, ".way");
+	file = fopen (h, FILE_READ);
+
+	if (file == -1)
+	{
+		dprint("Error: file not found \n");
+		return;
+	}
+
+	point = 0;
+	loop = 1;
+	while (loop)
+	{
+		string line;
+		line = fgets(file);
+		if not (line) {
+			bprint(PRINT_HIGH, "End of file\n");
+			loop = 0;
+			break;
+		}
+		h = strtrim(line);
+
+		//print(h, "\n");
+		if (h == "") {
+			continue;
+		}
+
+		switch (point) {
+			case 0:
+				if (h == "waypoint") {
+					new_way = spawn();
+					new_way.solid = SOLID_TRIGGER;
+
+					if (cvar("waypoint_mode"))
+						setmodel(new_way, "models/way/normal_way.spr");
+					new_way.classname = "waypoint";
+
+					new_way.touch = creator_way_touch;
+					point = 1;
+					targetcount = 0;
+				} else {
+					bprint(PRINT_HIGH, "Error: unknown point ", h, "\n");
+				}
+				break;
+			case 1:
+				if (h == "{") {
+					point = 2;
+				} else {
+					bprint(PRINT_HIGH, "Error: unknown variable ", h, " expected {\n");
+				}
+				break;
+			case 2:
+				tokenize(h);
+
+				string value, variable;
+				variable = strtrim(argv(0));
+				value = strtrim(argv(2));
+
+				switch (variable) {
+					case "origin":
+						
+						print(value, "\n");
+						setorigin(new_way, stov(value));
+						break;
+					case "id":
+						new_way.waynum = value;
+						break;
+					case "door":
+						new_way.targetname = value;
+						
+						if (cvar("waypoint_mode"))
+							setmodel(new_way, "models/way/normal_way_door.spr");
+						break;
+					case "targets":
+						point = 3;
+						break;
+					case "}":
+						point = 0;
+						break;
+					default:
+						bprint(PRINT_HIGH, "Error: unknown variable ", variable, "\n");
+						break;
+				}
+				break;
+			case 3:
+				if (h == "[") {
+					point = 4;
+				} else {
+					bprint(PRINT_HIGH, "Error: unknown variable ", h, " expected [\n");
+				}
+				break;
+			case 4:
+				if (targetcount >= MAX_WAY_TARGETS) {
+					bprint(PRINT_HIGH, "Error: Target count too high for waypoint\n");
+				} else if (h == "]") {
+					point = 2;
+				} else  {
+					new_way.targets[targetcount] = h;
+				}
+				break;
+		}
+	}
+
+	fclose(file);
 }
 
 void() Load_Waypoints_Legacy
@@ -476,7 +590,7 @@ void () Waypoint_Functions =
 			Save_Waypoints();
 			break;
 		case 107:
-			Load_Waypoints_Legacy();
+			Load_Waypoints();
 			break;
 		case 108:
 			Load_Waypoints_Legacy();
