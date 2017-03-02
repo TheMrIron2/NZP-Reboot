@@ -355,12 +355,12 @@ void() LungeKnifeHit =
 		{
 			hit_ent = trace_ent;
 		}
-		if (hit_ent.takedamage != DAMAGE_NOMARKER)
+		/*if (hit_ent.takedamage != DAMAGE_NOMARKER)
 		{
 			org = source + (v_forward * 20);
 			SpawnBlood (org, org, 50);
 			//hit = 1;
-		}
+		}*/
 		
 		DamageHandler (hit_ent, self, f_damage, S_KNIFE);
 	}

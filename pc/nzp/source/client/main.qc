@@ -119,6 +119,122 @@ noref void(float isnew) CSQC_Ent_Update =
 		print(strcat(etos(self),"\n"));
 }	
 
+void(float width, float height) HUD_Health = 
+{
+	local float health;
+	
+	health = getstatf(STAT_HEALTH); 
+	drawstring([0.01*width, 0.94*height, 0], strcat("+",ftos(health)), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+}
+
+void(float width, float height) HUD_Ammo =
+{
+	local float ammo, curmag;
+	string ammostring;
+	
+	curmag = getstatf(STAT_CURRENTMAG);
+	ammo = getstatf(STAT_AMMO);	
+	ammostring = strcat(ftos(curmag), strcat("/",ftos(ammo)));
+	drawstring([0.75*width, 0.94*height, 0], ammostring, [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+}
+
+void(float width, float height) HUD_Points =
+{
+	local float points;
+	
+	points = getstatf(STAT_POINTS);
+	drawstring([0.80*width, 0.90*height, 0], ftos(points), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);   // POINTS
+}
+
+void(float width, float height) HUD_Grenades =
+{
+	local float grenades;
+
+	grenades = getstatf(STAT_GRENADES);
+	drawstring([0.97*width, 0.94*height, 0], ftos(grenades), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+}
+
+void(float width, float height) HUD_Rounds =
+{
+	// drawstring seems to be the only thing here...
+	drawstring([0.01*width, 0.90*height, 0], ftos(rounds), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+}
+
+void(float width, float height) HUD_Useprint =
+{
+
+		string usestring, usebutton;
+		float print_width, x;
+		
+		tokenize(findkeysforcommand("+button7"));
+		usebutton = strtoupper(keynumtostring(stof(argv(0))));
+		//usebutton = keynumtostring(-1);
+
+		switch (useprint_type) {
+			case 0://clear
+				usestring = "";
+				break;
+			case 1://door
+				usestring = strcat("Hold ",usebutton, " to open door [Cost:", ftos(useprint_cost),"]");
+				break;
+			case 2://debris
+				usestring = strcat("Hold ",usebutton, " to remove debris [Cost:", ftos(useprint_cost),"]");
+				break;
+			case 3://ammo
+				usestring = strcat("Hold ",usebutton, " to buy ammo for ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
+				break;
+			case 4://weapon
+				usestring = strcat("Hold ",usebutton, " to buy ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
+				break;
+			case 5://window
+				usestring = strcat("Hold ",usebutton, " to Rebuild Barrier");
+				break;
+			case 6://box
+				usestring = strcat("Hold ",usebutton, " to buy a random weapon [Cost:", ftos(useprint_cost),"]");
+				break;
+			case 7://box take
+				usestring = strcat("Hold ",usebutton, " to take weapon");
+				break;
+			case 8://power
+				usestring = "The power must be activated first";
+				break;
+			case 9://perk
+				usestring = strcat("Hold ",usebutton, " to buy ", "PERK", " [Cost:", ftos(useprint_cost),"]");
+				break;
+			case 10://turn on power
+				usestring = strcat("Hold ",usebutton, " to turn on the power");
+				break;
+			default:
+				usestring = "This should not happen you dum fuck";
+				break;
+		}
+			print_width = stringwidth (usestring, 0, [0.015*width, 0.015*width, 0]);
+			x = (width - print_width)/2;
+			drawstring([x, 0.70*height, 0], usestring, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+
+}
+
+void(float width, float height) HUD_Perks =
+{
+
+}
+
+void(float width, float height) HUD_Draw = 
+{
+	HUD_Health(width, height);
+	HUD_Ammo(width, height);
+	HUD_Points(width, height);
+	HUD_Grenades(width, height);
+	HUD_Rounds(width, height);
+	HUD_Perks(width, height);
+	
+	// fix me: change the 51 and 50 to human readable const floats like STAT_PISTOLAMMO, STAT_MGAMMO or something	
+
+	if (useprint_time > time) 
+		HUD_Useprint(width, height);
+
+}
+
 
 // CALLED EVERY CLIENT RENDER FRAME
 noref void(float width, float height, float menushown) CSQC_UpdateView =
@@ -210,81 +326,7 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 	}
 	else
 	{
-		local float health, ammo, curmag, points, grenades;
-		string ammostring;
-		health = getstatf(STAT_HEALTH);
-		// fix me: change the 51 and 50 to human readable const floats like STAT_PISTOLAMMO, STAT_MGAMMO or something
-		curmag = getstatf(STAT_CURRENTMAG);
-		points = getstatf(STAT_POINTS);
-		ammo = getstatf(STAT_AMMO);
-		grenades = getstatf(STAT_GRENADES);
-
-		ammostring = strcat(ftos(curmag), strcat("/",ftos(ammo)));
-		drawstring([0.01*width, 0.94*height, 0], strcat("+",ftos(health)), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
-		drawstring([0.01*width, 0.90*height, 0], ftos(rounds), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
-		
-		drawstring([0.97*width, 0.94*height, 0], ftos(grenades), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1); // nai -- draw grenade val
-
-
-		drawstring([0.80*width, 0.90*height, 0], ftos(points), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
-		
-		drawstring([0.75*width, 0.94*height, 0], ammostring, [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
-
-
-		//Draw useprint
-		if (useprint_time > time) {
-			string usestring, usebutton;
-			float print_width, x;
-			
-			tokenize(findkeysforcommand("+button7"));
-			usebutton = strtoupper(keynumtostring(stof(argv(0))));
-			//usebutton = keynumtostring(-1);
-
-
-			switch (useprint_type) {
-				case 0://clear
-					usestring = "";
-					break;
-				case 1://door
-					usestring = strcat("Hold ",usebutton, " to open door [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 2://debris
-					usestring = strcat("Hold ",usebutton, " to remove debris [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 3://ammo
-					usestring = strcat("Hold ",usebutton, " to buy ammo for ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 4://weapon
-					usestring = strcat("Hold ",usebutton, " to buy ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 5://window
-					usestring = strcat("Hold ",usebutton, " to Rebuild Barrier");
-					break;
-				case 6://box
-					usestring = strcat("Hold ",usebutton, " to buy a random weapon [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 7://box take
-					usestring = strcat("Hold ",usebutton, " to take weapon");
-					break;
-				case 8://power
-					usestring = "The power must be activated first";
-					break;
-				case 9://perk
-					usestring = strcat("Hold ",usebutton, " to buy ", "PERK", " [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 10://turn on power
-					usestring = strcat("Hold ",usebutton, " to turn on the power");
-					break;
-				default:
-					usestring = "This should not happen you dum fuck";
-					break;
-			}
-
-			print_width = stringwidth (usestring, 0, [0.015*width, 0.015*width, 0]);
-			x = (width - print_width)/2;
-
-			drawstring([x, 0.70*height, 0], usestring, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
-		}
+		HUD_Draw(g_width, g_height);
 	}
 	if(serverkey("constate") != "active" && serverkey("disconnected"))
 	{
