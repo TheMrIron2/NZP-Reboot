@@ -234,7 +234,7 @@ float totalreward;
 float totalpowerups;
 float sounds_playing;
 
-float		rounds;
+float rounds;
 float rounds_change;
 
 
@@ -242,6 +242,10 @@ float rounds_change;
 void () Waypoint_Logic;
 entity current_way;
 float waypoint_mode;
+entity active_way;
+
+#define MAX_WAY_TARGETS		10
+.string targets[MAX_WAY_TARGETS];
 
 
 //FIXME(Jukki) Place in better place
