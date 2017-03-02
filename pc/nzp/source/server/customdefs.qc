@@ -1,5 +1,7 @@
 // put custom server-only globals and fields here
 
+#pragma target FTE
+
 #define true 1
 #define false 0
 
@@ -135,6 +137,7 @@ const float WIDLEBOX = 16;
 .string targetname;//the name of an entitys
 entity lastspawn;//last spawn point used by spawning code
 .entity goaldummy; //Used to store the origin of the zombies target
+.float goalway; //Used to store the origin of the zombies target
 .float walktype;//decides animations and moving speeds for zombies
 .void() th_walk;
 //.void() th_run;
@@ -155,6 +158,10 @@ entity lastspawn;//last spawn point used by spawning code
 
 float INACTIVE = 1;
 
+float tracemove(vector start, vector min, vector max, vector end, float nomonsters, entity forent);
+
+.float way_path[40];
+.float way_cur;
 
 .float sound_time;
 .float s_time;
@@ -239,6 +246,23 @@ entity active_way;
 
 #define MAX_WAY_TARGETS		10
 .string targets[MAX_WAY_TARGETS];
+
+
+//pathfinds
+#define MAX_WAYPOINTS 256 //max waypoints
+void LoadWaypointData();
+typedef struct
+{
+	vector org;
+	int id;
+	float g_score, f_score;
+	float came_from;
+	int target_id [MAX_WAY_TARGETS]; // Targets array number
+	string targetdoor; //special tag is required for the closed waypoints
+	float dist [MAX_WAY_TARGETS]; // Distance to the next waypoints
+} waypoint_ai;
+
+waypoint_ai waypoints[MAX_WAYPOINTS];
 
 
 //FIXME(Jukki) Place in better place

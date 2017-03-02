@@ -154,6 +154,8 @@ void() worldspawn =
 
 	mappath = strcat("maps/", mapname);
 	mappath = strzone(mappath);
+
+	LoadWaypointData();
 }
 
 void() SpectatorConnect =

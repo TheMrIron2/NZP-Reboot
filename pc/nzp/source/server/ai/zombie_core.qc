@@ -321,10 +321,10 @@ void()	zombie_run10		=[	$run10,	Zombie_Walk_Setup	] 	{Zombie_Walk(15); self.fram
 
 void() Zombie_Walk_Setup = 
 {
-	if(Remaining_Zombies == 1 && rounds >= 4)
-	{
+	//if(Remaining_Zombies == 1 && rounds >= 4)
+	//{
 		self.walktype = 5;
-	}
+	//}
 	
 	if(self.walktype == 1)
 	{
@@ -1028,7 +1028,7 @@ void(entity where) spawn_a_zombieB =
 
 	szombie.classname = "ai_zombie";
 	szombie.aistatus = "1";
-	setorigin (self.goaldummy, '0 0 0');
+	setorigin (szombie.goaldummy, '0 0 0');
 	szombie.origin_z = szombie.origin_z + 1;
 	szombie.outside = true;
 	szombie.takedamage = DAMAGE_YES;
