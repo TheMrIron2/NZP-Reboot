@@ -156,7 +156,6 @@ void(float width, float height) HUD_Grenades =
 
 void(float width, float height) HUD_Rounds =
 {
-	// drawstring seems to be the only thing here...
 	drawstring([0.01*width, 0.90*height, 0], ftos(rounds), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
 }
 
@@ -216,7 +215,7 @@ void(float width, float height) HUD_Useprint =
 
 void(float width, float height) HUD_Perks =
 {
-
+	drawstring([0.01*width, 0.10*height, 0], ftos(perks), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
 }
 
 void(float width, float height) HUD_Draw = 
@@ -573,5 +572,9 @@ noref void() CSQC_Parse_Event =
 		rounds = readbyte();
 	} else if (first == EVENT_SETROUND) {
 		rounds = readbyte();
+	}
+	else if (first == EVENT_PERK) 
+	{
+		perks = readbyte();
 	}
 }

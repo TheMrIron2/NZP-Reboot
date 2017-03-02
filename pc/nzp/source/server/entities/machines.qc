@@ -17,6 +17,8 @@ void() give_revive =
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+	
+	SetPerk(self, self.perks);
 }
 void() give_juggernog =
 {
@@ -33,6 +35,8 @@ void() give_juggernog =
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+		
+	SetPerk(self, self.perks);
 }
 
 void() give_doubletap =
@@ -50,6 +54,8 @@ void() give_doubletap =
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+		
+	SetPerk(self, self.perks);
 }
 void() give_speedcola =
 {
@@ -65,11 +71,8 @@ void() give_speedcola =
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
-	
-	/*if (sound_perk_delay < time)
-			return;
-    else
-       sound(other,CHAN_ITEM,"player/talk/fast.wav",1,ATTN_NONE);*/
+		
+	SetPerk(self, self.perks);
 }
 void() give_flopper =
 {
@@ -86,6 +89,8 @@ void() give_flopper =
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+		
+	SetPerk(self, self.perks);
 }
 void() give_staminup =
 {
@@ -102,6 +107,8 @@ void() give_staminup =
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+		
+	SetPerk(self, self.perks);
 }
 
 .float requirespower;

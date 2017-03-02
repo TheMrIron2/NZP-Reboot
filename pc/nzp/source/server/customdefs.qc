@@ -274,5 +274,13 @@ void SetRound(entity client, float to) {
 	WriteByte(MSG_ONE, to);
 }
 
+void SetPerk(entity client, float to) 
+{
+    msg_entity = client;
+	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
+	WriteByte(MSG_ONE, EVENT_PERK);
+	WriteByte(MSG_ONE, to);
+}
+
 //naievil (FIXME) No idea where this should go, maybe a dummys
 void() SUB_Remove = {remove(self);}

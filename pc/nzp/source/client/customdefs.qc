@@ -57,3 +57,4 @@ float interpolating;
 
 
 float rounds;
+float perks;
