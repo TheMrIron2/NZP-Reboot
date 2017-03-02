@@ -64,15 +64,20 @@ void ReconstructPath(entity z, float start_way, float end_way) {
 	pathSet[0] = current;
 
 	while(current != start_way) {
+		print("current ", ftos(current), " came_from: ", ftos(waypoints[current].came_from), "\n");
 		current = waypoints[current].came_from;
 		Add(pathSet, MAX_WAYPOINTS, current);
 		pathsize++;
 	}
-	Add(pathSet, MAX_WAYPOINTS, start_way);
+		Add(pathSet, MAX_WAYPOINTS, start_way);
+
+
 
 	float i;
-	for (i = 0; i <= pathsize; i++) {
-		z.way_path[i] = pathSet[pathSet - i];
+	for (i = 0; i < pathsize; i++) {
+		float inv = pathsize - i;
+		z.way_path[i] = waypoints[pathSet[inv]].id;
+		print("p: ", ftos(waypoints[pathSet[inv]].id), " i: ", ftos(i), " way: ", ftos(z.way_path[inv]), "\n");
 	} 
 
 	//while(current != star_way)

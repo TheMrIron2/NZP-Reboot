@@ -529,11 +529,11 @@ void(float dist) Inside_Walk = {
 		if(self.goalentity == self.enemy && self.chase_enemy_time > time) {
 			return;
 		}
-		/*if(TryWalkToEnemy())
+		if(TryWalkToEnemy())
 		{
 			self.chase_enemy_time = time + 0.5;
 			return;
-		}*/
+		}
 	}
 
 	if(self.goalentity == self.enemy) {
