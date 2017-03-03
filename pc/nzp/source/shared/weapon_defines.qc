@@ -114,6 +114,27 @@ string(float wep) GetWeaponName =
 	}
 }
 
+string(float perk) GetPerkName =
+{
+	switch (perk)
+	{
+		case 1:
+			return "Quick Revive";
+		case 2:
+			return "Juggernog";
+		case 3:
+			return "Speed Cola";
+		case 4:
+			return "Double Tap";
+		case 5:
+			return "Stamin-Up";
+		case 6:
+			return "PhD Flopper";
+		default:
+			return "NULL";
+	}
+}
+
 float(float wep) GetFiretype =
 {
 

@@ -203,7 +203,7 @@ void(float width, float height) HUD_Useprint =
 				usestring = "The power must be activated first";
 				break;
 			case 9://perk
-				usestring = strcat("Hold ",usebutton, " to buy ", "PERK", " [Cost:", ftos(useprint_cost),"]");
+				usestring = strcat("Hold ",usebutton, " to buy ", GetPerkName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
 				break;
 			case 10://turn on power
 				usestring = strcat("Hold ",usebutton, " to turn on the power");
