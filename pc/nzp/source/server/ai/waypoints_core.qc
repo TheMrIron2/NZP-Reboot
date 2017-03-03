@@ -17,6 +17,16 @@ void () Create_New_Waypoint =
 	entity tempe;
 	entity new_way;
 	string temps;
+
+	way_count = -1;
+	tempe = find (world, classname, "waypoint");
+	while (tempe) {
+		tempf = stof(tempe.waynum);
+		if (tempf > way_count) {
+			way_count = tempf;
+		}
+		tempe = find (tempe, classname, "waypoint");
+	}
 	new_way = spawn();
 
 	setorigin(new_way, self.origin);
@@ -28,20 +38,8 @@ void () Create_New_Waypoint =
 	
 	setmodel(new_way, "models/way/normal_way.spr");
 	new_way.classname = "waypoint";
-
-	way_count = 0;
-	tempe = find (world, classname, "waypoint");
-	while (tempe) {
-		tempf = stof (tempe.waynum);
-		if (tempf > way_count) {
-			way_count = tempf;
-		}
-		tempe = find (tempe, classname, "waypoint");
-	}
 	
-	temps = ftos(way_count + 1);
-	new_way.waynum = temps;
-	new_way.waynum = strzone(new_way.waynum);
+	new_way.waynum = ftos(way_count + 1);
 	new_way.targetname = strzone(new_way.targetname);
 	bprint (PRINT_HIGH, "Created waypoint  ");
 	bprint (PRINT_HIGH, new_way.waynum);
@@ -147,8 +145,6 @@ void () Select_Waypoint =
 					setmodel(tempe, "models/way/last_way_door.spr");
 				else
 					setmodel(tempe, "models/way/last_way.spr");
-				bprint(PRINT_HIGH, active_way.targets[i]);
-				bprint(PRINT_HIGH, "\n");
 			} else {
 				active_way.targets[i] = "";
 			}
@@ -240,7 +236,7 @@ void () Link_Waypoints =
 	float i;
 	entity tempe;
 	for	(i = 0; i < MAX_WAY_TARGETS; i++) {
-		tempe = find (world, waynum, active_way.targets[i]);
+		tempe = findfloat (world, waynum, active_way.targets[i]);
 
 		if (tempe == world) {
 			if (Link(active_way, current_way)) {
@@ -289,6 +285,58 @@ void() Dual_Link_Waypoints =
 }
 
 
+
+//alter auto_link_waypoints to iterate through the closest waypoints from closest to furthest
+// on the innermost loop, we find the next closest waypoint that is further away from the last closest waypoint, and we use that!
+
+void() Auto_Link_Waypoints =
+{
+	entity tempe1, tempe2;
+	
+	tempe1 = find(world,classname,"waypoint");
+	while(tempe1 != world)
+	{
+		tempe2 = find(world,classname,"waypoint");
+		while(tempe2 != world)
+		{
+			if(tempe1 == tempe2)
+			{
+				tempe2 = find(tempe2,classname,"waypoint");
+				continue;
+			}
+			
+			if(tracemove(tempe1.origin,VEC_HULL_MIN,VEC_HULL_MAX,tempe2.origin,TRUE,self))
+			{
+				Link(tempe1,tempe2);
+			}
+			
+			tempe2 = find(tempe2,classname,"waypoint");
+		}
+		tempe1 = find(tempe1,classname,"waypoint");
+	}
+}
+//alter auto_link_waypoints to iterate through the closest waypoints from closest to furthest
+// on the innermost loop, we find the next closest waypoint that is further away from the last closest waypoint, and we use that!
+
+void() Remove_Links =
+{
+	entity tempe;
+	
+	tempe = find(world,classname,"waypoint");
+	while(tempe != world)
+	{
+		int i;
+		for (i = 0; i < MAX_WAY_TARGETS; i++) {
+			if (tempe.targetname != "")
+				setmodel(tempe, "models/way/normal_way_door.spr");
+			else
+				setmodel(tempe, "models/way/normal_way.spr");
+			tempe.targets[i] = "";
+		}
+		tempe = find(tempe,classname,"waypoint");
+	}
+}
+
 string tempstest;
 void() Save_Waypoints
 {
@@ -317,10 +365,12 @@ void() Save_Waypoints
 		fputs(file, " targets:\n");
 		fputs(file, " [\n");
 		for (i = 0; i < MAX_WAY_TARGETS; i++) {
-			tempe = find (world, waynum, dway.targets[i]);
+			if (dway.targets[i] != "") {
+				tempe = findfloat (world, waynum, dway.targets[i]);
 
-			if (tempe != world) {
-				fputs(file, "  ", dway.targets[i], "\n");
+				if (tempe != world) {
+					fputs(file, "  ", dway.targets[i], "\n");
+				}
 			}
 		}
 		fputs(file, " ]\n");
@@ -459,8 +509,7 @@ void() Load_Waypoints
 					case "door":
 						new_way.targetname = value;
 						
-						if (cvar("waypoint_mode"))
-							setmodel(new_way, "models/way/normal_way_door.spr");
+						setmodel(new_way, "models/way/normal_way_door.spr");
 						break;
 					case "targets":
 						point = 3;
@@ -487,6 +536,7 @@ void() Load_Waypoints
 					point = 2;
 				} else  {
 					new_way.targets[targetcount] = h;
+					targetcount++;
 				}
 				break;
 		}
@@ -564,6 +614,20 @@ void() Load_Waypoints_Legacy
 	}
 }
 
+
+void VisualizePathfind() {
+	if (self.classname != "player")
+		return;
+	if (!current_way)
+		return;
+	if (!active_way)
+		return;
+	if (current_way == active_way)
+		return;
+	
+	Pathfind(self, stof(active_way.waynum), stof(current_way.waynum));
+}
+
 //Waypoint logic functions
 void () Waypoint_Functions =
 {
@@ -597,6 +661,13 @@ void () Waypoint_Functions =
 			break;
 		case 109:
 			Remove_Waypoint();
+			//VisualizePathfind();
+			break;
+		case 110:
+			Auto_Link_Waypoints();
+			break;
+		case 111:
+			Remove_Links();
 			break;
 	}
 	

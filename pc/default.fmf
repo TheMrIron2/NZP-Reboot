@@ -1,4 +1,4 @@
 game nzp
 name "Nazi Zombies Portable"
 basegame nzp
-disablehomedir
+disablehomedir 1

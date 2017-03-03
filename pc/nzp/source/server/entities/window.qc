@@ -262,7 +262,7 @@ void() item_barricade =
 	self.solid = SOLID_TRIGGER;
 	if(self.health != -10)
 	{
-		self.health = 1;
+		self.health = 6;
 		setmodel(self, "models/Misc/window.mdl");
 	}
 	setsize(self,'-20 -20 -64', '20 20 16');

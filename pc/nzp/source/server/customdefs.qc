@@ -124,7 +124,6 @@ const float WIDLEBOX = 16;
 .float enemy_timeout;
 //.float pathing;
 .float calc_time; //used as a delay thing (so zombie ai doesn't run 100% of the time
-.string waynum; //reserved for only waypoints, do not use on any other entities
 .string target2;
 .string target3;
 .string target4;
@@ -245,6 +244,7 @@ float waypoint_mode;
 entity active_way;
 
 #define MAX_WAY_TARGETS		10
+.string waynum;
 .string targets[MAX_WAY_TARGETS];
 
 
@@ -254,13 +254,19 @@ void LoadWaypointData();
 typedef struct
 {
 	vector org;
-	int id;
-	float g_score, f_score;
-	float came_from;
-	int target_id [MAX_WAY_TARGETS]; // Targets array number
+	float id;
+	float g, f;
+	float next, prev;
+	float step;
+	float target_id [MAX_WAY_TARGETS]; // Targets array number
 	string targetdoor; //special tag is required for the closed waypoints
 	float dist [MAX_WAY_TARGETS]; // Distance to the next waypoints
+	float set;
 } waypoint_ai;
+
+#define SET_NONE	0
+#define SET_OPEN	1
+#define SET_CLOSED	2
 
 waypoint_ai waypoints[MAX_WAYPOINTS];
 

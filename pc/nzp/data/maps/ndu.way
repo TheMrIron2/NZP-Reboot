@@ -1,0 +1,668 @@
+waypoint
+{
+ id: 0
+ origin: '1055.912354 2165.400879 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 1
+ origin: '1227.719360 2094.100586 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 2
+ origin: '1404.640259 2097.165283 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 3
+ origin: '1382.245483 1909.322266 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 4
+ origin: '1249.657349 1910.302368 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 5
+ origin: '1024.031250 1913.895752 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 6
+ origin: '1066.065308 1708.049561 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 7
+ origin: '1193.276245 1709.137817 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 8
+ origin: '1253.221191 1610.266602 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 9
+ origin: '1340.557617 1624.676147 110.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 10
+ origin: '1396.257568 1688.393555 140.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 11
+ origin: '1088.886475 1466.889038 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 12
+ origin: '1192.965576 1436.632080 70.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 13
+ origin: '1375.200439 1378.711792 70.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 14
+ origin: '1205.047119 1241.735229 70.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 15
+ origin: '1201.857422 1121.073608 70.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 16
+ origin: '1059.437622 1133.883057 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 17
+ origin: '1104.331909 912.374268 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 18
+ origin: '1196.671509 884.754944 91.491837'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 19
+ origin: '1370.755371 900.858459 70.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 20
+ origin: '1335.079102 1218.617188 106.588135'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 21
+ origin: '1283.518188 1120.474609 75.497780'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 22
+ origin: '1486.855225 1960.839355 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 23
+ origin: '1521.088501 2077.378418 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 24
+ origin: '1496.543213 2212.337402 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 25
+ origin: '1386.264526 2210.959717 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 26
+ origin: '1399.916016 1751.739746 170.031250'
+ door: aNUT
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 27
+ origin: '1393.288818 1842.884033 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 28
+ origin: '1389.203247 1959.693604 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 29
+ origin: '1217.615112 1934.753906 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 30
+ origin: '1077.585449 1795.750244 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 31
+ origin: '1057.081177 1682.655640 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 32
+ origin: '1056.365356 1927.302002 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 33
+ origin: '1061.615601 2062.455078 213.707199'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 34
+ origin: '1066.957397 2164.733154 214.911438'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 35
+ origin: '1255.916382 2218.332031 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 36
+ origin: '1261.660767 2289.224121 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 37
+ origin: '1263.188843 2364.545166 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 38
+ origin: '1233.380249 2046.905518 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 39
+ origin: '1375.709473 2154.721436 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 40
+ origin: '1043.910522 2358.244385 246.638062'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 41
+ origin: '1035.287231 2563.001709 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 42
+ origin: '1224.359619 2610.697998 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 43
+ origin: '1236.070923 2496.372070 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 44
+ origin: '1434.674683 2466.419678 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 45
+ origin: '1440.036133 2601.561523 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 46
+ origin: '1448.965454 2728.826416 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 47
+ origin: '1594.114380 2649.281006 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 48
+ origin: '1577.978882 2353.227539 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 49
+ origin: '1572.864746 2486.239746 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 50
+ origin: '1640.389526 2497.037598 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 51
+ origin: '1903.852051 2501.938965 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 52
+ origin: '1904.529297 2629.564209 225.839966'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 53
+ origin: '1704.298462 2650.166748 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 54
+ origin: '2104.500000 2490.487549 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 55
+ origin: '2128.259766 2608.019531 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 56
+ origin: '2125.277100 2371.445801 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 57
+ origin: '1811.478516 2363.076416 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 58
+ origin: '1043.604614 2736.365967 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 59
+ origin: '1125.357910 2746.091309 216.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 60
+ origin: '1204.360352 2741.102051 168.031250'
+ door: Littlenugget
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 61
+ origin: '1316.098267 2748.770752 88.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 62
+ origin: '1408.735474 2732.513672 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 63
+ origin: '1419.549683 2606.838135 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 64
+ origin: '1659.225220 2609.503906 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 65
+ origin: '1901.781372 2612.218750 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 66
+ origin: '2129.327148 2610.114258 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 67
+ origin: '2123.135986 2429.041504 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 68
+ origin: '1891.823486 2430.102783 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 69
+ origin: '1642.043579 2403.555664 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 70
+ origin: '1412.206909 2404.796631 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 71
+ origin: '1202.895874 2404.601563 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 72
+ origin: '1176.206787 2595.605713 72.031250'
+ targets:
+ [
+ ]
+}
+
+waypoint
+{
+ id: 73
+ origin: '1385.365479 2271.969971 72.031250'
+ door: Billy
+ targets:
+ [
+ ]
+}
