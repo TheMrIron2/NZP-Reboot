@@ -265,7 +265,7 @@ void() Draw_Menu =
 			title = "RESTART";
 			break;
 		default:
-			title = "FTEQW Example";
+			title = "Nazi Zombies: Portable";
 	}
 
 	local float chars_to_keep;

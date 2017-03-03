@@ -220,49 +220,17 @@ void(float width, float height) HUD_Useprint =
 #define 	P_FLOP		16
 #define 	P_STAMIN	32
 
+int perk_order[9];
+int current_perk_order;
+	
 void(float width, float height) HUD_Perks =
 {
-	int perk_order[9];
-	int current_perk_order;
+	
 	int i, s;
-	int y = height - 100 - 22/*sb_round[1]->height - 22 //(round height minus perk icon height)*/;
-	
-		if (perks & 1)
-		{
-			perk_order[current_perk_order] = 1;
-			current_perk_order = current_perk_order + 1;
-		}
-		if (perks & 2)
-		{
-			perk_order[current_perk_order] = 2;
-			current_perk_order = current_perk_order + 1;
-		}
-		if (perks & 4)
-		{
-			perk_order[current_perk_order] = 4;
-			current_perk_order = current_perk_order + 1;
-		}
-		if (perks & 8)
-		{
-			perk_order[current_perk_order] = 8;
-			current_perk_order = current_perk_order + 1;
-		}
-		if (perks & 16)
-		{
-			perk_order[current_perk_order] = 16;
-			current_perk_order = current_perk_order + 1;
-		}
-		if (perks & 32)
-		{
-			perk_order[current_perk_order] = 32;
-			current_perk_order = current_perk_order + 1;
-		}
-	
+	int y = height - 100 - 22/*sb_round[1]->height - 22 //(round height minus perk icon height)*/;	
 
 	//drawstring([0.01*width, 0.10*height, 0], ftos(perks), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
-	
-	//drawpic([0,0,0], "menu/bg", [g_width, g_height, 1], [1, 1, 1], 1);
-		
+			
 	for (i = 0; i < 8; i = i + 1)
 	{
 		if (perk_order[i])
@@ -658,6 +626,43 @@ noref void() CSQC_Parse_Event =
 	}
 	else if (first == EVENT_PERK) 
 	{
-		perks = readbyte();
+		local float newperks;
+		
+		newperks = readbyte();
+		
+		newperks = newperks ^ perks;
+				
+		if (newperks & 1)
+		{
+			perk_order[current_perk_order] = 1;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (newperks & 2)
+		{
+			perk_order[current_perk_order] = 2;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (newperks & 4)
+		{
+			perk_order[current_perk_order] = 4;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (newperks & 8)
+		{
+			perk_order[current_perk_order] = 8;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (newperks & 16)
+		{
+			perk_order[current_perk_order] = 16;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (newperks & 32)
+		{
+			perk_order[current_perk_order] = 32;
+			current_perk_order = current_perk_order + 1;
+		}
+		
+		perks = perks | newperks;
 	}
 }
