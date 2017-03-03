@@ -29,3 +29,4 @@ restart
 /waypoint_mode 1
 impulse 110
 impulse 111
+/waypoint_mode 1
