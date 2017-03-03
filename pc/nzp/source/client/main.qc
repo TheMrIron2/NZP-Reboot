@@ -213,9 +213,92 @@ void(float width, float height) HUD_Useprint =
 
 }
 
+#define 	P_JUG		1
+#define 	P_DOUBLE	2
+#define 	P_SPEED		4
+#define 	P_REVIVE	8
+#define 	P_FLOP		16
+#define 	P_STAMIN	32
+
 void(float width, float height) HUD_Perks =
 {
-	drawstring([0.01*width, 0.10*height, 0], ftos(perks), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+	int perk_order[9];
+	int current_perk_order;
+	int i, s;
+	int y = height - 100 - 22/*sb_round[1]->height - 22 //(round height minus perk icon height)*/;
+	
+		if (perks & 1)
+		{
+			perk_order[current_perk_order] = 1;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (perks & 2)
+		{
+			perk_order[current_perk_order] = 2;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (perks & 4)
+		{
+			perk_order[current_perk_order] = 4;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (perks & 8)
+		{
+			perk_order[current_perk_order] = 8;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (perks & 16)
+		{
+			perk_order[current_perk_order] = 16;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (perks & 32)
+		{
+			perk_order[current_perk_order] = 32;
+			current_perk_order = current_perk_order + 1;
+		}
+	
+
+	//drawstring([0.01*width, 0.10*height, 0], ftos(perks), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+	
+	//drawpic([0,0,0], "menu/bg", [g_width, g_height, 1], [1, 1, 1], 1);
+		
+	for (i = 0; i < 8; i = i + 1)
+	{
+		if (perk_order[i])
+		{
+			if (perk_order[i] == P_JUG)
+			{
+				drawpic([2,y,0], "gfx/hud/jug.lmp", [20, 20, 1], [1,1,1], 1);
+				y = y - 22;
+			}
+			else if (perk_order[i] == P_DOUBLE)
+			{
+				drawpic([2,y,0], "gfx/hud/double.lmp", [20, 20, 1], [1,1,1], 1);
+				y = y - 22;
+			}
+			else if (perk_order[i] == P_SPEED)
+			{
+				drawpic([2,y,0], "gfx/hud/speed.lmp", [20, 20, 1], [1,1,1], 1);
+				y = y - 22;
+			}
+			else if (perk_order[i] == P_REVIVE)
+			{
+				drawpic([2,y,0], "gfx/hud/revive.lmp", [20, 20, 1], [1,1,1], 1);
+				y = y - 22;
+			}
+			else if (perk_order[i] == P_FLOP)
+			{
+				drawpic([2,y,0], "gfx/hud/flopper.lmp", [20, 20, 1], [1,1,1], 1);
+				y = y - 22;
+			}
+			else if (perk_order[i] == P_STAMIN)
+			{
+				drawpic([2,y,0], "gfx/hud/stamin.lmp", [20, 20, 1], [1,1,1], 1);
+				y = y - 22;
+			}
+		}
+	}
 }
 
 void(float width, float height) HUD_Draw = 
@@ -226,7 +309,7 @@ void(float width, float height) HUD_Draw =
 	HUD_Grenades(width, height);
 	HUD_Rounds(width, height);
 	HUD_Perks(width, height);
-	
+		
 	// fix me: change the 51 and 50 to human readable const floats like STAT_PISTOLAMMO, STAT_MGAMMO or something	
 
 	if (useprint_time > time) 
