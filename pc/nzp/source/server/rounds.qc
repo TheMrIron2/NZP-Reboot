@@ -165,7 +165,7 @@ void() InitRounds =
 	totalpowerups = 0;
 	powerup_activate = 2000/1.14;
 	spawnAllZombEnts();
-	round_changetime = time + 6;
+	round_changetime = time + 2;
 	rounds_change = 1;
 	roundinit = 1;
 }
