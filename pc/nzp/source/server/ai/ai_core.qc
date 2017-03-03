@@ -442,12 +442,37 @@ void(float dist) Window_Hop =
 
 void() PathfindToEnemy =
 {
-	//FIXME
+	float pathresult;
+	pathresult = Do_Pathfind(self,self.enemy);
+	self.way_cur = 0;
+	if(pathresult != -1)
+	{
+		//self.goaldummy.origin = Get_First_Waypoint(self,self.origin,VEC_HULL_MIN,VEC_HULL_MAX);
+		self.goalway = pathresult;
+		setorigin(self.goaldummy,waypoints[self.goalway].org);
+		self.goalentity = self.goaldummy;
+		self.chase_time = time + 7;
+	}
+	else if(self.goalway == -1)
+	{
+		self.goalentity = self.enemy;
+		self.chase_time = time + 6;
+	}
+	else
+	{
+		bprint(PRINT_HIGH, "FirstPathfind Failure\n");
+	}
 }
 
-void() NextPathfindToEnemy =
-{
-	//FIXME
+void() NextPathfindToEnemy {
+	self.way_cur++;
+
+	if (self.way_cur < 40 && self.way_path[self.way_cur] != -1) {
+		self.goalway = self.way_path[self.way_cur];
+		setorigin(self.goaldummy,waypoints[self.goalway-1].org);
+	} else {
+		self.way_cur = 0;
+	}
 }
 
 //
@@ -522,7 +547,7 @@ void(float dist) Inside_Walk = {
 	//============ GoalDummy is Target ============
 	if(self.goalentity == self.goaldummy) {
 		if(nearby(self.goaldummy.origin)) {
-			NextPathfindToEnemy();
+			PathfindToEnemy();
 		}
 
 		if(self.chase_time < time) {

@@ -12,3 +12,20 @@ vid_restart
 join
 joingame
 quit
+map example_01
+
+/waypoint_mode 1
+/waypoint_mode 0
+restart
+restart
+/waypoint_mode 0
+/waypoint_mode 1
+/waypoint_mode 0
+/waypoint_mode 1
+/waypoint_mode 0
+/disconnect
+/waypoint_mode 1
+/waypoint_mode 0
+/waypoint_mode 1
+impulse 110
+impulse 111
