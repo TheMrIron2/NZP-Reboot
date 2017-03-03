@@ -27,17 +27,6 @@ void() sprintstop =
 	yeahIamrunning = false;
 }
 
-void(float to) SwitchWeapon =
-{
-	
-	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
-	WriteByte(MSG_MULTICAST, EVENT_WEAPONCHANGE);
-	WriteByte(MSG_MULTICAST, to);
-	msg_entity = self;
-	multicast('0 0 0', MULTICAST_ONE);
-	
-}
-
 void() W_Switch =
 {
 	if (self.secondaryweapon && self.secondaryweapon !=0 && !self.new_anim_stop && !other.button7)
@@ -520,6 +509,8 @@ void() W_Fire =
 
 	self.currentmag = self.currentmag - 1;
 	self.fire_delay = getWeaponDelay(self.weapon, FIRE) + time;
+	
+	SetUpdate(self, UT_HUD, 6, 0, 0);
 }
 
 /******************************
@@ -793,18 +784,20 @@ else if (self.pri_grenade_state == 1)
 	isBuying = false;  
 	}
  }
- else 
- {
-  centerprint (other, "No grenadetype defined...\n");
- }
+	else 
+	{
+		centerprint (other, "No grenadetype defined...\n");
+	}
     if (!(self.flags & FL_ONGROUND))
       self.secondary_grenades = self.secondary_grenades + 1;
       
- 		startframe = GetFrame(self.weapon,TAKE_OUT_START);
-		endframe = GetFrame(self.weapon,TAKE_OUT_END);
-		modelname = GetWeaponModel(self.weapon, 0);
-		Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);
-		self.semiswitch = false;
+ 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
+	endframe = GetFrame(self.weapon,TAKE_OUT_END);
+	modelname = GetWeaponModel(self.weapon, 0);
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);
+	self.semiswitch = false;
+		
+	SetUpdate(self, UT_HUD, 6, 0, 0);
 }
 
 void() checkHold =

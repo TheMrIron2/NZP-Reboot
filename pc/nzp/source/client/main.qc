@@ -690,4 +690,21 @@ noref void() CSQC_Parse_Event =
 		
 		perks = perks | newperks;
 	}
+	else if (first == EVENT_UPDATE) 
+	{
+		float updatetype = readbyte();
+		float var_1 = readbyte();
+		float var_2 = readbyte();
+		float var_3 = readbyte();
+		
+		switch (updatetype)
+		{
+			case 1: 
+				HUD_Change_time = time + var_1; 
+				break;
+			default: 
+				break;
+		}
+		
+	}
 }
