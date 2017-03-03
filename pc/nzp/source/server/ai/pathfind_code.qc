@@ -383,6 +383,9 @@ void LoadWaypointData() {
 							waypoints[id].target_id[i] = stof(new_way.targets[i]);
 						}
 
+						if (!cvar("waypoint_mode")) {
+							remove(new_way);
+						}
 						
 
 						point = 0;
