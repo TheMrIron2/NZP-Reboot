@@ -109,8 +109,6 @@ string(float wep) GetWeaponName =
       		return "MP5K";
     	case W_TESLA:
       		return "Wunderwaffe DG-2";
-    	case W_M14:
-      		return "M14";
 		default:
 			return " ";
 	}

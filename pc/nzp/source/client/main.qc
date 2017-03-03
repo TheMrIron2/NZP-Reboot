@@ -119,6 +119,10 @@ noref void(float isnew) CSQC_Ent_Update =
 		print(strcat(etos(self),"\n"));
 }	
 
+/*******************
+*    HUD Drawing   *
+*******************/
+
 void(float width, float height) HUD_Health = 
 {
 	local float health;
@@ -132,7 +136,8 @@ void(float width, float height) HUD_Ammo =
 	local float ammo, curmag;
 	string ammostring;
 	
-	curmag = getstatf(STAT_CURRENTMAG);
+	
+	curmag = getstatf(STAT_CURRENTMAG);		
 	ammo = getstatf(STAT_AMMO);	
 	ammostring = strcat(ftos(curmag), strcat("/",ftos(ammo)));
 	drawstring([0.75*width, 0.94*height, 0], ammostring, [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
@@ -269,12 +274,28 @@ void(float width, float height) HUD_Perks =
 	}
 }
 
+void(float width, float height) HUD_Weaponstring =
+{
+	string weaponstring; 
+	local float ws_offset;
+	
+	weaponstring = GetWeaponName(getstatf(STAT_ACTIVEWEAPON));
+	ws_offset = (strlen(weaponstring) - 1);
+	
+	drawstring([0.925*width - ws_offset*10, 0.75*height, 0], weaponstring, [0.0175*width, 0.0175*width, 0], [1, 1, 1], 1, 1); // naievil (FIXME) exact location later
+}
+
 void(float width, float height) HUD_Draw = 
 {
 	HUD_Health(width, height);
-	HUD_Ammo(width, height);
+	
+	if (HUD_Change_time > time)
+	{
+		HUD_Ammo(width, height);
+		HUD_Grenades(width, height);
+		HUD_Weaponstring(width, height);
+	}
 	HUD_Points(width, height);
-	HUD_Grenades(width, height);
 	HUD_Rounds(width, height);
 	HUD_Perks(width, height);
 		
@@ -518,7 +539,7 @@ noref void() CSQC_Parse_Event =
 		local float entnum, traceent;
 		local vector pos, norm;
 		entnum = readentitynum();
-
+		
 		pos_x = readcoord();
 		pos_y = readcoord();
 		pos_z = readcoord();
@@ -577,6 +598,7 @@ noref void() CSQC_Parse_Event =
 			splat.targetpos = norm * 1.5;
 			splat.predraw = alphafade;
 		}
+		
 	}
 	else if(first == EVENT_WEAPONCHANGE)
 	{
@@ -596,6 +618,8 @@ noref void() CSQC_Parse_Event =
 		v2model_targetpos = vmodel_targetpos = vmodel.origin;
 		v2model_muzzleoffset = vmodel_muzzleoffset = '12 0 1';
 		weapon = to;
+		
+		HUD_Change_time = time + 6;
 	}
 	else if(first == EVENT_UPDATEVMODEL)
 	{
@@ -621,6 +645,7 @@ noref void() CSQC_Parse_Event =
 		
 	} else if(first == EVENT_NEWROUND) {
 		rounds = readbyte();
+		HUD_Change_time = time + 6;
 	} else if (first == EVENT_SETROUND) {
 		rounds = readbyte();
 	}

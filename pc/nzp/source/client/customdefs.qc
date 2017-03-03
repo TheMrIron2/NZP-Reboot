@@ -50,6 +50,8 @@ float useprint_weapon;
 float useprint_cost;
 float useprint_time;
 
+float HUD_Change_time; 
+
 float weaponframetime;
 float oldweaponframe;
 float curweaponframe;
