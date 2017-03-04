@@ -46,6 +46,7 @@ void Weapon_Logic();
 .float downed;
 .float fire_delay;
 .float reload_delay;
+.float health_delay;
 .float currentmag;
 .float secondaryammo;
 .float semi;

@@ -96,6 +96,13 @@ void() PlayerPostThink =
 		}
 	}
 	
+	if (self.health_delay < time && self.health != self.max_health && !self.downed)
+	{
+		self.health = self.health + 5;
+		if (self.max_health < self.health)
+			self.health = self.max_health;
+	}
+
 	self.oldvelocity = self.velocity;
 };
 
@@ -122,7 +129,7 @@ void() PlayerSpawn =
 	self.solid = SOLID_SLIDEBOX;
 	setmodel(self, "models/player.mdl");
 	self.movetype = MOVETYPE_WALK;
-	self.health = 100;
+	self.max_health = self.health = 100;
 	self.origin = spawnpoint.origin + [0,0,1];
 	self.fixangle = TRUE;
 	setsize(self, [-16, -16, -24], [16, 16, 32]);

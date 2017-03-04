@@ -26,10 +26,29 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 
 		victim.health = victim.health - damage;
 
+		if (d_style == S_EXPLOSIVE) {
+		}
+
+
 		if (victim.health <= 0 || instakill_finished) {
 			old_self = self;
 			self = victim;
 			DieHandler(attacker, d_style);
+			self = old_self;
+		}
+	} else if (victim.classname == "player") {
+		if (victim.flags & FL_GODMODE) {
+			return;
+		}
+		
+		victim.health = victim.health - damage;
+		victim.health_delay = time + 2;
+
+		if (victim.health <= 20)
+		{
+			old_self = self;
+			self = victim;
+			//GetDown();
 			self = old_self;
 		}
 	}
