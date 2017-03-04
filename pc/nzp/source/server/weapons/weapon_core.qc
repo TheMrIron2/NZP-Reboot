@@ -390,7 +390,7 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 
 void (float shotcount, float sprd, float Damage/*, float headmulti, float legmulti*/) FireTrace =
 {
-	float count, r, ru, penetration_times;
+	float count, r, ru, penetration_times, do_break;
 	vector dir, src, trace_start_org;
 	entity hitent;
 	
@@ -411,25 +411,40 @@ void (float shotcount, float sprd, float Damage/*, float headmulti, float legmul
 		dir = dir*2048;
 		dir = dir + v_right*r + v_up*ru;
 		trace_start_org = src;
-		penetration_times = 0;
 		trace_ent = self;
-		while (random() < getWeaponPenetration(self.weapon, penetration_times))
+		do_break = 0;
+		penetration_times = 0;
+		hitent = world;
+		while (!do_break && random() < getWeaponPenetration(self.weapon, penetration_times))
 		{
-			traceline (trace_start_org, trace_start_org + dir, 0, trace_ent);
-			
-			if (trace_ent == world) {
-				break;
+			while (1)
+			{
+				traceline (trace_start_org, trace_start_org + dir, 0, trace_ent);
+				if (hitent == world)
+					break;
+				/*if (hitent.larm == trace_ent || hitent.rarm == trace_ent || hitent.head == trace_ent)
+				{
+					hitent = trace_ent;
+					trace_start_org = trace_endpos + normalize(dir)*10;
+					//break;
+				}*/
+				else
+					break;
 			}
 			
-			if (trace_fraction != 1.0) {
+			if (trace_fraction != 1.0)
 				TraceAttack (Damage, dir, trace_endpos, trace_plane_normal, trace_ent);
-			}
 			trace_start_org = trace_endpos;
 			penetration_times++;
-			if (!trace_ent.takedamage) {
-				break;
-			}
+			if (!trace_ent.takedamage)
+				do_break = 1;
+			
+			if (trace_ent.classname == "ai_zombie_head" || trace_ent.classname == "ai_zombie_larm" || trace_ent.classname == "ai_zombie_rarm")
+				hitent = trace_ent.owner;
+			else
+				hitent = trace_ent;
 		}
+		hitent = world;
 
 		count++;
 	}
