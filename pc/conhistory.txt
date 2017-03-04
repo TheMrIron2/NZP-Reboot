@@ -29,6 +29,7 @@ restart
 /waypoint_mode 1
 impulse 110
 impulse 111
+<<<<<<< HEAD
 impulse 100
 pause
 pause
@@ -36,3 +37,6 @@ impulse 100
 impulse 101
 waypoint_mode 1
 impulse 107
+=======
+/waypoint_mode 1
+>>>>>>> f9e9aa72af5685592630477b29b1336cb8d0f232
