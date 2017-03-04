@@ -1092,6 +1092,7 @@ float() spawn_a_zombieA =
 	local float FAIL;
 	
 	FAIL = false;
+	pcount = 0;
 	szombie = getFreeZombieEnt(self);
 	if(szombie == world)
 	{

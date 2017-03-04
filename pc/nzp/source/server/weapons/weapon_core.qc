@@ -67,7 +67,11 @@ void() W_Switch =
 }
 
 void() W_PutOut =
-{		
+{
+	if (self.downed) {
+		return;
+	}
+	
 	if (self.secondaryweapon && !self.new_anim_stop)
 	{
 		float startframe;
@@ -647,6 +651,10 @@ void () W_Knife =
 
 void() switch_nade = 
 { 
+	if (self.downed) {
+		return;
+	}
+
     if (isBuying == true)
 		return;
       

@@ -16,7 +16,6 @@ void () Create_New_Waypoint =
 	float tempf;
 	entity tempe;
 	entity new_way;
-	string temps;
 
 	way_count = -1;
 	tempe = find (world, classname, "waypoint");
@@ -337,7 +336,6 @@ void() Remove_Links =
 	}
 }
 
-string tempstest;
 void() Save_Waypoints
 {
 	float file;
@@ -432,9 +430,8 @@ void (vector here, float which, string special, string trg, string trg2, string 
 
 void() Load_Waypoints
 {
-	float file, which, point;
+	float file, point;
 	string h;
-	local vector where;
 	float targetcount, loop;
 
 	entity new_way;
@@ -448,6 +445,8 @@ void() Load_Waypoints
 		return;
 	}
 
+	new_way = spawn();
+	targetcount = 0;
 	point = 0;
 	loop = 1;
 	while (loop)
@@ -469,7 +468,9 @@ void() Load_Waypoints
 		switch (point) {
 			case 0:
 				if (h == "waypoint") {
-					new_way = spawn();
+					if (!new_way) {
+						new_way = spawn();
+					}
 					new_way.solid = SOLID_TRIGGER;
 
 					if (cvar("waypoint_mode"))

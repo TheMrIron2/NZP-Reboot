@@ -1,3 +1,42 @@
+
+
+void() GetDown =
+{
+	float startframe;
+	float endframe;
+	local string modelname;
+	
+	self.health = 19;
+	
+	self.view_ofs = '0 0 -15';
+	self.velocity = '-80 0 -80';           			// Stop any old movement
+	self.zoom = 0;
+	self.downed = true;
+	self.perks = 0;
+	self.movetype = MOVETYPE_NONE;
+	if (self.health == 10)
+		return;
+
+	self.weaponbk = self.weapon;
+	self.currentammobk = self.currentammo;
+	self.currentmagbk = self.currentmag;
+	
+	self.weapon = W_COLT;
+	self.currentammo = 16;
+	self.currentmag = 8;
+      
+  	modelname = GetWeaponModel(self.weapon, 0);
+	self.weaponmodel = modelname;
+	
+	startframe = GetFrame(self.weapon,TAKE_OUT_START);
+	endframe = GetFrame(self.weapon,TAKE_OUT_END);
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+	
+	self.progress_bar = 10 + time;      
+	self.points = 10*rint((self.points*0.95)/10);
+}
+
+
 void(entity attacker, float d_style) DieHandler =
 {
     float t;
@@ -36,7 +75,7 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 			DieHandler(attacker, d_style);
 			self = old_self;
 		}
-	} else if (victim.classname == "player") {
+	} else if (victim.classname == "player" && !victim.downed) {
 		if (victim.flags & FL_GODMODE) {
 			return;
 		}
@@ -48,7 +87,7 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 		{
 			old_self = self;
 			self = victim;
-			//GetDown();
+			GetDown();
 			self = old_self;
 		}
 	}

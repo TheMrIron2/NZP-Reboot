@@ -40,3 +40,9 @@ impulse 107
 =======
 /waypoint_mode 1
 >>>>>>> f9e9aa72af5685592630477b29b1336cb8d0f232
+map ndu
+disconnect
+/disconnect 
+/disconnect 
+/disconnect 
+disconnect

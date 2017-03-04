@@ -36,7 +36,6 @@ entity activator;
 .float zoom;
 .float weaponskin;
 void() sprintstop;
-.float stamina;
 .float into_sprint;
 float yeahIamrunning;
 
@@ -47,7 +46,11 @@ void Weapon_Logic();
 .float fire_delay;
 .float reload_delay;
 .float health_delay;
+.float progress_bar;
+.float weaponbk;
 .float currentmag;
+.float currentmagbk;
+.float currentammobk;
 .float secondaryammo;
 .float semi;
 .float semiuse;
@@ -104,7 +107,6 @@ vector	trace_plane_normal;
 // AI definitions
 //Used for global one-zombie-at-a-time type ai
 void Do_Zombie_AI();
-float ai_delay_time;
 .string aistatus;
 entity lastzombie;
 //Other AI definitions
@@ -182,9 +184,7 @@ float sounds_playing;
 .float washit;
 .float hitamount;
 
-.float currentHitBoxSetup;
 .float laststep;
-.vector		bbmins, bbmaxs;		// Used for zombie hitboxes
 //void(entity who) makeCrawler;
 .float state;//used to delay making a crawler, ex) when zombie is rising from ground or climbing over barrier, turn zombie into a crawler afterwards
 
@@ -216,9 +216,9 @@ float isBuying; // naievil -- used for checking if a perk is being consumed, lim
 
 //powerups
 float instakill_finished;
-float insta_blink;
+//float insta_blink;
 float x2_finished;
-float x2_blink;
+//float x2_blink;
 float total_windows_down;
 float total_powerup_points;
 float powerup_activate;
