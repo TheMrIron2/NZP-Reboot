@@ -7,6 +7,8 @@ const float EVENT_NEWROUND = 12;
 const float EVENT_SETROUND = 13;
 const float EVENT_UPDATEVMODEL = 20;
 const float EVENT_UPDATEV2MODEL = 21;
+const float EVENT_PERK = 22;
+const float EVENT_UPDATE = 23;
 
 //nzp weapon defines
 //id list

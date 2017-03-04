@@ -58,6 +58,12 @@ void Weapon_Logic();
 .string weapon2model;
 .float weapon2frame;
 .float reloadinterupted;
+.float hitcount;
+
+//Knife 
+.float semiknife;
+.float knife_delay;
+.float bowie;
 
 //Grenades
 .float grenades;
@@ -91,6 +97,7 @@ vector	VEC_HULL_MAX = '16 16 40';
 vector	VEC_HULL2_MIN = '-32 -32 -24';
 vector	VEC_HULL2_MAX = '32 32 64';
 vector  VEC_VIEW_OFS  = '0 0 32';
+vector	trace_plane_normal;
 
 
 // AI definitions
@@ -270,6 +277,8 @@ typedef struct
 
 waypoint_ai waypoints[MAX_WAYPOINTS];
 
+#define UT_HUD 	1
+
 
 //FIXME(Jukki) Place in better place
 void(entity to, float type, float cost, float weapon) useprint = {
@@ -299,6 +308,34 @@ void SetRound(entity client, float to) {
 	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
 	WriteByte(MSG_ONE, EVENT_SETROUND);
 	WriteByte(MSG_ONE, to);
+}
+
+void SetPerk(entity client, float to) 
+{
+    msg_entity = client;
+	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
+	WriteByte(MSG_ONE, EVENT_PERK);
+	WriteByte(MSG_ONE, to);
+}
+
+void(float to) SwitchWeapon =
+{
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_WEAPONCHANGE);
+	WriteByte(MSG_MULTICAST, to);
+	msg_entity = self;
+	multicast('0 0 0', MULTICAST_ONE);
+}
+
+void SetUpdate(entity client, float type, float val1, float val2, float val3)
+{
+	msg_entity = client;
+	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
+	WriteByte(MSG_ONE, EVENT_UPDATE);
+	WriteByte(MSG_ONE, type);
+	WriteByte(MSG_ONE, val1);
+	WriteByte(MSG_ONE, val2);
+	WriteByte(MSG_ONE, val3); // misc flags/vars for later if needed
 }
 
 //naievil (FIXME) No idea where this should go, maybe a dummys

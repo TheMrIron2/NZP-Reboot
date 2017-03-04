@@ -1,4 +1,6 @@
 void(string to) UpdateV2model;
+void() W_PutOut;
+
 
 void() ReturnWeaponModel =
 {
@@ -7,6 +9,7 @@ void() ReturnWeaponModel =
 		self.weapon2model = "progs/VModels/v_karscope.mdl";
 		
 	UpdateV2model(self.weapon2model);
+	UpdateVmodel(self.weaponmodel);
 }
 
 void() sprintstop =
@@ -22,17 +25,6 @@ void() sprintstop =
 	self.into_sprint = 0;
 	/*self.reload_delay2 = self.fire_delay2 = */self.reload_delay = self.fire_delay = 0;
 	yeahIamrunning = false;
-}
-
-void(float to) SwitchWeapon =
-{
-	
-	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
-	WriteByte(MSG_MULTICAST, EVENT_WEAPONCHANGE);
-	WriteByte(MSG_MULTICAST, to);
-	msg_entity = self;
-	multicast('0 0 0', MULTICAST_ONE);
-	
 }
 
 void() W_Switch =
@@ -259,6 +251,23 @@ void () CheckReload =
 	}
 }
 
+/*
+================
+SpawnBlood
+================
+*/
+void(vector org, vector vel, float damage) SpawnBlood =
+{
+  local entity f;
+  
+	particle (org, vel*0.1, 73, damage*2);
+	//below is for gib testing.
+	//particle (org, org, 225, 1);
+	
+	f = find (world, classname, "player");
+  f.hitcount = f.hitcount + 1;
+};
+
 
 void Parse_Damage () = // DO NOT TOUCH
 {
@@ -277,6 +286,72 @@ void Parse_Damage () = // DO NOT TOUCH
 			DamageHandler(ent,self, total_dmg, S_NORMAL);
 		}
 		ent = findfloat (ent, washit, 1);
+	}
+}
+
+void() LungeKnifeHit =
+{		
+	vector	source,org;
+	float	f_damage;
+	entity	hit_ent;
+
+	makevectors (self.v_angle);
+	source = self.origin + self.view_ofs;
+	if (self.weapon == W_BK)
+		traceline (source, source + v_forward*80*1.2, 0, self); // naievil -- added some extra length
+	else
+		traceline (source, source + v_forward*64*1.2, 0, self); // naievil -- ^^
+	
+	org = trace_endpos - v_forward*3; // naievil -- changed to factor of 3 from 4
+	
+
+	if (trace_ent.takedamage)
+	{
+		sound (self, CHAN_WEAPON, "sounds/weapons/knife/knife_hitbod.wav", 1, ATTN_NORM);
+		if(trace_ent.classname == "item_radio" || trace_ent.classname == "teddy_spawn")
+		{
+			entity oldself;
+			oldself  = self;
+			self = trace_ent;
+			self.th_die();
+			self = oldself;
+			return;
+		}
+		
+		if (self.bowie && self.weapon == W_BK)
+			f_damage = 1200;
+		else if (self.bowie)
+			f_damage = 1000;
+		else if (self.weapon == W_BK)
+			f_damage = 500;
+		else
+			f_damage = 150;
+		
+		if (trace_ent.classname == "ai_zombie_head")
+		{
+			hit_ent = trace_ent.owner;
+			f_damage = f_damage*1.5;
+		}
+		else if (trace_ent.classname == "ai_zombie_larm")
+		{
+			hit_ent = trace_ent.owner;
+		}
+		else if (trace_ent.classname == "ai_zombie_rarm")
+		{
+			hit_ent = trace_ent.owner;
+		}
+		else
+		{
+			hit_ent = trace_ent;
+		}
+		/*if (hit_ent.takedamage != DAMAGE_NOMARKER)
+		{
+			org = source + (v_forward * 20);
+			SpawnBlood (org, org, 50);
+			//hit = 1;
+		}*/
+		
+		DamageHandler (hit_ent, self, f_damage, S_KNIFE);
 	}
 }
 
@@ -315,7 +390,7 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 
 void (float shotcount, float sprd, float Damage/*, float headmulti, float legmulti*/) FireTrace =
 {
-	float count, r, ru, penetration_times;
+	float count, r, ru, penetration_times, do_break;
 	vector dir, src, trace_start_org;
 	entity hitent;
 	
@@ -336,25 +411,40 @@ void (float shotcount, float sprd, float Damage/*, float headmulti, float legmul
 		dir = dir*2048;
 		dir = dir + v_right*r + v_up*ru;
 		trace_start_org = src;
-		penetration_times = 0;
 		trace_ent = self;
-		while (random() < getWeaponPenetration(self.weapon, penetration_times))
+		do_break = 0;
+		penetration_times = 0;
+		hitent = world;
+		while (!do_break && random() < getWeaponPenetration(self.weapon, penetration_times))
 		{
-			traceline (trace_start_org, trace_start_org + dir, 0, trace_ent);
-			
-			if (trace_ent == world) {
-				break;
+			while (1)
+			{
+				traceline (trace_start_org, trace_start_org + dir, 0, trace_ent);
+				if (hitent == world)
+					break;
+				/*if (hitent.larm == trace_ent || hitent.rarm == trace_ent || hitent.head == trace_ent)
+				{
+					hitent = trace_ent;
+					trace_start_org = trace_endpos + normalize(dir)*10;
+					//break;
+				}*/
+				else
+					break;
 			}
 			
-			if (trace_fraction != 1.0) {
+			if (trace_fraction != 1.0)
 				TraceAttack (Damage, dir, trace_endpos, trace_plane_normal, trace_ent);
-			}
 			trace_start_org = trace_endpos;
 			penetration_times++;
-			if (!trace_ent.takedamage) {
-				break;
-			}
+			if (!trace_ent.takedamage)
+				do_break = 1;
+			
+			if (trace_ent.classname == "ai_zombie_head" || trace_ent.classname == "ai_zombie_larm" || trace_ent.classname == "ai_zombie_rarm")
+				hitent = trace_ent.owner;
+			else
+				hitent = trace_ent;
 		}
+		hitent = world;
 
 		count++;
 	}
@@ -434,7 +524,123 @@ void() W_Fire =
 
 	self.currentmag = self.currentmag - 1;
 	self.fire_delay = getWeaponDelay(self.weapon, FIRE) + time;
+	
+	SetUpdate(self, UT_HUD, 6, 0, 0);
 }
+
+/******************************
+* W_Knife                  *
+******************************/
+
+void () W_Knife =
+{
+	if (time < self.fire_delay || time < self.knife_delay || self.new_anim_stop)
+		return;
+	
+	if (self.zoom == 2 || self.zoom == 3)//dolphin dive here when its time has come
+		return; // naievil -- there are better times to activate this
+
+	if (self.downed)
+		return;
+		
+	if (!(self.flags & FL_ONGROUND))
+		return;
+
+	sound (self, CHAN_WEAPON, "sounds/weapons/knife/knife.wav", 1, ATTN_NORM);
+
+	vector	source;
+	entity	hit_ent;
+	//entity	oldself;
+	float	r;
+	vector	org;
+	float hit = false;
+
+	makevectors (self.v_angle);
+	source = self.origin + self.view_ofs;
+	if (self.weapon == W_BK)
+		traceline (source, source + v_forward*128, 0, self);
+	else
+		traceline (source, source + v_forward*100, 0, self);
+	
+	org = trace_endpos - v_forward*4;
+
+	r = vlen(source - org);
+
+	if (trace_ent.takedamage)
+	{
+
+		if (trace_ent.classname == "ai_zombie_head")
+			hit_ent = trace_ent.owner;
+		else if (trace_ent.classname == "ai_zombie_larm")
+			hit_ent = trace_ent.owner;
+		else if (trace_ent.classname == "ai_zombie_rarm")
+			hit_ent = trace_ent.owner;
+		else
+			hit_ent = trace_ent;
+		if (hit_ent.classname == "ai_zombie")
+			hit = true;
+	}
+	else if (trace_fraction < 1.0)
+	{	// hit wall
+		sound (self, CHAN_WEAPON, "sounds/weapons/knife/knife_hit.wav", 1, ATTN_NORM);			
+		
+		/* naievil (FIXME) add weapon decal here */
+	}
+
+	if (r > 40 && hit)//lunge
+	{
+
+		if (self.weapon == W_BK)
+		{
+			Set_W_Frame (14, 24, 1.4, 0, KNIFE, SUB_Null, "progs/VModels/v_bk.mdl", false);
+			self.fire_delay = time + 1.5;
+			self.knife_delay = time + 1.75;
+		}
+		else if (self.bowie)
+		{
+			Set_W_Frame (4, 10, 0.7, 0, KNIFE, ReturnWeaponModel, "progs/VModels/v_bowie.mdl", false);
+			self.fire_delay = time + 0.8;
+			self.knife_delay = time + 1.3;
+		}
+		else
+		{
+			Set_W_Frame (4, 12, 0.7, 0, KNIFE, ReturnWeaponModel, "progs/VModels/v_knife.mdl", false);
+			self.fire_delay = time + 0.8;
+			self.knife_delay = time + 1;
+		}
+		self.velocity = v_forward * 200;
+	}
+	else
+	{
+		if (self.weapon == W_BK)//slash
+		{
+			Set_W_Frame (8, 13, 0, 0.4, KNIFE, SUB_Null, "progs/VModels/v_bk.mdl", false);
+			self.fire_delay = time + 0.5;
+			self.knife_delay = time + 0.8;
+		}
+		else if (self.bowie)
+		{
+			Set_W_Frame (0, 3, 0.3, 0, KNIFE, ReturnWeaponModel, "progs/VModels/v_bowie.mdl", false);
+			self.fire_delay = time + 0.4;
+			self.knife_delay = time + 0.9;
+		}
+		else
+		{
+			self.punchangle_x = -5;
+			self.punchangle_y = -10;
+			//self.punchangle_z = 5;
+			Set_W_Frame (0, 3, 0.3, 0, KNIFE, ReturnWeaponModel, "progs/VModels/v_knife.mdl", false);
+			self.fire_delay = time + 0.4;
+			self.knife_delay = time + 0.7;
+		}
+	}
+	self.reload_delay = 0;
+
+	};
+
+
+
+
 /******************************
 * W_Grenade                   *
 ******************************/
@@ -470,14 +676,8 @@ void() switch_nade =
 
 void() GrenadeExplode =
 {
-	/*DamgageExplode (self, self.owner, 225, 75, 128);//was 256 inch radius, kicked it down to 128 because 21 feet exploding radius is... a bit overkill...
-	
-	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
-	WriteCoord (MSG_BROADCAST, self.origin_x);
-	WriteCoord (MSG_BROADCAST, self.origin_y);
-	WriteCoord (MSG_BROADCAST, self.origin_z);*/ 	// naievil (FIXME) Everything
-
+	DamgageExplode (self, self.owner, 225, 75, 128);//was 256 inch radius, kicked it down to 128 because 21 feet exploding radius is... a bit overkill...	
+	te_explosionquad(self.origin);
 	SUB_Remove ();
 };
 void() NadeStraighten =
@@ -593,18 +793,20 @@ else if (self.pri_grenade_state == 1)
 	isBuying = false;  
 	}
  }
- else 
- {
-  centerprint (other, "No grenadetype defined...\n");
- }
+	else 
+	{
+		centerprint (other, "No grenadetype defined...\n");
+	}
     if (!(self.flags & FL_ONGROUND))
       self.secondary_grenades = self.secondary_grenades + 1;
       
- 		startframe = GetFrame(self.weapon,TAKE_OUT_START);
-		endframe = GetFrame(self.weapon,TAKE_OUT_END);
-		modelname = GetWeaponModel(self.weapon, 0);
-		Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);
-		self.semiswitch = false;
+ 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
+	endframe = GetFrame(self.weapon,TAKE_OUT_END);
+	modelname = GetWeaponModel(self.weapon, 0);
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);
+	self.semiswitch = false;
+		
+	SetUpdate(self, UT_HUD, 6, 0, 0);
 }
 
 void() checkHold =
@@ -743,6 +945,14 @@ void () Weapon_Logic =
 	else if (!self.button5) {
 		self.semireload = FALSE;
 	}
+	
+	if (self.button6 && !self.semiknife)
+	{ 
+		W_Knife();
+		self.semiknife = true;
+	}
+	else if (!self.button6)
+		self.semiknife = false;
 	
 	CheckImpulses();
 }

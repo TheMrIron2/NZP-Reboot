@@ -2,7 +2,6 @@ float isBuying;
 float backupWepSkin;
 float sound_perk_delay; 
 void() W_Switch;
-void(string to) UpdateVmodel;
 void() give_revive =
 { 
   sound_perk_delay = time + 4.5;
@@ -17,8 +16,9 @@ void() give_revive =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
-	UpdateVmodel(modelname);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+	
+	SetPerk(self, self.perks);
 }
 void() give_juggernog =
 {
@@ -34,8 +34,9 @@ void() give_juggernog =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
-	UpdateVmodel(modelname);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+		
+	SetPerk(self, self.perks);
 }
 
 void() give_doubletap =
@@ -52,8 +53,9 @@ void() give_doubletap =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
-	UpdateVmodel(modelname);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+		
+	SetPerk(self, self.perks);
 }
 void() give_speedcola =
 {
@@ -68,13 +70,9 @@ void() give_speedcola =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
-	UpdateVmodel(modelname);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
-	
-	/*if (sound_perk_delay < time)
-			return;
-    else
-       sound(other,CHAN_ITEM,"player/talk/fast.wav",1,ATTN_NONE);*/
+		
+	SetPerk(self, self.perks);
 }
 void() give_flopper =
 {
@@ -90,8 +88,9 @@ void() give_flopper =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
-	UpdateVmodel(modelname);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+		
+	SetPerk(self, self.perks);
 }
 void() give_staminup =
 {
@@ -107,8 +106,9 @@ void() give_staminup =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
-	UpdateVmodel(modelname);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+		
+	SetPerk(self, self.perks);
 }
 
 .float requirespower;
@@ -152,7 +152,6 @@ void() touch_perk =
 			sprintstop();
 			self.fire_delay = self.reload_delay = 4.5 + time;	
 			other.weaponskin = 3;			
-			UpdateVmodel("progs/VModels/v_perk.mdl");
 			Set_W_Frame (0, 22, 0, 0, PERK, give_revive, "progs/VModels/v_perk.mdl", true);
 			self = tempe;
 			sound (other, CHAN_ITEM, "perkmachine/quickrevive.wav", 1, ATTN_NORM);
@@ -170,7 +169,6 @@ void() touch_perk =
 			sprintstop();
 			self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 3;
-			UpdateVmodel("progs/VModels/v_perk.mdl");
 			Set_W_Frame (0, 39, 0, 0, PERK, give_revive, "progs/VModels/v_perk.mdl", true);
 			self = tempe;
 			sound (other, CHAN_ITEM, "perkmachine/quickrevive.wav", 1, ATTN_NORM);
@@ -194,7 +192,6 @@ void() touch_perk =
 			sprintstop();
 			self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 4;
-			UpdateVmodel("progs/VModels/v_perk.mdl");
 			Set_W_Frame (0, 39, 0, 0, PERK, give_flopper, "progs/VModels/v_perk.mdl", true);
 			self = tempe;
 			sound (other, CHAN_ITEM, "perkmachine/flopper.wav", 1, ATTN_NORM);
@@ -218,7 +215,6 @@ void() touch_perk =
 			sprintstop();
 			self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 2;
-			UpdateVmodel("progs/VModels/v_perk.mdl");
 			Set_W_Frame (0, 39, 0, 0, PERK, give_juggernog, "progs/VModels/v_perk.mdl", true);
 			self = tempe;
 			sound (other, CHAN_ITEM, "perkmachine/juggernog.wav", 1, ATTN_NORM);
@@ -242,7 +238,6 @@ void() touch_perk =
 			sprintstop();
 			self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 2;
-			UpdateVmodel("progs/VModels/v_perk.mdl");
 			Set_W_Frame (0, 39, 0, 0, PERK, give_staminup, "progs/VModels/v_perk.mdl", true);
 			self = tempe;
 			other.weaponskin = 0;
@@ -267,7 +262,6 @@ void() touch_perk =
 			sprintstop();
 			self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 1;
-			UpdateVmodel("progs/VModels/v_perk.mdl");
 			Set_W_Frame (0, 39, 0, 0, PERK, give_speedcola, "progs/VModels/v_perk.mdl", true);
 			self = tempe;
 			sound (other, CHAN_ITEM, "perkmachine/speedcola.wav", 1, ATTN_NORM);
@@ -291,7 +285,6 @@ void() touch_perk =
 			sprintstop();
 			self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 0;
-			UpdateVmodel("progs/VModels/v_perk.mdl");
 			Set_W_Frame (0, 39, 0, 0, PERK, give_doubletap, "progs/VModels/v_perk.mdl", true);
 			self = tempe;
 			sound (other, CHAN_ITEM, "perkmachine/doubletap.wav", 1, ATTN_NORM);
@@ -306,17 +299,17 @@ void() touch_perk =
 
 void() setup_perk =
 {
-	/*if (find (world, classname, "power_switch"))
+	if (find (world, classname, "power_switch"))
 	{
 		if (self.classname == "perk_revive" && !coop && !deathmatch)
-			self.effects = EF_BLUELIGHT;
+			self.effects = EF_BLUE;
 		else
 			self.requirespower = true;
-	}
+	}/*
 	else
 	{
 		if (self.classname == "perk_revive")
-			self.effects = EF_BLUELIGHT;
+			self.effects = EF_BLUE;
 		else if (self.classname == "perk_flopper")
 			self.effects = EF_PURPLELIGHT;
 		else if (self.classname == "perk_juggernog")
@@ -327,12 +320,6 @@ void() setup_perk =
 			self.effects = EF_GREENLIGHT;
 		else if (self.classname == "perk_double")
 			self.effects = EF_ORANGELIGHT;
-		else if (self.classname == "perk_pap")
-      self.effects = EF_BLUELIGHT;
-    else if (self.classname == "perk_ammo")
-      self.effects = EF_BLUELIGHT;
-    else if (self.classname == "perk_dead")
-      self.effects = EF_GREENLIGHT;
 	} */
 	
 		// naievil (FIXME) light effects 
@@ -354,8 +341,6 @@ void() perk_revive =
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
 	precache_model ("progs/shark.mdl");
-	/*precache_model ("progs/VModels/v_biatch_left.mdl");
-	precache_model ("progs/VModels/v_biatch_right.mdl");*/ //naievil (FIXME) dual wield weapons
 };
 void() perk_flopper =
 {
@@ -443,40 +428,6 @@ void() perk_double =
 	self.nextthink = time + 0.1;
 };
 
-void() perk_ammo =
-{
-	self.solid = SOLID_TRIGGER;
-	precache_model ("progs/Misc/ammomatic.mdl");
-	precache_model ("progs/VModels/v_perk.mdl");
-	precache_sound("perkmachine/perk_drink.wav");
-	setorigin (self, self.origin);
-	setmodel (self, "progs/Misc/ammomatic.mdl");
-	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
-	self.classname = "perk_ammo";
-	self.touch = touch_perk;
-	self.requirespower = true;
-
-	self.think = setup_perk;
-	self.nextthink = time + 0.1;
-};
-
-void() perk_dead =
-{
-	self.solid = SOLID_TRIGGER;
-	precache_model ("progs/Misc/deadshot.mdl");
-	precache_model ("progs/VModels/v_perk.mdl");
-	precache_sound("perkmachine/perk_drink.wav");
-	setorigin (self, self.origin);
-	setmodel (self, "progs/Misc/deadshot.mdl");
-	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
-	self.classname = "perk_dead";
-	self.touch = touch_perk;
-	self.requirespower = true;
-
-	self.think = setup_perk;
-	self.nextthink = time + 0.1;
-};
-
 void()	turnpower1	=[	1,		turnpower2	] {self.frame = 1;};
 void()	turnpower2	=[	2,		turnpower3	] {self.frame = 2;};
 void()	turnpower3	=[	3,		turnpower4	] {self.frame = 3;};
@@ -491,7 +442,7 @@ void() Turn_Lights =
 	while (tempe)
 	{
 		if (tempe.classname == "perk_revive")
-			tempe.effects = EF_BLUELIGHT;
+			tempe.effects = EF_BLUE;
 		else if (tempe.classname == "perk_flopper")
 			tempe.effects = EF_PURPLELIGHT;
 		else if (tempe.classname == "perk_juggernog")
@@ -502,12 +453,6 @@ void() Turn_Lights =
 			tempe.effects = EF_GREENLIGHT;
 		else if (tempe.classname == "perk_double")
 			tempe.effects = EF_ORANGELIGHT;
-    else if (tempe.classname == "perk_pap")
-      tempe.effects = EF_BLUELIGHT;
-    else if (tempe.classname == "perk_ammo")
-      tempe.effects = EF_BLUELIGHT;
-    else if (tempe.classname == "perk_dead")
-      tempe.effects = EF_GREENLIGHT;
       
 		tempe = findfloat (tempe, requirespower, 1);// trigger all paired doors
 	} */ // naievil (FIXME) redo light effects 
@@ -528,7 +473,7 @@ void() touch_power_Switch =
 	{
 		turnpower1();
 		isPowerOn = true;
-		sound (self, CHAN_ITEM, "misc/power.wav", 1, ATTN_NONE);
+		sound (self, CHAN_ITEM, "sounds/misc/power.wav", 1, ATTN_NONE);
 
 		tempe = find (world, classname, "door_nzp");// trigger all paired doors
 		while (tempe)
@@ -566,7 +511,7 @@ void() power_switch =
 {
 	self.solid = SOLID_TRIGGER;
 	precache_model ("progs/Misc/power_switch.mdl");
-	precache_sound ("misc/power.wav");
+	precache_sound ("sounds/misc/power.wav");
 	setorigin (self, self.origin);
 	setmodel (self, "progs/Misc/power_switch.mdl");
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);

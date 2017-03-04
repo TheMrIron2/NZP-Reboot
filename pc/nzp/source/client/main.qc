@@ -119,6 +119,193 @@ noref void(float isnew) CSQC_Ent_Update =
 		print(strcat(etos(self),"\n"));
 }	
 
+/*******************
+*    HUD Drawing   *
+*******************/
+
+void(float width, float height) HUD_Health = 
+{
+	local float health;
+	
+	health = getstatf(STAT_HEALTH); 
+	drawstring([0.01*width, 0.94*height, 0], strcat("+",ftos(health)), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+}
+
+void(float width, float height) HUD_Ammo =
+{
+	local float ammo, curmag;
+	string ammostring;
+	
+	
+	curmag = getstatf(STAT_CURRENTMAG);		
+	ammo = getstatf(STAT_AMMO);	
+	ammostring = strcat(ftos(curmag), strcat("/",ftos(ammo)));
+	drawstring([0.75*width, 0.94*height, 0], ammostring, [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+}
+
+void(float width, float height) HUD_Points =
+{
+	local float points;
+	
+	points = getstatf(STAT_POINTS);
+	drawstring([0.80*width, 0.90*height, 0], ftos(points), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);   // POINTS
+}
+
+void(float width, float height) HUD_Grenades =
+{
+	local float grenades;
+
+	grenades = getstatf(STAT_GRENADES);
+	drawstring([0.97*width, 0.94*height, 0], ftos(grenades), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+}
+
+void(float width, float height) HUD_Rounds =
+{
+	drawstring([0.01*width, 0.90*height, 0], ftos(rounds), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+}
+
+void(float width, float height) HUD_Useprint =
+{
+
+		string usestring, usebutton;
+		float print_width, x;
+		
+		tokenize(findkeysforcommand("+button7"));
+		usebutton = strtoupper(keynumtostring(stof(argv(0))));
+		//usebutton = keynumtostring(-1);
+
+		switch (useprint_type) {
+			case 0://clear
+				usestring = "";
+				break;
+			case 1://door
+				usestring = strcat("Hold ",usebutton, " to open door [Cost:", ftos(useprint_cost),"]");
+				break;
+			case 2://debris
+				usestring = strcat("Hold ",usebutton, " to remove debris [Cost:", ftos(useprint_cost),"]");
+				break;
+			case 3://ammo
+				usestring = strcat("Hold ",usebutton, " to buy ammo for ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
+				break;
+			case 4://weapon
+				usestring = strcat("Hold ",usebutton, " to buy ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
+				break;
+			case 5://window
+				usestring = strcat("Hold ",usebutton, " to Rebuild Barrier");
+				break;
+			case 6://box
+				usestring = strcat("Hold ",usebutton, " to buy a random weapon [Cost:", ftos(useprint_cost),"]");
+				break;
+			case 7://box take
+				usestring = strcat("Hold ",usebutton, " to take weapon");
+				break;
+			case 8://power
+				usestring = "The power must be activated first";
+				break;
+			case 9://perk
+				usestring = strcat("Hold ",usebutton, " to buy ", GetPerkName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
+				break;
+			case 10://turn on power
+				usestring = strcat("Hold ",usebutton, " to turn on the power");
+				break;
+			default:
+				usestring = "This should not happen you dum fuck";
+				break;
+		}
+			print_width = stringwidth (usestring, 0, [0.015*width, 0.015*width, 0]);
+			x = (width - print_width)/2;
+			drawstring([x, 0.70*height, 0], usestring, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+
+}
+
+#define 	P_JUG		1
+#define 	P_DOUBLE	2
+#define 	P_SPEED		4
+#define 	P_REVIVE	8
+#define 	P_FLOP		16
+#define 	P_STAMIN	32
+
+int perk_order[9];
+int current_perk_order;
+	
+void(float width, float height) HUD_Perks =
+{
+	
+	int i, s;
+	int y = height - 100 - 22/*sb_round[1]->height - 22 //(round height minus perk icon height)*/;	
+
+	//drawstring([0.01*width, 0.10*height, 0], ftos(perks), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+			
+	for (i = 0; i < 8; i = i + 1)
+	{
+		if (perk_order[i])
+		{
+			if (perk_order[i] == P_JUG)
+			{
+				drawpic([2,y,0], "gfx/hud/jug.lmp", [20, 20, 1], [1,1,1], 1);
+				y = y - 22;
+			}
+			else if (perk_order[i] == P_DOUBLE)
+			{
+				drawpic([2,y,0], "gfx/hud/double.lmp", [20, 20, 1], [1,1,1], 1);
+				y = y - 22;
+			}
+			else if (perk_order[i] == P_SPEED)
+			{
+				drawpic([2,y,0], "gfx/hud/speed.lmp", [20, 20, 1], [1,1,1], 1);
+				y = y - 22;
+			}
+			else if (perk_order[i] == P_REVIVE)
+			{
+				drawpic([2,y,0], "gfx/hud/revive.lmp", [20, 20, 1], [1,1,1], 1);
+				y = y - 22;
+			}
+			else if (perk_order[i] == P_FLOP)
+			{
+				drawpic([2,y,0], "gfx/hud/flopper.lmp", [20, 20, 1], [1,1,1], 1);
+				y = y - 22;
+			}
+			else if (perk_order[i] == P_STAMIN)
+			{
+				drawpic([2,y,0], "gfx/hud/stamin.lmp", [20, 20, 1], [1,1,1], 1);
+				y = y - 22;
+			}
+		}
+	}
+}
+
+void(float width, float height) HUD_Weaponstring =
+{
+	string weaponstring; 
+	local float ws_offset;
+	
+	weaponstring = GetWeaponName(getstatf(STAT_ACTIVEWEAPON));
+	ws_offset = (strlen(weaponstring) - 1);
+	
+	drawstring([0.925*width - ws_offset*10, 0.75*height, 0], weaponstring, [0.0175*width, 0.0175*width, 0], [1, 1, 1], 1, 1); // naievil (FIXME) exact location later
+}
+
+void(float width, float height) HUD_Draw = 
+{
+	HUD_Health(width, height);
+	
+	if (HUD_Change_time > time)
+	{
+		HUD_Ammo(width, height);
+		HUD_Grenades(width, height);
+		HUD_Weaponstring(width, height);
+	}
+	HUD_Points(width, height);
+	HUD_Rounds(width, height);
+	HUD_Perks(width, height);
+		
+	// fix me: change the 51 and 50 to human readable const floats like STAT_PISTOLAMMO, STAT_MGAMMO or something	
+
+	if (useprint_time > time) 
+		HUD_Useprint(width, height);
+
+}
+
 
 // CALLED EVERY CLIENT RENDER FRAME
 noref void(float width, float height, float menushown) CSQC_UpdateView =
@@ -210,81 +397,7 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 	}
 	else
 	{
-		local float health, ammo, curmag, points, grenades;
-		string ammostring;
-		health = getstatf(STAT_HEALTH);
-		// fix me: change the 51 and 50 to human readable const floats like STAT_PISTOLAMMO, STAT_MGAMMO or something
-		curmag = getstatf(STAT_CURRENTMAG);
-		points = getstatf(STAT_POINTS);
-		ammo = getstatf(STAT_AMMO);
-		grenades = getstatf(STAT_GRENADES);
-
-		ammostring = strcat(ftos(curmag), strcat("/",ftos(ammo)));
-		drawstring([0.01*width, 0.94*height, 0], strcat("+",ftos(health)), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
-		drawstring([0.01*width, 0.90*height, 0], ftos(rounds), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
-		
-		drawstring([0.97*width, 0.94*height, 0], ftos(grenades), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1); // nai -- draw grenade val
-
-
-		drawstring([0.80*width, 0.90*height, 0], ftos(points), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
-		
-		drawstring([0.75*width, 0.94*height, 0], ammostring, [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
-
-
-		//Draw useprint
-		if (useprint_time > time) {
-			string usestring, usebutton;
-			float print_width, x;
-			
-			tokenize(findkeysforcommand("+button7"));
-			usebutton = strtoupper(keynumtostring(stof(argv(0))));
-			//usebutton = keynumtostring(-1);
-
-
-			switch (useprint_type) {
-				case 0://clear
-					usestring = "";
-					break;
-				case 1://door
-					usestring = strcat("Hold ",usebutton, " to open door [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 2://debris
-					usestring = strcat("Hold ",usebutton, " to remove debris [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 3://ammo
-					usestring = strcat("Hold ",usebutton, " to buy ammo for ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 4://weapon
-					usestring = strcat("Hold ",usebutton, " to buy ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 5://window
-					usestring = strcat("Hold ",usebutton, " to Rebuild Barrier");
-					break;
-				case 6://box
-					usestring = strcat("Hold ",usebutton, " to buy a random weapon [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 7://box take
-					usestring = strcat("Hold ",usebutton, " to take weapon");
-					break;
-				case 8://power
-					usestring = "The power must be activated first";
-					break;
-				case 9://perk
-					usestring = strcat("Hold ",usebutton, " to buy ", "PERK", " [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 10://turn on power
-					usestring = strcat("Hold ",usebutton, " to turn on the power");
-					break;
-				default:
-					usestring = "This should not happen you dum fuck";
-					break;
-			}
-
-			print_width = stringwidth (usestring, 0, [0.015*width, 0.015*width, 0]);
-			x = (width - print_width)/2;
-
-			drawstring([x, 0.70*height, 0], usestring, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
-		}
+		HUD_Draw(g_width, g_height);
 	}
 	if(serverkey("constate") != "active" && serverkey("disconnected"))
 	{
@@ -426,7 +539,7 @@ noref void() CSQC_Parse_Event =
 		local float entnum, traceent;
 		local vector pos, norm;
 		entnum = readentitynum();
-
+		
 		pos_x = readcoord();
 		pos_y = readcoord();
 		pos_z = readcoord();
@@ -485,6 +598,7 @@ noref void() CSQC_Parse_Event =
 			splat.targetpos = norm * 1.5;
 			splat.predraw = alphafade;
 		}
+		
 	}
 	else if(first == EVENT_WEAPONCHANGE)
 	{
@@ -504,12 +618,17 @@ noref void() CSQC_Parse_Event =
 		v2model_targetpos = vmodel_targetpos = vmodel.origin;
 		v2model_muzzleoffset = vmodel_muzzleoffset = '12 0 1';
 		weapon = to;
+		
+		HUD_Change_time = time + 6;
 	}
 	else if(first == EVENT_UPDATEVMODEL)
 	{
 		local string new;
+		local float skin2;
 		new = readstring();
+		skin2 = readbyte();
 		setmodel(vmodel,new);
+		vmodel.skin = skin2;
 	}
 	else if(first == EVENT_UPDATEV2MODEL)
 	{
@@ -526,7 +645,66 @@ noref void() CSQC_Parse_Event =
 		
 	} else if(first == EVENT_NEWROUND) {
 		rounds = readbyte();
+		HUD_Change_time = time + 6;
 	} else if (first == EVENT_SETROUND) {
 		rounds = readbyte();
+	}
+	else if (first == EVENT_PERK) 
+	{
+		local float newperks;
+		
+		newperks = readbyte();
+		
+		newperks = newperks ^ perks;
+				
+		if (newperks & 1)
+		{
+			perk_order[current_perk_order] = 1;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (newperks & 2)
+		{
+			perk_order[current_perk_order] = 2;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (newperks & 4)
+		{
+			perk_order[current_perk_order] = 4;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (newperks & 8)
+		{
+			perk_order[current_perk_order] = 8;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (newperks & 16)
+		{
+			perk_order[current_perk_order] = 16;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (newperks & 32)
+		{
+			perk_order[current_perk_order] = 32;
+			current_perk_order = current_perk_order + 1;
+		}
+		
+		perks = perks | newperks;
+	}
+	else if (first == EVENT_UPDATE) 
+	{
+		float updatetype = readbyte();
+		float var_1 = readbyte();
+		float var_2 = readbyte();
+		float var_3 = readbyte();
+		
+		switch (updatetype)
+		{
+			case 1: 
+				HUD_Change_time = time + var_1; 
+				break;
+			default: 
+				break;
+		}
+		
 	}
 }

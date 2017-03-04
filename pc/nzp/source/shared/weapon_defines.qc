@@ -109,10 +109,29 @@ string(float wep) GetWeaponName =
       		return "MP5K";
     	case W_TESLA:
       		return "Wunderwaffe DG-2";
-    	case W_M14:
-      		return "M14";
 		default:
 			return " ";
+	}
+}
+
+string(float perk) GetPerkName =
+{
+	switch (perk)
+	{
+		case 1:
+			return "Quick Revive";
+		case 2:
+			return "Juggernog";
+		case 3:
+			return "Speed Cola";
+		case 4:
+			return "Double Tap";
+		case 5:
+			return "Stamin-Up";
+		case 6:
+			return "PhD Flopper";
+		default:
+			return "NULL";
 	}
 }
 
