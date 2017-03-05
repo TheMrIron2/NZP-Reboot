@@ -55,6 +55,7 @@ void() GetDown =
 		self.weapon2model = "";
 		self.animend = SUB_Null;
 		self.perks = 0;
+		SetPerk(self, self.perks);
 		SwitchWeapon(0);
 
 		centerprint(self, "YOU DON DEDED\n");
@@ -64,6 +65,7 @@ void() GetDown =
 		self.health = 19;
 	}
 	self.perks = 0;
+	SetPerk(self, self.perks);
 	if (self.health == 10)
 		return;
 
