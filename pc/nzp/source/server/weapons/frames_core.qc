@@ -50,7 +50,7 @@ void () W2_Frame_Update =
 				if (self.animend2)
 				{
 					temp = self.animend2;
-					self.animend = SUB_Null2;
+					self.animend2 = SUB_Null2;
 					if (temp)
 						temp(S_LEFT);
 				}
