@@ -235,6 +235,9 @@ float isBuying; // naievil -- used for checking if a perk is being consumed, lim
 .float perk_delay;
 .float revivesoda;
 
+.float boxstatus;
+.entity boxweapon;
+
 //powerups
 float instakill_finished;
 //float insta_blink;

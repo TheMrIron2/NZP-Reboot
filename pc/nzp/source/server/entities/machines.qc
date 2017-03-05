@@ -506,3 +506,776 @@ void() power_switch =
 	isPowerOn = false;
 	self.touch = touch_power_Switch;
 }
+
+
+void() updateBoxGlow
+{
+	if(self.goaldummy)
+	{
+		self.goaldummy.frame = self.frame;
+	}
+};
+
+
+void()	box_open1		=[	1,	box_open2	] { self.frame = 1;updateBoxGlow();};
+void()	box_open2		=[	2,	box_open3	] { self.frame = 2;updateBoxGlow();};
+void()	box_open3		=[	3,	box_open4	] { self.frame = 3;updateBoxGlow();};
+void()	box_open4		=[	4,	box_open5	] { self.frame = 4;updateBoxGlow();};
+void()	box_open5		=[	5,	box_open6	] { self.frame = 5;updateBoxGlow();};
+void()	box_open6		=[	6,	box_open7	] { self.frame = 6;updateBoxGlow();};
+void()	box_open7		=[	7,	box_open8	] { self.frame = 7;updateBoxGlow();};
+void()	box_open8		=[	8,	SUB_Null	] { self.frame = 8;updateBoxGlow();};
+
+void() resetbox = 
+{
+	self.frame = 0;
+	self.boxstatus = 0;
+};
+
+
+void()	box_close1	=[	9,	box_close2	] { self.frame = 9;updateBoxGlow();sound (self, CHAN_ITEM, "sounds/machines/mbox_close.wav", 1, ATTN_NORM);};
+void()	box_close2	=[	10,	box_close3	] { self.frame = 10;updateBoxGlow();};
+void()	box_close3	=[	11,	box_close4	] { self.frame = 11;updateBoxGlow();};
+void()	box_close4	=[	12,	resetbox	] { self.frame = 12;updateBoxGlow();};
+
+float colt, kar, db,bar, mg, ray, thomp, flame, ppsh, sawn, tesla, m1a1, ptrs, panz, stg, mp40, revolver, gewehr, fg, browning, kars, bknife, trench, m1, type100;
+
+float (float r) Getweaponid =
+{	
+	if (r == 1)
+		return W_RAY;
+	else if (r == 2)
+		return W_COLT;
+	else if (r == 3)
+		return W_KAR;
+	else if (r== 4)
+		return W_M1A1;
+	else if (r== 5)
+		return W_THOMPSON;
+	else if (r== 6)
+		return W_M2;
+	else if (r== 7)
+		return W_PPSH;
+	else if (r== 8)
+		return W_SAWNOFF;
+	else if (r==9)
+		return W_TESLA;//W_TESLA;
+	else if (r==10)
+		return W_FG;
+	else if (r==11)
+		return W_TRENCH;
+	else if (r==12)
+		return W_MG;
+	else if (r==13)
+		return W_DB;
+	else if (r==14)
+		return W_BAR;
+	else if (r==15)
+		return W_GEWEHR;
+	else if (r==16)
+		return W_BROWNING;
+	else if (r==17)
+		return W_357;
+	else if (r==18)
+		return W_TYPE;
+	else if (r==19)
+		return W_KAR_SCOPE;
+	else if (r == 20)
+		return W_PANZER;
+	else if (r==21)
+		return W_PTRS;
+	else if (r==22)
+		return W_MP40;
+	else if (r==23)
+		return W_STG;
+	else if (r==24)
+		return W_BK;
+	else if (r==25)
+		return W_M1;
+
+	return r;
+}
+float() randomweapon = //this function is for making random box weapon system, currently it acts as just random thing
+{
+	local float r;
+	r =rint((random() * 24)) + 1;
+
+	if (r == 1)
+	{
+		if (ray)
+			return 1;
+		else
+			return randomweapon();
+	}
+	else if (r == 2)
+	{
+		if (colt)
+			return 2;	
+		else
+			return randomweapon();
+	}
+	else if (r == 3)
+	{
+		if (kar)
+			return 3;
+		else
+			return randomweapon();
+	}
+	else if (r == 4)
+	{
+		if (m1a1)
+			return 4;
+		else
+			return randomweapon();
+	}
+	else if (r == 5)
+	{
+		if (thomp)
+			return 5;
+		else
+			return randomweapon();
+	}
+	else if (r == 6)
+	{
+		if (flame)
+			return 6;
+		else
+			return randomweapon();
+	}
+	else if (r == 7)
+	{
+		if (ppsh)
+			return 7;
+		else
+			return randomweapon();
+	}
+	else if (r == 8)
+	{
+		if (sawn)
+			return 8;
+		else
+			return randomweapon();
+	}
+	else if (r == 9)
+	{
+		if (tesla)
+			return 9;
+		else
+			return randomweapon();
+	}
+	else if (r == 10)
+	{
+		if (fg)
+			return 10;
+		else
+			return randomweapon();
+	}
+	else if (r == 11)
+	{
+		if (trench)
+			return 11;
+		else
+			return randomweapon();
+	}
+	else if (r == 12)
+	{
+		if (mg)
+			return 12;
+		else
+			return randomweapon();
+	}
+	else if (r == 13)
+	{
+		if (db)
+			return 13;
+		else
+			return randomweapon();
+	}
+	else if (r == 14)
+	{
+		if (bar)
+			return 14;
+		else
+			return randomweapon();
+	}
+	else if (r == 15)
+	{
+		if (gewehr)
+			return 15;
+		else
+			return randomweapon();
+	}
+	else if (r == 16)
+	{
+		if (browning)
+			return 16;
+		else
+			return randomweapon();
+	}
+	else if (r == 17)
+	{
+		if (revolver)
+			return 17;
+		else
+			return randomweapon();
+	}
+	else if (r == 18)
+	{
+		if (type100)
+			return 18;
+		else
+			return randomweapon();
+	}
+	else if (r == 19)
+	{
+		if (kars)
+			return 19;
+		else
+			return randomweapon();
+	}
+	else if (r == 20)
+	{
+		if (panz)
+			return 20;
+		else
+			return randomweapon();
+	}
+	else if (r == 21)
+	{
+		if (ptrs)
+			return 21;
+		else
+			return randomweapon();
+	}
+	else if (r == 22)
+	{
+		if (mp40)
+			return 22;
+		else
+			return randomweapon();
+	}
+	else if (r == 23)
+	{
+		if (stg)
+			return 23;
+		else
+			return randomweapon();
+	}
+	else if (r == 24)
+	{
+		if (bknife)
+			return 24;
+		else
+			return randomweapon();
+	}
+	else if (r == 25)
+	{
+		if (m1)
+			return 25;
+		else
+			return randomweapon();
+	}
+	else
+		return randomweapon();
+	
+};
+
+float CheckWeapon (float w, entity user) =
+{
+	//entity check;
+	/*if (w == W_TESLA || w == W_BK || w == W_M2)
+	{
+		check = find(world, classname, "player");
+		while (check)
+		{
+			if (check.weapon == w || check.weapon2 == w)
+				return 0;
+			check = find(check, classname, "player");
+		}
+		return 1;
+	}
+	else*/
+		if (user.weapon == w || user.secondaryweapon == w)
+			return 0;
+		else if (EqualPapWeapon(user.weapon) == w || EqualPapWeapon(user.secondaryweapon == w))
+      return 0;
+		else
+			return 1;
+
+	return 1;
+};
+
+void() Finalize_box =
+{
+	entity tempe;
+	self.velocity = '0 0 0';
+	tempe = self;
+	self = self.owner;
+	box_close1();
+	self = tempe;
+	self.owner.owner = world;
+	self.owner.boxstatus = 0;
+	remove (self);
+}
+
+void() Float_Decrease =
+{
+	makevectors(self.angles);
+	self.velocity = v_up*-5;
+	self.nextthink = time + 7;
+	self.think = Finalize_box;
+}
+
+void() Float_Change =
+{
+	float r, tempf;
+	string temps;
+
+	tempf = randomweapon ();
+	r = Getweaponid(tempf);
+	while (!CheckWeapon (r, self.owner.owner))
+	{
+		tempf = randomweapon ();
+		r = Getweaponid(tempf);
+	}
+	temps = GetWeaponModel(r, 1);
+	setmodel (self, temps);
+
+	self.boxstatus = self.boxstatus + 0.01;
+	if (self.wait <= time)
+	{
+		self.velocity = '0 0 0';
+		self.owner.boxstatus = 2;
+		self.weapon = r;
+		self.nextthink = time + 5;
+		self.think = Float_Decrease;
+		return;
+	}
+	if (self.ltime <= time)
+	{
+		self.velocity_z = self.velocity_z*0.5;
+		self.ltime = 0.5;
+	}
+	self.nextthink = time + self.boxstatus;
+	self.think = Float_Change;
+}
+
+
+void() Create_Floating_Weapon =
+{
+	entity gun;
+	float r, tempf;
+	string temps;
+
+	tempf = randomweapon ();
+	r = Getweaponid(tempf);
+	while (!CheckWeapon (r, self.owner.owner))
+	{
+		tempf = randomweapon ();
+		r = Getweaponid(tempf);
+	}
+	temps = GetWeaponModel(r, 1);
+	
+	gun = spawn();
+	
+	setorigin (gun, self.origin);
+	setmodel (gun, temps);
+	setsize (gun, '0 0 0', '0 0 0');
+	gun.angles = self.angles;
+	
+	gun.movetype = MOVETYPE_NOCLIP;
+	gun.solid = SOLID_NOT;
+	makevectors(self.angles);
+	gun.velocity = v_up*15;
+	
+	gun.owner = self;
+	self.boxweapon = gun;
+	
+	gun.ltime = time+2;
+	gun.boxstatus = 0.01;
+	gun.wait = time + 5;
+	gun.nextthink = time + 0.01;
+	gun.think = Float_Change;
+}
+
+void() mystery_touch =
+{
+	entity tempe;
+	float startframe, endframe;
+	string modelname;
+	if (other.classname != "player" || other.downed)
+		return;
+		
+	if (!self.boxstatus) {
+		useprint (other, 6, 950, 0);
+	}
+	if (self.boxstatus == 2 && self.owner == other) {
+		useprint (other, 7, 0, 0);
+	}
+	
+	if (other.button7 && !other.semiuse)
+	{
+		if (!self.boxstatus)
+		{
+			if (other.points >= 950)
+			{
+				sound (self, CHAN_ITEM, "sounds/machines/mbox_open.wav", 1, ATTN_NORM);
+				addmoney(other, -950, FALSE);
+				self.boxstatus = 1;
+				self.owner = other;
+				box_open1 ();
+				Create_Floating_Weapon();
+			}
+			else {
+        		centerprint (other, "Not enough points\n");
+			}
+		}
+		if (self.boxstatus == 2)
+		{
+			other.semiuse = 1;
+			if (self.owner == other)
+			{
+				other.reload_delay = 0;
+				self.boxstatus = 0;
+				self.owner = world;
+				if (other.weapon != self.boxweapon.weapon && other.secondaryweapon != self.boxweapon.weapon && other.secondaryweapon)
+				{		
+					other.weapon = self.boxweapon.weapon;
+          			other.currentammo = getWeaponAmmo(self.boxweapon.weapon);
+					other.currentmag = getWeaponMag(self.boxweapon.weapon);
+					other.weaponskin = 0;
+				}
+				else if (other.weapon == self.boxweapon.weapon)
+				{
+					other.currentammo = getWeaponAmmo(self.boxweapon.weapon);
+					other.currentmag = getWeaponMag(self.boxweapon.weapon);
+				}
+				else if (other.secondaryweapon == self.boxweapon.weapon)
+				{
+					other.secondaryammo = getWeaponAmmo(self.boxweapon.weapon);
+					other.secondarymag = getWeaponMag(self.boxweapon.weapon);
+				}
+				else if (!other.secondaryweapon)
+				{
+					other.secondaryweapon = other.weapon;
+					other.weapon = self.boxweapon.weapon;
+
+					other.secondaryammo = other.currentammo;
+					other.currentammo = getWeaponAmmo(self.boxweapon.weapon);
+
+					other.secondarymag = other.currentmag;
+					other.currentmag = getWeaponMag(self.boxweapon.weapon);
+				}
+				sound(self, 0,"sounds/misc/ching.wav", 1, 1);
+				tempe = self;
+				self = other;
+				startframe = GetFrame(self.weapon,TAKE_OUT_START);
+				endframe = GetFrame(self.weapon,TAKE_OUT_END);
+				modelname = GetWeaponModel(self.weapon, 0);
+				Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
+				self = tempe;
+				remove (self.boxweapon);
+				box_close1();
+			}
+		}
+	}
+}
+
+
+void() Load_Mbox_Data =
+{
+    
+	local float file;
+	local string h;
+	string temps;
+	h = strcat(mapname,  ".mbox");
+	h = strcat("maps/",  h);
+	file = fopen (h, FILE_READ);
+	
+	if (file == -1) {
+		colt = kar = db =bar = mg = ray = thomp = flame = ppsh = sawn = tesla = m1a1 = ptrs = panz = stg = mp40 = revolver = gewehr = fg = browning = kars = bknife = trench = m1 = type100 = 1;
+	} else {
+		h = (fgets(file));
+		colt = stof(h);
+		h = (fgets(file));
+		kar = stof(h);
+		h = (fgets(file));
+		db = stof(h);
+		h = (fgets(file));
+		mg = stof(h);
+		h = (fgets(file));
+		ray = stof(h);
+		h = (fgets(file));
+		thomp = stof(h);
+		h = (fgets(file));
+		flame = stof(h);
+		h = (fgets(file));
+		ppsh = stof(h);
+		h = (fgets(file));
+		sawn = stof(h);
+		h = (fgets(file));
+		tesla = stof(h);
+		h = (fgets(file));
+		m1a1 = stof(h);
+		h = (fgets(file));
+		gewehr = stof(h);
+		h = (fgets(file));
+		fg = stof(h);
+		h = (fgets(file));
+		browning = stof(h);
+		h = (fgets(file));
+		kars = stof(h);
+		h = (fgets(file));
+		revolver = stof(h);
+		h = (fgets(file));
+		stg = stof(h);
+		h = (fgets(file));
+		panz = stof(h);
+		h = (fgets(file));
+		bknife = stof(h);
+		h = (fgets(file));
+		ptrs = stof(h);
+		h = (fgets(file));
+		mp40 = stof(h);
+		h = (fgets(file));
+		trench = stof(h);
+		h = (fgets(file));
+		bar = stof(h);
+		h = (fgets(file));
+		m1 = stof(h);
+		h = (fgets(file));
+		type100 = stof(h);
+		h = (fgets(file));
+	}
+	if (colt)
+	{
+		temps = GetWeaponModel(W_COLT, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_COLT, 0);
+		precache_model (temps);
+		precache_extra(W_COLT);
+		precache_extra(W_BIATCH);
+	}
+	if (kar)
+	{
+		temps = GetWeaponModel(W_KAR, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_KAR, 0);
+		precache_model (temps);
+		precache_extra(W_KAR);
+	}
+	if (db)
+	{
+		temps = GetWeaponModel(W_DB, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_DB, 0);
+		precache_model (temps);
+		precache_extra(W_DB);
+	}
+	if (mg)
+	{
+		temps = GetWeaponModel(W_MG, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_MG, 0);
+		precache_model (temps);
+		precache_extra(W_MG);
+	}
+	if (ray)
+	{
+		temps = GetWeaponModel(W_RAY, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_RAY, 0);
+		precache_model (temps);
+		precache_extra(W_RAY);
+	}
+	if (thomp)
+	{
+		temps = GetWeaponModel(W_THOMPSON, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_THOMPSON, 0);
+		precache_model (temps);
+		precache_extra(W_THOMPSON);
+	}
+	if (flame)
+	{
+		temps = GetWeaponModel(W_M2, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_M2, 0);
+		precache_model (temps);
+		precache_extra(W_M2);
+	}
+	if (ppsh)
+	{
+		temps = GetWeaponModel(W_PPSH, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_PPSH, 0);
+		precache_model (temps);
+		precache_extra(W_PPSH);
+	}
+	if (sawn)
+	{
+		temps = GetWeaponModel(W_SAWNOFF, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_SAWNOFF, 0);
+		precache_model (temps);
+		precache_extra(W_SAWNOFF);
+	}
+	if (tesla)
+	{
+		temps = GetWeaponModel(W_TESLA, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_TESLA, 0);
+		precache_model (temps);
+		precache_extra(W_TESLA);
+	}
+	if (m1a1)
+	{
+		temps = GetWeaponModel(W_M1A1, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_M1A1, 0);
+		precache_model (temps);
+		precache_extra(W_M1A1);
+	}
+	if (gewehr)
+	{
+		temps = GetWeaponModel(W_GEWEHR, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_GEWEHR, 0);
+		precache_model (temps);
+		precache_extra(W_GEWEHR);
+	}
+	if (fg)
+	{
+		temps = GetWeaponModel(W_FG, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_FG, 0);
+		precache_model (temps);
+		precache_extra(W_FG);
+	}
+	if (browning)
+	{
+		temps = GetWeaponModel(W_BROWNING, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_BROWNING, 0);
+		precache_model (temps);
+		precache_extra(W_BROWNING);
+	}
+	if (kars)
+	{
+		temps = GetWeaponModel(W_KAR_SCOPE, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_KAR_SCOPE, 0);
+		precache_model (temps);
+		precache_extra(W_KAR_SCOPE);
+	}
+	if (revolver)
+	{
+		temps = GetWeaponModel(W_357, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_357, 0);
+		precache_model (temps);
+		precache_extra(W_357);
+	}
+	if (stg)
+	{
+		temps = GetWeaponModel(W_STG, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_STG, 0);
+		precache_model (temps);
+		precache_extra(W_STG);
+	}
+	if (panz)
+	{
+		temps = GetWeaponModel(W_PANZER, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_PANZER, 0);
+		precache_model (temps);
+		precache_extra(W_PANZER);
+	}
+	if (bknife)
+	{
+		temps = GetWeaponModel(W_BK, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_BK, 0);
+		precache_model (temps);
+		precache_extra(W_BK);
+	}
+	if (ptrs)
+	{
+		temps = GetWeaponModel(W_PTRS, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_PTRS, 0);
+		precache_model (temps);
+		precache_extra(W_PTRS);
+	}
+	if (mp40)
+	{
+		temps = GetWeaponModel(W_MP40, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_MP40, 0);
+		precache_model (temps);
+		precache_extra(W_MP40);
+	}
+	if (bar)
+	{
+		temps = GetWeaponModel(W_BAR, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_BAR, 0);
+		precache_model (temps);
+		precache_extra(W_BAR);
+	}
+	if (trench)
+	{
+		temps = GetWeaponModel(W_TRENCH, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_TRENCH, 0);
+		precache_model (temps);
+		precache_extra(W_TRENCH);
+	}
+	if (m1)
+	{
+		temps = GetWeaponModel(W_M1, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_M1, 0);
+		precache_model (temps);
+		precache_extra(W_M1);
+	}
+	if (type100)
+	{
+		temps = GetWeaponModel(W_TYPE, 1);
+		precache_model (temps);
+		temps = GetWeaponModel(W_TYPE, 0);
+		precache_model (temps);
+		precache_extra(W_TYPE);
+	}
+}
+
+void() mystery_box =
+{
+	Load_Mbox_Data();
+
+	precache_model ("models/machines/mystery.mdl");
+	precache_model ("models/machines/mglow$.mdl");
+	precache_model ("progs/Misc/teddy.mdl"); 
+	precache_sound ("sounds/machines/mbox_open.wav"); 
+	precache_sound ("sounds/machines/mbox_close.wav"); 
+	
+	self.solid=SOLID_TRIGGER;
+	self.classname = "mystery";
+	setorigin(self, self.origin);
+	setmodel (self, "models/machines/mystery.mdl");
+	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	
+	if (!(self.spawnflags & 2))
+	{
+		//self.effects = EF_BLUELIGHT;
+		local entity g;
+		g = spawn();
+		self.goaldummy = g;
+		setmodel(g,"models/machines/mglow$.mdl");
+		setorigin(g,self.origin);
+		g.angles = self.angles;
+	}
+
+	self.touch = mystery_touch;
+}

@@ -51,11 +51,11 @@ string(float wep) GetWeaponName =
 			return "M1897 Trench Gun";
 		case W_TYPE:
 			return "Type 100";
-		case 25:
+		case W_BOWIE:
 			return "Bowie Knife";
-		case 26:
+		case W_GRENADE:
 			return "Grenades";
-		case 27:
+		case W_BETTY:
 			return "Bouncing Betty";
 		case W_BIATCH:
       		return "Mustang & Sally";
@@ -103,8 +103,6 @@ string(float wep) GetWeaponName =
 			return "Gut Shot";
 		case W_SAMURAI:
 			return "1001 Samurais";
-		case W_NOWEP:
-      		return " ";
     	case W_MP5:
       		return "MP5K";
     	case W_TESLA:
@@ -1578,6 +1576,64 @@ float(float wep) IsPapWeapon = {
 	switch(wep) {
 		case W_BIATCH:
 			return 1;
+		default:
+			return 0;
+	}
+}
+
+
+float(float wep)  EqualPapWeapon = 
+{
+
+	switch (wep) {
+		case W_BIATCH:
+			return W_COLT;
+		case W_ARMAGEDDON:
+			return W_KAR;
+		case W_GIBS:
+			return W_THOMPSON;
+		case W_KILLU:
+			return W_357;
+		case W_WIDOW:
+			return W_BAR;
+		case W_ACCELERATOR:
+			return W_BROWNING;
+		case W_BORE:
+			return W_DB;
+		case W_IMPELLER:
+			return W_FG;
+		case W_COMPRESSOR:
+			return W_GEWEHR;
+		case W_HEADCRACKER:
+			return W_KAR_SCOPE;
+		case W_M1000:
+			return W_M1;
+		case W_WIDDER:
+			return W_M1A1;
+		case W_AFTERBURNER:
+			return W_MP40;
+		case W_BARRACUDA:
+			return W_MG;
+		case W_LONGINUS:
+			return W_PANZER;
+		case W_REAPER:
+			return W_PPSH;
+		case W_PENETRATOR:
+			return W_PTRS;
+		case W_PORTER:
+			return W_RAY;
+		case W_SNUFF:
+			return W_SAWNOFF;
+		case W_SPATZ:
+			return W_STG;
+		case W_GUT:
+			return W_TRENCH;
+		case W_SAMURAI:
+			return W_TYPE;
+		case W_MP5:
+			return W_MP5;
+		case W_M14:
+			return W_M14;
 		default:
 			return 0;
 	}
