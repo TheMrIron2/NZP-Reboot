@@ -684,15 +684,15 @@ noref void() CSQC_Parse_Event =
 		local string new;
 		local float skin2;
 		new = readstring();
-		skin2 = readbyte();
 		setmodel(vmodel,new);
-		vmodel.skin = skin2;
+		vmodel.skin = readbyte();
 	}
 	else if(first == EVENT_UPDATEV2MODEL)
 	{
 		local string new2;
 		new2 = readstring();
 		setmodel(v2model,new2);
+		v2model.skin = readbyte();
 	}
 	else if(first == EVENT_USEPRINT) {
 		useprint_type = readbyte();

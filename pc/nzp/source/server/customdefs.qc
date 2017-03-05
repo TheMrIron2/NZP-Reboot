@@ -354,23 +354,23 @@ void(float to) SwitchWeapon =
 	multicast('0 0 0', MULTICAST_ONE);
 }
 
-void(string to) UpdateVmodel =
+void(string to, float skin) UpdateVmodel =
 {
-	float wepskin = self.weaponskin;
 	
 	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 	WriteByte(MSG_MULTICAST, EVENT_UPDATEVMODEL);
 	WriteString(MSG_MULTICAST, to);
-	WriteByte(MSG_MULTICAST, wepskin);
+	WriteByte(MSG_MULTICAST, skin);
 	msg_entity = self;
 	multicast('0 0 0', MULTICAST_ONE);
 }
 
-void(string to) UpdateV2model =
+void(string to, float skin) UpdateV2model =
 {
 	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 	WriteByte(MSG_MULTICAST, EVENT_UPDATEV2MODEL);
 	WriteString(MSG_MULTICAST, to);
+	WriteByte(MSG_MULTICAST, skin);
 	msg_entity = self;
 	multicast('0 0 0', MULTICAST_ONE);
 }

@@ -198,20 +198,20 @@ void Set_W_Frame (float startframe, float endframe, float duration, float funcca
 	if (set_model && (startframe != endframe)) { // naievil -- latter used for checkhold 
 		if (side == S_LEFT) {
 			self.weapon2model = set_model;
-			UpdateV2model(self.weapon2model);
+			UpdateV2model(self.weapon2model, GetWepSkin(self.weapon));
 		} else {
 			self.weaponmodel = set_model;
-			UpdateVmodel(self.weaponmodel);
+			UpdateVmodel(self.weaponmodel, GetWepSkin(self.weapon));
 			
 			if (set_model == "progs/VModels/v_nade.mdl" || set_model == "progs/VModels/v_betty.mdl") {
 				self.weapon2model = "";
-				UpdateV2model(self.weapon2model);
+				UpdateV2model(self.weapon2model, 0);
 			} else if (self.weapon == W_KAR_SCOPE) {	
 				self.weapon2model = "progs/Vmodels/v_karscope.mdl"; 
-				UpdateV2model(self.weapon2model);		// naievil (FIXME) probably better way to do this
+				UpdateV2model(self.weapon2model, 0);
 			} else if (self.weapon == W_BIATCH) {	
 				self.weapon2model = "models/weapons/m1911/v_biatch_left.mdl"; 
-				UpdateV2model(self.weapon2model);		// naievil (FIXME) probably better way to do this
+				UpdateV2model(self.weapon2model, 0);
 			}
 		}
 	}

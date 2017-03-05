@@ -5,8 +5,12 @@ string(float wep) GetWeaponName =
 	{
 		case W_COLT:
 			return "Colt M1911";
+		case W_BIATCH:
+      		return "Mustang & Sally";
 		case W_KAR:
 			return "Kar 98k";
+    	case W_ARMAGEDDON:
+			return "Armageddon";
 		case W_THOMPSON:
 			return "Thompson";
 		case W_357:
@@ -57,10 +61,6 @@ string(float wep) GetWeaponName =
 			return "Grenades";
 		case W_BETTY:
 			return "Bouncing Betty";
-		case W_BIATCH:
-      		return "Mustang & Sally";
-    	case W_ARMAGEDDON:
-			return "Armageddon";
 		case W_GIBS:
 			return "Gibs-O-Matic";
 		case W_KILLU:
@@ -142,6 +142,8 @@ float(float wep) GetFiretype =
 			return 1;
 		case W_KAR:
 			return 1;
+    	case W_ARMAGEDDON:
+			return 1;
 		case W_THOMPSON:
 			return 0;
 		case W_357:
@@ -200,6 +202,8 @@ float(float wep) getWeaponMag =
 			return 8;
 		case W_KAR:
 			return 5;
+    	case W_ARMAGEDDON:
+			return 8;
 		case W_THOMPSON:
 			return 20;
 		case W_357:
@@ -301,6 +305,8 @@ float(float wep) getWeaponAmmo =
 			return 160;
 		case W_BIATCH:
 			return 80;
+    	case W_ARMAGEDDON:
+			return 60;
 	}
 	return 0;
 }
@@ -313,8 +319,12 @@ float(float wep) getWeaponDamage =
 	{
 		case W_COLT:
 			return 20;
+		case W_BIATCH:
+			return 1000;
 		case W_KAR:
 			return 100;
+		case W_ARMAGEDDON:
+			return 200;
 		case W_THOMPSON:
 			return 120;
 		case W_357:
@@ -353,8 +363,6 @@ float(float wep) getWeaponDamage =
 			return 120;
 		case W_TYPE:
 			return 100;
-		case W_BIATCH:
-			return 1000;
     }
 
     return 0;
@@ -386,6 +394,10 @@ float(float wep, float penetration_times) getWeaponPenetration =
 				return 0;
 			return 0.75;
 		case W_KAR:
+			if (penetration_times >= 3)
+				return 0;
+			return 1;
+		case W_ARMAGEDDON:
 			if (penetration_times >= 3)
 				return 0;
 			return 1;
@@ -485,6 +497,7 @@ float(float wep, float delaytype) getWeaponDelay =
 				return 2.5;
 			else if (delaytype == FIRE)
 				return 0.075;
+    	case W_ARMAGEDDON:
 		case W_KAR:
 			if (delaytype == RELOAD)
 				return 1.6;
@@ -640,6 +653,7 @@ float(float wep, float frametype) GetFrame =
 			}
 			break;
 		case W_KAR:
+		case W_ARMAGEDDON:
 			switch (frametype)
 			{
 				case FIRE_START:
@@ -1386,6 +1400,7 @@ string(float wep, float gorvmodel) GetWeaponModel =
 			else
 				return ("models/weapons/m1911/v_colt.mdl");
 		case W_KAR:
+		case W_ARMAGEDDON:
 			if (gorvmodel)
 				return ("models/weapons/kar/g_kar.mdl");
 			else
@@ -1510,9 +1525,11 @@ string(float wep) GetWeaponSound =
 {
 	switch (wep)
 	{
+		case W_BIATCH:
 		case W_COLT:
 			return "sounds/weapons/colt/shoot.wav";
 		case W_KAR:
+		case W_ARMAGEDDON:
 			return "sounds/weapons/kar/shoot.wav";
 		case W_THOMPSON:
 			return "sounds/weapons/thomp/shoot.wav";
@@ -1556,8 +1573,6 @@ string(float wep) GetWeaponSound =
 			return "sounds/weapons/shotgun/shoot.wav";
 		case W_TYPE:
 			return "sounds/weapons/type100/shoot.wav";
-		case W_BIATCH:
-			return "sounds/weapons/colt/shoot.wav";
     }
 
     return "";
@@ -1575,9 +1590,23 @@ float(float wep) IsDualWeapon = {
 float(float wep) IsPapWeapon = {
 	switch(wep) {
 		case W_BIATCH:
+		case W_ARMAGEDDON:
 			return 1;
 		default:
 			return 0;
+	}
+}
+
+float(float wep) GetWepSkin = {
+	switch(wep) {
+		case W_BIATCH:
+			return 0;
+		default:
+			if (IsPapWeapon(wep)) {
+				return 1;
+			} else {
+				return 0;
+			}
 	}
 }
 
@@ -1644,6 +1673,54 @@ float(float wep)  EqualPapWeapon =
 	switch (wep) {
 		case W_COLT:
 			return W_BIATCH;
+		case W_KAR:
+      		return W_ARMAGEDDON;
+		case W_THOMPSON:
+			return W_GIBS;
+		case W_357:
+			return W_KILLU;
+		case W_BAR:
+			return W_WIDOW;
+		case W_BROWNING:
+			return W_ACCELERATOR;
+		case W_DB:
+			return W_BORE;
+		case W_FG:
+			return W_IMPELLER;
+		case W_GEWEHR:
+			return W_COMPRESSOR;
+		case W_KAR_SCOPE:
+			return W_HEADCRACKER;
+		case W_M1:
+			return W_M1000;
+		case W_M1A1:
+			return W_WIDDER;
+		case W_MP40:
+			return W_AFTERBURNER;
+		case W_MG:
+			return W_BARRACUDA;
+		case W_PANZER:
+			return W_LONGINUS;
+		case W_PPSH:
+			return W_REAPER;
+		case W_PTRS:
+			return W_PENETRATOR;
+		case W_RAY:
+			return W_PORTER;
+		case W_SAWNOFF:
+			return W_SNUFF;
+		case W_STG:
+			return W_SPATZ;
+		case W_TRENCH:
+			return W_GUT;
+		case W_TYPE:
+			return W_SAMURAI;
+		case W_MP5:
+			return W_MP5;
+		case W_TESLA:
+			return W_BIATCH;
+		case W_M14:
+			return W_M14;
 		default:
 			return wep;
 	}
@@ -1653,7 +1730,7 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 {
 	if (anim_style == FIRE)
 	{
-		if (wep == W_KAR || wep == W_KAR_SCOPE)
+		if (wep == W_KAR || wep == W_ARMAGEDDON || wep == W_KAR_SCOPE)
 		{
 			if (curweaponframe == 6)
 				sound (self ,5, "sounds/weapons/kar/boltup.wav", 1, ATTN_NORM);
@@ -1685,6 +1762,7 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 			}
 			break;
 		case W_KAR:
+		case W_ARMAGEDDON:
 			if (curweaponframe == 15) {
 				sound (self ,5, "sounds/weapons/kar/boltup.wav", 1, ATTN_NORM);
 			} else if (curweaponframe == 16) {
@@ -1924,6 +2002,7 @@ void(float weptype) precache_extra =
 			break;
 		case W_KAR_SCOPE:
 		case W_KAR:
+		case W_ARMAGEDDON:
 			precache_sound ("sounds/weapons/kar/boltup.wav");
 			precache_sound ("sounds/weapons/kar/boltback.wav");
 			precache_sound ("sounds/weapons/kar/boltforward.wav");
