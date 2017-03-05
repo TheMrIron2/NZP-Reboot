@@ -594,6 +594,10 @@ void(float side) W_Fire =
 		self.currentmag2 = self.currentmag2 - 1;
 		self.fire_delay2 = getWeaponDelay(self.weapon, FIRE) + time;
 	}
+
+	if (IsPapWeapon(self.weapon)) {
+		sound (self, 0, "sounds/weapons/papfire.wav", 1, ATTN_NORM);
+	}
 	
 	SetUpdate(self, UT_HUD, 6, 0, 0);
 }

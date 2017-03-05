@@ -329,9 +329,9 @@ void() perk_revive =
 	self.solid = SOLID_TRIGGER;
 	precache_model ("progs/Misc/quick_revive.mdl");
 	precache_model ("progs/VModels/v_perk.mdl");
-	precache_sound("perkmachine/quickrevive.wav");
-	precache_sound("perkmachine/denyperk.wav");
-  precache_sound ("weapons/papfire.wav");
+	precache_sound ("perkmachine/quickrevive.wav");
+	precache_sound ("perkmachine/denyperk.wav");
+  	precache_sound ("weapons/papfire.wav");
 	setorigin (self, self.origin);
 	setmodel (self, "progs/Misc/quick_revive.mdl");
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);

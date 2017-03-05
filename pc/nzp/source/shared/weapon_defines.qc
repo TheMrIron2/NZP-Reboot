@@ -1574,6 +1574,15 @@ float(float wep) IsDualWeapon = {
 	}
 }
 
+float(float wep) IsPapWeapon = {
+	switch(wep) {
+		case W_BIATCH:
+			return 1;
+		default:
+			return 0;
+	}
+}
+
 void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeaponSound =
 {
 	if (anim_style == FIRE)
