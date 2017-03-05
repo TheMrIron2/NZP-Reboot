@@ -152,9 +152,9 @@ void() touch_perk =
 			sprintstop();
 			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.5 + time;	
 			other.weaponskin = 3;			
-			Set_W_Frame (0, 22, 0, 0, PERK, give_revive, "progs/VModels/v_perk.mdl", true, S_RIGHT);
+			Set_W_Frame (0, 22, 0, 0, PERK, give_revive, "models/machines/v_perk.mdl", true, S_RIGHT);
 			self = tempe;
-			sound (other, CHAN_ITEM, "perkmachine/quickrevive.wav", 1, ATTN_NORM);
+			sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
 			self.revivesoda++;
 			if (self.revivesoda == 3)
 				remove (self);
@@ -169,14 +169,13 @@ void() touch_perk =
 			sprintstop();
 			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 3;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_revive, "progs/VModels/v_perk.mdl", true, S_RIGHT);
+			Set_W_Frame (0, 39, 0, 0, PERK, give_revive, "models/machines/v_perk.mdl", true, S_RIGHT);
 			self = tempe;
-			sound (other, CHAN_ITEM, "perkmachine/quickrevive.wav", 1, ATTN_NORM);
+			sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
 		}
 		else if (other.button7)
 		{
 			centerprint (other, "Not enough points\n");
-		  sound (other, CHAN_ITEM, "perkmachine/denyperk.wav", 1, ATTN_NORM);
 		}
 	}
 	if (self.classname == "perk_flopper" && !(other.perks & P_FLOP) && self.fire_delay < time, S_RIGHT)
@@ -192,14 +191,13 @@ void() touch_perk =
 			sprintstop();
 			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 4;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_flopper, "progs/VModels/v_perk.mdl", true, S_RIGHT);
+			Set_W_Frame (0, 39, 0, 0, PERK, give_flopper, "models/machines/v_perk.mdl", true, S_RIGHT);
 			self = tempe;
-			sound (other, CHAN_ITEM, "perkmachine/flopper.wav", 1, ATTN_NORM);
+			sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
 		}
 		else if (other.button7)
 		{
 			centerprint (other, "Not enough points\n");
-      sound (other, CHAN_ITEM, "perkmachine/denyperk.wav", 1, ATTN_NORM);
 		}
 	}
 	if (self.classname == "perk_juggernog" && !(other.perks & P_JUG) && self.fire_delay < time)
@@ -215,14 +213,13 @@ void() touch_perk =
 			sprintstop();
 			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 2;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_juggernog, "progs/VModels/v_perk.mdl", true, S_RIGHT);
+			Set_W_Frame (0, 39, 0, 0, PERK, give_juggernog, "models/machines/v_perk.mdl", true, S_RIGHT);
 			self = tempe;
-			sound (other, CHAN_ITEM, "perkmachine/juggernog.wav", 1, ATTN_NORM);
+			sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
 		}
 		else if (other.button7)
 		{
 			centerprint (other, "Not enough points\n");
-      sound (other, CHAN_ITEM, "perkmachine/denyperk.wav", 1, ATTN_NORM);
 		}
 	}
 	if (self.classname == "perk_staminup" && !(other.perks & P_STAMIN) && self.fire_delay < time)
@@ -238,15 +235,14 @@ void() touch_perk =
 			sprintstop();
 			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 2;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_staminup, "progs/VModels/v_perk.mdl", true, S_RIGHT);
+			Set_W_Frame (0, 39, 0, 0, PERK, give_staminup, "models/machines/v_perk.mdl", true, S_RIGHT);
 			self = tempe;
 			other.weaponskin = 0;
-			sound (other, CHAN_ITEM, "perkmachine/staminup.wav", 1, ATTN_NORM);
+			sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
 		}
 		else if (other.button7)
 		{
 			centerprint (other, "Not enough points\n");
-      sound (other, CHAN_ITEM, "perkmachine/denyperk.wav", 1, ATTN_NORM);
 		}
 	}
 	if (self.classname == "perk_speed" && !(other.perks & P_SPEED) && self.fire_delay < time)
@@ -262,14 +258,13 @@ void() touch_perk =
 			sprintstop();
 			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 1;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_speedcola, "progs/VModels/v_perk.mdl", true, S_RIGHT);
+			Set_W_Frame (0, 39, 0, 0, PERK, give_speedcola, "models/machines/v_perk.mdl", true, S_RIGHT);
 			self = tempe;
-			sound (other, CHAN_ITEM, "perkmachine/speedcola.wav", 1, ATTN_NORM);
+			sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
 		}
 		else if (other.button7)
 		{
 			centerprint (other, "Not enough points\n");
-      sound (other, CHAN_ITEM, "perkmachine/denyperk.wav", 1, ATTN_NORM);
 		}
 	}
 	if (self.classname == "perk_double" && !(other.perks & P_DOUBLE) && self.fire_delay < time)
@@ -285,14 +280,13 @@ void() touch_perk =
 			sprintstop();
 			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 0;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_doubletap, "progs/VModels/v_perk.mdl", true, S_RIGHT);
+			Set_W_Frame (0, 39, 0, 0, PERK, give_doubletap, "models/machines/v_perk.mdl", true, S_RIGHT);
 			self = tempe;
-			sound (other, CHAN_ITEM, "perkmachine/doubletap.wav", 1, ATTN_NORM);
+			sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
 		}
 		else if (other.button7)
 		{
 			centerprint (other, "Not enough points\n");
-      sound (other, CHAN_ITEM, "perkmachine/denyperk.wav", 1, ATTN_NORM);
 		}
 	}
 }
@@ -327,30 +321,27 @@ void() setup_perk =
 void() perk_revive =
 {
 	self.solid = SOLID_TRIGGER;
-	precache_model ("progs/Misc/quick_revive.mdl");
-	precache_model ("progs/VModels/v_perk.mdl");
-	precache_sound ("perkmachine/quickrevive.wav");
-	precache_sound ("perkmachine/denyperk.wav");
-  	precache_sound ("weapons/papfire.wav");
+	precache_model ("models/machines/quick_revive.mdl");
+	precache_model ("models/machines/v_perk.mdl");
+	precache_sound ("sounds/machines/perk_drink.wav");
+  	precache_sound ("sounds/weapons/papfire.wav");
 	setorigin (self, self.origin);
-	setmodel (self, "progs/Misc/quick_revive.mdl");
+	setmodel (self, "models/machines/quick_revive.mdl");
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.classname = "perk_revive";
 	self.touch = touch_perk;
 
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
-	precache_model ("progs/shark.mdl");
 };
 void() perk_flopper =
 {
 	self.solid = SOLID_TRIGGER;
-	precache_model ("progs/Misc/flopper.mdl");
-	precache_model ("progs/VModels/v_perk.mdl");
-	precache_sound("perkmachine/flopper.wav");
-	precache_sound("perkmachine/denyperk.wav");
+	precache_model ("models/machines/flopper.mdl");
+	precache_model ("models/machines/v_perk.mdl");
+	precache_sound ("sounds/machines/perk_drink.wav");
 	setorigin (self, self.origin);
-	setmodel (self, "progs/Misc/flopper.mdl");
+	setmodel (self, "models/machines/flopper.mdl");
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.classname = "perk_flopper";
 	self.touch = touch_perk;
@@ -362,12 +353,11 @@ void() perk_flopper =
 void() perk_juggernog =
 {
 	self.solid = SOLID_TRIGGER;
-	precache_model ("progs/Misc/juggernog.mdl");
-	precache_model ("progs/VModels/v_perk.mdl");
-	precache_sound("perkmachine/juggernog.wav");
-	precache_sound("perkmachine/denyperk.wav");
+	precache_model ("models/machines/juggernog.mdl");
+	precache_model ("models/machines/v_perk.mdl");
+	precache_sound ("sounds/machines/perk_drink.wav");
 	setorigin (self, self.origin);
-	setmodel (self, "progs/Misc/juggernog.mdl");
+	setmodel (self, "models/machines/juggernog.mdl");
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.classname = "perk_juggernog";
 	self.touch = touch_perk;
@@ -379,12 +369,11 @@ void() perk_juggernog =
 void() perk_staminup =
 {
 	self.solid = SOLID_TRIGGER;
-	precache_model ("progs/Misc/staminup.mdl");
-	precache_model ("progs/VModels/v_perk.mdl");
-	precache_sound("perkmachine/staminup.wav");
-	precache_sound("perkmachine/denyperk.wav");
+	precache_model ("models/machines/staminup.mdl");
+	precache_model ("models/machines/v_perk.mdl");
+	precache_sound ("sounds/machines/perk_drink.wav");
 	setorigin (self, self.origin);
-	setmodel (self, "progs/Misc/staminup.mdl");
+	setmodel (self, "models/machines/staminup.mdl");
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.classname = "perk_staminup";
 	self.touch = touch_perk;
@@ -396,13 +385,12 @@ void() perk_staminup =
 void() perk_speed =
 {
 	self.solid = SOLID_TRIGGER;
-	precache_model ("progs/Misc/speed_cola.mdl");
-	precache_model ("progs/VModels/v_perk.mdl");
-	precache_sound("perkmachine/speedcola.wav");
-	precache_sound("perkmachine/denyperk.wav");
-	precache_sound("player/talk/fast.wav");
+	precache_model ("models/machines/speed_cola.mdl");
+	precache_model ("models/machines/v_perk.mdl");
+	precache_sound ("sounds/machines/perk_drink.wav");
+	precache_sound("player/talk/fast.wav");//FIXME(Jukki)
 	setorigin (self, self.origin);
-	setmodel (self, "progs/Misc/speed_cola.mdl");
+	setmodel (self, "models/machines/speed_cola.mdl");
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.classname = "perk_speed";
 	self.touch = touch_perk;
@@ -414,12 +402,11 @@ void() perk_speed =
 void() perk_double =
 {
 	self.solid = SOLID_TRIGGER;
-	precache_model ("progs/Misc/double_tap.mdl");
-	precache_model ("progs/VModels/v_perk.mdl");
-	precache_sound("perkmachine/doubletap.wav");	
-	precache_sound("perkmachine/denyperk.wav");
+	precache_model ("models/machines/double_tap.mdl");
+	precache_model ("models/machines/v_perk.mdl");
+	precache_sound ("sounds/machines/perk_drink.wav");
 	setorigin (self, self.origin);
-	setmodel (self, "progs/Misc/double_tap.mdl");
+	setmodel (self, "models/machines/double_tap.mdl");
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.classname = "perk_double";
 	self.touch = touch_perk;
@@ -473,7 +460,7 @@ void() touch_power_Switch =
 	{
 		turnpower1();
 		isPowerOn = true;
-		sound (self, CHAN_ITEM, "sounds/misc/power.wav", 1, ATTN_NONE);
+		sound (self, CHAN_ITEM, "sounds/machines/power.wav", 1, ATTN_NONE);
 
 		tempe = find (world, classname, "door_nzp");// trigger all paired doors
 		while (tempe)
@@ -510,10 +497,10 @@ void() touch_power_Switch =
 void() power_switch =
 {
 	self.solid = SOLID_TRIGGER;
-	precache_model ("progs/Misc/power_switch.mdl");
-	precache_sound ("sounds/misc/power.wav");
+	precache_model ("models/machines/power_switch.mdl");
+	precache_sound ("sounds/machines/power.wav");
 	setorigin (self, self.origin);
-	setmodel (self, "progs/Misc/power_switch.mdl");
+	setmodel (self, "models/machines/power_switch.mdl");
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.classname = "power_switch";
 	isPowerOn = false;
