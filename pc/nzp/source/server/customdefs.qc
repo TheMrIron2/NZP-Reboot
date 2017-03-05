@@ -41,12 +41,15 @@ float yeahIamrunning;
 
 //Weaponsystem defines
 void SwitchWeapon(float to);
+void GetUp();
 void Weapon_Logic();
 .float downed;
 .float fire_delay;
 .float reload_delay;
 .float health_delay;
 .float progress_bar;
+.float progress_bar_time;
+.float progress_bar_percent;
 .float weaponbk;
 .float currentmag;
 .float currentmagbk;

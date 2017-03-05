@@ -9,6 +9,10 @@ void() PlayerJump =
 
 	if ( !(self.flags & FL_JUMPRELEASED) )
 		return;
+
+	if (self.downed) {
+		return;
+	}
 			
 	self.flags = self.flags - (self.flags & FL_JUMPRELEASED);
 	sound(self, CHAN_VOICE, "sounds/player/jump.wav", 1, 1.75);
@@ -101,6 +105,18 @@ void() PlayerPostThink =
 		self.health = self.health + 5;
 		if (self.max_health < self.health)
 			self.health = self.max_health;
+	}
+	
+	if (self.progress_bar) {
+		if (self.progress_bar < time) {
+			GetUp();
+			self.progress_bar = 0;
+			self.progress_bar_time = 0;
+			self.progress_bar_percent = 0;
+		} else {
+			float remaining = self.progress_bar - time;
+			self.progress_bar_percent = (remaining / self.progress_bar_time);
+		}
 	}
 
 	self.oldvelocity = self.velocity;

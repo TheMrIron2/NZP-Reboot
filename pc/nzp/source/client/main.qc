@@ -285,6 +285,30 @@ void(float width, float height) HUD_Weaponstring =
 	drawstring([0.925*width - ws_offset*10, 0.75*height, 0], weaponstring, [0.0175*width, 0.0175*width, 0], [1, 1, 1], 1, 1); // naievil (FIXME) exact location later
 }
 
+void(float width, float height) HUD_Progressbar =
+{
+	float percent = getstatf(STAT_PROGRESSBAR);
+	if (!percent) {
+		return;
+	}
+
+	string progress; 
+	local float ws_offset;
+	
+	progress = ftos(percent);
+	ws_offset = (strlen(progress) - 1);
+
+	float bar_width = 0.0175*width * 20;
+	float bar_height = 0.0175*width;
+	float bar_x = (width - bar_width)/2;
+	float bar_y = height*0.75;
+
+	drawfill ([bar_x - 1, bar_y - 1, 0], [bar_width+2, bar_height, 0], [0, 0, 0], 0.4);
+	drawfill ([bar_x, bar_y, 0], [bar_width * percent, bar_height-2, 0], [1, 1, 1], 0.4);
+	
+	drawstring([(width - (88))/2, height*0.75 + 10, 0], "Reviving...", [0.0175*width, 0.0175*width, 0], [1, 1, 1], 1, 1); // naievil (FIXME) exact location later
+}
+
 void(float width, float height) HUD_Draw = 
 {
 	HUD_Health(width, height);
@@ -298,6 +322,7 @@ void(float width, float height) HUD_Draw =
 	HUD_Points(width, height);
 	HUD_Rounds(width, height);
 	HUD_Perks(width, height);
+	HUD_Progressbar(width, height);
 		
 	// fix me: change the 51 and 50 to human readable const floats like STAT_PISTOLAMMO, STAT_MGAMMO or something	
 

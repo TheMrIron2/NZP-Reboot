@@ -131,3 +131,4 @@ const float EVENT_UPDATE = 23;
 #define STAT_WEAPON2MODEL   53
 #define STAT_GRENADES   	54
 #define STAT_SECGRENADES   	55
+#define STAT_PROGRESSBAR   	55

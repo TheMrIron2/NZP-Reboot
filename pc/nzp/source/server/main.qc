@@ -70,6 +70,7 @@ void() worldspawn =
 	precache_sound("sounds/rounds/eround.wav");
 	precache_sound("sounds/rounds/nround.wav");
 	precache_sound("sounds/rounds/splash.wav");
+	precache_sound("sounds/music/end.wav");
 	precache_sound("sounds/null.wav");
 
 	precache_sound("sounds/misc/buy.wav");
@@ -155,6 +156,7 @@ void() worldspawn =
 	clientstat(STAT_WEAPON2MODEL, EV_STRING, weapon2model);
 	clientstat(STAT_GRENADES, EV_FLOAT, primary_grenades);
 	clientstat(STAT_SECGRENADES, EV_FLOAT, secondary_grenades);
+	clientstat(STAT_PROGRESSBAR, EV_FLOAT, progress_bar_percent);
 
 	mappath = strcat("maps/", mapname);
 	mappath = strzone(mappath);
