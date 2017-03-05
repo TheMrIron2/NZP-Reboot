@@ -45,27 +45,37 @@ void GetUp();
 void Weapon_Logic();
 .float downed;
 .float fire_delay;
+.float fire_delay2;
 .float reload_delay;
+.float reload_delay2;
 .float health_delay;
 .float progress_bar;
 .float progress_bar_time;
 .float progress_bar_percent;
 .float weaponbk;
 .float currentmag;
+.float currentmag2;
 .float currentmagbk;
+.float currentmagbk2;
 .float currentammobk;
 .float secondaryammo;
 .float semi;
+.float semi2;
 .float semiuse;
 .float semiswitch;
 .float semireload;
 .float secondarymag;
+.float secondarymag2;
 .float secondaryweapon;
 .float NeedLoad;
 .string weapon2model;
 .float weapon2frame;
 .float reloadinterupted;
 .float hitcount;
+
+#define S_LEFT 0
+#define S_RIGHT 1
+#define S_BOTH 2
 
 //Knife 
 .float semiknife;
@@ -82,15 +92,23 @@ void Weapon_Logic();
 .float throw_delay;
 
 //weapon frames
-void Set_W_Frame (float startframe, float endframe, float duration, float funccalledin, float animtype, void() endanimfunc, string set_model, float dontstartnew);
+void Set_W_Frame (float startframe, float endframe, float duration, float funccalledin, float animtype, void(optional float t) endanimfunc, string set_model, float dontstartnew, float side);
 .float weapon_animduration;
+.float weapon2_animduration;
 .float weapon_anim_type;
+.float weapon2_anim_type;
 .float anim_weapon_time;
+.float anim_weapon2_time;
 .float weaponframe_end;
+.float weapon2frame_end;
 .float callfuncat;
+.float callfuncat2;
 .float new_anim_stop;
+.float new_anim2_stop;
 .float anim_reversed;
+.float anim2_reversed;
 .void() animend;
+.void(optional float t) animend2;
 
 
 //Null functions

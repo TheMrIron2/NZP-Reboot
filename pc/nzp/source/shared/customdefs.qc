@@ -126,9 +126,10 @@ const float EVENT_UPDATE = 23;
 #define 	P_STAMIN	32
 
 #define STAT_CURRENTMAG     50
-#define STAT_POINTS         51
-#define STAT_WEAPON2FRAME   52
-#define STAT_WEAPON2MODEL   53
-#define STAT_GRENADES   	54
-#define STAT_SECGRENADES   	55
-#define STAT_PROGRESSBAR   	55
+#define STAT_CURRENTMAG2    51
+#define STAT_POINTS         52
+#define STAT_WEAPON2FRAME   53
+#define STAT_WEAPON2MODEL   54
+#define STAT_GRENADES   	55
+#define STAT_SECGRENADES   	56
+#define STAT_PROGRESSBAR   	57

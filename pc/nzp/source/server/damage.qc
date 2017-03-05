@@ -72,6 +72,7 @@ void() GetDown =
 	self.weaponbk = self.weapon;
 	self.currentammobk = self.currentammo;
 	self.currentmagbk = self.currentmag;
+	self.currentmagbk2 = self.currentmag2;
 	
 	self.weapon = W_COLT;
 	self.currentammo = 16;
@@ -84,7 +85,7 @@ void() GetDown =
 	
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
 	
 	self.progress_bar = 10 + time;     
 	self.progress_bar_time = 10;
@@ -107,6 +108,7 @@ void () GetUp =
 		self.weapon = self.weaponbk;
 		self.currentammo = self.currentammobk;
 		self.currentmag = self.currentmagbk;
+		self.currentmag2 = self.currentmagbk2;
 	}	
 	modelname = GetWeaponModel(self.weapon, 0);
 	self.weaponmodel = modelname;
@@ -114,7 +116,7 @@ void () GetUp =
   
   	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
 	
 };
 

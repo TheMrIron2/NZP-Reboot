@@ -58,7 +58,7 @@ string(float wep) GetWeaponName =
 		case 27:
 			return "Bouncing Betty";
 		case W_BIATCH:
-      		return "C3000 Biatch";
+      		return "Mustang & Sally";
     	case W_ARMAGEDDON:
 			return "Armageddon";
 		case W_GIBS:
@@ -186,6 +186,8 @@ float(float wep) GetFiretype =
 			return 1;
 		case W_TYPE:
 			return 0;
+		case W_BIATCH:
+			return 1;
     }
 
     return 0;
@@ -242,6 +244,8 @@ float(float wep) getWeaponMag =
 			return 6;
 		case W_TYPE:
 			return 30;
+		case W_BIATCH:
+			return 6;
 	}
 	return 0;
 }
@@ -297,6 +301,8 @@ float(float wep) getWeaponAmmo =
 			return 60;
 		case W_TYPE:
 			return 160;
+		case W_BIATCH:
+			return 80;
 	}
 	return 0;
 }
@@ -349,6 +355,8 @@ float(float wep) getWeaponDamage =
 			return 120;
 		case W_TYPE:
 			return 100;
+		case W_BIATCH:
+			return 1000;
     }
 
     return 0;
@@ -454,6 +462,10 @@ float(float wep, float penetration_times) getWeaponPenetration =
 			if (penetration_times >= 2)
 				return 0;
 			return 0.8;
+		case W_BIATCH:
+			if (penetration_times >= 2)
+				return 0;
+			return 0.75;
     }
     
 	return 0;
@@ -580,6 +592,11 @@ float(float wep, float delaytype) getWeaponDelay =
 				return 2.3;
 			else if (delaytype == FIRE)
 				return 0.08;
+		case W_BIATCH:
+			if (delaytype == RELOAD)
+				return 2.5;
+			else if (delaytype == FIRE)
+				return 0.075;
     }
 
     return 0;
@@ -1320,6 +1337,41 @@ float(float wep, float frametype) GetFrame =
 					return 27;
 			}
 			break;
+		case W_BIATCH:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return 1;
+				case FIRE_END:
+					return 2;
+				case RELOAD_START:
+					return 3;
+				case RELOAD_END:
+					return 36;
+				case SPRINT_IN_START:
+					return 33;
+				case SPRINT_IN_END:
+					return 34;
+				case SPRINT_START:
+					return 44;
+				case SPRINT_END:
+					return 43;
+				case SPRINT_OUT_START:
+					return 50;
+				case SPRINT_OUT_END:
+					return 42;
+				case TAKE_OUT_START:
+					return 39;
+				case TAKE_OUT_END:
+					return 42;
+				case PUT_OUT_START:
+					return 36;
+				case PUT_OUT_END:
+					return 39;
+				case RELOAD_CANCEL:
+					return 13;
+			}
+			break;
 	}
 
     return 0;
@@ -1445,6 +1497,11 @@ string(float wep, float gorvmodel) GetWeaponModel =
 				return ("models/weapons/type/g_type.mdl");
 			else
 				return ("models/weapons/type/v_type.mdl");
+		case W_BIATCH:
+			if (gorvmodel)
+				return ("models/weapons/m1911/g_colt.mdl");
+			else
+				return ("models/weapons/m1911/v_biatch_right.mdl");
     }
 
     return "";
@@ -1501,9 +1558,20 @@ string(float wep) GetWeaponSound =
 			return "sounds/weapons/shotgun/shoot.wav";
 		case W_TYPE:
 			return "sounds/weapons/type100/shoot.wav";
+		case W_BIATCH:
+			return "sounds/weapons/colt/shoot.wav";
     }
 
     return "";
+}
+
+float(float wep) IsDualWeapon = {
+	switch(wep) {
+		case W_BIATCH:
+			return 1;
+		default:
+			return 0;
+	}
 }
 
 void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeaponSound =
@@ -1755,6 +1823,15 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 				sound (self ,5, "sounds/weapons/type100/boltpull.wav", 1, ATTN_NORM);
 			}
 			break;
+		case W_BIATCH:
+			if (curweaponframe == 10) {
+				sound (self ,5, "sounds/weapons/colt/magout.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 19) {
+				sound (self ,5, "sounds/weapons/colt/magin.wav", 1, ATTN_NORM);
+			} else if(curweaponframe == 26) {
+				sound (self ,5, "sounds/weapons/colt/slide.wav", 1, ATTN_NORM);
+			}
+			break;
 	}
 }
 
@@ -1763,10 +1840,12 @@ void(float weptype) precache_extra =
 {
 	switch (weptype) {
 		case W_COLT:
+		case W_BIATCH:
 			precache_sound("sounds/weapons/colt/shoot.wav");
 			precache_sound("sounds/weapons/colt/magout.wav");
 			precache_sound("sounds/weapons/colt/magin.wav");
 			precache_sound("sounds/weapons/colt/slide.wav");
+			precache_model ("models/weapons/m1911/v_biatch_right.mdl");	// sprite explosion
 			break;
 		case W_KAR_SCOPE:
 		case W_KAR:

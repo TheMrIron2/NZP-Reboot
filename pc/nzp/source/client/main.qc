@@ -139,7 +139,14 @@ void(float width, float height) HUD_Ammo =
 	
 	curmag = getstatf(STAT_CURRENTMAG);		
 	ammo = getstatf(STAT_AMMO);	
-	ammostring = strcat(ftos(curmag), strcat("/",ftos(ammo)));
+
+	if (IsDualWeapon(getstatf(STAT_ACTIVEWEAPON))) {
+		float curmag2 = getstatf(STAT_CURRENTMAG2);
+		
+		ammostring = strcat(ftos(curmag2), " ", ftos(curmag), "/", ftos(ammo));
+	} else {
+		ammostring = strcat(ftos(curmag), strcat("/",ftos(ammo)));
+	}
 	drawstring([0.75*width, 0.94*height, 0], ammostring, [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
 }
 
@@ -362,10 +369,9 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 		//vmodel.origin -= vorg;
 		//vmodel.angles -= vang;
 		//addentity(vmodel);
-		float weaponframe;
+		float weaponframe, weapon2frame;
 		weaponframe = getstatf(STAT_WEAPONFRAME);
 		
-
 		if (curweaponframe != weaponframe) {
 			interpolating = TRUE;
 			vmodel.lerpfrac = 0;
@@ -374,21 +380,45 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 		
 		if (interpolating == TRUE) {
 			vmodel.lerpfrac += frametime * 10;
-			v2model.lerpfrac += frametime * 10;
 
 			if (vmodel.lerpfrac >= 1.0) {
 				oldweaponframe = curweaponframe;
 				vmodel.lerpfrac = 0;
-				v2model.lerpfrac = 0;
 				interpolating = FALSE;	
 			}
 			
 		}
 		vmodel.frame = oldweaponframe;
 		vmodel.frame2 = curweaponframe;
-		//v2model.frame = getstatf(STAT_WEAPON2FRAME);
-		v2model.frame = oldweaponframe;
-		v2model.frame2 = curweaponframe;
+
+		if (IsDualWeapon(getstatf(STAT_ACTIVEWEAPON))) {
+			weapon2frame = getstatf(STAT_WEAPON2FRAME);
+			if (curweapon2frame != weapon2frame) {
+				interpolating2 = TRUE;
+				v2model.lerpfrac = 0;
+				curweapon2frame = weapon2frame;
+			}
+			
+			if (interpolating2 == TRUE) {
+				v2model.lerpfrac += frametime * 10;
+
+				if (v2model.lerpfrac >= 1.0) {
+					oldweapon2frame = curweapon2frame;
+					v2model.lerpfrac = 0;
+					interpolating2 = FALSE;	
+				}
+				
+			}
+
+			v2model.frame = oldweapon2frame;
+			v2model.frame2 = curweapon2frame;
+
+		} else {
+			//v2model.frame = getstatf(STAT_WEAPON2FRAME);
+			v2model.lerpfrac = vmodel.lerpfrac;
+			v2model.frame = oldweaponframe;
+			v2model.frame2 = curweaponframe;
+		}
 		v2model.angles = vmodel.angles;
 		v2model.origin = vmodel.origin;
 		if(mzlflash.alpha > 0.09)

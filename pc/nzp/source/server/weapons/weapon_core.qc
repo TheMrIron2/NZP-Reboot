@@ -20,10 +20,10 @@ void() sprintstop =
 	startframe = GetFrame(self.weapon,SPRINT_OUT_START);
 	endframe = GetFrame(self.weapon,SPRINT_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
-	Set_W_Frame (startframe, endframe, 0, 0, SPRINT, /*ContinueRun*/ SUB_Null, modelname, false);//FIXME
+	Set_W_Frame (startframe, endframe, 0, 0, SPRINT, /*ContinueRun*/ SUB_Null, modelname, false, S_BOTH);//FIXME
 	self.zoom = 0;
 	self.into_sprint = 0;
-	/*self.reload_delay2 = self.fire_delay2 = */self.reload_delay = self.fire_delay = 0;
+	self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
 	yeahIamrunning = false;
 }
 
@@ -44,6 +44,10 @@ void() W_Switch =
 		self.currentmag = self.secondarymag;
 		self.secondarymag = tempf1;
 
+		tempf1 = self.currentmag2;
+		self.currentmag2 = self.secondarymag2;
+		self.secondarymag2 = tempf1;
+
 		tempf2 = self.weapon;
 		self.weapon = self.secondaryweapon;
 		self.secondaryweapon = tempf2;
@@ -60,9 +64,9 @@ void() W_Switch =
 		//UpdateWeapons(1);
 		//if (self.weaponslot1.dualwield)
 		//	Set_W2_Frame (self.weaponslot1.TakeWeaponStart, self.weaponslot1.TakeWeaponEnd, 0, 0, 0, SUB_Null, self.weaponslot1.v_model2, false);//FIXME
-		Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+		Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
 		
-		/*self.reload_delay2 = self.fire_delay2 = */self.reload_delay = self.fire_delay = 0;
+		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
 	}
 }
 
@@ -84,33 +88,42 @@ void() W_PutOut =
 		//UpdateWeapons(1);
 		//if (self.weaponslot1.dualwield)
 		//	Set_W2_Frame (self.weaponslot1.PutOutStart, self.weaponslot1.PutOutEnd, (self.weaponslot1.PutOutEnd - self.weaponslot1.PutOutStart)/10, 0, SWITCHWEP, W_Switch, self.weaponslot1.v_model2, false);//FIXME
-		Set_W_Frame (startframe, endframe, (endframe - startframe)/10, 0, SWITCHWEP, W_Switch, modelname, false);//FIXME
-		/*self.reload_delay2 = self.fire_delay2 = */self.reload_delay = self.fire_delay = 0;
+		Set_W_Frame (startframe, endframe, (endframe - startframe)/10, 0, SWITCHWEP, W_Switch, modelname, false, S_BOTH);//FIXME
+		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
 	}
 }
 
 
 //RELOAD
 
-void() W_Give_Ammo =
+void(float side) W_Give_Ammo =
 {
-	float ammo_shot, max_mag;
+	float ammo_shot, max_mag, loadammo;
 	
 	max_mag = getWeaponMag(self.weapon);
 
-	ammo_shot = max_mag - self.currentmag;
+	if (side == S_LEFT) {
+		ammo_shot = max_mag - self.currentmag2;
+	} else {
+		ammo_shot = max_mag - self.currentmag;
+	}
 	if (ammo_shot < self.currentammo)
 	{
     	self.currentammo = self.currentammo - ammo_shot;
       
-		self.currentmag = max_mag;
+		loadammo = max_mag;
 	}
 	else
 	{
-		self.currentmag = self.currentmag + self.currentammo;
+		loadammo = self.currentmag + self.currentammo;
 		self.currentammo = 0;
 	}
-	//UpdateWeapons(0);
+
+	if (side == S_LEFT) {
+		self.currentmag2 = loadammo;
+	} else {
+		self.currentmag = loadammo;
+	}
 };
 
 void () W_LoadAmmo;
@@ -130,87 +143,104 @@ void() ContinueReload = //Special reloads
 		{
 			delay = 1; 
 			self.reload_delay = time + delay;
-			Set_W_Frame (24, 28, delay, 0, RELOAD, SUB_Null, modelname, false);
+			Set_W_Frame (24, 28, delay, 0, RELOAD, SUB_Null, modelname, false, S_RIGHT);
 		} else if (self.weapon == W_TRENCH || self.weapon == W_GUT) {
 			delay = 0.5; 
 			self.reload_delay = time + delay;
-			Set_W_Frame (24, 26, delay, 0, RELOAD, W_LoadAmmo, modelname, false);
+			Set_W_Frame (24, 26, delay, 0, RELOAD, W_LoadAmmo, modelname, false, S_RIGHT);
 		}
 		self.reloadinterupted = FALSE;
 	} else if (self.currentmag < getWeaponMag(self.weapon)) {
 		if (self.weapon == W_BROWNING || self.weapon == W_ACCELERATOR) {
 			delay = 4; 
 			self.reload_delay = time + delay;
-			Set_W_Frame (45, 77, delay, 50, RELOAD, W_Give_Ammo, modelname, false);
+			Set_W_Frame (45, 77, delay, 50, RELOAD, W_Give_Ammo, modelname, false, S_RIGHT);
 		} else if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER) {
 			self.currentmag++;
         	self.currentammo = self.currentammo - 1;
 			delay = 0.8; 
 			self.reload_delay = time + delay;
-			Set_W_Frame (19, 24, delay, 0, RELOAD, ContinueReload, modelname, false);
+			Set_W_Frame (19, 24, delay, 0, RELOAD, ContinueReload, modelname, false, S_RIGHT);
 		} else if (self.weapon == W_TRENCH) {
 			self.currentmag++;
         	self.currentammo = self.currentammo - 1;
 			delay = 0.5; 
 			self.reload_delay = time + delay;
-			Set_W_Frame (18, 23, delay, 0, RELOAD, ContinueReload, modelname, false);
+			Set_W_Frame (18, 23, delay, 0, RELOAD, ContinueReload, modelname, false, S_RIGHT);
 		}
 	}
 }
 
-void() W_Reload =
+void(float side) W_Reload =
 {
-	//blubs remove me, for testing rendering zombie models=============
-	/*
-	local entity z;
-	z = find(world,classname,"test_zombie");
-	while(z)
-	{
-		remove(z);
-		z = find(z,classname,"test_zombie");
-	}*/
-	//==============================================================
-	if (self.reload_delay > time || self.new_anim_stop || self.currentmag >= getWeaponMag(self.weapon))
+	if (side == S_BOTH) {
+		W_Reload(S_RIGHT);
+		if (IsDualWeapon(self.weapon)) {
+			W_Reload(S_LEFT);
+		}
 		return;
+	}
+	if (side == S_RIGHT &&
+		(self.reload_delay > time ||
+		self.new_anim_stop ||
+		self.currentmag >= getWeaponMag(self.weapon))){
+		return;
+	}
+	if (side == S_LEFT &&
+		(self.reload_delay2 > time ||
+		self.new_anim2_stop ||
+		self.currentmag2 >= getWeaponMag(self.weapon))){
 
-	float endframe, startframe, reloadcancelframe;
+		return;
+	}
+
+	float endframe, startframe, reloadcancelframe, delay;
 	string modelname;
-	modelname = GetWeaponModel(self.weapon, 0);
+	if (side == S_RIGHT) {
+		modelname = GetWeaponModel(self.weapon, 0);
+	} else {
+		modelname = "models/weapons/m1911/v_biatch_left.mdl";
+	}
 	
 	if (self.currentammo)
 	{
 		startframe = GetFrame(self.weapon,RELOAD_START);
 		endframe = GetFrame(self.weapon,RELOAD_END);
 		reloadcancelframe = GetFrame(self.weapon,RELOAD_CANCEL);
+		delay = getWeaponDelay(self.weapon,RELOAD);
 
 		if (self.weapon == W_BROWNING || self.weapon ==  W_ACCELERATOR) {
 			if (!self.currentmag) {
-				Set_W_Frame (26, 77, 0, 45, RELOAD, W_Give_Ammo, modelname, false);
+				Set_W_Frame (26, 77, 0, 45, RELOAD, W_Give_Ammo, modelname, false, S_RIGHT);
 				self.reload_delay = 6 + time;
 			} else if (self.currentmag > 0) {
-				Set_W_Frame (4, 25, 0, 0, RELOAD, ContinueReload, modelname, false);
+				Set_W_Frame (4, 25, 0, 0, RELOAD, ContinueReload, modelname, false, S_RIGHT);
 				self.reload_delay = 3.5 + time;
 			}
 		} else if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER ){
-			Set_W_Frame (14, 18, 0, 0, RELOAD, ContinueReload, modelname, false);
+			Set_W_Frame (14, 18, 0, 0, RELOAD, ContinueReload, modelname, false, S_RIGHT);
 			self.reload_delay = 0.8 + time;
 		} else if (self.weapon == W_M1 || self.weapon == W_M1000) {
 			if (self.currentmag > 0) {
-				Set_W_Frame (4, 44, 0, 25, RELOAD, W_Give_Ammo, modelname, false);
+				Set_W_Frame (4, 44, 0, 25, RELOAD, W_Give_Ammo, modelname, false, S_RIGHT);
 				self.reload_delay = 3.9;
 			} else {
-				Set_W_Frame (8, 44, 0, 25, RELOAD, W_Give_Ammo, modelname, false);
+				Set_W_Frame (8, 44, 0, 25, RELOAD, W_Give_Ammo, modelname, false, S_RIGHT);
 				self.reload_delay = 3.6;
 			}
 		} else if (self.weapon == W_TRENCH || self.weapon == W_GUT) {
 			if (self.currentmag == 0)
 				self.NeedLoad = true;
-			Set_W_Frame (14, 17, 0, 0, RELOAD, ContinueReload, modelname, false);
+			Set_W_Frame (14, 17, 0, 0, RELOAD, ContinueReload, modelname, false, S_RIGHT);
 			self.reload_delay = 0.8;
 		} else {
-			Set_W_Frame (startframe, endframe, 0, reloadcancelframe, RELOAD, W_Give_Ammo, modelname, TRUE);
-			self.reload_delay = getWeaponDelay(self.weapon,RELOAD);
-			self.reload_delay = self.reload_delay + time;
+			if (side == S_RIGHT) {
+				Set_W_Frame (startframe, endframe, 0, reloadcancelframe, RELOAD, W_Give_Ammo, modelname, TRUE, S_RIGHT);
+				self.reload_delay = delay + time;
+			} else {
+				Set_W_Frame (startframe, endframe, 0, reloadcancelframe, RELOAD, W_Give_Ammo, modelname, TRUE, S_LEFT);
+				self.reload_delay2 = delay + time;
+			}
 		}
 	}
 	
@@ -230,7 +260,7 @@ void () W_LoadAmmo =
 		return;
 	if (!self.currentmag)
 	{
-		W_Reload();
+		W_Reload(S_BOTH);
 		return;
 	}
 
@@ -238,20 +268,23 @@ void () W_LoadAmmo =
 
 	if (self.weapon == W_TRENCH || self.weapon == W_GUT)
 	{
-		Set_W_Frame (4, 14, 0, 12, FIRE, W_LoadAmmoDone, modelname, false);
+		Set_W_Frame (4, 14, 0, 12, FIRE, W_LoadAmmoDone, modelname, false, S_RIGHT);
 		self.fire_delay = 1 + time;
 	}
 	else if (self.weapon == W_KAR || self.weapon == W_ARMAGEDDON || self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER)
 	{
-		Set_W_Frame (4, 13, 1.1, 9, FIRE, W_LoadAmmoDone, modelname, false);
+		Set_W_Frame (4, 13, 1.1, 9, FIRE, W_LoadAmmoDone, modelname, false, S_RIGHT);
 		self.fire_delay = 0.9 + time;
 	}	
 }
 
 void () CheckReload = 
 {
+	if (!self.currentmag2) {
+		W_Reload(S_LEFT);
+	}
 	if (!self.currentmag) {
-		W_Reload();
+		W_Reload(S_RIGHT);
 	}
 }
 
@@ -457,11 +490,22 @@ void (float shotcount, float sprd, float Damage/*, float headmulti, float legmul
 }
 
 
-void() W_Fire =
+void(float side) W_Fire =
 {
 	//First check that we can actualy fire
-	if (time < self.fire_delay || self.new_anim_stop || self.reload_delay > time || self.weapon == 0)
+	if (side == S_RIGHT &&
+		(time < self.fire_delay ||
+		self.new_anim_stop ||
+		self.reload_delay > time)) {
 		return;
+	}
+
+	if (side == S_LEFT &&
+		(time < self.fire_delay2 ||
+		self.new_anim2_stop ||
+		self.reload_delay2 > time)) {
+		return;
+	}
 
 	float startframe;
 	float endframe;
@@ -477,9 +521,13 @@ void() W_Fire =
 	makevectors(self.v_angle);
 
 	//make sure magazine is loading
-	if (!self.currentmag)
+	if (!self.currentmag && side == S_RIGHT)
 	{
-		W_Reload();
+		W_Reload(S_RIGHT);
+		return;
+	} else if (!self.currentmag2 && side == S_LEFT)
+	{
+		W_Reload(S_LEFT);
 		return;
 	}
 
@@ -493,7 +541,13 @@ void() W_Fire =
 	//get some basic info
 	damage = getWeaponDamage(self.weapon);   
 	firetype = GetFiretype (self.weapon);
-	modelname = GetWeaponModel(self.weapon, 0);
+	if (side == S_RIGHT) {
+		modelname = GetWeaponModel(self.weapon, 0);
+	} else {
+		if (self.weapon == W_BIATCH) {
+			modelname = "models/weapons/m1911/v_biatch_left.mdl";
+		}
+	}
 	shotcount = GetWeaponShotcount(self.weapon);
     soundname = GetWeaponSound(self.weapon);
 	delay = getWeaponDelay(self.weapon, FIRE);
@@ -503,10 +557,17 @@ void() W_Fire =
 	//Fire weapons
 	if (firetype == 1)
 	{
-		if (self.semi)
-			return;
-		
-		self.semi = TRUE;
+		if (side == S_RIGHT) {
+			if (self.semi) {
+				return;
+			}
+			self.semi = TRUE;
+		} else if (side == S_LEFT) {
+			if (self.semi2) {
+				return;
+			}
+			self.semi2 = TRUE;
+		}
 	}
 
 	FireTrace(shotcount, spread, damage/* , self.weaponslot1.headx, self.weaponslot1.legx */);
@@ -517,17 +578,22 @@ void() W_Fire =
 	endframe = GetFrame(self.weapon,FIRE_END);
 	if (self.weapon == W_GUT || self.weapon == W_KAR_SCOPE || self.weapon == W_TRENCH || self.weapon == W_KAR || self.weapon == W_ARMAGEDDON || self.weapon == W_HEADCRACKER)
 	{
-		Set_W_Frame (startframe, endframe, delay, 0, FIRE, W_LoadAmmo, modelname, FALSE);
+		Set_W_Frame (startframe, endframe, delay, 0, FIRE, W_LoadAmmo, modelname, FALSE, side);
 		self.NeedLoad = true;
 	} else {
-		Set_W_Frame (startframe, endframe, delay, 0, FIRE, CheckReload, modelname, FALSE);
+		Set_W_Frame (startframe, endframe, delay, 0, FIRE, CheckReload, modelname, FALSE, side);
 	}
 
 
 	sound (self, CHAN_WEAPON, soundname, 1, ATTN_NORM);
 
-	self.currentmag = self.currentmag - 1;
-	self.fire_delay = getWeaponDelay(self.weapon, FIRE) + time;
+	if (side == S_RIGHT) {
+		self.currentmag = self.currentmag - 1;
+		self.fire_delay = getWeaponDelay(self.weapon, FIRE) + time;
+	} else {
+		self.currentmag2 = self.currentmag2 - 1;
+		self.fire_delay2 = getWeaponDelay(self.weapon, FIRE) + time;
+	}
 	
 	SetUpdate(self, UT_HUD, 6, 0, 0);
 }
@@ -596,19 +662,19 @@ void () W_Knife =
 
 		if (self.weapon == W_BK)
 		{
-			Set_W_Frame (14, 24, 1.4, 0, KNIFE, SUB_Null, "progs/VModels/v_bk.mdl", false);
+			Set_W_Frame (14, 24, 1.4, 0, KNIFE, SUB_Null, "progs/VModels/v_bk.mdl", false, S_RIGHT);
 			self.fire_delay = time + 1.5;
 			self.knife_delay = time + 1.75;
 		}
 		else if (self.bowie)
 		{
-			Set_W_Frame (4, 10, 0.7, 0, KNIFE, ReturnWeaponModel, "progs/VModels/v_bowie.mdl", false);
+			Set_W_Frame (4, 10, 0.7, 0, KNIFE, ReturnWeaponModel, "progs/VModels/v_bowie.mdl", false, S_RIGHT);
 			self.fire_delay = time + 0.8;
 			self.knife_delay = time + 1.3;
 		}
 		else
 		{
-			Set_W_Frame (4, 12, 0.7, 0, KNIFE, ReturnWeaponModel, "progs/VModels/v_knife.mdl", false);
+			Set_W_Frame (4, 12, 0.7, 0, KNIFE, ReturnWeaponModel, "progs/VModels/v_knife.mdl", false, S_RIGHT);
 			self.fire_delay = time + 0.8;
 			self.knife_delay = time + 1;
 		}
@@ -618,13 +684,13 @@ void () W_Knife =
 	{
 		if (self.weapon == W_BK)//slash
 		{
-			Set_W_Frame (8, 13, 0, 0.4, KNIFE, SUB_Null, "progs/VModels/v_bk.mdl", false);
+			Set_W_Frame (8, 13, 0, 0.4, KNIFE, SUB_Null, "progs/VModels/v_bk.mdl", false, S_RIGHT);
 			self.fire_delay = time + 0.5;
 			self.knife_delay = time + 0.8;
 		}
 		else if (self.bowie)
 		{
-			Set_W_Frame (0, 3, 0.3, 0, KNIFE, ReturnWeaponModel, "progs/VModels/v_bowie.mdl", false);
+			Set_W_Frame (0, 3, 0.3, 0, KNIFE, ReturnWeaponModel, "progs/VModels/v_bowie.mdl", false, S_RIGHT);
 			self.fire_delay = time + 0.4;
 			self.knife_delay = time + 0.9;
 		}
@@ -633,12 +699,12 @@ void () W_Knife =
 			self.punchangle_x = -5;
 			self.punchangle_y = -10;
 			//self.punchangle_z = 5;
-			Set_W_Frame (0, 3, 0.3, 0, KNIFE, ReturnWeaponModel, "progs/VModels/v_knife.mdl", false);
+			Set_W_Frame (0, 3, 0.3, 0, KNIFE, ReturnWeaponModel, "progs/VModels/v_knife.mdl", false, S_RIGHT);
 			self.fire_delay = time + 0.4;
 			self.knife_delay = time + 0.7;
 		}
 	}
-	self.reload_delay = 0;
+	self.reload_delay2 = self.reload_delay = 0;
 
 	};
 
@@ -723,97 +789,92 @@ void() W_ThrowGrenade =
 	float endframe;
 	local	entity nade;
 	local entity betty;
-	
-if (self.pri_grenade_state == 0)
-{
-	nade = spawn ();
-	nade.owner = self;
-	nade.grenade_delay = nade.owner.grenade_delay;
-	nade.owner.grenade_delay = 0;
-	nade.movetype = MOVETYPE_BOUNCE;
-	nade.solid = SOLID_BBOX;
-	nade.classname = "grenade";
-		
-// set nade speed	
 
-	makevectors (self.v_angle);
+	if (self.pri_grenade_state == 0) {
+		nade = spawn ();
+		nade.owner = self;
+		nade.grenade_delay = nade.owner.grenade_delay;
+		nade.owner.grenade_delay = 0;
+		nade.movetype = MOVETYPE_BOUNCE;
+		nade.solid = SOLID_BBOX;
+		nade.classname = "grenade";
 
-	nade.velocity = v_forward*800;
+		// set nade speed	
 
-	nade.avelocity = '400 -400 400';
+		makevectors (self.v_angle);
 
-	//nade.angles = vectoangles(nade.velocity);
-	//nade.angles_z += (nade.angles_z + 180 < 360)? 180 : -180;
-	nade.angles = vectoangles(v_forward);
-	nade.angles_z -= 35;
-// set nade duration
-	nade.nextthink = nade.grenade_delay;
-	nade.think = GrenadeExplode;
+		nade.velocity = v_forward*800;
 
-	nade.touch = Velocity_reduce;
-	setmodel (nade, "progs/GModels/g_grenade.mdl");
-	setsize (nade, '0 0 0', '0 0 0');
-	nade.origin = self.origin + self.view_ofs;
-	nade.origin += v_forward * 12;
-	setorigin (nade, nade.origin);
-	
-	self.animend = ReturnWeaponModel;
-	self.callfuncat = 0;
-	isBuying = false;
- }
-else if (self.pri_grenade_state == 1)
-{
-	if (!(self.flags & FL_ONGROUND))
-	{
-    self.semiswitch = false;
-    centerprint (self, "You cannot place a bouncing betty here");
-    self.animend = ReturnWeaponModel;
-    self.callfuncat = 0;
-    isBuying = false; 
-  }
-  if (self.flags & FL_ONGROUND)
-  {
-	betty = spawn ();
-	betty.owner = self;
-	betty.grenade_delay = betty.owner.grenade_delay;
-	betty.owner.grenade_delay = 0;
-	betty.movetype = MOVETYPE_NONE;
-	betty.solid = SOLID_TRIGGER;
-	betty.classname = "betty";
-		
-// set betty speed	
-	betty.velocity = v_forward*0;
+		nade.avelocity = '400 -400 400';
 
-	//nade.angles = vectoangles(nade.velocity);
-	//nade.angles_z += (nade.angles_z + 180 < 360)? 180 : -180;
-// set nade duration
-	betty.think = GrenadeExplode;
+		//nade.angles = vectoangles(nade.velocity);
+		//nade.angles_z += (nade.angles_z + 180 < 360)? 180 : -180;
+		nade.angles = vectoangles(v_forward);
+		nade.angles_z -= 35;
+		// set nade duration
+		nade.nextthink = nade.grenade_delay;
+		nade.think = GrenadeExplode;
 
-	betty.touch = betty_touch;
-	setmodel (betty, "progs/GModels/g_betty.mdl");
-	setsize (betty, '-16 -16 -4', '16 16 1');
-	betty.origin = betty.owner.origin - self.view_ofs + '0 0 1';
-	betty.origin += v_forward * 0;
-	setorigin (betty, betty.origin);
-	
-	self.animend = ReturnWeaponModel;
-	self.callfuncat = 0;
-	isBuying = false;  
-	}
- }
-	else 
-	{
+		nade.touch = Velocity_reduce;
+		setmodel (nade, "progs/GModels/g_grenade.mdl");
+		setsize (nade, '0 0 0', '0 0 0');
+		nade.origin = self.origin + self.view_ofs;
+		nade.origin += v_forward * 12;
+		setorigin (nade, nade.origin);
+
+		self.animend = ReturnWeaponModel;
+		self.callfuncat = 0;
+		isBuying = false;
+	} else if (self.pri_grenade_state == 1) {
+		if (!(self.flags & FL_ONGROUND)) {
+			self.semiswitch = false;
+			centerprint (self, "You cannot place a bouncing betty here");
+			self.animend = ReturnWeaponModel;
+			self.callfuncat = 0;
+			isBuying = false; 
+		}
+		if (self.flags & FL_ONGROUND) {
+			betty = spawn ();
+			betty.owner = self;
+			betty.grenade_delay = betty.owner.grenade_delay;
+			betty.owner.grenade_delay = 0;
+			betty.movetype = MOVETYPE_NONE;
+			betty.solid = SOLID_TRIGGER;
+			betty.classname = "betty";
+
+			// set betty speed	
+			betty.velocity = v_forward*0;
+
+			//nade.angles = vectoangles(nade.velocity);
+			//nade.angles_z += (nade.angles_z + 180 < 360)? 180 : -180;
+			// set nade duration
+			betty.think = GrenadeExplode;
+
+			betty.touch = betty_touch;
+			setmodel (betty, "progs/GModels/g_betty.mdl");
+			setsize (betty, '-16 -16 -4', '16 16 1');
+			betty.origin = betty.owner.origin - self.view_ofs + '0 0 1';
+			betty.origin += v_forward * 0;
+			setorigin (betty, betty.origin);
+
+			self.animend = ReturnWeaponModel;
+			self.callfuncat = 0;
+			isBuying = false;  
+		}
+	} else  {
 		centerprint (other, "No grenadetype defined...\n");
 	}
-    if (!(self.flags & FL_ONGROUND))
-      self.secondary_grenades = self.secondary_grenades + 1;
-      
- 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
+
+	if (!(self.flags & FL_ONGROUND)) {
+		self.secondary_grenades = self.secondary_grenades + 1;
+	}
+
+	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);
 	self.semiswitch = false;
-		
+
 	SetUpdate(self, UT_HUD, 6, 0, 0);
 }
 
@@ -827,15 +888,15 @@ void() checkHold =
 			self.grenade_delay = time + 0.05;
 			
 		isBuying = true;  
-		Set_W_Frame (3, 6, 0, 5, GRENADE, W_ThrowGrenade, "progs/VModels/v_nade.mdl", true);
+		Set_W_Frame (3, 6, 0, 5, GRENADE, W_ThrowGrenade, "progs/VModels/v_nade.mdl", true, S_RIGHT);
 		sound (self, CHAN_WEAPON, "sounds/weapons/grenade/throw.wav", 1, ATTN_NORM);
-		self.reload_delay = self.fire_delay = time + 0.4;
+		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = time + 0.4;
 		self.throw_delay = time + 0.9;
 	}
 	else
 	{
     isBuying = true;
-		Set_W_Frame (2, 2, 0, 0, GRENADE, checkHold, "progs/VModels/v_nade.mdl", true);
+		Set_W_Frame (2, 2, 0, 0, GRENADE, checkHold, "progs/VModels/v_nade.mdl", true, S_RIGHT);
 		//self.weaponframe = 12;
 		//self.weapon_anim_end = 12;
 		//self.animend = checkHold;
@@ -849,15 +910,15 @@ void() checkHold =
 		if(self.grenade_delay < time)
 			self.grenade_delay = time + 0.05;
 		isBuying = true;
-		Set_W_Frame (18, 23, 0, 5, GRENADE, W_ThrowGrenade, "progs/VModels/v_betty.mdl", true);
+		Set_W_Frame (18, 23, 0, 5, GRENADE, W_ThrowGrenade, "progs/VModels/v_betty.mdl", true, S_RIGHT);
 		sound (self, CHAN_WEAPON, "sounds/weapons/grenade/throw.wav", 1, ATTN_NORM);
-		self.reload_delay = self.fire_delay = time + 0.4;
+		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = time + 0.4;
 		self.throw_delay = time + 0.9;
 	}
 	else
 	{    
 		isBuying = true;
-		Set_W_Frame (18, 18, 0, 0, GRENADE, checkHold, "progs/VModels/v_betty.mdl", true);
+		Set_W_Frame (18, 18, 0, 0, GRENADE, checkHold, "progs/VModels/v_betty.mdl", true, S_RIGHT);
 	}
  }
  else
@@ -874,19 +935,19 @@ void() W_Grenade =
   {         
 	  if (self.pri_grenade_state == 0 && self.primary_grenades > 0)
       {
-		Set_W_Frame (0, 2, 0, 0, GRENADE, checkHold, "progs/VModels/v_nade.mdl", true);
+		Set_W_Frame (0, 2, 0, 0, GRENADE, checkHold, "progs/VModels/v_nade.mdl", true, S_RIGHT);
 		sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
 		self.primary_grenades = self.primary_grenades - 1;
-		self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
+		self.reload_delay2 = self.fire_delay2 = self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
 		self.grenade_delay = time + 5;
 		//self.holdnade = TRUE;
       }
     else if (self.pri_grenade_state == 1 && self.secondary_grenades > 0)
       {  
-		Set_W_Frame (0, 18, 0, 0, GRENADE, checkHold, "progs/VModels/v_betty.mdl", true);
+		Set_W_Frame (0, 18, 0, 0, GRENADE, checkHold, "progs/VModels/v_betty.mdl", true, S_RIGHT);
 		sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
 		self.secondary_grenades = self.secondary_grenades - 1;
-		self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
+		self.reload_delay2 = self.fire_delay2 = self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
 //	 	self.grenade_delay = time + 5;
       //self.holdnade = TRUE;
       }
@@ -919,11 +980,26 @@ void () Weapon_Logic =
 	W_Frame_Update ();
 	Impulse_Functions();
 
-	if (self.button0) {
-		W_Fire();
+	if (self.weapon == W_BIATCH) { 
+		if (self.button0) {
+			W_Fire(S_LEFT);
+		} else {
+			self.semi2 = FALSE;
+		}
+
+		if (self.button8 && self.weapon == W_BIATCH) {
+			W_Fire(S_RIGHT);
+		} else {
+			self.semi = FALSE;
+		}
 	} else {
-		self.semi = FALSE;
+		if (self.button0) {
+			W_Fire(S_RIGHT);
+		} else {
+			self.semi = FALSE;
+		}
 	}
+
 	
 	if (!self.button7) {
 		self.semiuse = false;
@@ -947,7 +1023,7 @@ void () Weapon_Logic =
 
 	if (self.button5 && !self.semireload)
 	{
-		W_Reload();
+		W_Reload(S_BOTH);
 		self.semireload = TRUE;
 	}
 	else if (!self.button5) {

@@ -16,7 +16,7 @@ void() give_revive =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
 	
 	SetPerk(self, self.perks);
 }
@@ -34,7 +34,7 @@ void() give_juggernog =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
 		
 	SetPerk(self, self.perks);
 }
@@ -53,7 +53,7 @@ void() give_doubletap =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
 		
 	SetPerk(self, self.perks);
 }
@@ -70,7 +70,7 @@ void() give_speedcola =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
 		
 	SetPerk(self, self.perks);
 }
@@ -88,7 +88,7 @@ void() give_flopper =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
 		
 	SetPerk(self, self.perks);
 }
@@ -106,7 +106,7 @@ void() give_staminup =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
 		
 	SetPerk(self, self.perks);
 }
@@ -150,9 +150,9 @@ void() touch_perk =
 			tempe = self;
 			self = other;
 			sprintstop();
-			self.fire_delay = self.reload_delay = 4.5 + time;	
+			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.5 + time;	
 			other.weaponskin = 3;			
-			Set_W_Frame (0, 22, 0, 0, PERK, give_revive, "progs/VModels/v_perk.mdl", true);
+			Set_W_Frame (0, 22, 0, 0, PERK, give_revive, "progs/VModels/v_perk.mdl", true, S_RIGHT);
 			self = tempe;
 			sound (other, CHAN_ITEM, "perkmachine/quickrevive.wav", 1, ATTN_NORM);
 			self.revivesoda++;
@@ -167,9 +167,9 @@ void() touch_perk =
 			tempe = self;
 			self = other;
 			sprintstop();
-			self.fire_delay = self.reload_delay = 4.0 + time;
+			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 3;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_revive, "progs/VModels/v_perk.mdl", true);
+			Set_W_Frame (0, 39, 0, 0, PERK, give_revive, "progs/VModels/v_perk.mdl", true, S_RIGHT);
 			self = tempe;
 			sound (other, CHAN_ITEM, "perkmachine/quickrevive.wav", 1, ATTN_NORM);
 		}
@@ -179,7 +179,7 @@ void() touch_perk =
 		  sound (other, CHAN_ITEM, "perkmachine/denyperk.wav", 1, ATTN_NORM);
 		}
 	}
-	if (self.classname == "perk_flopper" && !(other.perks & P_FLOP) && self.fire_delay < time)
+	if (self.classname == "perk_flopper" && !(other.perks & P_FLOP) && self.fire_delay < time, S_RIGHT)
 	{
 		useprint (other, 9, 2000, 6);
 		if (other.points >= 2000 && other.button7)
@@ -190,9 +190,9 @@ void() touch_perk =
 			tempe = self;
 			self = other;
 			sprintstop();
-			self.fire_delay = self.reload_delay = 4.0 + time;
+			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 4;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_flopper, "progs/VModels/v_perk.mdl", true);
+			Set_W_Frame (0, 39, 0, 0, PERK, give_flopper, "progs/VModels/v_perk.mdl", true, S_RIGHT);
 			self = tempe;
 			sound (other, CHAN_ITEM, "perkmachine/flopper.wav", 1, ATTN_NORM);
 		}
@@ -213,9 +213,9 @@ void() touch_perk =
 			tempe = self;
 			self = other;
 			sprintstop();
-			self.fire_delay = self.reload_delay = 4.0 + time;
+			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 2;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_juggernog, "progs/VModels/v_perk.mdl", true);
+			Set_W_Frame (0, 39, 0, 0, PERK, give_juggernog, "progs/VModels/v_perk.mdl", true, S_RIGHT);
 			self = tempe;
 			sound (other, CHAN_ITEM, "perkmachine/juggernog.wav", 1, ATTN_NORM);
 		}
@@ -236,9 +236,9 @@ void() touch_perk =
 			tempe = self;
 			self = other;
 			sprintstop();
-			self.fire_delay = self.reload_delay = 4.0 + time;
+			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 2;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_staminup, "progs/VModels/v_perk.mdl", true);
+			Set_W_Frame (0, 39, 0, 0, PERK, give_staminup, "progs/VModels/v_perk.mdl", true, S_RIGHT);
 			self = tempe;
 			other.weaponskin = 0;
 			sound (other, CHAN_ITEM, "perkmachine/staminup.wav", 1, ATTN_NORM);
@@ -260,9 +260,9 @@ void() touch_perk =
 			tempe = self;
 			self = other;
 			sprintstop();
-			self.fire_delay = self.reload_delay = 4.0 + time;
+			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 1;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_speedcola, "progs/VModels/v_perk.mdl", true);
+			Set_W_Frame (0, 39, 0, 0, PERK, give_speedcola, "progs/VModels/v_perk.mdl", true, S_RIGHT);
 			self = tempe;
 			sound (other, CHAN_ITEM, "perkmachine/speedcola.wav", 1, ATTN_NORM);
 		}
@@ -283,9 +283,9 @@ void() touch_perk =
 			tempe = self;
 			self = other;
 			sprintstop();
-			self.fire_delay = self.reload_delay = 4.0 + time;
+			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 0;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_doubletap, "progs/VModels/v_perk.mdl", true);
+			Set_W_Frame (0, 39, 0, 0, PERK, give_doubletap, "progs/VModels/v_perk.mdl", true, S_RIGHT);
 			self = tempe;
 			sound (other, CHAN_ITEM, "perkmachine/doubletap.wav", 1, ATTN_NORM);
 		}

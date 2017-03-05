@@ -151,6 +151,7 @@ void() worldspawn =
 	precache_sound ("sounds/zombie/sc1.wav");
 
 	clientstat(STAT_CURRENTMAG, EV_FLOAT, currentmag);
+	clientstat(STAT_CURRENTMAG2, EV_FLOAT, currentmag2);
 	clientstat(STAT_POINTS, EV_FLOAT, points);
 	clientstat(STAT_WEAPON2FRAME, EV_FLOAT, weapon2frame);
 	clientstat(STAT_WEAPON2MODEL, EV_STRING, weapon2model);
