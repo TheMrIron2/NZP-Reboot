@@ -125,10 +125,30 @@ noref void(float isnew) CSQC_Ent_Update =
 
 void(float width, float height) HUD_Health = 
 {
-	local float health;
+	local float health;	
+	float alpha;
 	
 	health = getstatf(STAT_HEALTH); 
 	drawstring([0.01*width, 0.94*height, 0], strcat("+",ftos(health)), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+
+	if (health < 100)
+	{
+		alpha = (100.0 - ((1.25 * health) - 25))/100*255;
+		if (alpha <= 0.0)
+			return;
+		float modifier = (sin(time * 10) * 20) - 20;//always negative
+		if(modifier < -35.0)
+		modifier = -35.0;
+    
+		alpha += modifier;
+    
+		if(alpha < 0.0)
+			return;
+		float color = 255.0 + modifier;
+    
+		drawpic([0,0,0], "gfx/hud/blood.tga", [width, height, 0], [10,0,0], alpha/2000); // naievil -- alpha factor division here makes it easy to use legacy code
+	}
+	
 }
 
 void(float width, float height) HUD_Ammo =
@@ -145,10 +165,20 @@ void(float width, float height) HUD_Ammo =
 
 void(float width, float height) HUD_Points =
 {
-	local float points;
+	local float points, pointlength = 0, increm = 10;
 	
 	points = getstatf(STAT_POINTS);
-	drawstring([0.80*width, 0.90*height, 0], ftos(points), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);   // POINTS
+	
+	while (increm < 100000000)
+	{
+		if (points >= increm)
+			pointlength = pointlength + 1;
+		
+		increm = increm * 10;
+	}
+		
+	drawpic([0.8*width,0.70*height,0], "gfx/hud/moneyback.tga", [128, 32, 0], [1,1,1], 1);
+	drawstring([width - 60 - pointlength*10, 0.70*height + 5, 0], ftos(points), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 1);   // naievil (FIXME) real offset needed (pointlength)
 }
 
 void(float width, float height) HUD_Grenades =
@@ -280,9 +310,9 @@ void(float width, float height) HUD_Weaponstring =
 	local float ws_offset;
 	
 	weaponstring = GetWeaponName(getstatf(STAT_ACTIVEWEAPON));
-	ws_offset = (strlen(weaponstring) - 1);
+	ws_offset = (strlen(weaponstring) - 2);
 	
-	drawstring([0.925*width - ws_offset*10, 0.75*height, 0], weaponstring, [0.0175*width, 0.0175*width, 0], [1, 1, 1], 1, 1); // naievil (FIXME) exact location later
+	drawstring([0.925*width - ws_offset*9.5, 0.75*height + 10, 0], weaponstring, [0.0175*width, 0.018*width, 0], [1, 1, 1], 1, 1); // naievil (FIXME) exact location later
 }
 
 void(float width, float height) HUD_Draw = 
