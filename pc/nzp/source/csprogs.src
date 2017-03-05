@@ -6,3 +6,4 @@ client/math.qc
 client/customdefs.qc
 client/menu.qc
 client/main.qc
+client/navmesh_editor.qc

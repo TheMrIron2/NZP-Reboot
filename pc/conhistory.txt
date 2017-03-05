@@ -1,42 +1,15 @@
-pr_dumpplatform -O csdefs -Tcs
-pr_dumpplatform -O ssdefs -Tqw
-/vid_reload 
-chase_active 1
-vid_restart
-chase_active 0
-restart
-vid_restaret
-vid_restart
-/r_softwarebanding 
-vid_restart
-join
-joingame
-quit
-map example_01
-
-/waypoint_mode 1
-/waypoint_mode 0
-restart
-restart
-/waypoint_mode 0
-/waypoint_mode 1
-/waypoint_mode 0
-/waypoint_mode 1
-/waypoint_mode 0
-/disconnect
-/waypoint_mode 1
-/waypoint_mode 0
-/waypoint_mode 1
-impulse 110
-impulse 111
-<<<<<<< HEAD
-impulse 100
-pause
-pause
-impulse 100
-impulse 101
-waypoint_mode 1
-impulse 107
-=======
-/waypoint_mode 1
->>>>>>> f9e9aa72af5685592630477b29b1336cb8d0f232
+sizedown 0.5
+setsize
+impulse 30
+nav_delete_verts
+nav_place_corner
+nav_confirm_corner
+nav_place_corner
+nav_confirm_corner
+nav_delete_verts
+impulse 31
+impulse 30
+nav_delete_verts
+impulse 31
+bind y screenshot
+nav_delete_verts

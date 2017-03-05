@@ -446,7 +446,7 @@ void(float pushaway) moveforwardalittle =
 };
 
 $frame hop1 hop2 hop3 hop4 hop5 hop6 hop7 hop8 hop9 hop10
-void() zombie_hop1	=[	$hop1,	zombie_hop1_5	] {self.movetype = MOVETYPE_STEP;self.frame = 113;self.nextthink = time + 0.05;moveforwardalittle(1); self.state = 1;Zombie_Think();};
+void() zombie_hop1	=[	$hop1,	zombie_hop1_5	] {self.frame = 113;self.nextthink = time + 0.05;moveforwardalittle(1); self.state = 1;Zombie_Think();};
 void() zombie_hop1_5	=[	$hop1,	zombie_hop2	] {self.frame = 113;self.nextthink = time + 0.05;moveforwardalittle(0); };
 void() zombie_hop2	=[	$hop2,	zombie_hop2_5	] {self.frame = 114;self.nextthink = time + 0.05;moveforwardalittle(1);Zombie_Think();};	
 void() zombie_hop2_5	=[	$hop2,	zombie_hop3	] {self.frame = 114;self.nextthink = time+0.05;moveforwardalittle(0);};	
@@ -466,8 +466,7 @@ void() zombie_hop9	=[	$hop9,	zombie_hop9_5	] {self.frame = 121;self.nextthink = 
 void() zombie_hop9_5	=[	$hop9,	zombie_hop10	] {self.frame = 121;self.nextthink = time+0.05;moveforwardalittle(0);};
 void() zombie_hop10	=[	$hop10,	zombie_hop10_5	] {self.frame = 122;self.nextthink = time+0.05;moveforwardalittle(1);Zombie_Think();};
 void() zombie_hop10_5=[	$hop10,	SUB_Null		] {self.frame = 122;	
-															self.oldorigin = self.origin =  self.goalentity.hop_spot;
-															setorigin(self, self.origin); 
+															setorigin(self, self.goalentity.hop_spot); 
 															self.state = 0;
 															self.hop_step = 6;
 															if(self.crawling == 2) 
@@ -475,7 +474,6 @@ void() zombie_hop10_5=[	$hop10,	SUB_Null		] {self.frame = 122;
 																//makeCrawler(self); 
 																return;
 															}
-															self.movetype = MOVETYPE_WALK;
 															self.th_walk();
 														};
 

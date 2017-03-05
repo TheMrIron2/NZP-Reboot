@@ -34,6 +34,23 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	registercommand("stopwalk");
 	registercommand("promptjoin");
 	
+	//======= Navmesh commands =========
+	registercommand("nav_editor");
+	registercommand("nav_place_vert");
+	registercommand("nav_delete_verts");
+	registercommand("nav_select_vert");
+	registercommand("nav_deselect_vert");
+	registercommand("nav_deselect_all");
+	registercommand("nav_make_poly");
+	registercommand("nav_delete_poly");
+	registercommand("nav_resolve_corner");
+	registercommand("nav_place_corner");
+	registercommand("nav_cancel_corner");
+	registercommand("nav_confirm_corner");
+	
+	
+	//===================================
+	
 	print("CSQC Started\n");
 	dummy = spawn();
 	if(serverkey("constate") == "disconnected")
@@ -128,6 +145,7 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 	g_width = width;
 	g_height = height;
 
+
 	//disable quake status bar and quake crosshair
 	setviewprop(VF_DRAWENGINESBAR, 0);	
 	setviewprop(VF_DRAWCROSSHAIR, 1);
@@ -193,6 +211,12 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 			addentity(mzlflash);
 		}
 	}
+	
+	if(navmesh_mode == TRUE)
+	{
+		navmesh_editor_draw();
+	}
+	
 	
 	//deltalisten makes engine call the "add_outline" func for each entity with the set model every frame
 	/*deltalisten("models/mg_ammo.iqm", add_outline, 0);
@@ -318,6 +342,43 @@ noref float(string cmd) CSQC_ConsoleCommand =
 		case "promptjoin":
 			menu_join();
 			return TRUE;
+		case "nav_editor":
+			toggle_navmesh_editor();
+			return TRUE;
+		case "nav_place_vert":
+			navmesh_place_vert();
+			return TRUE;
+		case "nav_delete_verts":
+			navmesh_delete_verts();
+			return TRUE;
+		case "nav_select_vert":
+			navmesh_select_vert();
+			return TRUE;
+		case "nav_deselect_vert":
+			navmesh_deselect_vert();
+			return TRUE;
+		case "nav_deselect_all":
+			navmesh_deselect_all();
+			return TRUE;
+		case "nav_make_poly":
+			navmesh_make_poly();
+			return TRUE;
+		case "nav_delete_poly":
+			navmesh_delete_poly();
+			return TRUE;
+		case "nav_resolve_corner":
+			navmesh_resolve_corner();
+			return TRUE;
+		case "nav_place_corner":
+			navmesh_place_corner();
+			return TRUE;
+		case "nav_cancel_corner":
+			navmesh_cancel_corner();
+			return TRUE;
+		case "nav_confirm_corner":
+			navmesh_confirm_corner();
+			return TRUE;
+			
 		default:
 			return FALSE;
 	}

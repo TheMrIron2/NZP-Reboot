@@ -694,6 +694,18 @@ void () Impulse_Functions =
 			addmoney(benis, 10000, 0);
 			//crouchset();
 			break;
+		case 30:
+			entity ent1;
+			ent1 = find(world, classname, "player");
+			print("Player bbox size set to zombie bbox size.\n");
+			setsize(ent1, [-8,-8,-32],[8,8,30]);
+			break;
+		case 31:
+			entity ent2;
+			ent2 = find(world, classname, "player");
+			print("Player bbox size restored.\n");
+			setsize(ent2, VEC_HULL_MIN,VEC_HULL_MAX);
+			break;
 	}
 	
 	self.impulse = 0;

@@ -44,6 +44,13 @@ const float MENU_PAUSE = 64;
 const float MENU_IGS = 128;
 const float MENU_RES = 256;
 
+vector	VEC_HULL_MIN = '-16 -16 -32';
+vector	VEC_HULL_MAX = '16 16 40';
+vector	VEC_HULL2_MIN = '-32 -32 -24';
+vector	VEC_HULL2_MAX = '32 32 64';
+vector  VEC_VIEW_OFS  = '0 0 32';
+
+
 
 float useprint_type;
 float useprint_weapon;
@@ -57,3 +64,22 @@ float interpolating;
 
 
 float rounds;
+
+
+//Navmesh defs
+float navmesh_mode;
+void() toggle_navmesh_editor;
+void() navmesh_editor_draw;
+void() navmesh_place_vert;
+void() navmesh_delete_verts;
+//Vertex selection functions
+void() navmesh_select_vert;
+void() navmesh_deselect_vert;
+void() navmesh_deselect_all;
+void() navmesh_make_poly;
+void() navmesh_delete_poly;
+void() navmesh_resolve_corner;
+void() navmesh_place_corner;
+void() navmesh_cancel_corner;
+void() navmesh_confirm_corner;
+void(float poly_index) navmesh_delete_poly_at_index;
