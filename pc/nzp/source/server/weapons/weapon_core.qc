@@ -725,7 +725,7 @@ void() switch_nade =
 		return;
 	}
 
-    if (isBuying == true)
+    if (self.isBuying == true)
 		return;
       
     if (!(self.grenades & 2))
@@ -828,14 +828,14 @@ void() W_ThrowGrenade =
 
 		self.animend = ReturnWeaponModel;
 		self.callfuncat = 0;
-		isBuying = false;
+		self.isBuying = false;
 	} else if (self.pri_grenade_state == 1) {
 		if (!(self.flags & FL_ONGROUND)) {
 			self.semiswitch = false;
 			centerprint (self, "You cannot place a bouncing betty here");
 			self.animend = ReturnWeaponModel;
 			self.callfuncat = 0;
-			isBuying = false; 
+			self.isBuying = false; 
 		}
 		if (self.flags & FL_ONGROUND) {
 			betty = spawn ();
@@ -863,7 +863,7 @@ void() W_ThrowGrenade =
 
 			self.animend = ReturnWeaponModel;
 			self.callfuncat = 0;
-			isBuying = false;  
+			self.isBuying = false;  
 		}
 	} else  {
 		centerprint (other, "No grenadetype defined...\n");
@@ -891,7 +891,7 @@ void() checkHold =
 		if(self.grenade_delay < time)
 			self.grenade_delay = time + 0.05;
 			
-		isBuying = true;  
+		self.isBuying = true;  
 		Set_W_Frame (3, 6, 0, 5, GRENADE, W_ThrowGrenade, "progs/VModels/v_nade.mdl", true, S_RIGHT);
 		sound (self, CHAN_WEAPON, "sounds/weapons/grenade/throw.wav", 1, ATTN_NORM);
 		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = time + 0.4;
@@ -899,7 +899,7 @@ void() checkHold =
 	}
 	else
 	{
-    isBuying = true;
+    	self.isBuying = true;
 		Set_W_Frame (2, 2, 0, 0, GRENADE, checkHold, "progs/VModels/v_nade.mdl", true, S_RIGHT);
 		//self.weaponframe = 12;
 		//self.weapon_anim_end = 12;
@@ -913,7 +913,7 @@ void() checkHold =
 	{
 		if(self.grenade_delay < time)
 			self.grenade_delay = time + 0.05;
-		isBuying = true;
+		self.isBuying = true;
 		Set_W_Frame (18, 23, 0, 5, GRENADE, W_ThrowGrenade, "progs/VModels/v_betty.mdl", true, S_RIGHT);
 		sound (self, CHAN_WEAPON, "sounds/weapons/grenade/throw.wav", 1, ATTN_NORM);
 		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = time + 0.4;
@@ -921,7 +921,7 @@ void() checkHold =
 	}
 	else
 	{    
-		isBuying = true;
+		self.isBuying = true;
 		Set_W_Frame (18, 18, 0, 0, GRENADE, checkHold, "progs/VModels/v_betty.mdl", true, S_RIGHT);
 	}
  }
@@ -1017,7 +1017,7 @@ void () Weapon_Logic =
 		self.semiswitch = false;
 	}
 	
-	if (self.button3 && isBuying != true && self.semiswitch != true)
+	if (self.button3 && self.isBuying != true && self.semiswitch != true)
 	{
 		W_Grenade();
 		self.semiswitch = true;

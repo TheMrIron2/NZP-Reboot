@@ -230,13 +230,15 @@ float crandom();
 
 //Perk and Power system
 float isPowerOn;
-float isBuying; // naievil -- used for checking if a perk is being consumed, limits glitching
+.float isBuying; // naievil -- used for checking if a perk is being consumed, limits glitching
 .float perks;
 .float perk_delay;
 .float revivesoda;
 
 .float boxstatus;
 .entity boxweapon;
+
+.float papState;
 
 //powerups
 float instakill_finished;
@@ -382,6 +384,26 @@ void SetUpdate(entity client, float type, float val1, float val2, float val3)
 	WriteByte(MSG_ONE, val1);
 	WriteByte(MSG_ONE, val2);
 	WriteByte(MSG_ONE, val3); // misc flags/vars for later if needed
+}
+
+void WeaponSwitch(entity player) {
+	float wep, cmag, cmag2, cammo;
+
+	wep = other.weapon;
+	other.weapon = other.secondaryweapon;
+	other.secondaryweapon = wep;
+
+	cmag = other.currentmag;
+	other.currentmag = other.secondarymag;
+	other.secondarymag = cmag;
+
+	cmag2 = other.currentmag2;
+	other.currentmag2 = other.secondarymag2;
+	other.secondarymag2 = cmag2;
+
+	cammo = other.currentammo;
+	other.currentammo = other.secondaryammo;
+	other.secondaryammo = cammo;
 }
 
 //naievil (FIXME) No idea where this should go, maybe a dummys

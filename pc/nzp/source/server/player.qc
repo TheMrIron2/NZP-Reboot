@@ -159,10 +159,10 @@ void() PlayerSpawn =
 	self.pri_grenade_state = 0; 		// defines that frag grenades are for player first, not betty
 	self.secondary_grenades = 0;
 
-	self.secondaryweapon = W_BIATCH;
+	/*self.secondaryweapon = W_BIATCH;
 	self.secondaryammo = getWeaponAmmo(self.secondaryweapon);
 	self.secondarymag = getWeaponMag(self.secondaryweapon);
-	self.secondarymag2 = getWeaponMag(self.secondaryweapon);
+	self.secondarymag2 = getWeaponMag(self.secondaryweapon);*/
 
 	addmoney(self, 500, 0);
 

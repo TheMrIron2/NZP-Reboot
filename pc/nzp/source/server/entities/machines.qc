@@ -1,12 +1,12 @@
-float isBuying;
+
 float backupWepSkin;
 float sound_perk_delay; 
 void() W_Switch;
 void() give_revive =
 { 
-  sound_perk_delay = time + 4.5;
+  	sound_perk_delay = time + 4.5;
   
-	isBuying = false;
+	self.isBuying = false;
 	string modelname;
 	float startframe;
 	float endframe;
@@ -23,9 +23,9 @@ void() give_revive =
 void() give_juggernog =
 {
 
-  sound_perk_delay = time + 4.5;
+  	sound_perk_delay = time + 4.5;
 
-	isBuying = false;
+	self.isBuying = false;
 	string modelname;
 	float startframe;
 	float endframe;
@@ -42,10 +42,10 @@ void() give_juggernog =
 void() give_doubletap =
 {
 
-  sound_perk_delay = time + 4.5;
+  	sound_perk_delay = time + 4.5;
 
-	isBuying = false;
-  string modelname;
+	self.isBuying = false;
+  	string modelname;
 	float startframe;
 	float endframe;
 	self.perks = self.perks | 2;
@@ -61,7 +61,7 @@ void() give_speedcola =
 {
   sound_perk_delay = time + 4.5;
 
-	isBuying = false;
+	self.isBuying = false;
 	string modelname;
 	float startframe;
 	float endframe;
@@ -79,7 +79,7 @@ void() give_flopper =
 
   sound_perk_delay = time + 4.5;
 
-	isBuying = false;
+	self.isBuying = false;
 	string modelname;
 	float startframe;
 	float endframe;
@@ -97,7 +97,7 @@ void() give_staminup =
 
   sound_perk_delay = time + 4.5;
 
-	isBuying = false;
+	self.isBuying = false;
 	string modelname;
 	float startframe;
 	float endframe;
@@ -118,7 +118,7 @@ void() touch_perk =
 	if (other.classname != "player" || other.downed)
 		return;
 
-	if (isBuying == true)
+	if (self.isBuying == true)
     return;
   
 	if (self.requirespower == true && !isPowerOn)
@@ -144,7 +144,7 @@ void() touch_perk =
 		}
 		if (!deathmatch && !coop && other.points >= 500 && other.button7)
 		{
-			isBuying = true;
+			self.isBuying = true;
 			self.fire_delay = time + 4.5;
 			addmoney (other, -500, 0);
 			tempe = self;
@@ -161,7 +161,7 @@ void() touch_perk =
 		}
 		else if ((coop || deathmatch) && other.points >= 1500 && other.button7)
 		{
-			isBuying = true;
+			self.isBuying = true;
 			self.fire_delay = time + 4;
 			addmoney (other, -1500, 0);
 			tempe = self;
@@ -183,7 +183,7 @@ void() touch_perk =
 		useprint (other, 9, 2000, 6);
 		if (other.points >= 2000 && other.button7)
 		{
-			isBuying = true;
+			self.isBuying = true;
 			self.fire_delay = time + 3;
 			addmoney (other, -2000, 0);
 			tempe = self;
@@ -205,7 +205,7 @@ void() touch_perk =
 		useprint (other, 9, 2500, 2);
 		if (other.points >= 2500 && other.button7)
 		{
-			isBuying = true;
+			self.isBuying = true;
 			self.fire_delay = time + 3;
 			addmoney (other, -2500, 0);
 			tempe = self;
@@ -227,7 +227,7 @@ void() touch_perk =
 		useprint (other, 9, 2000, 5);
 		if (other.points >= 2000 && other.button7)
 		{
-			isBuying = true;
+			self.isBuying = true;
 			self.fire_delay = time + 3;
 			addmoney (other, -2000, 0);
 			tempe = self;
@@ -250,7 +250,7 @@ void() touch_perk =
 		useprint (other, 9, 3000, 3);
 		if (other.points >= 3000 && other.button7)
 		{
-			isBuying = true;
+			self.isBuying = true;
 			self.fire_delay = time + 3;
 			addmoney (other, -3000, 0);
 			tempe = self;
@@ -272,7 +272,7 @@ void() touch_perk =
 		useprint (other, 9, 2000, 4);
 		if (other.points >= 2000 && other.button7)
 		{
-			isBuying = true;
+			self.isBuying = true;
 			self.fire_delay = time + 3;
 			addmoney (other, -2000, 0);
 			tempe = self;
@@ -797,7 +797,7 @@ float CheckWeapon (float w, entity user) =
 	else*/
 		if (user.weapon == w || user.secondaryweapon == w)
 			return 0;
-		else if (EqualPapWeapon(user.weapon) == w || EqualPapWeapon(user.secondaryweapon == w))
+		else if (EqualNonPapWeapon(user.weapon) == w || EqualNonPapWeapon(user.secondaryweapon == w))
       return 0;
 		else
 			return 1;
@@ -1278,4 +1278,198 @@ void() mystery_box =
 	}
 
 	self.touch = mystery_touch;
+}
+
+//PACK A PUNCH
+void removeinpap() {
+	//remove(self);
+};
+
+//Self = floating gun
+void velocity_reduce_output() {
+    makevectors(self.owner.angles);
+	self.velocity = [0,0,0];
+	setorigin(self, self.owner.origin + v_forward*25);
+}
+
+//Self = floating gun
+void velocity_reduce_output_in() {
+	self.velocity = [0,0,0];
+	setorigin(self, self.owner.origin);
+}
+
+void() reset_pap =
+{
+	self.weapon = 0;
+	self.owner = 0;
+
+
+	if (self.goaldummy) {
+		remove(self.goaldummy);
+		self.goaldummy = 0;
+	}
+
+
+	self.papState = 0;
+}
+
+//Self = pap
+void PapSendOut() {
+    makevectors(self.angles);
+	setorigin(self.goaldummy, self.origin);
+    self.goaldummy.velocity = v_forward*25;
+    
+    self.goaldummy.think = velocity_reduce_output;
+    self.goaldummy.nextthink = time + 1;
+
+	self.papState = 2;
+	self.nextthink = time + 15;
+    self.think = reset_pap;
+}
+
+void PapUpgrade(entity pap, entity buyer) {
+   	entity tempe;
+   	string modelname; 
+
+	tempe = self;
+	self = buyer;
+	addmoney (self, -5000, 0);
+
+	//////////WepModel IN Floating test////////    
+
+	entity floatmodelin;
+
+	modelname = GetWeaponModel(self.weapon, 1);
+
+	floatmodelin = spawn ();
+
+
+	//model goes in
+	makevectors(pap.angles);
+	setorigin (floatmodelin, pap.origin + v_forward*25);
+	setmodel (floatmodelin, modelname);
+	setsize (floatmodelin, '0 0 0', '0 0 0');
+	floatmodelin.angles = pap.angles;
+	floatmodelin.angles_y = 90 + pap.angles_y;
+
+	floatmodelin.movetype = MOVETYPE_NOCLIP;
+	floatmodelin.solid = SOLID_NOT;
+
+	floatmodelin.owner = pap;
+    floatmodelin.velocity = v_forward*-25;
+    
+    floatmodelin.think = velocity_reduce_output_in;
+    floatmodelin.nextthink = time + 1;
+
+	//model goes velocity_reduce_output
+    pap.owner = self;
+	pap.goaldummy = floatmodelin;
+    pap.think = PapSendOut;
+    pap.nextthink = time + 3.5;
+
+
+	////////////////////////////////////////
+
+	self.fire_delay = self.reload_delay = 4.0 + time;
+	Set_W_Frame (0, 39, 0, 0, 0, SUB_Null, "models/machines/v_pap.mdl", true, S_BOTH);
+	sound(self,CHAN_WEAPON,"sounds/machines/papsound.wav",1,ATTN_NONE);
+
+	pap.weapon = self.weapon;
+
+	self.weapon = self.secondaryweapon;
+	self.currentammo = self.secondaryammo;
+	self.currentmag = self.secondarymag;
+	self.currentmag2 = self.secondarymag2;
+	self.secondaryweapon = 0;
+	self.secondaryammo = 0;
+	self.secondarymag = 0;
+	self.secondarymag2 = 0;
+
+	self = tempe;
+
+	self.papState = 1;
+	
+}
+
+void touch_pap() {
+  
+	if (other.classname != "player" || other.downed) {
+		return;
+	}
+    
+	if (self.requirespower == true && !isPowerOn) {
+		useprint (other, 8, 0, 0);
+		return;
+	}
+  
+	if (!self.papState) {
+		if (IsPapWeapon(other.weapon) == 1) {
+			return;
+		}
+		useprint (other, 12, 5000, 5);
+		if (other.points >= 5000 && other.button7 && other.weapon)
+		{
+			PapUpgrade(self, other);
+		
+		}
+		else if (other.button7 && other.weapon) {
+			centerprint (other, "Not enough points\n");
+		}
+	} else if (self.papState == 2) {
+		float startframe;
+		float endframe;
+		string modelname;
+
+		useprint (other, 7, 0, 0);
+
+		if (other.button7) {
+			if (!other.secondaryweapon) {
+				WeaponSwitch(other);
+			}
+
+			other.weapon = EqualPapWeapon(self.weapon);
+			other.currentammo = getWeaponAmmo(other.weapon);
+			other.currentmag = getWeaponMag(other.weapon);
+
+			if (IsDualWeapon(other.weapon)) {
+				other.currentmag2 = other.currentmag;
+			}
+
+			entity tempe = self;
+			startframe = GetFrame(other.weapon,TAKE_OUT_START);
+			endframe = GetFrame(other.weapon,TAKE_OUT_END);
+			modelname = GetWeaponModel(other.weapon, 0);
+			other.weaponmodel = GetWeaponModel(other.weapon, 0);// Give weapon model
+
+			self = other;
+			Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, true, S_BOTH);//FIXME
+			self = tempe;
+			reset_pap();
+		}
+	}
+}	
+
+void() perk_pap = 
+{ 
+	entity tempe; 
+
+	tempe = find (world, classname, "power_switch");// trigger all paired doors
+
+	self.solid = SOLID_TRIGGER;
+
+	if (tempe) {
+		self.requirespower = true;
+	} else {
+		self.requirespower = false;
+	}
+
+	precache_model ("models/machines/pap.mdl");
+	precache_model ("models/machines/v_pap.mdl");
+	precache_sound ("sounds/machines/papsound.wav");
+	precache_sound ("sounds/machines/papsound.wav");
+	setorigin(self, self.origin);
+	setmodel (self, "models/machines/pap.mdl");
+	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	self.classname = "perk_pap";
+	self.touch = touch_pap;
 }

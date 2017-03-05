@@ -81,6 +81,7 @@ void() worldspawn =
 
 	
 	precache_model ("models/weapons/m1911/v_colt.mdl");
+	precache_model ("models/weapons/m1911/g_colt.mdl");
 	precache_model ("progs/VModels/v_nade.mdl");
 	precache_model ("progs/GModels/g_grenade.mdl");
 	precache_model ("progs/GModels/g_betty.mdl");

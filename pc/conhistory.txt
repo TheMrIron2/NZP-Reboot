@@ -1,35 +1,15 @@
-pause
-sv_cheats 1
-pause
-disconnect
-map example_01
-map example_01
-/disconnect 
-/disconnect 
-map example_01
-map example_01
-map example_01
-/disconnect 
-map example_01
-map example_01
-/disconnect 
-map example_01
-map example_01
-/disconnect 
-/disconnect 
-map example_01
-map example_01
-/disconnect 
-map example_01
-map example_01
-map example_01
-map example_01
-map example_01
-map example_01
-map example_01
-map example_01
-/disconnect 
-/disconnect 
-
-/disconnect 
-/disconnect 
+map pap
+map pap
+impulse 22
+map pap
+impulse 22
+impulse 22
+map pap
+impulse 22
+map pap
+impulse 22
+impulse 22
+map pap
+impulse 22
+map pap
+impulse 22

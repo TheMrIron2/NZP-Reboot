@@ -1582,7 +1582,7 @@ float(float wep) IsPapWeapon = {
 }
 
 
-float(float wep)  EqualPapWeapon = 
+float(float wep)  EqualNonPapWeapon = 
 {
 
 	switch (wep) {
@@ -1636,6 +1636,16 @@ float(float wep)  EqualPapWeapon =
 			return W_M14;
 		default:
 			return 0;
+	}
+}
+float(float wep)  EqualPapWeapon = 
+{
+
+	switch (wep) {
+		case W_COLT:
+			return W_BIATCH;
+		default:
+			return wep;
 	}
 }
 
