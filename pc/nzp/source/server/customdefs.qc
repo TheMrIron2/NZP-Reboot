@@ -319,7 +319,7 @@ void SetPerk(entity client, float to)
     msg_entity = client;
 	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
 	WriteByte(MSG_ONE, EVENT_PERK);
-	WriteByte(MSG_ONE, to);
+	WriteLong(MSG_ONE, to);
 }
 
 void(float to) SwitchWeapon =

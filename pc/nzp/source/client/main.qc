@@ -676,44 +676,144 @@ noref void() CSQC_Parse_Event =
 	}
 	else if (first == EVENT_PERK) 
 	{
-		local float newperks;
+		float newperks, s;
 		
-		newperks = readbyte();
-		
-		newperks = newperks ^ perks;
+		newperks = readlong();
 				
-		if (newperks & 1)
+		if (newperks & P_JUG && !(perks & P_JUG))
 		{
-			perk_order[current_perk_order] = 1;
+			perk_order[current_perk_order] = P_JUG;
 			current_perk_order = current_perk_order + 1;
 		}
-		if (newperks & 2)
+		if (newperks & P_DOUBLE && !(perks & P_DOUBLE))
 		{
-			perk_order[current_perk_order] = 2;
+			perk_order[current_perk_order] = P_DOUBLE;
 			current_perk_order = current_perk_order + 1;
 		}
-		if (newperks & 4)
+		if (newperks & P_SPEED && !(perks & P_SPEED))
 		{
-			perk_order[current_perk_order] = 4;
+			perk_order[current_perk_order] = P_SPEED;
 			current_perk_order = current_perk_order + 1;
 		}
-		if (newperks & 8)
+		if (newperks & P_REVIVE && !(perks & P_REVIVE))
 		{
-			perk_order[current_perk_order] = 8;
+			perk_order[current_perk_order] = P_REVIVE;
 			current_perk_order = current_perk_order + 1;
 		}
-		if (newperks & 16)
+		if (newperks & P_FLOP && !(perks & P_FLOP))
 		{
-			perk_order[current_perk_order] = 16;
+			perk_order[current_perk_order] = P_FLOP;
 			current_perk_order = current_perk_order + 1;
 		}
-		if (newperks & 32)
+		if (newperks & P_STAMIN && !(perks & P_STAMIN))
 		{
-			perk_order[current_perk_order] = 32;
+			perk_order[current_perk_order] = P_STAMIN;
 			current_perk_order = current_perk_order + 1;
+		}
+		if (perks & P_JUG && !(newperks & P_JUG))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_JUG)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
+		}
+		if (perks & P_DOUBLE && !(newperks & P_DOUBLE))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_DOUBLE)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
+		}
+		if (perks & P_SPEED && !(newperks & P_SPEED))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_SPEED)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
+		}
+		if (perks & P_REVIVE && !(newperks & P_REVIVE))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_REVIVE)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
+		}
+		if (perks & P_FLOP && !(newperks & P_FLOP))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_FLOP)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
+		}
+		if (perks & P_STAMIN && !(newperks & P_STAMIN))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_STAMIN)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
 		}
 		
-		perks = perks | newperks;
+		perks = newperks;
 	}
 	else if (first == EVENT_UPDATE) 
 	{
