@@ -74,14 +74,14 @@ void() GetDown =
 	self.currentmagbk = self.currentmag;
 	self.currentmagbk2 = self.currentmag2;
 	
-	self.weapon = W_COLT;
-	self.currentammo = 16;
-	self.currentmag = 8;
-	self.movetype = MOVETYPE_WALK;
+	self.weapon = W_BIATCH;
+	self.currentammo = 12;
+	self.currentmag = 6;
+	self.currentmag2 = 6;
       
   	modelname = GetWeaponModel(self.weapon, 0);
 	self.weaponmodel = modelname;
-	SwitchWeapon(W_COLT);
+	SwitchWeapon(self.weapon);
 	
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
@@ -113,6 +113,7 @@ void () GetUp =
 	modelname = GetWeaponModel(self.weapon, 0);
 	self.weaponmodel = modelname;
 	SwitchWeapon(self.weapon);
+	self.movetype = MOVETYPE_WALK;
   
   	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
