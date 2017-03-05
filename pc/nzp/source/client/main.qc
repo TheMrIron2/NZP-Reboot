@@ -178,7 +178,7 @@ void(float width, float height) HUD_Points =
 	}
 		
 	drawpic([0.8*width,0.70*height,0], "gfx/hud/moneyback.tga", [128, 32, 0], [1,1,1], 1);
-	drawstring([width - 60 - pointlength*10, 0.70*height + 5, 0], ftos(points), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 1);   // naievil (FIXME) real offset needed (pointlength)
+	drawstring([.9414*width - pointlength*10, 0.70*height + 5, 0], ftos(points), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 1);   // naievil (FIXME) real offset needed (pointlength)
 }
 
 void(float width, float height) HUD_Grenades =
@@ -186,7 +186,8 @@ void(float width, float height) HUD_Grenades =
 	local float grenades;
 
 	grenades = getstatf(STAT_GRENADES);
-	drawstring([0.97*width, 0.94*height, 0], ftos(grenades), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+	drawpic([0.9*width,0.825*height,0], "gfx/hud/frag.tga", [50, 50, 0], [1,1,1], 1);
+	drawstring([0.9*width + 28, 0.825*height + 32, 0], ftos(grenades), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 1);
 }
 
 void(float width, float height) HUD_Rounds =
