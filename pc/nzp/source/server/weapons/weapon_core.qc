@@ -423,7 +423,7 @@ void (float shotcount, float sprd, float Damage/*, float headmulti, float legmul
 		{
 			while (1)
 			{
-				traceline (trace_start_org, trace_start_org + dir, 0, trace_ent);
+				traceline (trace_start_org, trace_start_org + dir, MOVE_HITMODEL, trace_ent);
 				if (hitent == world)
 					break;
 				/*if (hitent.larm == trace_ent || hitent.rarm == trace_ent || hitent.head == trace_ent)
