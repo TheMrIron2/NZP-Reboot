@@ -169,6 +169,7 @@ void() PlayerSpawn =
 	self.weaponmodel = GetWeaponModel(self.weapon, 0);// Give weapon model
 
 	SwitchWeapon(self.weapon);
+	UpdateV2model("");
 	stuffcmd(self, "cl_gunx 8;cl_guny 16;cl_gunz 25\n");
 
 	SetRound(self, rounds);

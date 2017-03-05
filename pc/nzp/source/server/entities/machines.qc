@@ -178,7 +178,7 @@ void() touch_perk =
 			centerprint (other, "Not enough points\n");
 		}
 	}
-	if (self.classname == "perk_flopper" && !(other.perks & P_FLOP) && self.fire_delay < time, S_RIGHT)
+	if (self.classname == "perk_flopper" && !(other.perks & P_FLOP) && self.fire_delay < time)
 	{
 		useprint (other, 9, 2000, 6);
 		if (other.points >= 2000 && other.button7)
@@ -418,7 +418,7 @@ void() perk_double =
 void()	turnpower1	=[	1,		turnpower2	] {self.frame = 1;};
 void()	turnpower2	=[	2,		turnpower3	] {self.frame = 2;};
 void()	turnpower3	=[	3,		turnpower4	] {self.frame = 3;};
-void()	turnpower4	=[	4,		turnpower4	] {self.frame = 4;};
+void()	turnpower4	=[	4,		SUB_Null	] {self.frame = 4;};
 
 void() Turn_Lights =
 {

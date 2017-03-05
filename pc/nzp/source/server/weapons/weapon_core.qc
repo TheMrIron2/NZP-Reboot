@@ -280,7 +280,7 @@ void () W_LoadAmmo =
 
 void () CheckReload = 
 {
-	if (!self.currentmag2) {
+	if (!self.currentmag2 && IsDualWeapon(self.weapon)) {
 		W_Reload(S_LEFT);
 	}
 	if (!self.currentmag) {
