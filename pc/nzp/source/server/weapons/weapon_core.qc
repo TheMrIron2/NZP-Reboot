@@ -163,9 +163,14 @@ void() ContinueReload = //Special reloads
 			delay = 0.8; 
 			self.reload_delay = time + delay;
 			Set_W_Frame (19, 24, delay, 0, RELOAD, ContinueReload, modelname, false, S_RIGHT);
-		} else if (self.weapon == W_TRENCH) {
-			self.currentmag++;
-        	self.currentammo = self.currentammo - 1;
+		} else if (self.weapon == W_TRENCH || self.weapon == W_GUT) {
+			if (self.weapon == W_GUT && self.currentammo >= 2 && self.currentmag < 9) {
+				self.currentmag = self.currentmag + 2;
+				self.currentammo = self.currentammo - 2;
+			} else {
+				self.currentmag++;
+				self.currentammo = self.currentammo - 1;
+			}
 			delay = 0.5; 
 			self.reload_delay = time + delay;
 			Set_W_Frame (18, 23, delay, 0, RELOAD, ContinueReload, modelname, false, S_RIGHT);

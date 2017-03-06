@@ -2138,6 +2138,7 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 		case W_DB:
 		case W_SAWNOFF:
 		case W_BORE:
+		case W_SNUFF:
 			if (curweaponframe == 6) {
 				sound (self ,5, "sounds/weapons/shotgun/open.wav", 1, ATTN_NORM);
 			} else if (curweaponframe == 12) {
