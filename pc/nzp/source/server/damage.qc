@@ -1,40 +1,125 @@
 
 
+void() EndGame =
+{
+	local entity oldself;
+	local entity who;
+
+	self.health = 0;
+	//WriteByte (MSG_ALL, SVC_INTERMISSION);
+	self.origin = '0 0 0';
+	setorigin (self, self.origin);
+	self.velocity = '0 0 0';
+	sound (self, CHAN_AUTO, "sounds/music/end.wav", 1, ATTN_NORM);
+
+	oldself = self;
+	
+	who = find(world,classname,"ai_zombie");
+	while(who != world)
+	{
+		if(who.health)
+		{
+			self = who;
+			self.th_die();
+			self = oldself;
+		}
+		
+		who = find(who,classname,"ai_zombie");
+	}
+}
+
 void() GetDown =
 {
 	float startframe;
 	float endframe;
 	local string modelname;
 	
-	self.health = 19;
 	
 	self.view_ofs = '0 0 -15';
 	self.velocity = '-80 0 -80';           			// Stop any old movement
 	self.zoom = 0;
 	self.downed = true;
-	self.perks = 0;
 	self.movetype = MOVETYPE_NONE;
+	
+	
+	if (!deathmatch && !coop && !(self.perks & P_REVIVE))
+	{
+		game_over = true;
+		self.health = 10;
+		self.think = EndGame;
+		self.nextthink = time + 5;
+		self.weapon = 0;
+		self.currentammo = 0;
+		self.currentmag = 0;
+		self.weaponmodel = "";
+		self.weapon2model = "";
+		self.animend = SUB_Null;
+		self.perks = 0;
+		SetPerk(self, self.perks);
+		SwitchWeapon(0);
+
+		centerprint(self, "YOU DON DEDED\n");
+		
+      	return;
+	} else {
+		self.health = 19;
+	}
+	self.perks = 0;
+	SetPerk(self, self.perks);
 	if (self.health == 10)
 		return;
 
 	self.weaponbk = self.weapon;
 	self.currentammobk = self.currentammo;
 	self.currentmagbk = self.currentmag;
+	self.currentmagbk2 = self.currentmag2;
 	
-	self.weapon = W_COLT;
-	self.currentammo = 16;
-	self.currentmag = 8;
+	self.weapon = W_BIATCH;
+	self.currentammo = 12;
+	self.currentmag = 6;
+	self.currentmag2 = 6;
       
   	modelname = GetWeaponModel(self.weapon, 0);
 	self.weaponmodel = modelname;
+	SwitchWeapon(self.weapon);
 	
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
 	
-	self.progress_bar = 10 + time;      
+	self.progress_bar = 10 + time;     
+	self.progress_bar_time = 10;
+	self.progress_bar_percent = 1;
 	self.points = 10*rint((self.points*0.95)/10);
 }
+
+void () GetUp =
+{
+	local string modelname;
+	float startframe;
+	float endframe;
+  
+	self.view_ofs = VEC_VIEW_OFS;
+	self.health = 100;
+	self.downed = 0;
+	self.classname = "player";
+	if (self.weaponbk)
+	{
+		self.weapon = self.weaponbk;
+		self.currentammo = self.currentammobk;
+		self.currentmag = self.currentmagbk;
+		self.currentmag2 = self.currentmagbk2;
+	}	
+	modelname = GetWeaponModel(self.weapon, 0);
+	self.weaponmodel = modelname;
+	SwitchWeapon(self.weapon);
+	self.movetype = MOVETYPE_WALK;
+  
+  	startframe = GetFrame(self.weapon,TAKE_OUT_START);
+	endframe = GetFrame(self.weapon,TAKE_OUT_END);
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
+	
+};
 
 
 void(entity attacker, float d_style) DieHandler =

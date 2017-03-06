@@ -158,7 +158,14 @@ void(float width, float height) HUD_Ammo =
 	
 	curmag = getstatf(STAT_CURRENTMAG);		
 	ammo = getstatf(STAT_AMMO);	
-	ammostring = strcat(ftos(curmag), strcat("/",ftos(ammo)));
+
+	if (IsDualWeapon(getstatf(STAT_ACTIVEWEAPON))) {
+		float curmag2 = getstatf(STAT_CURRENTMAG2);
+		
+		ammostring = strcat(ftos(curmag2), " ", ftos(curmag), "/", ftos(ammo));
+	} else {
+		ammostring = strcat(ftos(curmag), strcat("/",ftos(ammo)));
+	}
 	drawstring([0.75*width, 0.94*height, 0], ammostring, [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
 }
 
@@ -767,6 +774,9 @@ void(float width, float height) HUD_Useprint =
 			case 10://turn on power
 				usestring = strcat("Hold ",usebutton, " to turn on the power");
 				break;
+			case 12://turn on power
+				usestring = strcat("Hold ",usebutton, " to Pack a Punch [Cost:", ftos(useprint_cost), "]");
+				break;
 			default:
 				usestring = "This should not happen you dum fuck";
 				break;
@@ -844,6 +854,30 @@ void(float width, float height) HUD_Weaponstring =
 	drawstring([0.925*width - ws_offset*9.5, 0.75*height + 10, 0], weaponstring, [0.0175*width, 0.018*width, 0], [1, 1, 1], 1, 1); // naievil (FIXME) exact location later
 }
 
+void(float width, float height) HUD_Progressbar =
+{
+	float percent = getstatf(STAT_PROGRESSBAR);
+	if (!percent) {
+		return;
+	}
+
+	string progress; 
+	local float ws_offset;
+	
+	progress = ftos(percent);
+	ws_offset = (strlen(progress) - 1);
+
+	float bar_width = 0.0175*width * 20;
+	float bar_height = 0.0175*width;
+	float bar_x = (width - bar_width)/2;
+	float bar_y = height*0.75;
+
+	drawfill ([bar_x - 1, bar_y - 1, 0], [bar_width+2, bar_height, 0], [0, 0, 0], 0.4);
+	drawfill ([bar_x, bar_y, 0], [bar_width * percent, bar_height-2, 0], [1, 1, 1], 0.4);
+	
+	drawstring([(width - (88))/2, height*0.75 + 10, 0], "Reviving...", [0.0175*width, 0.0175*width, 0], [1, 1, 1], 1, 1); // naievil (FIXME) exact location later
+}
+
 void(float width, float height) HUD_Draw = 
 {
 	if (time <= 1)
@@ -863,6 +897,7 @@ void(float width, float height) HUD_Draw =
 	HUD_Points(width, height);
 	HUD_Rounds(width, height);
 	HUD_Perks(width, height);
+	HUD_Progressbar(width, height);
 		
 	// fix me: change the 51 and 50 to human readable const floats like STAT_PISTOLAMMO, STAT_MGAMMO or something	
 
@@ -902,10 +937,15 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 		//vmodel.origin -= vorg;
 		//vmodel.angles -= vang;
 		//addentity(vmodel);
-		float weaponframe;
+		float weaponframe, weapon2frame;
 		weaponframe = getstatf(STAT_WEAPONFRAME);
-		
 
+		float duration = getstatf(STAT_WEAPONDURATION);
+
+		if (!duration) {
+			duration = 0.1;
+		}
+		
 		if (curweaponframe != weaponframe) {
 			interpolating = TRUE;
 			vmodel.lerpfrac = 0;
@@ -913,22 +953,50 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 		}
 		
 		if (interpolating == TRUE) {
-			vmodel.lerpfrac += frametime * 10;
-			v2model.lerpfrac += frametime * 10;
+			vmodel.lerpfrac += frametime * (1/duration);
 
 			if (vmodel.lerpfrac >= 1.0) {
 				oldweaponframe = curweaponframe;
 				vmodel.lerpfrac = 0;
-				v2model.lerpfrac = 0;
 				interpolating = FALSE;	
 			}
 			
 		}
 		vmodel.frame = oldweaponframe;
 		vmodel.frame2 = curweaponframe;
-		//v2model.frame = getstatf(STAT_WEAPON2FRAME);
-		v2model.frame = oldweaponframe;
-		v2model.frame2 = curweaponframe;
+
+		if (IsDualWeapon(getstatf(STAT_ACTIVEWEAPON))) {
+			float duration2 = getstatf(STAT_WEAPON2DURATION);
+			if (!duration2) {
+				duration2 = 0.1;
+			}
+			weapon2frame = getstatf(STAT_WEAPON2FRAME);
+			if (curweapon2frame != weapon2frame) {
+				interpolating2 = TRUE;
+				v2model.lerpfrac = 0;
+				curweapon2frame = weapon2frame;
+			}
+			
+			if (interpolating2 == TRUE) {
+				v2model.lerpfrac += frametime * (1/duration2);
+
+				if (v2model.lerpfrac >= 1.0) {
+					oldweapon2frame = curweapon2frame;
+					v2model.lerpfrac = 0;
+					interpolating2 = FALSE;	
+				}
+				
+			}
+
+			v2model.frame = oldweapon2frame;
+			v2model.frame2 = curweapon2frame;
+
+		} else {
+			//v2model.frame = getstatf(STAT_WEAPON2FRAME);
+			v2model.lerpfrac = vmodel.lerpfrac;
+			v2model.frame = oldweaponframe;
+			v2model.frame2 = curweaponframe;
+		}
 		v2model.angles = vmodel.angles;
 		v2model.origin = vmodel.origin;
 		if(mzlflash.alpha > 0.09)
@@ -1191,15 +1259,15 @@ noref void() CSQC_Parse_Event =
 		local string new;
 		local float skin2;
 		new = readstring();
-		skin2 = readbyte();
 		setmodel(vmodel,new);
-		vmodel.skin = skin2;
+		vmodel.skin = readbyte();
 	}
 	else if(first == EVENT_UPDATEV2MODEL)
 	{
 		local string new2;
 		new2 = readstring();
 		setmodel(v2model,new2);
+		v2model.skin = readbyte();
 	}
 	else if(first == EVENT_USEPRINT) {
 		useprint_type = readbyte();
@@ -1216,44 +1284,144 @@ noref void() CSQC_Parse_Event =
 	}
 	else if (first == EVENT_PERK) 
 	{
-		local float newperks;
+		float newperks, s;
 		
-		newperks = readbyte();
-		
-		newperks = newperks ^ perks;
+		newperks = readlong();
 				
-		if (newperks & 1)
+		if (newperks & P_JUG && !(perks & P_JUG))
 		{
-			perk_order[current_perk_order] = 1;
+			perk_order[current_perk_order] = P_JUG;
 			current_perk_order = current_perk_order + 1;
 		}
-		if (newperks & 2)
+		if (newperks & P_DOUBLE && !(perks & P_DOUBLE))
 		{
-			perk_order[current_perk_order] = 2;
+			perk_order[current_perk_order] = P_DOUBLE;
 			current_perk_order = current_perk_order + 1;
 		}
-		if (newperks & 4)
+		if (newperks & P_SPEED && !(perks & P_SPEED))
 		{
-			perk_order[current_perk_order] = 4;
+			perk_order[current_perk_order] = P_SPEED;
 			current_perk_order = current_perk_order + 1;
 		}
-		if (newperks & 8)
+		if (newperks & P_REVIVE && !(perks & P_REVIVE))
 		{
-			perk_order[current_perk_order] = 8;
+			perk_order[current_perk_order] = P_REVIVE;
 			current_perk_order = current_perk_order + 1;
 		}
-		if (newperks & 16)
+		if (newperks & P_FLOP && !(perks & P_FLOP))
 		{
-			perk_order[current_perk_order] = 16;
+			perk_order[current_perk_order] = P_FLOP;
 			current_perk_order = current_perk_order + 1;
 		}
-		if (newperks & 32)
+		if (newperks & P_STAMIN && !(perks & P_STAMIN))
 		{
-			perk_order[current_perk_order] = 32;
+			perk_order[current_perk_order] = P_STAMIN;
 			current_perk_order = current_perk_order + 1;
+		}
+		if (perks & P_JUG && !(newperks & P_JUG))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_JUG)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
+		}
+		if (perks & P_DOUBLE && !(newperks & P_DOUBLE))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_DOUBLE)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
+		}
+		if (perks & P_SPEED && !(newperks & P_SPEED))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_SPEED)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
+		}
+		if (perks & P_REVIVE && !(newperks & P_REVIVE))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_REVIVE)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
+		}
+		if (perks & P_FLOP && !(newperks & P_FLOP))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_FLOP)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
+		}
+		if (perks & P_STAMIN && !(newperks & P_STAMIN))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_STAMIN)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
 		}
 		
-		perks = perks | newperks;
+		perks = newperks;
 	}
 	else if (first == EVENT_UPDATE) 
 	{

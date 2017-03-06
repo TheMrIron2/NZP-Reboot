@@ -53,9 +53,13 @@ float useprint_time;
 float HUD_Change_time; 
 
 float weaponframetime;
+float weapon2frametime;
 float oldweaponframe;
+float oldweapon2frame;
 float curweaponframe;
+float curweapon2frame;
 float interpolating;
+float interpolating2;
 
 
 float rounds;

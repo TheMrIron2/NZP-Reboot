@@ -1,0 +1,15 @@
+map pap
+map pap
+impulse 22
+map pap
+impulse 22
+impulse 22
+map pap
+impulse 22
+map pap
+impulse 22
+impulse 22
+map pap
+impulse 22
+map pap
+impulse 22

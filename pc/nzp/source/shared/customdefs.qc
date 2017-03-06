@@ -12,6 +12,7 @@ const float EVENT_UPDATE = 23;
 
 //nzp weapon defines
 //id list
+#define W_NOWEP     0
 #define W_COLT 		1
 #define W_KAR 		2
 #define W_THOMPSON 	3
@@ -70,10 +71,6 @@ const float EVENT_UPDATE = 23;
 
 #define W_TESLA  56
 
-#define W_NOWEP   420
-
-
-#define W_NOWEP             420
 
 #define BASE_FRAME			1
 #define FIRE_START 			2
@@ -125,9 +122,13 @@ const float EVENT_UPDATE = 23;
 #define 	P_FLOP		16
 #define 	P_STAMIN	32
 
-#define STAT_CURRENTMAG     50
-#define STAT_POINTS         51
-#define STAT_WEAPON2FRAME   52
-#define STAT_WEAPON2MODEL   53
-#define STAT_GRENADES   	54
-#define STAT_SECGRENADES   	55
+#define STAT_CURRENTMAG         50
+#define STAT_CURRENTMAG2        51
+#define STAT_POINTS             52
+#define STAT_WEAPON2FRAME       53
+#define STAT_WEAPON2MODEL       54
+#define STAT_GRENADES   	    55
+#define STAT_SECGRENADES    	56
+#define STAT_PROGRESSBAR   	    57
+#define STAT_WEAPONDURATION   	58
+#define STAT_WEAPON2DURATION   	59
