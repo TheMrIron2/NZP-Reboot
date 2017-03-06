@@ -178,9 +178,6 @@ void() ContinueReload = //Special reloads
 				self.currentammo = self.currentammo - 1;
 			}
 			delay = 0.5; 
-			self.currentmag++;
-        	self.currentammo = self.currentammo - 1;
-			delay = 0.8; 
 			startframe = 18;
 			endframe = 23;
 			endanimfunc = ContinueReload;
