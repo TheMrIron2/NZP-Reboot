@@ -206,7 +206,9 @@ void(float side) W_Reload =
 	if (side == S_RIGHT) {
 		modelname = GetWeaponModel(self.weapon, 0);
 	} else {
-		modelname = "models/weapons/m1911/v_biatch_left.mdl";
+		if (IsDualWeapon(self.weapon)) {
+			modelname = GetLeftWeaponModel(self.weapon); 
+		}
 	}
 	
 	if (self.currentammo)
@@ -551,8 +553,8 @@ void(float side) W_Fire =
 	if (side == S_RIGHT) {
 		modelname = GetWeaponModel(self.weapon, 0);
 	} else {
-		if (self.weapon == W_BIATCH) {
-			modelname = "models/weapons/m1911/v_biatch_left.mdl";
+		if (IsDualWeapon(self.weapon)) {
+			modelname = GetLeftWeaponModel(self.weapon); 
 		}
 	}
 	shotcount = GetWeaponShotcount(self.weapon);
@@ -991,14 +993,14 @@ void () Weapon_Logic =
 	W_Frame_Update ();
 	Impulse_Functions();
 
-	if (self.weapon == W_BIATCH) { 
+	if (IsDualWeapon(self.weapon)) { 
 		if (self.button0) {
 			W_Fire(S_LEFT);
 		} else {
 			self.semi2 = FALSE;
 		}
 
-		if (self.button8 && self.weapon == W_BIATCH) {
+		if (self.button8 && IsDualWeapon(self.weapon)) {
 			W_Fire(S_RIGHT);
 		} else {
 			self.semi = FALSE;

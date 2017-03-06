@@ -1754,11 +1754,15 @@ string(float wep, float gorvmodel) GetWeaponModel =
 			else
 				return ("models/weapons/ray/v_ray.mdl");
 		case W_SAWNOFF:
-    	case W_SNUFF:
 			if (gorvmodel)
 				return ("models/weapons/sawnoff/g_sawnoff.mdl");
 			else
 				return ("models/weapons/sawnoff/v_sawnoff.mdl");
+    	case W_SNUFF:
+			if (gorvmodel)
+				return ("models/weapons/sawnoff/g_sawnoff.mdl");
+			else
+				return ("models/weapons/sawnoff/v_snuff_right.mdl");
 		case W_STG:
     	case W_SPATZ:
 			if (gorvmodel)
@@ -1864,8 +1868,21 @@ float(float wep) IsDualWeapon = {
 	switch(wep) {
 		case W_BIATCH:
 			return 1;
+		case W_SNUFF:
+			return 1;
 		default:
 			return 0;
+	}
+}
+
+string(float wep) GetLeftWeaponModel = {
+	switch(wep) {
+		case W_BIATCH:
+			return "models/weapons/m1911/v_biatch_left.mdl";
+		case W_SNUFF:
+			return "models/weapons/sawnoff/v_snuff_left.mdl";
+		default:
+			return "";
 	}
 }
 
@@ -1902,6 +1919,8 @@ float(float wep) IsPapWeapon = {
 float(float wep) GetWepSkin = {
 	switch(wep) {
 		case W_BIATCH:
+			return 0;
+		case W_SNUFF:
 			return 0;
 		default:
 			if (IsPapWeapon(wep)) {

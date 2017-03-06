@@ -209,8 +209,8 @@ void Set_W_Frame (float startframe, float endframe, float duration, float funcca
 			} else if (self.weapon == W_KAR_SCOPE) {	
 				self.weapon2model = "progs/Vmodels/v_karscope.mdl"; 
 				UpdateV2model(self.weapon2model, 0);
-			} else if (self.weapon == W_BIATCH) {	
-				self.weapon2model = "models/weapons/m1911/v_biatch_left.mdl"; 
+			} else if (IsDualWeapon(self.weapon)) {	
+				self.weapon2model = GetLeftWeaponModel(self.weapon); 
 				UpdateV2model(self.weapon2model, 0);
 			}
 		}
