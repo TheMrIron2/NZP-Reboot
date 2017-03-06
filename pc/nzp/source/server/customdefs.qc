@@ -278,7 +278,8 @@ typedef struct
 
 waypoint_ai waypoints[MAX_WAYPOINTS];
 
-#define UT_HUD 	1
+#define UT_HUD 				1
+#define UT_ROUNDS_CHANGE 	2
 
 
 //FIXME(Jukki) Place in better place
@@ -330,13 +331,25 @@ void(float to) SwitchWeapon =
 
 void SetUpdate(entity client, float type, float val1, float val2, float val3)
 {
-	msg_entity = client;
-	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
-	WriteByte(MSG_ONE, EVENT_UPDATE);
-	WriteByte(MSG_ONE, type);
-	WriteByte(MSG_ONE, val1);
-	WriteByte(MSG_ONE, val2);
-	WriteByte(MSG_ONE, val3); // misc flags/vars for later if needed
+	if (type != 2)
+	{
+		msg_entity = client;
+		WriteByte(MSG_ONE, SVC_CGAMEPACKET);
+		WriteByte(MSG_ONE, EVENT_UPDATE);
+		WriteByte(MSG_ONE, type); // UT_HUD, UT_ROUNDS_CHANGE
+		WriteByte(MSG_ONE, val1); 
+		WriteByte(MSG_ONE, val2);
+		WriteByte(MSG_ONE, val3); // misc flags/vars for later if needed
+	}
+	else
+	{
+		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
+		WriteByte(MSG_ALL, EVENT_UPDATE);
+		WriteByte(MSG_ALL, type); // UT_HUD, UT_ROUNDS_CHANGE
+		WriteByte(MSG_ALL, val1); 
+		WriteByte(MSG_ALL, val2);
+		WriteByte(MSG_ALL, val3); // misc flags/vars for later if needed
+	}
 }
 
 //naievil (FIXME) No idea where this should go, maybe a dummys

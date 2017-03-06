@@ -1,13 +1,8 @@
-/sv_maxspeed 
-/sv_maxspeed  0
 quit
 quit
+map pap
+maps
+map
+map ndu
 quit
-restart
-quit
-quit
-quit
-restart
-quit
-restart
 quit

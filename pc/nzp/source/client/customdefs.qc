@@ -60,3 +60,4 @@ float interpolating;
 
 float rounds;
 float perks;
+float rounds_change;
