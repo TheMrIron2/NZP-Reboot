@@ -353,8 +353,10 @@ void(float width, float height) HUD_Rounds =
 		}
 		else
 		{
-			if (blinking < 0)
-				blinking = 300000;
+			if (blinking)
+				blinking = blinking - 1;
+			else
+				blinking = 0;
 		}
 			
 	
