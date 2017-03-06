@@ -6,3 +6,26 @@ map
 map ndu
 quit
 quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+restart
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+fov 65
+quit
+fov 70
+qiut
+quit
+quit
