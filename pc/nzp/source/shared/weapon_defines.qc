@@ -18,7 +18,7 @@ string(float wep) GetWeaponName =
 		case W_BROWNING:
 			return "Browning M1919";
 		case W_DB:
-			return "Double-Barreled Shotgun "; // naievil -- add extra space to fix some hud errors
+			return "Double-Barreled Shotgun";
 		case W_FG:
 			return "FG42";
 		case W_GEWEHR:
