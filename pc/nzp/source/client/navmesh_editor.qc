@@ -28,6 +28,12 @@ struct navmesh_poly
 {
 	float verts[4];
 	float vert_count;
+	
+	//The following two fields are for the pathfinding usage, they are useless for the editor itself
+	float connected_polies[4];//What polygons we share an edge with (similar to links), more than 4 should be impossible
+	float connected_polies_count;
+	//FIXME: we can do directional polygons by in some way calculating this connected polies field in some other way
+	vector center;//The center of the polygon in 3D space
 };
 
 
@@ -193,6 +199,8 @@ void navmesh_editor_draw()
 		navmesh_draw_poly(i);
 	}
 	
+	navmesh_draw_test_ent(0);
+	navmesh_draw_test_ent(1);
 	
 	if(navmesh_place_corner_state == NAVMESH_PLACE_CORNER_PLACING || navmesh_place_corner_state == NAVMESH_PLACE_CORNER_CONFIRM)
 	{
@@ -255,6 +263,8 @@ void navmesh_editor_draw()
 		navmesh_draw_vert(hit_right1, 0 );
 		navmesh_draw_vert(hit_right2, 0 );
 		
+		//TODO: draw walls that we have hit (2 flat planes on the walls we hit)
+		
 		//===================== Calculate the resolved vertex pos =======================
 		//This solution only works for 90 degree corners
 		
@@ -306,9 +316,6 @@ void navmesh_editor_draw()
 		//Line 1: hit_left1 -> hit_left2
 		//Line 2: hit_right1 -> hit_right2
 		vector vert_loc;
-		
-		//FIXME: check if line 1 is horizontal or vertical
-		//FIXME: check if line 2 is horizontal or vertical
 		
 		float skew = 0;
 		float horizontal = 1;
@@ -420,7 +427,6 @@ void navmesh_editor_draw()
 		
 		//================================================================================
 		
-		
 		//Render the resolved vertex pos
 		navmesh_draw_vert(vert_loc, 1 );
 			
@@ -472,15 +478,9 @@ void navmesh_place_vert()
 		return;
 	}
 	
-	vector player_pos = getviewprop(VF_ORIGIN);
-	//Placing the vert at ent level
+	//Placing the vert at player origin
+	vector vert_pos = getentity(player_localentnum, GE_ORIGIN);
 	
-	
-	tracebox(player_pos,VEC_HULL_MIN,VEC_HULL_MAX,player_pos+([0,0,-1] * 2000),1,self);
-	
-	vector vert_pos = player_pos+([0,0,-1] * 2000)*trace_fraction;
-	
-
 	navmesh_verts[navmesh_vert_count].pos.x = vert_pos.x;
 	navmesh_verts[navmesh_vert_count].pos.y = vert_pos.y;
 	navmesh_verts[navmesh_vert_count].pos.z = vert_pos.z;
@@ -564,7 +564,7 @@ float navmesh_get_nearest_vert()
 		return -1;
 	}
 	
-	vector player_pos = getviewprop(VF_ORIGIN);
+	vector player_pos = getentity(player_localentnum, GE_ORIGIN);
 	float closest_dist = vlen(player_pos - navmesh_verts[0].pos);
 	float closest_index = 0;
 	
@@ -729,6 +729,68 @@ void navmesh_make_poly()
 		print("This polygon already exists.\n");
 		return;
 	}
+	
+	
+	//Sorting the verts so the polygon is build consecutively (i.e. vert 0 -> vert 1 is an edge, 1->2, 2->3, and 3->0 are all edges)
+	//Furthermore, this sorting will ensure the verts are sorted in a clockwise order, so we also apply it to tris
+	
+	//Calculating center of the polygon
+	local vector center = [0,0,0];
+	for(float j = 0; j < selected_vert_count; j++)
+	{
+		center += navmesh_verts[selected_verts[j]].pos;
+	}
+	center /= selected_vert_count;
+	
+	float vert_angle[NAV_MAX_SELECTED_VERTS] = {};
+	
+	//Calculating angle of verts
+	for(float j = 0; j < selected_vert_count; j++)
+	{
+		vert_angle[j] = atan2(navmesh_verts[selected_verts[j]].pos.y - center.y,navmesh_verts[selected_verts[j]].pos.x - center.x);
+	}
+	
+	//Sorting from least to greatest
+	for(float j = 0; j < selected_vert_count; j++)
+	{
+		//Finding lowest value from j to selected_vert_count
+		float lowest_value = vert_angle[j];
+		float lowest_index = j;
+		for(float k = j; k < selected_vert_count; k++)
+		{
+			if(vert_angle[k] < lowest_value)
+			{
+				lowest_value = vert_angle[k];
+				lowest_index = k;
+			}
+		}
+		//Swapping the lowest value with index j
+		float temp_angle = vert_angle[j];
+		vert_angle[j] = vert_angle[lowest_index];
+		vert_angle[lowest_index] = temp_angle;
+		
+		float temp_vert = selected_verts[j];
+		selected_verts[j] = selected_verts[lowest_index];
+		selected_verts[lowest_index] = temp_vert;
+	}
+	
+	
+	print("Sorted vertex indices: ");
+	for(float j = 0; j < selected_vert_count; j++)
+	{
+		print(ftos(selected_verts[j]));
+		print("  ,  ");
+	}
+	print("  .\n");
+	
+	
+	print("Sorted vertex angles: ");
+	for(float j = 0; j < selected_vert_count; j++)
+	{
+		print(ftos(vert_angle[j]));
+		print("  ,  ");
+	}
+	print("  .\n");
 
 	for(float i = 0; i < selected_vert_count; i++)
 	{
@@ -763,6 +825,7 @@ void navmesh_delete_poly()
 {
 	float verts_selected[4];
 	float poly_index = -1;
+	//Find index of the polygon whose vertices are all selected
 	for(float i = 0; i < navmesh_poly_count; i++)
 	{
 		verts_selected[0] = FALSE;
@@ -929,3 +992,368 @@ void toggle_navmesh_editor()
 		navmesh_deselect_all();
 	}
 }
+
+
+void navmesh_calc_connected_polies()
+{
+	for(float i = 0; i < navmesh_poly_count; i++)
+	{
+		for(float j = i + 1; j < navmesh_poly_count; j++)
+		{
+			//Check if poly j shares an edge with poly i
+			
+			//Edge case: where two opposite corners (two corners not on the same edge) of a quad are shared with another poly
+			//but this edge case is a result of terrible topology, so I will not consider it
+			
+			//Check if poly j shares at least 2 vertices with poly i
+			//I'm not sure what sharing more than 2 verts means... but it's a result of bad topology, so I will not consider it
+			//		if two quads share 4: they are the same 			-> bad topology
+			//		if two quads share 3: one of them is convex, one is concave 	-> bad topology
+			//		if a quad shares 3 with a tri: the tri is within the quad 	-> bad topology
+			//		if two tris share 3: they are the same 				-> bad topology
+			float shared_verts = 0;
+			
+			//Iterate over ith poly's verts
+			for(float k = 0; k < navmesh_polies[i].vert_count; k++)
+			{
+				//Iterate over jth poly's verts
+				for(float l = 0; l < navmesh_polies[j].vert_count; l++)
+				{
+					if(navmesh_polies[i].verts[k] == navmesh_polies[j].verts[l])
+					{
+						shared_verts++;
+					}
+				}
+			}
+			
+			//Print a warning if more than 2, should be impossible
+			if(shared_verts > 2)
+			{
+				print("Warning: polygon ");
+				print(ftos(i));
+				print(" shares ");
+				print(ftos(shared_verts));
+				print(" vertices with polygon ");
+				print(ftos(j));
+				print(". There is an issue somewhere.\n");
+			}
+			//Should I print a warning if they share 3 or 4? (it's a result of bad topology)
+			if(shared_verts >= 2)
+			{
+				//Setting the polygons as connected to each other
+				if(navmesh_polies[i].connected_polies_count >= 4)
+				{
+					print("Warning: polygon ");
+					print(ftos(i));
+					print(" shares an edge with more than 4 other polygons.\n");
+					break;
+				}
+				if(navmesh_polies[j].connected_polies_count >= 4)
+				{
+					print("Warning: polygon ");
+					print(ftos(j));
+					print(" shares an edge with more than 4 other polygons.\n");
+					break;
+				}
+				navmesh_polies[i].connected_polies[navmesh_polies[i].connected_polies_count++] = j;
+				navmesh_polies[j].connected_polies[navmesh_polies[j].connected_polies_count++] = i;
+			}	
+		}
+	}
+	print("Connected polygons calculated.\n");
+}
+
+//We calculate this outside of polygon creation / editing because the polygon centers are not important to creation, only to actually using in pathfinding
+void navmesh_calc_polies_centers()
+{
+	for(float i = 0; i < navmesh_poly_count; i++)
+	{
+		local vector cen = [0,0,0];
+		for(float j = 0; j < navmesh_polies[i].vert_count; j++)
+		{
+			cen += navmesh_verts[navmesh_polies[i].verts[j]].pos;
+		}
+		cen /= navmesh_polies[i].vert_count;
+		navmesh_polies[i].center = cen;
+	}
+	print("Centers calculated.\n");
+}
+
+
+//==========================================================================================================================
+//============================ The following methods are methods required in the pathfinding code ==========================
+//==========================================================================================================================
+//This is for placing a temp entity to test the pathfinding
+vector goalent_pos;
+vector startent_pos;
+
+void navmesh_draw_test_ent(float is_goal)
+{
+	//Assigning the shader as something else so that fte doesn't batch the calls (leading to colors not changing between draw calls)
+	R_BeginPolygon("debug/wireframe",0);
+	R_BeginPolygon("debug/solid_nocull",0);
+	
+	//vector	VEC_HULL_MIN = '-16 -16 -32';
+	//vector	VEC_HULL_MAX = '16 16 40';
+	float min_x = -16;
+	float min_y = -16;
+	float min_z = -32;
+	float max_x = 16;
+	float max_y = 16;
+	float max_z = 40;
+	
+	vector color;
+	
+	vector pos;
+	
+	if(is_goal)
+	{
+		pos = goalent_pos;
+		color = [1,0,0];
+	}
+	else
+	{
+		pos = startent_pos;
+		color = [0,1,0];
+	}
+	
+	float alpha = 0.4;
+	
+	//bottom face
+	R_PolygonVertex(pos + [min_x,max_y,min_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [max_x,max_y,min_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [max_x,min_y,min_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [min_x,min_y,min_z], [0,0,0], color,alpha);
+	R_EndPolygon();
+	//Top face
+	R_PolygonVertex(pos + [min_x,max_y,max_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [max_x,max_y,max_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [max_x,min_y,max_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [min_x,min_y,max_z], [0,0,0], color,alpha);
+	R_EndPolygon();
+	//Front face
+	R_PolygonVertex(pos + [min_x,min_y,min_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [max_x,min_y,min_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [max_x,min_y,max_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [min_x,min_y,max_z], [0,0,0], color,alpha);
+	R_EndPolygon();
+	//Back face
+	R_PolygonVertex(pos + [min_x,max_y,min_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [max_x,max_y,min_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [max_x,max_y,max_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [min_x,max_y,max_z], [0,0,0], color,alpha);
+	R_EndPolygon();
+	//Left face
+	R_PolygonVertex(pos + [min_x,min_y,min_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [min_x,max_y,min_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [min_x,max_y,max_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [min_x,min_y,max_z], [0,0,0], color,alpha);
+	R_EndPolygon();
+	//Right face
+	R_PolygonVertex(pos + [max_x,min_y,min_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [max_x,max_y,min_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [max_x,max_y,max_z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [max_x,min_y,max_z], [0,0,0], color,alpha);
+	R_EndPolygon();
+}
+
+void navmesh_place_test_goalent()
+{
+	goalent_pos = getentity(player_localentnum, GE_ORIGIN);
+	
+	//TODO: try pathfind
+	navmesh_get_containing_poly(goalent_pos);
+
+}
+void navmesh_place_test_startent()
+{
+	startent_pos = getentity(player_localentnum, GE_ORIGIN);
+	
+	
+	//TODO: try pathfind
+	navmesh_get_containing_poly(startent_pos);
+}
+
+//Returns 1 if pos is inside poly at index poly_index, 0 otherwise
+float navmesh_is_inside_poly(vector pos, float poly_index)
+{
+	
+	//TODO: check if z coord is close enough to poly
+	
+	local vector vert_to_pos;//points from vert to pos
+	local vector vert_to_next;//points from vert to the next vertex
+	local vector vert;
+	local vector next_vert;
+	float vert_count = navmesh_polies[poly_index].vert_count;
+	//We are considered to be in the polygon, if pos is on the left of all edges of the polygon (if verts are ordered in CW order)
+	for(float i = 0; i < vert_count; i++)
+	{
+		vert = navmesh_verts[navmesh_polies[poly_index].verts[i]].pos;
+		next_vert = navmesh_verts[navmesh_polies[poly_index].verts[(i + 1) % vert_count]].pos;
+		
+		vert_to_pos = pos - vert;
+		vert_to_next = next_vert - vert;
+		
+		//Check if vert_to_pos is to the left of vert_to_next
+		if(vert_to_next.x * vert_to_pos.y - vert_to_next.y * vert_to_pos.x < 0)
+			return 0;
+	}
+	
+	
+	//FOR DEBUG: select that polygon if succesfull
+	navmesh_deselect_all();
+	selected_vert_count = navmesh_polies[poly_index].vert_count;
+	for(float i = 0; i < selected_vert_count; i++)
+	{
+		selected_verts[i] = navmesh_polies[poly_index].verts[i];
+	}	
+	//============================================
+	
+	
+	return 1;
+}
+
+//Returns the distance between the 2d line l1->l2 and pos
+//Assumes l1.z == l2.z == pos.z == 0
+float navmesh_2D_line_point_dist(vector l1, vector l2, vector pos)
+{
+	float dot = (l2 - l1) * (pos - l2);
+	if(dot > 0)
+		return vlen(l2 - pos);
+		
+	dot = (l1 - l2) * (pos - l1);
+	if(dot > 0)
+		return vlen(l1 - pos);
+	
+	//2D cross product between (next_vert-vert) and (pos-vert)
+	float dist = (l2.x - l1.x) * (pos.y - l1.y) - (l2.y - l1.y) * (pos.y - l1.y);
+	dist = dist / vlen(l1 - l2);		
+	return fabs(dist);
+}
+
+//Returns distance from pos to an edge of the poly if pos is very close to an edge of the poly at index poly_index, -1 otherwise
+float navmesh_is_close_to_poly(vector pos, float poly_index)
+{
+	float leeway = 30;//Must be within 8 qu of edge to be considered close
+	
+	//TODO: check if close enough on z-axis
+	
+	local vector vert_to_pos;//points from vert to pos
+	local vector vert_to_next;//points from vert to the next vertex
+	
+	
+	local vector vert;
+	local vector next_vert;
+	float vert_count = navmesh_polies[poly_index].vert_count;
+	
+	float shortest_dist = 100000;
+	
+	//Only considering 2D
+	pos.z = 0;
+	
+	//We are considered to be in the polygon, if pos is on the left of all edges of the polygon (if verts are ordered in CW order)
+	for(float i = 0; i < vert_count; i++)
+	{
+		vert = navmesh_verts[navmesh_polies[poly_index].verts[i]].pos;
+		next_vert = navmesh_verts[navmesh_polies[poly_index].verts[(i + 1) % vert_count]].pos;
+		
+		//Calculating in 2D:
+		vert.z = 0;
+		next_vert.z = 0;
+		
+		float temp_dist = navmesh_2D_line_point_dist(vert, next_vert, pos);
+		
+		if(temp_dist < shortest_dist)
+		{
+			print("shorter dist: ");
+			print(ftos(temp_dist));
+			print(".\n");
+			shortest_dist = temp_dist;
+		}	
+	}
+	
+	if(shortest_dist < leeway)
+		return shortest_dist;
+	
+	return -1;
+}
+
+//Returns polygon that pos is inside of. 
+//If we are in no polygon, returns a polygon whose edge we are sufficiently close to (might be in but are not due to a small error)
+//Otherwise, returns -1
+float navmesh_get_containing_poly(vector pos)
+{
+	//Get nearest polygon, and check if pos is in that polygon
+	
+	float poly_tried[NAV_MAX_POLIES] = {};
+	
+	float closest_poly = -1;
+	float closest_poly_dist = 1000000;
+	
+	//In reality, there's no need to try ALL polygons, the one we are in should be within the nearest 10 or so, but checking all to be safe
+	for(float i = 0; i < navmesh_poly_count; i++)
+	{
+		
+		//Find the first poly we haven't tried.
+	
+		float lowest_dist = 100000;//Would initialize to first one, but we would have to find the first unused poly, which is a waste of calculations
+		float lowest_index = -1;
+		
+		for(float j = 0; j < navmesh_poly_count; j++)
+		{
+			float temp_dist = vlen(navmesh_polies[0].center - pos);
+			
+			if(temp_dist < lowest_dist)
+			{
+				lowest_dist = temp_dist;
+				lowest_index = j;
+			}
+		}
+		
+		
+		//Check if we are in polygon i
+		if(navmesh_is_inside_poly(pos,i))
+		{
+			print("Pos is in poly: ");
+			print(ftos(i));
+			print(".\n");
+			return i;
+		}
+		
+		print("Pos is NOT in poly: ");
+		print(ftos(i));
+		print(".\n");
+		
+		//If we are not in polygon i, check if we are very close to one of its edges
+		float dist = navmesh_is_close_to_poly(pos,i);
+		
+		if(dist >= 0)
+		{
+			if(dist < closest_poly_dist)
+			{
+				closest_poly = i;
+			}
+		}
+
+	}
+	print("Returning polygon that we are closest to.\n");
+	
+	
+	//FOR DEBUG: select that polygon if succesfull
+	if(closest_poly != -1)
+	{
+		navmesh_deselect_all();
+		selected_vert_count = navmesh_polies[closest_poly].vert_count;
+		for(float i = 0; i < selected_vert_count; i++)
+		{
+			selected_verts[i] = navmesh_polies[closest_poly].verts[i];
+		}
+	}
+	//============================================
+	
+	
+	return closest_poly;
+}
+
+
+//==========================================================================================================================

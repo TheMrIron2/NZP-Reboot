@@ -83,3 +83,10 @@ void() navmesh_place_corner;
 void() navmesh_cancel_corner;
 void() navmesh_confirm_corner;
 void(float poly_index) navmesh_delete_poly_at_index;
+void() navmesh_calc_connected_polies;
+void() navmesh_calc_polies_centers;
+//Methods for testing pathfinding
+void() navmesh_place_test_goalent;
+void() navmesh_place_test_startent;
+void(float is_goal) navmesh_draw_test_ent;
+float(vector pos) navmesh_get_containing_poly;

@@ -1,15 +1,25 @@
-sizedown 0.5
-setsize
-impulse 30
-nav_delete_verts
-nav_place_corner
-nav_confirm_corner
-nav_place_corner
-nav_confirm_corner
-nav_delete_verts
-impulse 31
-impulse 30
-nav_delete_verts
-impulse 31
-bind y screenshot
-nav_delete_verts
+navtest_place_start
+navtest_place_start
+navtest_place_start
+navtest_place_start
+navtest_place_start
+navtest_place_start
+navtest_place_start
+navtest_place_start
+navtest_place_start
+navtest_place_start
+navtest_place_start
+navtest_place_start
+navtest_place_start
+navtest_place_start
+navtest_place_start
+navtest_place_start
+bind y navtest_place_start
+bind y navtest_place_start
+bind y navtest_place_start
+bind y navtest_place_start
+bind y navtest_place_start
+bind y navtest_place_start
+nav_delete_poly
+bind y navtest_place_start
+bind y navtest_place_start

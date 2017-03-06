@@ -47,7 +47,10 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	registercommand("nav_place_corner");
 	registercommand("nav_cancel_corner");
 	registercommand("nav_confirm_corner");
-	
+	registercommand("nav_calc_connected_polies");
+	registercommand("nav_calc_poly_centers");
+	registercommand("navtest_place_goal");
+	registercommand("navtest_place_start");
 	
 	//===================================
 	
@@ -63,8 +66,8 @@ noref void() CSQC_WorldLoaded =
 	//precache_model("models/weapons/mg/mzl.iqm");
 	//precache_model("models/blood.iqm");
 	
-	//if(!player)
-	//	player = edict_num(player_localentnum);
+	if(!player)
+		player = edict_num(player_localentnum);
 	if(!vmodel)
 		vmodel = spawn();
 	if(!v2model)
@@ -378,7 +381,18 @@ noref float(string cmd) CSQC_ConsoleCommand =
 		case "nav_confirm_corner":
 			navmesh_confirm_corner();
 			return TRUE;
-			
+		case "nav_calc_connected_polies":
+			navmesh_calc_connected_polies();
+			return TRUE;
+		case "nav_calc_poly_centers":
+			navmesh_calc_polies_centers();
+			return TRUE;
+		case "navtest_place_goal":
+			navmesh_place_test_goalent();
+			return TRUE;
+		case "navtest_place_start":
+			navmesh_place_test_startent();
+			return TRUE;
 		default:
 			return FALSE;
 	}
