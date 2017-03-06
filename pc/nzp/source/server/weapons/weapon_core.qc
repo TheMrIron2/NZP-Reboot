@@ -131,38 +131,44 @@ void(float side) W_Give_Ammo =
 void () W_LoadAmmo;
 void() ContinueReload = //Special reloads
 {
-	float delay;
 	if (self.new_anim_stop)
 		return;
-	string modelname;
-	modelname = GetWeaponModel(self.weapon, 0);
 	
 	if (self.weapon == W_GUT && self.currentmag == 10)
     return;
+
+	float delay = 0;
+	string modelname = GetWeaponModel(self.weapon, 0);
+	float startframe = 0;
+	float endframe = 0;
+	void(optional float t) endanimfunc = SUB_Null;
 	
 	if (self.currentmag >= getWeaponMag(self.weapon) || !self.currentammo || self.reloadinterupted) {
 		if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER)
 		{
 			delay = 1; 
-			self.reload_delay = time + delay;
-			Set_W_Frame (24, 28, delay, 0, RELOAD, SUB_Null, modelname, false, S_RIGHT);
+			startframe = 24;
+			endframe = 28;
 		} else if (self.weapon == W_TRENCH || self.weapon == W_GUT) {
 			delay = 0.5; 
-			self.reload_delay = time + delay;
-			Set_W_Frame (24, 26, delay, 0, RELOAD, W_LoadAmmo, modelname, false, S_RIGHT);
+			startframe = 24;
+			endframe = 26;
+			endanimfunc = W_LoadAmmo;
 		}
 		self.reloadinterupted = FALSE;
 	} else if (self.currentmag < getWeaponMag(self.weapon)) {
 		if (self.weapon == W_BROWNING || self.weapon == W_ACCELERATOR) {
 			delay = 4; 
-			self.reload_delay = time + delay;
-			Set_W_Frame (45, 77, delay, 50, RELOAD, W_Give_Ammo, modelname, false, S_RIGHT);
+			startframe = 45;
+			endframe = 77;
+			endanimfunc = W_Give_Ammo;
 		} else if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER) {
 			self.currentmag++;
         	self.currentammo = self.currentammo - 1;
 			delay = 0.8; 
-			self.reload_delay = time + delay;
-			Set_W_Frame (19, 24, delay, 0, RELOAD, ContinueReload, modelname, false, S_RIGHT);
+			startframe = 19;
+			endframe = 24;
+			endanimfunc = ContinueReload;
 		} else if (self.weapon == W_TRENCH || self.weapon == W_GUT) {
 			if (self.weapon == W_GUT && self.currentammo >= 2 && self.currentmag < 9) {
 				self.currentmag = self.currentmag + 2;
@@ -172,9 +178,21 @@ void() ContinueReload = //Special reloads
 				self.currentammo = self.currentammo - 1;
 			}
 			delay = 0.5; 
-			self.reload_delay = time + delay;
-			Set_W_Frame (18, 23, delay, 0, RELOAD, ContinueReload, modelname, false, S_RIGHT);
+			self.currentmag++;
+        	self.currentammo = self.currentammo - 1;
+			delay = 0.8; 
+			startframe = 18;
+			endframe = 23;
+			endanimfunc = ContinueReload;
 		}
+	}
+
+	if (delay) {
+		if (self.perks & P_SPEED) {
+			delay *= 0.75;
+		}
+		self.reload_delay = time + delay;
+		Set_W_Frame (startframe, endframe, delay, 0, RELOAD, endanimfunc, modelname, false, S_RIGHT);
 	}
 }
 
@@ -217,40 +235,64 @@ void(float side) W_Reload =
 		endframe = GetFrame(self.weapon,RELOAD_END);
 		reloadcancelframe = GetFrame(self.weapon,RELOAD_CANCEL);
 		delay = getWeaponDelay(self.weapon,RELOAD);
+		void(optional float t) endanimfunc = SUB_Null;
 
 		if (self.weapon == W_BROWNING || self.weapon ==  W_ACCELERATOR) {
 			if (!self.currentmag) {
-				Set_W_Frame (26, 77, 0, 45, RELOAD, W_Give_Ammo, modelname, false, S_RIGHT);
-				self.reload_delay = 6 + time;
+				startframe = 26;
+				endframe = 77;
+				reloadcancelframe = 45;
+				delay = 6;
+				endanimfunc = W_Give_Ammo;
 			} else if (self.currentmag > 0) {
-				Set_W_Frame (4, 25, 0, 0, RELOAD, ContinueReload, modelname, false, S_RIGHT);
-				self.reload_delay = 3.5 + time;
+				startframe = 4;
+				endframe = 25;
+				reloadcancelframe = 0;
+				delay = 3.5;
+				endanimfunc = ContinueReload;
 			}
 		} else if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER ){
-			Set_W_Frame (14, 18, 0, 0, RELOAD, ContinueReload, modelname, false, S_RIGHT);
-			self.reload_delay = 0.8 + time;
+			startframe = 14;
+			endframe = 18;
+			reloadcancelframe = 0;
+			delay = 0.8;
+			endanimfunc = ContinueReload;
 		} else if (self.weapon == W_M1 || self.weapon == W_M1000) {
 			if (self.currentmag > 0) {
-				Set_W_Frame (4, 44, 0, 25, RELOAD, W_Give_Ammo, modelname, false, S_RIGHT);
-				self.reload_delay = 3.9;
+				startframe = 4;
+				endframe = 44;
+				reloadcancelframe = 25;
+				delay = 3.9;
+				endanimfunc = W_Give_Ammo;
 			} else {
-				Set_W_Frame (8, 44, 0, 25, RELOAD, W_Give_Ammo, modelname, false, S_RIGHT);
-				self.reload_delay = 3.6;
+				startframe = 8;
+				endframe = 44;
+				reloadcancelframe = 25;
+				delay = 3.6;
+				endanimfunc = W_Give_Ammo;
 			}
 		} else if (self.weapon == W_TRENCH || self.weapon == W_GUT) {
-			if (self.currentmag == 0)
+			if (self.currentmag == 0) {
 				self.NeedLoad = true;
-			Set_W_Frame (14, 17, 0, 0, RELOAD, ContinueReload, modelname, false, S_RIGHT);
-			self.reload_delay = 0.8;
-		} else {
-			if (side == S_RIGHT) {
-				Set_W_Frame (startframe, endframe, 0, reloadcancelframe, RELOAD, W_Give_Ammo, modelname, TRUE, S_RIGHT);
-				self.reload_delay = delay + time;
-			} else {
-				Set_W_Frame (startframe, endframe, 0, reloadcancelframe, RELOAD, W_Give_Ammo, modelname, TRUE, S_LEFT);
-				self.reload_delay2 = delay + time;
 			}
+			startframe = 14;
+			endframe = 17;
+			reloadcancelframe = 0;
+			delay = 0.8;
+			endanimfunc = ContinueReload;
+		} else {
+			endanimfunc = W_Give_Ammo;
 		}
+
+		if (self.perks & P_SPEED)
+			delay = delay*0.75;
+		
+		if (side == S_RIGHT) {
+			self.reload_delay = delay + time;
+		} else {
+			self.reload_delay2 = delay + time;
+		}
+		Set_W_Frame (startframe, endframe, delay, reloadcancelframe, RELOAD, endanimfunc, modelname, TRUE, side);
 	}
 	
 	if (self.weapon != W_TRENCH) {
@@ -264,7 +306,6 @@ void () W_LoadAmmoDone =
 }
 void () W_LoadAmmo =
 {
-	string modelname;
 	if (!self.NeedLoad)
 		return;
 	if (!self.currentmag)
@@ -273,18 +314,38 @@ void () W_LoadAmmo =
 		return;
 	}
 
+	string modelname;
+	float endframe, startframe, reloadcancelframe, delay;
+
 	modelname = GetWeaponModel(self.weapon, 0);
+	startframe = GetFrame(self.weapon,RELOAD_START);
+	endframe = GetFrame(self.weapon,RELOAD_END);
+	reloadcancelframe = GetFrame(self.weapon,RELOAD_CANCEL);
+	delay = getWeaponDelay(self.weapon,RELOAD);
+	void(optional float t) endanimfunc = SUB_Null;
 
 	if (self.weapon == W_TRENCH || self.weapon == W_GUT)
 	{
-		Set_W_Frame (4, 14, 0, 12, FIRE, W_LoadAmmoDone, modelname, false, S_RIGHT);
-		self.fire_delay = 1 + time;
+		startframe = 4;
+		endframe = 14;
+		reloadcancelframe = 12;
+		delay = 1;
+		endanimfunc = W_LoadAmmoDone;
 	}
 	else if (self.weapon == W_KAR || self.weapon == W_ARMAGEDDON || self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER)
 	{
-		Set_W_Frame (4, 13, 1.1, 9, FIRE, W_LoadAmmoDone, modelname, false, S_RIGHT);
-		self.fire_delay = 0.9 + time;
+		startframe = 4;
+		endframe = 13;
+		reloadcancelframe = 9;
+		delay = 0.9;
+		endanimfunc = W_LoadAmmoDone;
 	}	
+
+	if (delay) {
+		
+		Set_W_Frame (startframe, endframe, delay, reloadcancelframe, FIRE, W_LoadAmmoDone, modelname, false, S_RIGHT);
+		self.fire_delay = delay + time;
+	}
 }
 
 void () CheckReload = 
@@ -585,6 +646,11 @@ void(float side) W_Fire =
 	//Play weapon animation and sound
 	startframe = GetFrame(self.weapon,FIRE_START);
 	endframe = GetFrame(self.weapon,FIRE_END);
+
+	if (self.perks & P_DOUBLE) {
+		delay *=0.5;
+	}
+
 	if (self.weapon == W_GUT || self.weapon == W_KAR_SCOPE || self.weapon == W_TRENCH || self.weapon == W_KAR || self.weapon == W_ARMAGEDDON || self.weapon == W_HEADCRACKER)
 	{
 		Set_W_Frame (startframe, endframe, delay, 0, FIRE, W_LoadAmmo, modelname, FALSE, side);

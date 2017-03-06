@@ -161,6 +161,8 @@ void() worldspawn =
 	clientstat(STAT_GRENADES, EV_FLOAT, primary_grenades);
 	clientstat(STAT_SECGRENADES, EV_FLOAT, secondary_grenades);
 	clientstat(STAT_PROGRESSBAR, EV_FLOAT, progress_bar_percent);
+	clientstat(STAT_WEAPONDURATION, EV_FLOAT, weapon_animduration);
+	clientstat(STAT_WEAPON2DURATION, EV_FLOAT, weapon2_animduration);
 
 	mappath = strcat("maps/", mapname);
 	mappath = strzone(mappath);

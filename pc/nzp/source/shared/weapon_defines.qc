@@ -942,9 +942,13 @@ float(float wep, float delaytype) getWeaponDelay =
 			else if (delaytype == FIRE)
 				return 0.331;
 		case W_SAWNOFF:
-		case W_SNUFF:
 			if (delaytype == RELOAD)
 				return 2.8;
+			else if (delaytype == FIRE)
+				return 0.283;
+		case W_SNUFF:
+			if (delaytype == RELOAD)
+				return 2;
 			else if (delaytype == FIRE)
 				return 0.283;
 		case W_STG:
@@ -1216,6 +1220,7 @@ float(float wep, float frametype) GetFrame =
 					return 16;
 			}
 			break;
+		case W_SAWNOFF:
 		case W_DB:
 		case W_BORE:
 				switch (frametype)
@@ -1248,6 +1253,37 @@ float(float wep, float frametype) GetFrame =
 						return 22;
 				}
 				break;
+		case W_SNUFF:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return 1;
+				case FIRE_END:
+					return 4;
+				case RELOAD_START:
+					return 5;
+				case RELOAD_END:
+					return 45;
+				case SPRINT_IN_START:
+					return 53;
+				case SPRINT_IN_END:
+					return 58;
+				case SPRINT_OUT_START:
+					return 33;
+				case SPRINT_OUT_END:
+					return 31;
+				case TAKE_OUT_START:
+					return 46;
+				case TAKE_OUT_END:
+					return 49;
+				case PUT_OUT_START:
+					return 59;
+				case PUT_OUT_END:
+					return 52;
+				case RELOAD_CANCEL:
+					return 34;
+			}
+			break;
 		case W_FG:
 		case W_IMPELLER:
 			switch (frametype)
@@ -1637,38 +1673,6 @@ float(float wep, float frametype) GetFrame =
 					return 34;
 				case AIM_FIRE_END:
 					return 35;
-			}
-			break;
-		case W_SAWNOFF:
-   	 	case W_SNUFF:
-			switch (frametype)
-			{
-				case FIRE_START:
-					return 1;
-				case FIRE_END:
-					return 4;
-				case RELOAD_START:
-					return 5;
-				case RELOAD_END:
-					return 31;
-				case SPRINT_IN_START:
-					return 32;
-				case SPRINT_IN_END:
-					return 33;
-				case SPRINT_OUT_START:
-					return 33;
-				case SPRINT_OUT_END:
-					return 31;
-				case TAKE_OUT_START:
-					return 38;
-				case TAKE_OUT_END:
-					return 41;
-				case PUT_OUT_START:
-					return 35;
-				case PUT_OUT_END:
-					return 37;
-				case RELOAD_CANCEL:
-					return 22;
 			}
 			break;
 		case W_STG:
@@ -2298,7 +2302,6 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 		case W_DB:
 		case W_SAWNOFF:
 		case W_BORE:
-		case W_SNUFF:
 			if (curweaponframe == 6) {
 				sound (self ,5, "sounds/weapons/shotgun/open.wav", 1, ATTN_NORM);
 			} else if (curweaponframe == 12) {
@@ -2306,6 +2309,17 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 			} else if (curweaponframe == 20) {
 				sound (self ,5, "sounds/weapons/shotgun/in.wav", 1, ATTN_NORM);
 			} else if (curweaponframe == 26) {
+				sound (self ,5, "sounds/weapons/shotgun/close.wav", 1, ATTN_NORM);
+			}
+			break;
+		case W_SNUFF:
+			if (curweaponframe == 15) {
+				sound (self ,5, "sounds/weapons/shotgun/open.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 23) {
+				sound (self ,5, "sounds/weapons/shotgun/out.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 33) {
+				sound (self ,5, "sounds/weapons/shotgun/in.wav", 1, ATTN_NORM);
+			} else if (curweaponframe == 40) {
 				sound (self ,5, "sounds/weapons/shotgun/close.wav", 1, ATTN_NORM);
 			}
 			break;

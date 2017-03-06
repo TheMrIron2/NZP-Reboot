@@ -11,27 +11,7 @@ void () W2_Frame_Update =
 		return; //don't call every frame, if it is the animations will play too fast
 
 	
-	if (self.weapon2_animduration)
-	{
-		if (self.weapon2_anim_type == RELOAD && self.perks & P_SPEED)
-			self.anim_weapon2_time = time + self.weapon2_animduration * 0.45;
-		else if (self.weapon2_anim_type == FIRE && self.perks & P_DOUBLE)
-			self.anim_weapon2_time = time + self.weapon2_animduration * 0.75;
-		else
-			self.anim_weapon2_time = time + self.weapon2_animduration;
-	}
-	else if (self.weapon2_anim_type == RELOAD && self.perks & P_SPEED)
-		self.anim_weapon2_time = time + 0.05;
-	else if (self.weapon2_anim_type == FIRE && self.perks & P_DOUBLE)	
-		self.anim_weapon2_time = time + 0.075;
-	else if (self.weapon2_anim_type == REVIVE && self.perks & P_REVIVE)	
-		self.anim_weapon2_time = time + 0.05;
-	else if (self.weapon2_anim_type == KNIFE2)	
-		self.anim_weapon2_time = time + 0.05;
-	else
-		self.anim_weapon2_time = time + 0.1;
-	
-    self.anim_weapon2_time = time + 0.1;
+	self.anim_weapon2_time = time + self.weapon2_animduration;
 
 
 	if (self.weapon2frame != self.weapon2frame_end && !self.anim2_reversed)
@@ -83,27 +63,7 @@ void () W_Frame_Update =
 	if (self.anim_weapon_time > time)
 		return; //don't call every frame, if it is the animations will play too fast
 	
-	if (self.weapon_animduration)
-	{
-		if (self.weapon_anim_type == RELOAD && self.perks & P_SPEED)
-			self.anim_weapon_time = time + self.weapon_animduration * 0.45;
-		else if (self.weapon_anim_type == FIRE && self.perks & P_DOUBLE)
-			self.anim_weapon_time = time + self.weapon_animduration * 0.75;
-		else
-			self.anim_weapon_time = time + self.weapon_animduration;
-	}
-	else if (self.weapon_anim_type == RELOAD && self.perks & P_SPEED)
-		self.anim_weapon_time = time + 0.05;
-	else if (self.weapon_anim_type == FIRE && self.perks & P_DOUBLE)	
-		self.anim_weapon_time = time + 0.075;
-	else if (self.weapon_anim_type == REVIVE && self.perks & P_REVIVE)	
-		self.anim_weapon_time = time + 0.05;
-	else if (self.weapon_anim_type == KNIFE2)	
-		self.anim_weapon_time = time + 0.05;
-	else
-		self.anim_weapon_time = time + 0.1;
-	
-    self.anim_weapon_time = time + 0.1;
+	self.anim_weapon_time = time + self.weapon_animduration;
 
 
 
@@ -165,10 +125,9 @@ void Set_W_Frame (float startframe, float endframe, float duration, float funcca
 	
 	math = 0;
 	if (duration) {
-		if (startframe >= endframe)
-			math = duration / ((endframe - startframe) + 1);
-		else
-			math = duration / ((endframe - startframe) + 1);
+		math = duration / (fabs(endframe - startframe) + 1);
+	} else {
+		math = 0.1;
 	}
 
 	if (side == S_RIGHT || side == S_BOTH) {

@@ -374,6 +374,12 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 		//addentity(vmodel);
 		float weaponframe, weapon2frame;
 		weaponframe = getstatf(STAT_WEAPONFRAME);
+
+		float duration = getstatf(STAT_WEAPONDURATION);
+
+		if (!duration) {
+			duration = 0.1;
+		}
 		
 		if (curweaponframe != weaponframe) {
 			interpolating = TRUE;
@@ -382,7 +388,7 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 		}
 		
 		if (interpolating == TRUE) {
-			vmodel.lerpfrac += frametime * 10;
+			vmodel.lerpfrac += frametime * (1/duration);
 
 			if (vmodel.lerpfrac >= 1.0) {
 				oldweaponframe = curweaponframe;
@@ -395,6 +401,10 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 		vmodel.frame2 = curweaponframe;
 
 		if (IsDualWeapon(getstatf(STAT_ACTIVEWEAPON))) {
+			float duration2 = getstatf(STAT_WEAPON2DURATION);
+			if (!duration2) {
+				duration2 = 0.1;
+			}
 			weapon2frame = getstatf(STAT_WEAPON2FRAME);
 			if (curweapon2frame != weapon2frame) {
 				interpolating2 = TRUE;
@@ -403,7 +413,7 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 			}
 			
 			if (interpolating2 == TRUE) {
-				v2model.lerpfrac += frametime * 10;
+				v2model.lerpfrac += frametime * (1/duration2);
 
 				if (v2model.lerpfrac >= 1.0) {
 					oldweapon2frame = curweapon2frame;
