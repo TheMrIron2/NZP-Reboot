@@ -251,6 +251,41 @@ void(string com) SV_ParseClientCommand =
 			PlayerSpawn();
 		}
 	}
+	else
+	{
+		tokenize(com);
+
+		switch(argv(0))
+		{
+			case "give":
+				float wep = stof(argv(1));
+
+				if (wep) {
+					if (!self.secondaryweapon) {
+						WeaponSwitch(self);
+					}
+					float startframe, endframe;
+					string modelname;
+
+					self.weapon = wep;
+					self.currentammo = getWeaponAmmo(wep);
+					self.currentmag = getWeaponMag(wep);
+					if (IsDualWeapon(wep)) {
+						self.currentmag2 = self.currentmag;
+					}
+
+					startframe = GetFrame(self.weapon,TAKE_OUT_START);
+					endframe = GetFrame(self.weapon,TAKE_OUT_END);
+					modelname = GetWeaponModel(wep, 0);
+
+					SwitchWeapon(wep);
+					
+					Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
+					
+					self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
+				}
+		}
+	}
 };
 
 void() SV_RunClientCommand =
