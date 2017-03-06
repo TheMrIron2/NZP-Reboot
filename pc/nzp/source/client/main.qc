@@ -129,7 +129,6 @@ void(float width, float height) HUD_Health =
 	float alpha;
 	
 	health = getstatf(STAT_HEALTH); 
-	drawstring([0.01*width, 0.94*height, 0], strcat("+",ftos(health)), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
 
 	if (health < 100)
 	{
@@ -190,11 +189,6 @@ void(float width, float height) HUD_Grenades =
 	drawstring([0.9*width + 28, 0.825*height + 32, 0], ftos(grenades), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 1);
 }
 
-/*void(float width, float height) HUD_Rounds =
-{
-	drawstring([0.01*width, 0.90*height, 0], ftos(rounds), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
-}*/
-
 float 	color_shift[3];
 float 	color_shift_end[3];
 float 	color_shift_steps[3];
@@ -212,6 +206,12 @@ void(float width, float height) HUD_Rounds =
 
 	float roundheight = 48/272*height;
 	float roundwidth = 0.02291666*width;
+	
+	float roundwidth_4 = (60/480)*width;
+	float roundheight_4 = (48/272)*height;
+	
+	float roundheight_num = 48/272*height;
+	float roundwidth_num = 48/480*height; // naievil -- was 32, but more square makes it look better
 
 	drawstring([0.01*width, 0.70*height, 0], ftos(rounds_change), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1); // draw roundchange
 
@@ -225,11 +225,17 @@ void(float width, float height) HUD_Rounds =
 	sb_round[2] = "gfx/hud/r3.tga";
 	sb_round[3] = "gfx/hud/r4.tga";
 	sb_round[4] = "gfx/hud/r5.tga";
-
-	for (i=0 ; i<10 ; i = i + 1)
-	{
-		sb_round_num[i] = strcat("gfx/hud/r_num%s.tga",ftos(i));
-	}
+	
+	sb_round_num[0] = "gfx/hud/r_num0.tga";
+	sb_round_num[1] = "gfx/hud/r_num1.tga";
+	sb_round_num[2] = "gfx/hud/r_num2.tga";
+	sb_round_num[3] = "gfx/hud/r_num3.tga";
+	sb_round_num[4] = "gfx/hud/r_num4.tga";
+	sb_round_num[5] = "gfx/hud/r_num5.tga";
+	sb_round_num[6] = "gfx/hud/r_num6.tga";
+	sb_round_num[7] = "gfx/hud/r_num7.tga";
+	sb_round_num[8] = "gfx/hud/r_num8.tga";
+	sb_round_num[9] = "gfx/hud/r_num9.tga";
 
 	if (rounds_change == 1)//this is the rounds icon at the middle of the screen
 	{
@@ -290,7 +296,7 @@ void(float width, float height) HUD_Rounds =
 				if (i == 4)
 				{ // here
 					//draw_colorpic (5, vid.height - sb_round[4]->height - 4, sb_round[4], (int)color_shift[0], (int)color_shift[1], (int)color_shift[2], 255);
-					drawpic([5,height - roundheight, 0], sb_round[4], [roundwidth,roundheight, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+					drawpic([5,height - roundheight, 0], sb_round[4], [roundwidth_4,roundheight_4, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
 					
 					savex = x_offset + (10*width/480);
 					x_offset = x_offset + (10*width/480);
@@ -299,7 +305,7 @@ void(float width, float height) HUD_Rounds =
 				if (i == 9)
 				{
 					//draw_colorpic (5 + savex, vid.height - sb_round[4]->height - 4, sb_round[4], (int)color_shift[0], (int)color_shift[1], (int)color_shift[2], 255);
-					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth,roundheight, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
 					continue;
 				}
 				if (i > 4)
@@ -319,9 +325,9 @@ void(float width, float height) HUD_Rounds =
 			{
 				num[2] = (int)(rounds/100);
 				//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[2]]->height - 4, sb_round_num[num[2]], (int)color_shift[0], (int)color_shift[1], (int)color_shift[2], 255);
-				drawpic([5 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth,roundheight, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+				drawpic([5 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth_num, roundheight_num, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
 								
-				x_offset = x_offset +  roundwidth - (8*width/480);
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
 			}
 			else
 				num[2] = 0;
@@ -329,18 +335,18 @@ void(float width, float height) HUD_Rounds =
 			{
 				num[1] = (int)((rounds - num[2]*100)/10);
 				//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[1]]->height - 4, sb_round_num[num[1]], (int)color_shift[0], (int)color_shift[1], (int)color_shift[2], 255);
-				drawpic([5 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth,roundheight, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+				drawpic([5 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth_num,roundheight_num, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
 
-				x_offset = x_offset +  roundwidth - (8*width/480);
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
 			}
 			else
 				num[1] = 0;
 
 			num[0] = rounds - num[2]*100 - num[1]*10;
 			//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[0]]->height - 4, sb_round_num[num[0]], (int)color_shift[0], (int)color_shift[1], (int)color_shift[2], 255);
-				drawpic([5 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth,roundheight, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+				drawpic([5 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth_num,roundheight_num, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
 
-			x_offset = x_offset +  roundwidth - (8*width/480);
+			x_offset = x_offset +  roundwidth_num - (8*width/480);
 		}
 	}
 	else if (rounds_change == 4)//blink white
@@ -367,7 +373,7 @@ void(float width, float height) HUD_Rounds =
 				if (i == 4)
 				{
 					//draw_colorpic (5, vid.height - sb_round[4]->height - 4, sb_round[4], 255, 255, 255, blinking);
-					drawpic([5, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+					drawpic([5, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [1,1,1], blinking/255);
 
 					savex = x_offset + (10*width/480);
 					x_offset = x_offset + (10*width/480);
@@ -376,7 +382,7 @@ void(float width, float height) HUD_Rounds =
 				if (i == 9)
 				{
 					//draw_colorpic (5 + savex, vid.height - sb_round[4]->height - 4, sb_round[4], 255, 255, 255, blinking);
-					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [1,1,1], blinking/255);
 
 					continue;
 				}
@@ -397,9 +403,9 @@ void(float width, float height) HUD_Rounds =
 			{
 				num[2] = (int)(rounds/100);
 				//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[2]]->height - 4, sb_round_num[num[2]], 255, 255, 255, blinking);
-					drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+					drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
 					
-				x_offset = x_offset +  roundwidth - (8*width/480);
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
 			}
 			else
 				num[2] = 0;
@@ -407,18 +413,18 @@ void(float width, float height) HUD_Rounds =
 			{
 				num[1] = (int)((rounds - num[2]*100)/10);
 				//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[1]]->height - 4, sb_round_num[num[1]], 255, 255, 255, blinking);
-				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
 				
-				x_offset = x_offset +  roundwidth - (8*width/480);
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
 			}
 			else
 				num[1] = 0;
 
 			num[0] = rounds - num[2]*100 - num[1]*10;
 			//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[0]]->height - 4, sb_round_num[num[0]], 255, 255, 255, blinking);
-			drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+			drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
 			
-			x_offset = x_offset +  roundwidth - (8*width/480);
+			x_offset = x_offset +  roundwidth_num - (8*width/480);
 		}
 		
 		if (endroundchange == 0)
@@ -437,7 +443,7 @@ void(float width, float height) HUD_Rounds =
 				if (i == 4)
 				{
 					//draw_colorpic (5, vid.height - sb_round[4]->height - 4, sb_round[4], 255, 255, 255, blinking);
-					drawpic([5, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+					drawpic([5, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [1,1,1], blinking/255);
 
 					savex = x_offset + (10*width/480);
 					x_offset = x_offset + (10*width/480);
@@ -446,7 +452,7 @@ void(float width, float height) HUD_Rounds =
 				if (i == 9)
 				{
 					//draw_colorpic (5 + savex, vid.height - sb_round[4]->height - 4, sb_round[4], 255, 255, 255, blinking);
-					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [1,1,1], blinking/255);
 					continue;
 				}
 				if (i > 4)
@@ -466,9 +472,9 @@ void(float width, float height) HUD_Rounds =
 			{
 				num[2] = (int)(rounds/100);
 				//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[2]]->height - 4, sb_round_num[num[2]], 255, 255, 255, blinking);
-				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
 
-				x_offset = x_offset +  roundwidth - (8*width/480);
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
 			}
 			else
 				num[2] = 0;
@@ -476,18 +482,18 @@ void(float width, float height) HUD_Rounds =
 			{
 				num[1] = (int)((rounds - num[2]*100)/10);
 				//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[1]]->height - 4, sb_round_num[num[1]], 255, 255, 255, blinking);
-				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
 
-				x_offset = x_offset +  roundwidth - (8*width/480);
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
 			}
 			else
 				num[1] = 0;
 
 			num[0] = rounds - num[2]*100 - num[1]*10;
 			//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[0]]->height - 4, sb_round_num[num[0]], 255, 255, 255, blinking);
-			drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+			drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
 
-			x_offset = x_offset +  roundwidth - (8*width/480);
+			x_offset = x_offset +  roundwidth_num - (8*width/480);
 		}
 	}
 	else if (rounds_change == 6)//blink white while fading back
@@ -506,7 +512,7 @@ void(float width, float height) HUD_Rounds =
 				if (i == 4)
 				{
 					//draw_colorpic (5, vid.height - sb_round[4]->height - 4, sb_round[4], 255, 255, 255, blinking);
-					drawpic([5, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+					drawpic([5, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [1,1,1], blinking/255);
 								
 					savex = x_offset + (10*width/480);
 					x_offset = x_offset + (10*width/480);
@@ -515,7 +521,7 @@ void(float width, float height) HUD_Rounds =
 				if (i == 9)
 				{
 					//draw_colorpic (5 + savex, vid.height - sb_round[4]->height - 4, sb_round[4], 255, 255, 255, blinking);
-					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [1,1,1], blinking/255);
 
 					continue;
 				}
@@ -536,9 +542,9 @@ void(float width, float height) HUD_Rounds =
 			{
 				num[2] = (int)(rounds/100);
 				//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[2]]->height - 4, sb_round_num[num[2]], 255, 255, 255, blinking);
-				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
 				
-				x_offset = x_offset +  roundwidth - (8*width/480);
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
 			}
 			else
 				num[2] = 0;
@@ -546,18 +552,18 @@ void(float width, float height) HUD_Rounds =
 			{
 				num[1] = (int)((rounds - num[2]*100)/10);
 				//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[1]]->height - 4, sb_round_num[num[1]], 255, 255, 255, blinking);
-				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
 
-				x_offset = x_offset +  roundwidth - (8*width/480);
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
 			}
 			else
 				num[1] = 0;
 
 			num[0] = rounds - num[2]*100 - num[1]*10;
 			//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[0]]->height - 4, sb_round_num[num[0]], 255, 255, 255, blinking);
-			drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+			drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
 
-			x_offset = x_offset +  roundwidth - (8*width/480);
+			x_offset = x_offset +  roundwidth_num - (8*width/480);
 		}
 	}
 	else if (rounds_change == 7)//blink white while fading back
@@ -589,7 +595,7 @@ void(float width, float height) HUD_Rounds =
 				if (i == 4)
 				{
 					//draw_colorpic (5, vid.height - sb_round[4]->height - 4, sb_round[4], (int)color_shift[0], (int)color_shift[1], (int)color_shift[2], 255);
-					drawpic([5, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth,roundheight, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+					drawpic([5, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
 
 					savex = x_offset + (10*width/480);
 					x_offset = x_offset + (10*width/480);
@@ -598,7 +604,7 @@ void(float width, float height) HUD_Rounds =
 				if (i == 9)
 				{
 					//draw_colorpic (5 + savex, vid.height - sb_round[4]->height - 4, sb_round[4], (int)color_shift[0], (int)color_shift[1], (int)color_shift[2], 255);
-					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth,roundheight, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
 
 					continue;
 				}
@@ -619,9 +625,9 @@ void(float width, float height) HUD_Rounds =
 			{
 				num[2] = (int)(rounds/100);
 				//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[2]]->height - 4, sb_round_num[num[2]], (int)color_shift[0], (int)color_shift[1], (int)color_shift[2], 255);
-				drawpic([2+x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth,roundheight, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+				drawpic([2+x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth_num,roundheight_num, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
 
-				x_offset = x_offset +  roundwidth - (8*width/480);
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
 			}
 			else
 				num[2] = 0;
@@ -629,18 +635,18 @@ void(float width, float height) HUD_Rounds =
 			{
 				num[1] = (int)((rounds - num[2]*100)/10);
 				//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[1]]->height - 4, sb_round_num[num[1]], (int)color_shift[0], (int)color_shift[1], (int)color_shift[2], 255);
-				drawpic([2+x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth,roundheight, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+				drawpic([2+x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth_num,roundheight_num, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
 
-				x_offset = x_offset +  roundwidth - (8*width/480);
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
 			}
 			else
 				num[1] = 0;
 
 			num[0] = rounds - num[2]*100 - num[1]*10;
 			//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[0]]->height - 4, sb_round_num[num[0]], (int)color_shift[0], (int)color_shift[1], (int)color_shift[2], 255);
-			drawpic([2+x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth,roundheight, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+			drawpic([2+x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth_num,roundheight_num, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
 
-			x_offset = x_offset +  roundwidth - (8*width/480);
+			x_offset = x_offset +  roundwidth_num - (8*width/480);
 		}
 	}
 	else
@@ -657,7 +663,7 @@ void(float width, float height) HUD_Rounds =
 				if (i == 4)
 				{
 					//draw_colorpic (5, vid.height - sb_round[4]->height - 4, sb_round[4], 107, 1, 0, 255);
-					drawpic([5, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth,roundheight, 1], [107/255,1/255,0], 1);
+					drawpic([5, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [107/255,1/255,0], 1);
 
 					savex = x_offset + (10*width/480);
 					x_offset = x_offset + (10*width/480);
@@ -666,7 +672,7 @@ void(float width, float height) HUD_Rounds =
 				if (i == 9)
 				{
 					//draw_colorpic (5 + savex, vid.height - sb_round[4]->height - 4, sb_round[4], 107, 1, 0, 255);
-					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth,roundheight, 1], [107/255,1/255,0], 1);
+					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [107/255,1/255,0], 1);
 
 					continue;
 				}
@@ -687,9 +693,9 @@ void(float width, float height) HUD_Rounds =
 			{
 				num[2] = (int)(rounds/100);
 				//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[2]]->height - 4, sb_round_num[num[2]], 107, 1, 0, 255);
-				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth,roundheight, 1], [107/255,1/255,0], 1);
+				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth_num,roundheight_num, 1], [107/255,1/255,0], 1);
 
-				x_offset = x_offset +  roundwidth - (8*width/480);
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
 			}
 			else
 				num[2] = 0;
@@ -697,9 +703,9 @@ void(float width, float height) HUD_Rounds =
 			{
 				num[1] = (int)((rounds - num[2]*100)/10);
 				//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[1]]->height - 4, sb_round_num[num[1]], 107, 1, 0, 255);
-				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth,roundheight, 1], [107/255,1/255,0], 1);
+				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth_num,roundheight_num, 1], [107/255,1/255,0], 1);
 
-				x_offset = x_offset +  roundwidth - (8*width/480);
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
 			}
 			else
 				num[1] = 0;
@@ -710,9 +716,9 @@ void(float width, float height) HUD_Rounds =
 				return;
 			
 			//draw_colorpic (2 + x_offset, vid.height - sb_round_num[num[0]]->height - 4, sb_round_num[num[0]], 107, 1, 0, 255);
-			drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth,roundheight, 1], [107/255,1/255,0], 1);
+			drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth_num,roundheight_num, 1], [107/255,1/255,0], 1);
 
-			x_offset = x_offset +  roundwidth - (8*width/480);
+			x_offset = x_offset +  roundwidth_num - (8*width/480);
 		}
 	}
 }
