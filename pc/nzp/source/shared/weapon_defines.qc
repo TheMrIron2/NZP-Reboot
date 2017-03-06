@@ -21,88 +21,88 @@ string(float wep) GetWeaponName =
 			return ".357 Plus 1 K1L-u";
 		case W_BAR:
 			return "BAR";
+		case W_WIDOW:
+			return "The Widow Maker";
 		case W_BK:
 			return "Ballistic Knife";
 		case W_BROWNING:
 			return "Browning M1919";
+		case W_ACCELERATOR:
+			return "B115 Accelerator";
 		case W_DB:
 			return "Double-Barreled Shotgun";
+		case W_BORE:
+			return "24 Bore Long Range";
 		case W_FG:
 			return "FG42";
+		case W_IMPELLER:
+			return "420 Impeller";
 		case W_GEWEHR:
 			return "Gewehr 43";
+		case W_COMPRESSOR:
+			return "G115 Compressor";
 		case W_KAR_SCOPE:
 			return "Scoped Kar 98k";
+		case W_HEADCRACKER:
+			return "Headcracker";
 		case W_M1:
 			return "M1 Garand";
+		case W_M1000:
+			return "M1000";
 		case W_M1A1:
 			return "M1A1 Carbine";
+		case W_WIDDER:
+			return "Widdershins RC-1";
 		case W_M2:
 			return "M2 Flamethrower";
+		case W_FIW:
+			return "F1W Nitrogen Cooled";
 		case W_MP40:
 			return "MP40";
+		case W_AFTERBURNER:
+			return "The Afterburner";
 		case W_MG:
 			return "MG42";
+		case W_BARRACUDA:
+			return "Barracuda FU-A11";
 		case W_PANZER:
 			return "Panzerschrek";
+		case W_LONGINUS:
+			return "Longinus";
 		case W_PPSH:
 			return "PPSh-41";
+		case W_REAPER:
+			return "The Reaper";
 		case W_PTRS:
 			return "PTRS-41";
+		case W_PENETRATOR:
+			return "The Penetrator";
 		case W_RAY:
 			return "Ray Gun";
+		case W_PORTER:
+			return "Porter's X2 Ray Gun";
 		case W_SAWNOFF:
 			return "Sawnoff shotgun";
+		case W_SNUFF:
+			return "The Snuff Box";
 		case W_STG:
 			return "STG-44";
+		case W_SPATZ:
+			return "Spatz-447 +";
 		case W_TRENCH:
 			return "M1897 Trench Gun";
+		case W_GUT:
+			return "Gut Shot";
 		case W_TYPE:
 			return "Type 100";
+		case W_SAMURAI:
+			return "1001 Samurais";
 		case W_BOWIE:
 			return "Bowie Knife";
 		case W_GRENADE:
 			return "Grenades";
 		case W_BETTY:
 			return "Bouncing Betty";
-		case W_WIDOW:
-			return "The Widow Maker";
-		case W_ACCELERATOR:
-			return "B115 Accelerator";
-		case W_BORE:
-			return "24 Bore Long Range";
-		case W_IMPELLER:
-			return "420 Impeller";
-		case W_COMPRESSOR:
-			return "G115 Compressor";
-		case W_HEADCRACKER:
-			return "Headcracker";
-		case W_M1000:
-			return "M1000";
-		case W_WIDDER:
-			return "Widdershins RC-1";
-		case W_FIW:
-			return "F1W Nitrogen Cooled";
-		case W_AFTERBURNER:
-			return "The Afterburner";
-		case W_BARRACUDA:
-			return "Barracuda FU-A11";
-		case W_LONGINUS:
-			return "Longinus";
-		case W_REAPER:
-			return "The Reaper";
-		case W_PENETRATOR:
-			return "The Penetrator";
-		case W_PORTER:
-			return "Porter's X2 Ray Gun";
-		case W_SNUFF:
-			return "The Snuff Box";
-		case W_SPATZ:
-			return "Spatz-447 +";
-		case W_GUT:
-			return "Gut Shot";
-		case W_SAMURAI:
-			return "1001 Samurais";
     	case W_MP5:
       		return "MP5K";
     	case W_TESLA:
@@ -139,6 +139,7 @@ float(float wep) GetFiretype =
 	switch (wep)
 	{
 		case W_COLT:
+		case W_BIATCH:
 			return 1;
 		case W_KAR:
 			return 1;
@@ -151,45 +152,63 @@ float(float wep) GetFiretype =
 		case W_KILLU:
 			return 1;
 		case W_BAR:
+		case W_WIDDER:
 			return 0;
 		case W_BROWNING:
+		case W_ACCELERATOR:
 			return 0;
 		case W_DB:
+		case W_BORE:
 			return 1;
 		case W_FG:
+		case W_IMPELLER:
 			return 0;
 		case W_GEWEHR:
+		case W_COMPRESSOR:
 			return 1;
 		case W_KAR_SCOPE:
 			return 1;
+		case W_HEADCRACKER:
+			return 0;
 		case W_M1:
+		case W_M1000:
 			return 1;
 		case W_M1A1:
+		case W_WIDDER:
 			return 1;
 		case W_M2:
+		case W_FIW:
 			return 6;
 		case W_MP40:
+		case W_AFTERBURNER:
 			return 0;
 		case W_MG:
+		case W_BARRACUDA:
 			return 0;
 		case W_PANZER:
+		case W_LONGINUS:
 			return 3;
 		case W_PPSH:
+		case W_REAPER:
 			return 0;
 		case W_PTRS:
+		case W_PENETRATOR:
 			return 0;
 		case W_RAY:
+		case W_PORTER:
 			return 4;
 		case W_SAWNOFF:
+		case W_SNUFF:
 			return 1;
 		case W_STG:
+		case W_SPATZ:
 			return 0;
 		case W_TRENCH:
+		case W_GUT:
 			return 1;
 		case W_TYPE:
+		case W_SAMURAI:
 			return 0;
-		case W_BIATCH:
-			return 1;
     }
 
     return 0;
@@ -202,6 +221,8 @@ float(float wep) getWeaponMag =
 	{
 		case W_COLT:
 			return 8;
+		case W_BIATCH:
+			return 6;
 		case W_KAR:
 			return 5;
     	case W_ARMAGEDDON:
@@ -215,44 +236,78 @@ float(float wep) getWeaponMag =
 			return 6;
 		case W_BAR:
 			return 20;
+		case W_WIDDER:
+			return 20;
 		case W_BROWNING:
 			return 125;
+		case W_ACCELERATOR:
+			return 125;
 		case W_DB:
+		case W_BORE:
 			return 2;
 		case W_FG:
 			return 32;
+		case W_IMPELLER:
+			return 32;
 		case W_GEWEHR:
+			return 10;
+		case W_COMPRESSOR:
 			return 10;
 		case W_KAR_SCOPE:
 			return 5;
+		case W_HEADCRACKER:
+			return 10;
 		case W_M1:
+			return 8;
+		case W_M1000:
 			return 8;
 		case W_M1A1:
 			return 15;
+		case W_WIDDER:
+			return 15;
 		case W_M2:
+			return 200;
+		case W_FIW:
 			return 200;
 		case W_MP40:
 			return 32;
+		case W_AFTERBURNER:
+			return 32;
 		case W_MG:
+			return 125;
+		case W_BARRACUDA:
 			return 125;
 		case W_PANZER:
 			return 1;
+		case W_LONGINUS:
+			return 3;
 		case W_PPSH:
+			return 71;
+		case W_REAPER:
 			return 71;
 		case W_PTRS:
 			return 5;
+		case W_PENETRATOR:
+			return 5;
 		case W_RAY:
 			return 20;
+		case W_PORTER:
+			return 20;
 		case W_SAWNOFF:
+		case W_SNUFF:
 			return 2;
 		case W_STG:
 			return 30;
+		case W_SPATZ:
+			return 30;
 		case W_TRENCH:
+			return 6;
+		case W_GUT:
 			return 6;
 		case W_TYPE:
 			return 30;
-		case W_BIATCH:
-			return 6;
+		case W_SAMURAI:
+			return 30;
 	}
 	return 0;
 }
@@ -264,8 +319,12 @@ float(float wep) getWeaponAmmo =
 	{
 		case W_COLT:
 			return 80;
+		case W_BIATCH:
+			return 80;
 		case W_KAR:
 			return 50;
+    	case W_ARMAGEDDON:
+			return 60;
 		case W_THOMPSON:
 			return 200;
 		case W_GIBS:
@@ -275,46 +334,78 @@ float(float wep) getWeaponAmmo =
 			return 80;
 		case W_BAR:
 			return 140;
+		case W_WIDOW:
+			return 140;
 		case W_BROWNING:
+			return 500;
+		case W_ACCELERATOR:
 			return 500;
 		case W_DB:
 			return 60;
-		case W_DB:
-			return 200;
+		case W_BORE:
+			return 60;
+		case W_FG:
+			return 32;//FIXME(Jukki)
 		case W_GEWEHR:
+			return 120;
+		case W_COMPRESSOR:
 			return 120;
 		case W_KAR_SCOPE:
 			return 50;
+		case W_HEADCRACKER:
+			return 50;
 		case W_M1:
+			return 128;
+		case W_M1000:
 			return 128;
 		case W_M1A1:
 			return 120;
+		case W_WIDDER:
+			return 120;
 		case W_M2:
+      		return 200;
+		case W_FIW:
       		return 200;
 		case W_MP40:
 			return 192;
+		case W_AFTERBURNER:
+			return 192;
 		case W_MG:
+			return 500;
+		case W_BARRACUDA:
 			return 500;
 		case W_PANZER:
 			return 20;
+		case W_LONGINUS:
+			return 20;
 		case W_PPSH:
+			return 355;
+		case W_REAPER:
 			return 355;
 		case W_PTRS:
 			return 60;
+		case W_PENETRATOR:
+			return 60;
 		case W_RAY:
+			return 160;
+		case W_PORTER:
 			return 160;
 		case W_SAWNOFF:
 			return 60;
+		case W_SNUGG:
+			return 60;
 		case W_STG:
+			return 180;
+		case W_SPATZ:
 			return 180;
 		case W_TRENCH:
 			return 60;
+		case W_GUT:
+			return 60;
 		case W_TYPE:
 			return 160;
-		case W_BIATCH:
-			return 80;
-    	case W_ARMAGEDDON:
-			return 60;
+		case W_SAMURAI:
+			return 160;
 	}
 	return 0;
 }
@@ -343,37 +434,71 @@ float(float wep) getWeaponDamage =
 			return 1400;
 		case W_BAR:
 			return 100;
+		case W_WIDOW:
+			return 100;
 		case W_BROWNING:
+			return 130;
+		case W_ACCELERATOR:
 			return 130;
 		case W_FG:
 			return 100;
+		case W_IMPELLER:
+			return 100;
 		case W_GEWEHR:
+			return 90;
+		case W_COMPRESSOR:
 			return 90;
 		case W_KAR_SCOPE:
 			return 800;
+		case W_HEADCRACKER:
+			return 800;
 		case W_M1:
+			return 200;
+		case W_M1000:
 			return 200;
 		case W_M1A1:
 			return 120;
+		case W_WIDDER:
+			return 120;
 		case W_MP40:
+			return 100;
+		case W_AFTERBURNER:
 			return 100;
 		case W_MG:
 			return 130;
+		case W_BARRACUDA:
+			return 130;
 		case W_PANZER:
+			return 600;
+		case W_LONGINUS:
 			return 600;
 		case W_PPSH:
 			return 100;
+		case W_REAPER:
+			return 100;
 		case W_PTRS:
+			return 1000;
+		case W_PENETRATOR:
 			return 1000;
 		case W_RAY:
 			return 1000;
+		case W_PORTER:
+			return 1000;
 		case W_SAWNOFF:
+			return 240;
+		case W_SNUFF:
 			return 240;
 		case W_STG:
 			return 180;
+		case W_SPATZ:
+			return 180;
 		case W_TRENCH:
 			return 120;
+		case W_GUT:
+			return 120;
 		case W_TYPE:
+			return 100;
+		case W_SAMURAI:
 			return 100;
     }
 
@@ -385,10 +510,13 @@ float(float wep) GetWeaponShotcount =
 	switch(wep)
 	{
 		case W_DB:
+		case W_BORE:
 			return 8;
 		case W_SAWNOFF:
+		case W_SNUFF:
 			return 8;
 		case W_TRENCH:
+		case W_GUT:
 			return 8;
 	}
 
@@ -402,6 +530,7 @@ float(float wep, float penetration_times) getWeaponPenetration =
 	switch (wep)
 	{
 		case W_COLT:
+		case W_BIATCH:
 			if (penetration_times >= 2)
 				return 0;
 			return 0.75;
@@ -420,76 +549,88 @@ float(float wep, float penetration_times) getWeaponPenetration =
 			if (penetration_times >= 3)
 				return 0;
 		case W_BAR:
+		case W_WIDOW:
 			if (penetration_times >= 3)
 				return 0;
 			return 1;
 		case W_BROWNING:
+		case W_ACCELERATOR:
 			if (penetration_times >= 3)
 				return 0;
 			return 1;
 		case W_DB:
+		case W_BORE:
 			if (penetration_times >= 1)
 				return 0;
 			return 0.5;
 		case W_FG:
+		case W_IMPELLER:
 			if (penetration_times >= 2)
 				return 0;
 			return 0.9;
 		case W_GEWEHR:
+		case W_COMPRESSOR:
 			if (penetration_times >= 2)
 				return 0;
 			return 0.9;
 		case W_KAR_SCOPE:
+		case W_HEADCRACKER:
 			if (penetration_times >= 3)
 				return 0;
 			return 1;
 		case W_M1:
+		case W_M1000:
 			if (penetration_times >= 2)
 				return 0;
 			return 0.9;
 		case W_M1A1:
+		case W_WIDDER:
 			if (penetration_times >= 2)
 				return 0;
 			return 0.9;
 		case W_MP40:
+		case W_AFTERBURNER:
 			if (penetration_times >= 2)
 				return 0;
 			return 0.8;
 		case W_MG:
+		case W_BARRACUDA:
 			if (penetration_times >= 3)
 				return 0;
 			return 1;
 		case W_PPSH:
+		case W_REAPER:
 			if (penetration_times >= 2)
 				return 0;
 			return 0.75;
 		case W_PTRS:
+		case W_PENETRATOR:
 			if (penetration_times >= 5)
 				return 0;
 			return 1;
 		case W_SAWNOFF:
+		case W_SNUFF:
 			if (penetration_times >= 1)
 				return 0;
 			return 0.4;
 		case W_STG:
+		case W_SPATZ:
 			if (penetration_times >= 2)
 				return 0;
 			return 0.8;
 		case W_TRENCH:
+		case W_GUT:
 			if (penetration_times >= 1)
 				return 0;
 			return 0.7;
 		case W_TYPE:
+		case W_SAMURAI:
 			if (penetration_times >= 2)
 				return 0;
 			return 0.8;
-		case W_BIATCH:
-			if (penetration_times >= 2)
-				return 0;
-			return 0.75;
+		default:
+			return 0;
     }
-    
-	return 0;
 }
 
 float(float wep) GetWeaponSpread =
@@ -504,6 +645,11 @@ float(float wep, float delaytype) getWeaponDelay =
 	switch (wep)
 	{
 		case W_COLT:
+			if (delaytype == RELOAD)
+				return 2.5;
+			else if (delaytype == FIRE)
+				return 0.075;
+		case W_BIATCH:
 			if (delaytype == RELOAD)
 				return 2.5;
 			else if (delaytype == FIRE)
@@ -527,100 +673,113 @@ float(float wep, float delaytype) getWeaponDelay =
 			else if (delaytype == FIRE)
 				return 0.32;
 		case W_BAR:
+		case W_WIDOW:
 			if (delaytype == RELOAD)
 				return 3.5;
 			else if (delaytype == FIRE)
 				return 0.16;
 		case W_BROWNING:
+		case W_ACCELERATOR:
 			if (delaytype == RELOAD)
 				return 3.3;
 			else if (delaytype == FIRE)
 				return 0.096;
 		case W_DB:
+		case W_BORE:
 			if (delaytype == RELOAD)
 				return 2.8;
 			else if (delaytype == FIRE)
 				return 0.283;
 		case W_FG:
+		case W_IMPELLER:
 			if (delaytype == RELOAD)
 			  	return 4.5;
 			else if (delaytype == FIRE)
 				return 0.064;
 		case W_GEWEHR:
+		case W_COMPRESSOR:
 			if (delaytype == RELOAD)
 				return 3.5;
 			else if (delaytype == FIRE)
 				return 0.125;
 		case W_M1:
+		case W_M1000:
 			if (delaytype == RELOAD)
 				return 3.8;
 			else if (delaytype == FIRE)
 				return 0.135;
 		case W_M1A1:
+		case W_WIDDER:
 			if (delaytype == RELOAD)
 				return 2.9;
 			else if (delaytype == FIRE)
 				return 0.135;
 		case W_M2:
+		case W_FIW:
 			if (delaytype == RELOAD)
 				return 2.7;
 			else if (delaytype == FIRE)
 				return 0.02;
 		case W_MP40:
+		case W_AFTERBURNER:
 			if (delaytype == RELOAD)
 				return 2.2;
 			else if (delaytype == FIRE)
 				return 0.112;
 		case W_MG:
+		case W_BARRACUDA:
 			if (delaytype == RELOAD)
 				return 3.6;
 			else if (delaytype == FIRE)
 				return 0.01;
 		case W_PANZER:
+		case W_LONGINUS:
 			if (delaytype == RELOAD)
 				return 1.55;
 			else if (delaytype == FIRE)
 				return 0.331;
 		case W_PPSH:
+		case W_REAPER:
 			if (delaytype == RELOAD)
 				return 3.3;
 			else if (delaytype == FIRE)
 				return 0.048;
 		case W_PTRS:
+		case W_PENETRATOR:
 			if (delaytype == RELOAD)
 				return 2.8;
 			else if (delaytype == FIRE)
 				return 0.8;
 		case W_RAY:
+		case W_PORTER:
 			if (delaytype == RELOAD)
 				return 3.1;
 			else if (delaytype == FIRE)
 				return 0.331;
 		case W_SAWNOFF:
+		case W_SNUFF:
 			if (delaytype == RELOAD)
 				return 2.8;
 			else if (delaytype == FIRE)
 				return 0.283;
 		case W_STG:
+		case W_SPATZ:
 			if (delaytype == RELOAD)
 				return 2.5;
 			else if (delaytype == FIRE)
 				return 0.102;
 		case W_TRENCH:
+		case W_GUT:
 			if (delaytype == RELOAD)
 				return 2.2;
 			else if (delaytype == FIRE)
 				return 0.283;
 		case W_TYPE:
+		case W_SAMURAI:
 			if (delaytype == RELOAD)
 				return 2.3;
 			else if (delaytype == FIRE)
 				return 0.08;
-		case W_BIATCH:
-			if (delaytype == RELOAD)
-				return 2.5;
-			else if (delaytype == FIRE)
-				return 0.075;
     }
 
     return 0;
@@ -661,6 +820,41 @@ float(float wep, float frametype) GetFrame =
 					return 26;
 				case PUT_OUT_END:
 					return 29;
+				case RELOAD_CANCEL:
+					return 13;
+			}
+			break;
+		case W_BIATCH:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return 1;
+				case FIRE_END:
+					return 2;
+				case RELOAD_START:
+					return 3;
+				case RELOAD_END:
+					return 36;
+				case SPRINT_IN_START:
+					return 33;
+				case SPRINT_IN_END:
+					return 34;
+				case SPRINT_START:
+					return 44;
+				case SPRINT_END:
+					return 43;
+				case SPRINT_OUT_START:
+					return 50;
+				case SPRINT_OUT_END:
+					return 42;
+				case TAKE_OUT_START:
+					return 39;
+				case TAKE_OUT_END:
+					return 42;
+				case PUT_OUT_START:
+					return 36;
+				case PUT_OUT_END:
+					return 39;
 				case RELOAD_CANCEL:
 					return 13;
 			}
@@ -1380,41 +1574,6 @@ float(float wep, float frametype) GetFrame =
 					return 27;
 			}
 			break;
-		case W_BIATCH:
-			switch (frametype)
-			{
-				case FIRE_START:
-					return 1;
-				case FIRE_END:
-					return 2;
-				case RELOAD_START:
-					return 3;
-				case RELOAD_END:
-					return 36;
-				case SPRINT_IN_START:
-					return 33;
-				case SPRINT_IN_END:
-					return 34;
-				case SPRINT_START:
-					return 44;
-				case SPRINT_END:
-					return 43;
-				case SPRINT_OUT_START:
-					return 50;
-				case SPRINT_OUT_END:
-					return 42;
-				case TAKE_OUT_START:
-					return 39;
-				case TAKE_OUT_END:
-					return 42;
-				case PUT_OUT_START:
-					return 36;
-				case PUT_OUT_END:
-					return 39;
-				case RELOAD_CANCEL:
-					return 13;
-			}
-			break;
 	}
 
     return 0;
@@ -1430,6 +1589,11 @@ string(float wep, float gorvmodel) GetWeaponModel =
 				return ("models/weapons/m1911/g_colt.mdl");
 			else
 				return ("models/weapons/m1911/v_colt.mdl");
+		case W_BIATCH:
+			if (gorvmodel)
+				return ("models/weapons/m1911/g_colt.mdl");
+			else
+				return ("models/weapons/m1911/v_biatch_right.mdl");
 		case W_KAR:
 		case W_ARMAGEDDON:
 			if (gorvmodel)
@@ -1561,11 +1725,6 @@ string(float wep, float gorvmodel) GetWeaponModel =
 				return ("models/weapons/type/g_type.mdl");
 			else
 				return ("models/weapons/type/v_type.mdl");
-		case W_BIATCH:
-			if (gorvmodel)
-				return ("models/weapons/m1911/g_colt.mdl");
-			else
-				return ("models/weapons/m1911/v_biatch_right.mdl");
     }
 
     return "";
@@ -1821,7 +1980,7 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 {
 	if (anim_style == FIRE)
 	{
-		if (wep == W_KAR || wep == W_ARMAGEDDON || wep == W_KAR_SCOPE)
+		if (wep == W_KAR || wep == W_ARMAGEDDON || wep == W_KAR_SCOPE || wep == W_HEADCRACKER)
 		{
 			if (curweaponframe == 6)
 				sound (self ,5, "sounds/weapons/kar/boltup.wav", 1, ATTN_NORM);
