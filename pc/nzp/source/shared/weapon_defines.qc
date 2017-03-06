@@ -647,8 +647,149 @@ float(float wep, float penetration_times) getWeaponPenetration =
 
 float(float wep) GetWeaponSpread =
 {
-	
-	return 0;
+	float Weapon_Spread, Total_Spread;
+	switch (wep)
+	{
+		case W_COLT:
+			Weapon_Spread = 7.5;
+			break;
+		case W_BIATCH:
+			Weapon_Spread = 7.5;
+			break;
+		case W_KAR:
+			Weapon_Spread = 25;
+			break;
+		case W_ARMAGEDDON:
+			Weapon_Spread = 25;
+			break;
+		case W_THOMPSON:
+			Weapon_Spread = 5;
+			break;
+		case W_GIBS:
+			Weapon_Spread = 5;
+			break;
+		case W_RAY:
+			Weapon_Spread = 5;
+			break;
+		case W_PORTER:
+			Weapon_Spread = 5;
+			break;
+		case W_KAR_SCOPE:
+			Weapon_Spread = 25;
+			break;
+		case W_HEADCRACKER:
+			Weapon_Spread = 25;
+			break;
+		case W_BAR:
+			Weapon_Spread = 5;
+			break;
+		case W_WIDOW:
+			Weapon_Spread = 5;
+			break;
+		case W_M1A1:
+			Weapon_Spread = 5;
+			break;
+		case W_WIDDER:
+			Weapon_Spread = 5;
+			break;
+		case W_M2:
+			Weapon_Spread = 0;
+			break;
+		case W_FIW:
+			Weapon_Spread = 0;
+			break;
+		case W_TYPE:
+			Weapon_Spread = 5;
+			break;
+		case W_SAMURAI:
+			Weapon_Spread = 5;
+			break;
+		case W_SAWNOFF:
+			Weapon_Spread = 15;
+			break;
+		case W_SNUFF:
+			Weapon_Spread = 15;
+			break;
+		case W_PPSH:
+			Weapon_Spread = 5;
+			break;
+		case W_REAPER:
+			Weapon_Spread = 5;
+			break;
+		case W_DB:
+			Weapon_Spread = 12.5;
+			break;
+		case W_BORE:
+			Weapon_Spread = 12.5;
+			break;
+		case W_FG:
+			Weapon_Spread = 5;
+			break;
+		case W_IMPELLER:Weapon_Spread = 5;
+			break;
+		case W_TRENCH:Weapon_Spread = 12.5;
+			break;
+		case W_GUT:Weapon_Spread = 12.5;
+			break;
+		case W_MG:Weapon_Spread = 10;
+			break;
+		case W_BARRACUDA:Weapon_Spread = 10;
+			break;
+		case W_GEWEHR:
+			Weapon_Spread = 5;
+			break;
+		case W_COMPRESSOR:
+			Weapon_Spread = 5;
+			break;
+		case W_BROWNING:
+			Weapon_Spread = 10;
+			break;
+		case W_ACCELERATOR:
+			Weapon_Spread = 10;
+			break;
+		case W_357:
+			Weapon_Spread = 5;
+			break;
+		case W_KILLU:
+			Weapon_Spread = 5;
+			break;
+		case W_M1:
+			Weapon_Spread = 5;
+			break;
+		case W_M1000:
+			Weapon_Spread = 5;
+			break;
+		case W_MP40:
+			Weapon_Spread = 5;
+			break;
+		case W_AFTERBURNER:
+			Weapon_Spread = 5;
+			break;
+		case W_PTRS:
+			Weapon_Spread = 15;
+			break;
+		case W_PENETRATOR:
+			Weapon_Spread = 15;
+			break;
+		case W_STG:
+			Weapon_Spread = 5;
+			break;
+		case W_SPATZ:
+			Weapon_Spread = 5;
+			break;
+		case W_MP5:
+			Weapon_Spread = 5;
+			break;
+		case W_TESLA:
+			Weapon_Spread = 5;
+			break;
+		case W_M14:
+			Weapon_Spread = 5;
+		break;
+	}
+
+	Total_Spread = Weapon_Spread;
+	return Total_Spread;
 }
 
 float(float wep, float delaytype) getWeaponDelay =
