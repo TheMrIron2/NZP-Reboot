@@ -477,6 +477,8 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 
 		hit_ent.washit = 1;
 		hit_ent.hitamount = hit_ent.hitamount + f_damage;
+		
+		SetUpdate(self, UT_HM, 0, 0, 0);
 	}
 
 	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);

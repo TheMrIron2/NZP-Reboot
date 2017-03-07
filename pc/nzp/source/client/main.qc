@@ -651,6 +651,11 @@ noref void() CSQC_Parse_Event =
 				break;
 			case 2:
 				rounds_change = var_1;
+				break;
+			case 3:
+				if (Hitmark_time < time)
+					Hitmark_time = time + 1;
+				break;
 			default: 
 				break;
 		}

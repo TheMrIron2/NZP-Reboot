@@ -843,9 +843,22 @@ void(float width, float height) HUD_Progressbar =
 	drawstring([(width - (88))/2, height*0.75 + 10, 0], "Reviving...", [0.0175*width, 0.0175*width, 0], [1, 1, 1], 1, 1); // naievil (FIXME) exact location later
 }
 
+/*******************
+*    HUD Hitmark   *
+*******************/
+
+void() HUD_Hitmark =
+{
+	drawpic([g_width/2 - (8/480)*g_width, g_height/2 - (8/480)*g_width,0], "gfx/hud/hit_marker.lmp", [(16/480)*g_width, (16/480)*g_width, 1], [1,1,1], 1);
+}
+
 void(float width, float height) HUD_Draw = 
 {	
 	HUD_Health(width, height);
+	HUD_Points(width, height);
+	HUD_Rounds(width, height);
+	HUD_Perks(width, height);
+	HUD_Progressbar(width, height);
 	
 	if (HUD_Change_time > time)
 	{
@@ -854,14 +867,10 @@ void(float width, float height) HUD_Draw =
 		HUD_Weaponstring(width, height);
 		HUD_AmmoString();
 	}
-	HUD_Points(width, height);
-	HUD_Rounds(width, height);
-	HUD_Perks(width, height);
-	HUD_Progressbar(width, height);
 		
-	// fix me: change the 51 and 50 to human readable const floats like STAT_PISTOLAMMO, STAT_MGAMMO or something	
-
 	if (useprint_time > time) 
 		HUD_Useprint(width, height);
-
+		
+	if (Hitmark_time > time)
+		HUD_Hitmark();
 }

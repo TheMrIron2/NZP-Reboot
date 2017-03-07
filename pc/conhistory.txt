@@ -1,20 +1,20 @@
-give
-give 14
+map example_01
 quit
-sound
-soundcontrol
-soundcontrol off
+map example_01
 quit
-soundcontrol off
+map example_01
 quit
+map example_01
 quit
+map example_01
 quit
+map example_01
 quit
-fov 65
+map example_01
 quit
+map example_01
 quit
-quit
-quit
-quit
-quit
+map example_01
+restart
+qui
 quit

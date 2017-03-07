@@ -51,6 +51,7 @@ float useprint_cost;
 float useprint_time;
 
 float HUD_Change_time; 
+float Hitmark_time;
 
 float weaponframetime;
 float weapon2frametime;
