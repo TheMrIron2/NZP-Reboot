@@ -23,3 +23,7 @@ bind y navtest_place_start
 nav_delete_poly
 bind y navtest_place_start
 bind y navtest_place_start
+bind y navtest_place_start
+bind y navtest_place_start
+nav_delete_verts
+nav_delete_verts

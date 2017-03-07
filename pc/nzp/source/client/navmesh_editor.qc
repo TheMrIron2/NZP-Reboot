@@ -186,6 +186,7 @@ float navmesh_is_vert_selected(float vert_index)
 	return FALSE;
 }
 
+
 void navmesh_editor_draw()
 {
 
@@ -205,7 +206,8 @@ void navmesh_editor_draw()
 	if(navmesh_place_corner_state == NAVMESH_PLACE_CORNER_PLACING || navmesh_place_corner_state == NAVMESH_PLACE_CORNER_CONFIRM)
 	{
 		
-		vector vorg = getviewprop(VF_ORIGIN);
+		//vector vorg = getviewprop(VF_ORIGIN);
+		vector vorg = getentity(player_localentnum, GE_ORIGIN);
 		vector vang = getviewprop(VF_ANGLES);
 	
 		vector vang_left1 = vang + [0,6,0];//Two degrees to the left
@@ -1226,15 +1228,18 @@ float navmesh_2D_line_point_dist(vector l1, vector l2, vector pos)
 		return vlen(l1 - pos);
 	
 	//2D cross product between (next_vert-vert) and (pos-vert)
-	float dist = (l2.x - l1.x) * (pos.y - l1.y) - (l2.y - l1.y) * (pos.y - l1.y);
-	dist = dist / vlen(l1 - l2);		
+	//float dist = (l2.x - l1.x) * (pos.y - l1.y) - (l2.y - l1.y) * (pos.y - l1.y);
+	//dist = dist / vlen(l1 - l2);
+	
+	float dist = vlen(crossproduct(l2-l1,l1-pos))/vlen(l1-l2);
+	
 	return fabs(dist);
 }
 
 //Returns distance from pos to an edge of the poly if pos is very close to an edge of the poly at index poly_index, -1 otherwise
 float navmesh_is_close_to_poly(vector pos, float poly_index)
 {
-	float leeway = 30;//Must be within 8 qu of edge to be considered close
+	float leeway = 30;//Must be within 30 qu of edge to be considered close
 	
 	//TODO: check if close enough on z-axis
 	
@@ -1249,7 +1254,7 @@ float navmesh_is_close_to_poly(vector pos, float poly_index)
 	float shortest_dist = 100000;
 	
 	//Only considering 2D
-	pos.z = 0;
+	//pos.z = 0;
 	
 	//We are considered to be in the polygon, if pos is on the left of all edges of the polygon (if verts are ordered in CW order)
 	for(float i = 0; i < vert_count; i++)
@@ -1258,8 +1263,8 @@ float navmesh_is_close_to_poly(vector pos, float poly_index)
 		next_vert = navmesh_verts[navmesh_polies[poly_index].verts[(i + 1) % vert_count]].pos;
 		
 		//Calculating in 2D:
-		vert.z = 0;
-		next_vert.z = 0;
+		//vert.z = 0;
+		//next_vert.z = 0;
 		
 		float temp_dist = navmesh_2D_line_point_dist(vert, next_vert, pos);
 		
@@ -1314,15 +1319,11 @@ float navmesh_get_containing_poly(vector pos)
 		//Check if we are in polygon i
 		if(navmesh_is_inside_poly(pos,i))
 		{
-			print("Pos is in poly: ");
+			print("Ent pos is inside poly: ");
 			print(ftos(i));
 			print(".\n");
 			return i;
 		}
-		
-		print("Pos is NOT in poly: ");
-		print(ftos(i));
-		print(".\n");
 		
 		//If we are not in polygon i, check if we are very close to one of its edges
 		float dist = navmesh_is_close_to_poly(pos,i);
@@ -1336,7 +1337,6 @@ float navmesh_get_containing_poly(vector pos)
 		}
 
 	}
-	print("Returning polygon that we are closest to.\n");
 	
 	
 	//FOR DEBUG: select that polygon if succesfull
@@ -1351,9 +1351,30 @@ float navmesh_get_containing_poly(vector pos)
 	}
 	//============================================
 	
+	if(closest_poly == -1)
+	{
+		print("Ent pos is not in or near any polygons.\n");
+	}
+	else
+	{
+		print("Ent pos is near but not in poly: closest_poly.\n");
+	}
 	
 	return closest_poly;
 }
 
+
+navmesh_astart_pathfind(float start, float goal)
+{
+	//current is start
+	
+	//if current is goal, add current to closed list, return
+	//add current's linked nodes to open list, calculate their f score
+	//add current to closed list
+	//find node in open list with the least f score
+	
+	
+	//
+}
 
 //==========================================================================================================================
