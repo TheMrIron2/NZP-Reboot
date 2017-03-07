@@ -9,7 +9,8 @@ float HeuristicCostEstimate (float start_way, float end_way)
 	return Distance(waypoints[start_way].org, waypoints[end_way].org);
 }
 
-void ReconstructPath(entity z, float start_way, float end_way) {
+void ReconstructPath(entity z, float start_way, float end_way) 
+{
 
 }
 
@@ -94,13 +95,15 @@ void SV_WP_SetAdd(float wp, float isopen)
 	}
 }
 
-float Pathfind (entity z, float s_wp, float e_wp) {
+float Pathfind (entity z, float s_wp, float e_wp) 
+{
 	float current;
 	float i, j;
 	float bestf;
 
 
-	if (s_wp == e_wp) {
+	if (s_wp == e_wp) 
+	{
 		return 2;
 	}
 
@@ -119,15 +122,18 @@ float Pathfind (entity z, float s_wp, float e_wp) {
 	closed_init = false;
 
 	// while openset is not empty
-	while (waypoints[open_first].set == SET_OPEN) {
+	while (waypoints[open_first].set == SET_OPEN) 
+	{
 		i = open_first;
 
 		bestf = 320000;
 		//print("Current ", ftos(current), "\n");
 
 		// go from first open to last, pick the one with lowest f
-		do {
-			if (waypoints[i].f < bestf) {
+		do
+		{
+			if (waypoints[i].f < bestf) 
+			{
 				current = i;
 				bestf = waypoints[i].f;
 			}
@@ -139,7 +145,8 @@ float Pathfind (entity z, float s_wp, float e_wp) {
 		SV_WP_SetAdd(current, false);
 
 		// we found a result, loop back with pathlength
-		if (current == e_wp) {
+		if (current == e_wp) 
+		{
 			j = i = current;
 			// walk constructed path backwards
 			// keep 2 next steps with us
@@ -215,13 +222,17 @@ float Do_Pathfind(entity from, entity to) {
 	dist = 0;
 	best_dist = 100000000;
 
-	for (i = 0; i < MAX_WAYPOINTS; i++) {
-		if (IsActive(i)) {
+	for (i = 0; i < MAX_WAYPOINTS; i++) 
+	{
+		if (IsActive(i)) 
+		{
 			TraceResult = tracemove (from.origin, VEC_HULL_MIN, VEC_HULL_MAX, waypoints[i].org, TRUE ,from);
-			if (TraceResult) {
+			if (TraceResult) 
+			{
 				dist = Distance(waypoints[i].org, from.origin);
 
-				if(dist < best_dist) {
+				if(dist < best_dist) 
+				{
 					best_dist = dist;
 					best = i;
 				}
@@ -231,13 +242,17 @@ float Do_Pathfind(entity from, entity to) {
 	dist = 0;
 	best_dist = 100000000;
 
-	for (i = 0; i < MAX_WAYPOINTS; i++) {
-		if (IsActive(i)) {
+	for (i = 0; i < MAX_WAYPOINTS; i++) 
+	{
+		if (IsActive(i)) 
+		{
 			TraceResult = tracemove (to.origin, VEC_HULL_MIN, VEC_HULL_MAX, waypoints[i].org, TRUE ,to);
-			if (TraceResult) {
+			if (TraceResult) 
+			{
 				dist = Distance(waypoints[i].org, to.origin);
 
-				if(dist < best_dist) {
+				if(dist < best_dist) 
+				{
 					best_dist = dist;
 					best_target = i;
 				}
@@ -256,14 +271,18 @@ float Do_Pathfind(entity from, entity to) {
 void CalcDistances() {
 	float i, s;
 
-	for (i = 1; i < MAX_WAYPOINTS; i++) {
+	for (i = 1; i < MAX_WAYPOINTS; i++) 
+	{
 		waypoint_ai way;
 		way = waypoints[i];
-		if (way.id > 0) {
-			for (s = 0; s < MAX_WAY_TARGETS; s++) {
+		if (way.id > 0) 
+		{
+			for (s = 0; s < MAX_WAY_TARGETS; s++) 
+			{
 				float targ;
 				targ = way.target_id[s];
-				if (targ > 0) {
+				if (targ > 0) 
+				{
 					way.dist[s] = Distance(way.org, waypoints[targ].org);
 				}
 			}
@@ -273,7 +292,8 @@ void CalcDistances() {
 			
 
 void creator_way_touch();
-void LoadWaypointData() {
+void LoadWaypointData() 
+{
     float file, which, point;
 	string h;
 	local vector where;
@@ -289,23 +309,25 @@ void LoadWaypointData() {
 		return;
 	}
 
-    float i, s;
+	float i, s;
 
-    for (i = 0; i < MAX_WAYPOINTS; i++) {
+	for (i = 0; i < MAX_WAYPOINTS; i++) 
+	{
 		waypoint_ai way;
 		way = waypoints[i];
-        way.org = '0 0 0';
-        way.id = 0;
-        way.g = 0;
-        way.f = 0;
+		way.org = '0 0 0';
+		way.id = 0;
+		way.g = 0;
+		way.f = 0;
 		way.set = 0;
-        way.targetdoor = "";
+		way.targetdoor = "";
 
-        for (s = 0; s < MAX_WAY_TARGETS; s++) {
-            way.target_id[s] = 0;
-            way.dist[s] = 0;
-        }
-    }
+		for (s = 0; s < MAX_WAY_TARGETS; s++) 
+		{
+			way.target_id[s] = 0;
+			way.dist[s] = 0;
+		}
+	}
 
 	point = 0;
 	waycount = 0;

@@ -189,7 +189,6 @@ float navmesh_is_vert_selected(float vert_index)
 
 void navmesh_editor_draw()
 {
-
 	for(float i = 0; i < navmesh_vert_count; i++)
 	{
 		navmesh_draw_vert(navmesh_verts[i].pos, navmesh_is_vert_selected(i) );
@@ -202,6 +201,8 @@ void navmesh_editor_draw()
 	
 	navmesh_draw_test_ent(0);
 	navmesh_draw_test_ent(1);
+	
+	pathfind_draw_result_node_path();
 	
 	if(navmesh_place_corner_state == NAVMESH_PLACE_CORNER_PLACING || navmesh_place_corner_state == NAVMESH_PLACE_CORNER_CONFIRM)
 	{
@@ -777,22 +778,6 @@ void navmesh_make_poly()
 	}
 	
 	
-	print("Sorted vertex indices: ");
-	for(float j = 0; j < selected_vert_count; j++)
-	{
-		print(ftos(selected_verts[j]));
-		print("  ,  ");
-	}
-	print("  .\n");
-	
-	
-	print("Sorted vertex angles: ");
-	for(float j = 0; j < selected_vert_count; j++)
-	{
-		print(ftos(vert_angle[j]));
-		print("  ,  ");
-	}
-	print("  .\n");
 
 	for(float i = 0; i < selected_vert_count; i++)
 	{
@@ -1059,6 +1044,15 @@ void navmesh_calc_connected_polies()
 				}
 				navmesh_polies[i].connected_polies[navmesh_polies[i].connected_polies_count++] = j;
 				navmesh_polies[j].connected_polies[navmesh_polies[j].connected_polies_count++] = i;
+				print("Poly ");
+				print(ftos(i));
+				print(" is connected to ");
+				print(ftos(j));
+				print(" and poly ");
+				print(ftos(j));
+				print(" is connected to ");
+				print(ftos(i));
+				print(".\n");
 			}	
 		}
 	}
@@ -1076,10 +1070,22 @@ void navmesh_calc_polies_centers()
 			cen += navmesh_verts[navmesh_polies[i].verts[j]].pos;
 		}
 		cen /= navmesh_polies[i].vert_count;
-		navmesh_polies[i].center = cen;
+		navmesh_polies[i].center.x = cen.x;
+		navmesh_polies[i].center.y = cen.y;
+		navmesh_polies[i].center.z = cen.z;
 	}
 	print("Centers calculated.\n");
 }
+
+
+//==================================================================
+//TEMP TEMP TEMP for testing
+float pathfinding_specific_navmesh_data_calculated;
+//This float is set to TRUE once we have calculated the polygon centers and connected polygons
+//We don't precalculate them because we don't care about this data in editor
+//This data should be calculated by navmesh exporter, and loaded in by navmesh importer
+//So this data should exist by the time pathfinding functions are executed, hence why I calculate it just before calling pathfind.
+//==================================================================
 
 
 //==========================================================================================================================
@@ -1087,7 +1093,9 @@ void navmesh_calc_polies_centers()
 //==========================================================================================================================
 //This is for placing a temp entity to test the pathfinding
 vector goalent_pos;
+float goalent_set;
 vector startent_pos;
+float startent_set;
 
 void navmesh_draw_test_ent(float is_goal)
 {
@@ -1163,17 +1171,46 @@ void navmesh_place_test_goalent()
 {
 	goalent_pos = getentity(player_localentnum, GE_ORIGIN);
 	
-	//TODO: try pathfind
-	navmesh_get_containing_poly(goalent_pos);
+	goalent_set = TRUE;
+	
+	
+	//Calculate data that the navmesh exporer will calculate, but only do it once.
+	if(pathfinding_specific_navmesh_data_calculated == FALSE)
+	{
+		pathfinding_specific_navmesh_data_calculated = TRUE;
+		navmesh_calc_polies_centers();
+		navmesh_calc_connected_polies();
+	}
+	
+	if(goalent_set == TRUE && startent_set == TRUE)
+	{
+		float start = navmesh_get_containing_poly(startent_pos);
+		float goal = navmesh_get_containing_poly(goalent_pos);
+		pathfind_start(start,goal,goalent_pos);
+	}
+	
 
 }
 void navmesh_place_test_startent()
 {
 	startent_pos = getentity(player_localentnum, GE_ORIGIN);
 	
+	startent_set = TRUE;
 	
-	//TODO: try pathfind
-	navmesh_get_containing_poly(startent_pos);
+	//Calculate data that the navmesh exporer will calculate, but only do it once.
+	if(pathfinding_specific_navmesh_data_calculated == FALSE)
+	{
+		pathfinding_specific_navmesh_data_calculated = TRUE;
+		navmesh_calc_polies_centers();
+		navmesh_calc_connected_polies();
+	}
+	
+	if(goalent_set == TRUE && startent_set == TRUE)
+	{
+		float start = navmesh_get_containing_poly(startent_pos);
+		float goal = navmesh_get_containing_poly(goalent_pos);
+		pathfind_start(start,goal,goalent_pos);
+	}
 }
 
 //Returns 1 if pos is inside poly at index poly_index, 0 otherwise
@@ -1216,7 +1253,6 @@ float navmesh_is_inside_poly(vector pos, float poly_index)
 }
 
 //Returns the distance between the 2d line l1->l2 and pos
-//Assumes l1.z == l2.z == pos.z == 0
 float navmesh_2D_line_point_dist(vector l1, vector l2, vector pos)
 {
 	float dot = (l2 - l1) * (pos - l2);
@@ -1364,17 +1400,329 @@ float navmesh_get_containing_poly(vector pos)
 }
 
 
-navmesh_astart_pathfind(float start, float goal)
+
+
+//================================================================================================================
+//=============================================== Actual A* functions ============================================
+//================================================================================================================
+
+
+#define PATHFIND_POLY_SET_NONE 0
+#define PATHFIND_POLY_SET_OPEN 1
+#define PATHFIND_POLY_SET_CLOSED 2
+//Contains what set the ith polygon is in
+float pathfind_poly_set[NAV_MAX_POLIES];
+//Contains the index of the last polygon that we used to get to the ith polygon
+float pathfind_poly_prev[NAV_MAX_POLIES];
+//Contains the g-score of the ith polygon (distance from start node to ith node along the node path)
+float pathfind_poly_g_score[NAV_MAX_POLIES];
+
+//Calculates the heuristic h score value (Our best guess for how far this node is from the goal node)
+float pathfind_calc_h_score(float current, float goal)
 {
-	//current is start
+	//FIXME: we could just as easily return vlen()^2 for comparisons... (saves a sqrt operation)
+	return vlen(navmesh_polies[goal].center - navmesh_polies[current].center);
+}
+
+//f score = g score + h score
+float pathfind_poly_f_score[NAV_MAX_POLIES];
+
+
+//TEMP ARRAY THAT HOLDS THE RESULTS OF THE PATHFIND (contains index of polygon in order from start to goal)
+float pathfind_result_node_path[NAV_MAX_POLIES];
+//How many polies are in the path
+float pathfind_result_node_length;
+
+//Contains a list of points that makes up the path
+vector pathfind_result_path[NAV_MAX_POLIES];
+//How many points are in the path
+float pathfind_result_length;
+
+//TODO: when I add funnel algorithm, keep a list of vectors instead of a list of polygon indices
+
+
+//Returns the polygon with the lowest f score from polygons the open set
+float pathfind_get_lowest_f_score()
+{
+	//TODO: implement a better algorithm for finding the lowest score
 	
-	//if current is goal, add current to closed list, return
-	//add current's linked nodes to open list, calculate their f score
-	//add current to closed list
-	//find node in open list with the least f score
+	float best_score = 100000;
+	float best_score_index = -1;
+	
+	for(float i = 0; i < navmesh_poly_count; i++)
+	{
+		if(pathfind_poly_set[i] == PATHFIND_POLY_SET_OPEN)
+		{
+			if(pathfind_poly_f_score[i] < best_score)
+			{
+				best_score = pathfind_poly_f_score[i];
+				best_score_index = i;
+			}
+		}
+	}
+	
+	return best_score_index;
+}
+
+void pathfind_clear_temp_data()
+{
+	//Technically we only need to iterate over navmesh_poly_count...
+	for(float i = 0; i < NAV_MAX_POLIES; i++)
+	{
+		pathfind_poly_set[i] = PATHFIND_POLY_SET_NONE;
+		pathfind_poly_prev[i] = -1;
+		pathfind_poly_g_score[i] = 0;
+		pathfind_poly_f_score[i] = 0;
+		pathfind_result_node_path[i] = -1;
+		
+		pathfind_result_path[i].x = 0;
+		pathfind_result_path[i].y = 0;
+		pathfind_result_path[i].z = 0;
+	}
+	pathfind_result_node_length = 0;
+	pathfind_result_length = 0;
+}
+
+//Accepts start polygon and goal polygon
+//Returns 1 on success.
+//Returns 0 on fail.
+float pathfind_start(float start, float goal, vector end_pos)
+{
+	if(start == -1)
+	{
+		print("Error: pathfind start node invalid.\n");
+		return 0;
+	}
+	if(goal == -1)
+	{
+		print("Error: pathfind goal node invalid.\n");
+		return 0;
+	}
+	if(start == goal)
+	{
+		//Calculating node path
+		pathfind_result_node_path[0] = start;
+		pathfind_result_node_length = 1;
+		print("Pathind success: trivial case (start = goal).\n");
+		
+		//Calculating vector based path (go directly to goal)
+		pathfind_result_path[0].x = end_pos.x;
+		pathfind_result_path[0].y = end_pos.y;
+		pathfind_result_path[0].z = end_pos.z;
+		pathfind_result_length = 1;
+		return 1;
+	}
+	
+	//Clearing previous data
+	pathfind_clear_temp_data();
+	
+	//Adding start polygon to the open set
+	pathfind_poly_set[start] = PATHFIND_POLY_SET_OPEN;
+	pathfind_poly_g_score[start] = 0;
+	pathfind_poly_f_score[start] = 0 + pathfind_calc_h_score(start , goal);
+	
+	//Fields that need to be set:
+	//pathfind_poly_set[NAV_MAX_POLIES];
+	//pathfind_prev_poly[NAV_MAX_POLIES];
+	//pathfind_poly_g_score[NAV_MAX_POLIES];
+	//pathfind_poly_f_score[NAV_MAX_POLIES];
+	
+	print("Pathfind init. Start: ");
+	print(ftos(start));
+	print(" , Goal: ");
+	print(ftos(goal));
+	print(".\n");
+	
+	float current = start;
+	
+	float pathfind_success = FALSE;
+	
+	while(current != -1)
+	{
+		if(current == goal)
+		{
+			print("Current is now goal. Breaking.\n");
+			pathfind_success = TRUE;
+			break;
+		}
+		//Add current node to the closed set
+		pathfind_poly_set[current] = PATHFIND_POLY_SET_CLOSED;
+		//Add connected nodes to the open set
+		for(float i = 0; i < navmesh_polies[current].connected_polies_count; i++)
+		{
+			float neighbor = navmesh_polies[current].connected_polies[i];
+			
+			print("Checking poly ");
+			print(ftos(current));
+			print("'s neighbor ");
+			print(ftos(neighbor));
+			print(".\n");
+			
+			if(pathfind_poly_set[neighbor] != PATHFIND_POLY_SET_CLOSED)
+			{
+				print("Neighbor is not in closed list.\n");
+				//Calculate tentative f score
+				//Calculate tentative g score (distance from start to current + distance from current to neighbor)
+				float tentative_g_score = pathfind_poly_g_score[current] + vlen(navmesh_polies[neighbor].center - navmesh_polies[current].center);
+				
+				if(pathfind_poly_set[neighbor] != PATHFIND_POLY_SET_OPEN || tentative_g_score < pathfind_poly_g_score[neighbor])
+				{
+					print("Neighbor is not in open list, or a better g score has been found.\n");
+					//Adding neighbor to open set
+					pathfind_poly_set[neighbor] = PATHFIND_POLY_SET_OPEN;
+					
+					//Updating scores for neighbor node
+					float tentative_f_score = tentative_g_score + pathfind_calc_h_score(neighbor , goal);
+					pathfind_poly_g_score[neighbor] = tentative_g_score;
+					pathfind_poly_f_score[neighbor] = tentative_f_score;
+					
+					//Linking neighbor node to current node (for tracing path)
+					pathfind_poly_prev[neighbor] = current;
+					
+					print("Assigning Poly ");
+					print(ftos(neighbor));
+					print(" came from  ");
+					print(ftos(current));
+					print(".\n");
+				}
+				
+			}
+		}		
+		
+		current = pathfind_get_lowest_f_score();
+	}
 	
 	
-	//
+	//Tracing the pathfind results
+	if(pathfind_success == TRUE)
+	{
+		//Count the length of the path
+		current = goal;
+		pathfind_result_node_length = 1;
+		do
+		{
+			print("Poly ");
+			print(ftos(current));
+			print(" came from  ");
+			print(ftos(pathfind_poly_prev[current]));
+			print(".\n");
+			current = pathfind_poly_prev[current];
+			pathfind_result_node_length++;
+		} while(current != start);
+		
+		
+		//Starting at goal waypoint, add the traversed waypoints to the result path in reverse order
+		current = goal;
+		for(float i = 0; i < pathfind_result_node_length; i++)
+		{
+			pathfind_result_node_path[pathfind_result_node_length - 1 - i] = current;
+			current = pathfind_poly_prev[current];
+		}
+		
+		print("Pathfind success, path length: ");
+		print(ftos(pathfind_result_node_length));
+		print(".\n");
+		
+		print("Path: ");
+		for(float i = 0; i < pathfind_result_node_length; i++)
+		{
+			if(i > 0)
+				print(" , ");
+			print(ftos(pathfind_result_node_path[i]));
+		}
+		print(" .\n");
+		
+		
+		return 1;
+	}
+	print("Pathfind fail");
+	return 0;
+}
+
+
+//This renders the raw pathfind results (polygon center to polygon center)
+void pathfind_draw_result_node_path()
+{
+	//FIXME: don't call if length is 0
+	if(pathfind_result_node_length < 1)
+		return;
+	//================= Drawing Polygon Center ======================
+	//=======================================
+	//Assigning the shader as something else so that fte doesn't batch the calls (leading to colors not changing between draw calls)
+	R_BeginPolygon("debug/wireframe",0);
+	R_BeginPolygon("debug/solid_nocull",0);
+	
+	vector color;
+	color = [1,0.1,0.5];
+	float alpha = 0.2;//0.3
+	float edge_width = 2;
+	float edge_alpha = 0.2;//0.3
+	
+	for(float i = 0; i < pathfind_result_node_length; i++)
+	{
+		vector pos = navmesh_polies[pathfind_result_node_path[i]].center + [0,0,5];
+		print("Path[");
+		print(ftos(i));
+		print("] is at: ");
+		print(vtos(pos));
+		print(".\n");
+		//bottom face
+		R_PolygonVertex(pos + [-5,5,-5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [5,5,-5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [5,-5,-5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [-5,-5,-5], [0,0,0], color,alpha);
+		R_EndPolygon();
+		//Top face
+		R_PolygonVertex(pos + [-5,5,5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [5,5,5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [5,-5,5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [-5,-5,5], [0,0,0], color,alpha);
+		R_EndPolygon();
+		//Front face
+		R_PolygonVertex(pos + [-5,-5,-5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [5,-5,-5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [5,-5,5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [-5,-5,5], [0,0,0], color,alpha);
+		R_EndPolygon();
+		//Back face
+		R_PolygonVertex(pos + [-5,5,-5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [5,5,-5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [5,5,5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [-5,5,5], [0,0,0], color,alpha);
+		R_EndPolygon();
+		//Left face
+		R_PolygonVertex(pos + [-5,-5,-5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [-5,5,-5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [-5,5,5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [-5,-5,5], [0,0,0], color,alpha);
+		R_EndPolygon();
+		//Right face
+		R_PolygonVertex(pos + [5,-5,-5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [5,5,-5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [5,5,5], [0,0,0], color,alpha);
+		R_PolygonVertex(pos + [5,-5,5], [0,0,0], color,alpha);
+		R_EndPolygon();
+		
+		if(i > 0)
+		{
+			//Draw an edge connecting ith node to previous node
+			R_PolygonVertex(navmesh_polies[pathfind_result_node_path[i]].center + [0,0,5] + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+			R_PolygonVertex(navmesh_polies[pathfind_result_node_path[i]].center + [0,0,5] + [0,0,edge_width], [0,0,0], color, edge_alpha);
+			R_PolygonVertex(navmesh_polies[pathfind_result_node_path[i-1]].center + [0,0,5] + [0,0,edge_width], [0,0,0], color, edge_alpha);
+			R_PolygonVertex(navmesh_polies[pathfind_result_node_path[i-1]].center + [0,0,5] + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+			R_EndPolygon();
+		}
+	}
+	
+	
+}
+
+//TODO: when funnel algorithm is in, this renders the resultant vertex path
+void pathfind_draw_result_path()
+{
+	//TODO
+	
+	
 }
 
 //==========================================================================================================================
