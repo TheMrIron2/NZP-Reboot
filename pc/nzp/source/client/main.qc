@@ -33,7 +33,7 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	registercommand("startwalk");
 	registercommand("stopwalk");
 	registercommand("promptjoin");
-	
+		
 	print("CSQC Started\n");
 	dummy = spawn();
 	if(serverkey("constate") == "disconnected")
@@ -65,6 +65,7 @@ noref void() CSQC_WorldLoaded =
 	mzlflash.renderflags = vmodel.renderflags;
 	mzlflash.origin = vmodel.origin + vmodel_muzzleoffset;
 	//setmodel(mzlflash,"models/weapons/mg/mzl.iqm");
+	
 };
 
 void() Update_Vmodel =
@@ -125,20 +126,43 @@ noref void(float isnew) CSQC_Ent_Update =
 
 void(float width, float height) HUD_Health = 
 {
-	local float health;
+	local float health;	
+	float alpha;
 	
 	health = getstatf(STAT_HEALTH); 
-	drawstring([0.01*width, 0.94*height, 0], strcat("+",ftos(health)), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+
+	if (health < 100)
+	{
+		alpha = (100.0 - ((1.25 * health) - 25))/100*255;
+		if (alpha <= 0.0)
+			return;
+		float modifier = (sin(time * 10) * 20) - 20;//always negative
+		if(modifier < -35.0)
+		modifier = -35.0;
+    
+		alpha += modifier;
+    
+		if(alpha < 0.0)
+			return;
+		float color = 255.0 + modifier;
+    
+		drawpic([0,0,0], "gfx/hud/blood.tga", [width, height, 0], [10,0,0], alpha/2000); // naievil -- alpha factor division here makes it easy to use legacy code
+	}
+	
 }
 
 void(float width, float height) HUD_Ammo =
 {
-	local float ammo, curmag;
+	local float ammo, curmag, x_itoa, benis, benis2;
 	string ammostring;
 	
 	
 	curmag = getstatf(STAT_CURRENTMAG);		
 	ammo = getstatf(STAT_AMMO);	
+	
+	benis = strlen(ftos(ammo));
+	benis2 = strlen(ftos(curmag));
+	benis = benis + benis2;
 
 	if (IsDualWeapon(getstatf(STAT_ACTIVEWEAPON))) {
 		float curmag2 = getstatf(STAT_CURRENTMAG2);
@@ -147,15 +171,19 @@ void(float width, float height) HUD_Ammo =
 	} else {
 		ammostring = strcat(ftos(curmag), strcat("/",ftos(ammo)));
 	}
-	drawstring([0.75*width, 0.94*height, 0], ammostring, [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+		
+	drawstring([width - (42/480)*width - (benis*20*width/1024), 0.96*height, 0], ammostring, [0.02*width, 0.02*width, 0], [1, 1, 1], 1, 1);
 }
 
 void(float width, float height) HUD_Points =
 {
-	local float points;
+	local float points, pointlength = 0, increm = 10;
 	
 	points = getstatf(STAT_POINTS);
-	drawstring([0.80*width, 0.90*height, 0], ftos(points), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);   // POINTS
+	pointlength = strlen(ftos(points));
+		
+	drawpic([0.8*width,0.70*height,0], "gfx/hud/moneyback.tga", [0.2*width, 0.07*height, 0], [1,1,1], 1);
+	drawstring([.9414*width - pointlength*20*width/1024, 0.715*height, 0], ftos(points), [0.022*width, 0.022*width, 0], [1, 1, 1], 1, 1);   // naievil (FIXME) real offset needed (pointlength)
 }
 
 void(float width, float height) HUD_Grenades =
@@ -163,12 +191,506 @@ void(float width, float height) HUD_Grenades =
 	local float grenades;
 
 	grenades = getstatf(STAT_GRENADES);
-	drawstring([0.97*width, 0.94*height, 0], ftos(grenades), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+	drawpic([0.9*width,0.825*height,0], "gfx/hud/frag.tga", [50, 50, 0], [1,1,1], 1);
+	drawstring([0.9*width + 28, 0.825*height + 32, 0], ftos(grenades), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 1);
 }
 
+float 	color_shift[3];
+float 	color_shift_end[3];
+float 	color_shift_steps[3];
+int		color_shift_init;
+int 	blinking;
+string sb_round[5];
+string sb_round_num[10];
+int alphabling;
+float endroundchange;
+float round_center_x;
+float round_center_y;
+
 void(float width, float height) HUD_Rounds =
-{
-	drawstring([0.01*width, 0.90*height, 0], ftos(rounds), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
+{	
+	float roundheight = 48/272*height;
+	float roundwidth = 0.02291666*width;
+	
+	float roundwidth_4 = (60/480)*width;
+	float roundheight_4 = (48/272)*height;
+	
+	float roundheight_num = 48/272*height;
+	float roundwidth_num = 48/480*height; // naievil -- was 32, but more square makes it look better
+
+//	drawstring([0.01*width, 0.70*height, 0], ftos(rounds_change), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1); // draw roundchange
+
+	int i, x_offset, icon_num, savex;
+	int num[3];
+	x_offset = 0;
+	savex = 0;
+	
+	sb_round[0] = "gfx/hud/r1.tga";
+	sb_round[1] = "gfx/hud/r2.tga";
+	sb_round[2] = "gfx/hud/r3.tga";
+	sb_round[3] = "gfx/hud/r4.tga";
+	sb_round[4] = "gfx/hud/r5.tga";
+	
+	sb_round_num[0] = "gfx/hud/r_num0.tga";
+	sb_round_num[1] = "gfx/hud/r_num1.tga";
+	sb_round_num[2] = "gfx/hud/r_num2.tga";
+	sb_round_num[3] = "gfx/hud/r_num3.tga";
+	sb_round_num[4] = "gfx/hud/r_num4.tga";
+	sb_round_num[5] = "gfx/hud/r_num5.tga";
+	sb_round_num[6] = "gfx/hud/r_num6.tga";
+	sb_round_num[7] = "gfx/hud/r_num7.tga";
+	sb_round_num[8] = "gfx/hud/r_num8.tga";
+	sb_round_num[9] = "gfx/hud/r_num9.tga";
+
+
+	if (rounds_change == 1)//this is the rounds icon at the middle of the screen
+	{		
+		alphabling = alphabling + 15;
+
+		if (alphabling < 0)
+			alphabling = 0;
+		else if (alphabling > 255)
+			alphabling = 255;
+			
+		round_center_x = (g_width - (11*g_width/480)) /2;
+		round_center_y = (g_height - (48*g_height/272)) /2;
+		
+		drawpic([round_center_x,round_center_y,0], sb_round[0], [roundwidth, roundheight, 1], [107/255,1/255,0], alphabling/255);
+
+	}
+	else if (rounds_change == 2)//this is the rounds icon moving from middle
+	{
+		float round_center_y_offset, round_center_x_offset;
+				
+		drawpic([round_center_x + round_center_x_offset,round_center_y + round_center_y_offset,0], sb_round[0], [roundwidth,roundheight, 1], [107/255,(1/255),0], 1);
+		
+		round_center_x = round_center_x - (((229/108)*2 - 0.2)*(width/480)/8);
+		round_center_y = round_center_y + ((2*(height/272))/8);
+		if (round_center_x <= (5/480)*height)
+			round_center_x = (5/480)*height;
+		if (round_center_y >= (220/272)*height)
+			round_center_y = (220/272)*height;
+					
+	}
+	else if (rounds_change == 3)//shift to white
+	{
+		if (!color_shift_init)
+		{
+			color_shift[0] = 107;
+			color_shift[1] = 1;
+			color_shift[2] = 0;
+			for (i = 0; i < 3; i = i + 1)
+			{
+				color_shift_end[i] = 255;
+				color_shift_steps[i] = (color_shift_end[i] - color_shift[i])/60;
+			}
+			color_shift_init = 1;
+		}
+		for (i = 0; i < 3; i = i + 1)
+		{
+			if (color_shift[i] < color_shift_end[i])
+				color_shift[i] = color_shift[i] + color_shift_steps[i];
+
+			if (color_shift[i] >= color_shift_end[i])
+				color_shift[i] = color_shift_end[i];
+		}
+		if (rounds > 0 && rounds < 11)
+		{
+
+			for (i = 0; i < rounds; i = i + 1)
+			{
+				if (i == 4)
+				{
+					drawpic([5,height - roundheight, 0], sb_round[4], [roundwidth_4,roundheight_4, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+					
+					savex = x_offset + (10*width/480);
+					x_offset = x_offset + (10*width/480);
+					continue;
+				}
+				if (i == 9)
+				{
+					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+					continue;
+				}
+				if (i > 4)
+					icon_num = i - 5;
+				else
+					icon_num = i;
+
+				drawpic([5 + x_offset, height - roundheight - (4*height/272),0], sb_round[icon_num], [roundwidth,roundheight, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+
+				x_offset = x_offset +  roundwidth + (3*width/480);
+			}
+		}
+		else
+		{
+			if (rounds >= 100)
+			{
+				num[2] = (int)(rounds/100);
+				drawpic([5 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth_num, roundheight_num, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+								
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
+			}
+			else
+				num[2] = 0;
+			if (rounds >= 10)
+			{
+				num[1] = (int)((rounds - num[2]*100)/10);
+				drawpic([5 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth_num,roundheight_num, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
+			}
+			else
+				num[1] = 0;
+
+			num[0] = rounds - num[2]*100 - num[1]*10;
+			drawpic([5 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth_num,roundheight_num, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+
+			x_offset = x_offset +  roundwidth_num - (8*width/480);
+		}
+	}
+	else if (rounds_change == 4)//blink white
+	{
+	
+		if (endroundchange > time)
+		{
+			blinking = ((int)(time*1000)&510) - 255;
+			blinking = fabs(blinking);
+		}
+		else
+		{
+			if (blinking)
+				blinking = blinking - 1;
+			else
+				blinking = 0;
+		}
+			
+	
+		if (rounds > 0 && rounds < 11)
+		{
+			for (i = 0; i < rounds; i = i + 1)
+			{
+				if (i == 4)
+				{
+					drawpic([5, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [1,1,1], blinking/255);
+
+					savex = x_offset + (10*width/480);
+					x_offset = x_offset + (10*width/480);
+					continue;
+				}
+				if (i == 9)
+				{
+					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [1,1,1], blinking/255);
+
+					continue;
+				}
+				if (i > 4)
+					icon_num = i - 5;
+				else
+					icon_num = i;
+
+					drawpic([5 + x_offset, height - roundheight - (4*height/272),0], sb_round[icon_num], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+
+				x_offset = x_offset +  roundwidth + (3*width/480);
+			}
+		}
+		else
+		{
+			if (rounds >= 100)
+			{
+				num[2] = (int)(rounds/100);
+				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
+					
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
+			}
+			else
+				num[2] = 0;
+			if (rounds >= 10)
+			{
+				num[1] = (int)((rounds - num[2]*100)/10);
+				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
+				
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
+			}
+			else
+				num[1] = 0;
+
+			num[0] = rounds - num[2]*100 - num[1]*10;
+			drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
+			
+			x_offset = x_offset +  roundwidth_num - (8*width/480);
+		}
+		
+		if (endroundchange == 0)
+			endroundchange = time + 2;
+	}
+	else if (rounds_change == 5)//blink white
+	{
+		if (blinking > 0)
+			blinking = blinking - 10;
+		if (blinking < 0)
+			blinking = 0;
+		if (rounds > 0 && rounds < 11)
+		{
+			for (i = 0; i < rounds; i = i + 1)
+			{
+				if (i == 4)
+				{
+					drawpic([5, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [1,1,1], blinking/255);
+
+					savex = x_offset + (10*width/480);
+					x_offset = x_offset + (10*width/480);
+					continue;
+				}
+				if (i == 9)
+				{
+					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [1,1,1], blinking/255);
+					continue;
+				}
+				if (i > 4)
+					icon_num = i - 5;
+				else
+					icon_num = i;
+
+				drawpic([5 + x_offset, height - roundheight - (4*height/272),0], sb_round[icon_num], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+
+				x_offset = x_offset +  roundwidth + (3*width/480);
+			}
+		}
+		else
+		{
+			if (rounds >= 100)
+			{
+				num[2] = (int)(rounds/100);
+				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
+
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
+			}
+			else
+				num[2] = 0;
+			if (rounds >= 10)
+			{
+				num[1] = (int)((rounds - num[2]*100)/10);
+				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
+
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
+			}
+			else
+				num[1] = 0;
+
+			num[0] = rounds - num[2]*100 - num[1]*10;
+			drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
+
+			x_offset = x_offset +  roundwidth_num - (8*width/480);
+		}
+	}
+	else if (rounds_change == 6)//blink white while fading back
+	{
+		endroundchange = 0;
+		
+		color_shift_init = 0;
+		blinking = ((int)(time*1000)&510) - 255;
+		
+		blinking = fabs(blinking);
+			
+		if (rounds > 0 && rounds < 11)
+		{
+			for (i = 0; i < rounds; i = i + 1)
+			{
+				if (i == 4)
+				{
+					drawpic([5, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [1,1,1], blinking/255);
+								
+					savex = x_offset + (10*width/480);
+					x_offset = x_offset + (10*width/480);
+					continue;
+				}
+				if (i == 9)
+				{
+					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [1,1,1], blinking/255);
+
+					continue;
+				}
+				if (i > 4)
+					icon_num = i - 5;
+				else
+					icon_num = i;
+
+				drawpic([5 + x_offset, height - roundheight - (4*height/272),0], sb_round[icon_num], [roundwidth,roundheight, 1], [1,1,1], blinking/255);
+
+				x_offset = x_offset +  roundwidth + (3*width/480);
+			}
+		}
+		else
+		{
+			if (rounds >= 100)
+			{
+				num[2] = (int)(rounds/100);
+				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
+				
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
+			}
+			else
+				num[2] = 0;
+			if (rounds >= 10)
+			{
+				num[1] = (int)((rounds - num[2]*100)/10);
+				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
+
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
+			}
+			else
+				num[1] = 0;
+
+			num[0] = rounds - num[2]*100 - num[1]*10;
+			drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth_num,roundheight_num, 1], [1,1,1], blinking/255);
+
+			x_offset = x_offset +  roundwidth_num - (8*width/480);
+		}
+	}
+	else if (rounds_change == 7)//blink white while fading back
+	{
+		if (!color_shift_init)
+		{
+			color_shift_end[0] = 107;
+			color_shift_end[1] = 1;
+			color_shift_end[2] = 0;
+			for (i = 0; i < 3; i = i + 1)
+			{
+				color_shift[i] = 255;
+				color_shift_steps[i] = (color_shift[i] - color_shift_end[i])/60;
+			}
+			color_shift_init = 1;
+		}
+		for (i = 0; i < 3; i = i + 1)
+		{
+			if (color_shift[i] > color_shift_end[i])
+				color_shift[i] = color_shift[i] - color_shift_steps[i];
+
+			if (color_shift[i] < color_shift_end[i])
+				color_shift[i] = color_shift_end[i];
+		}
+		if (rounds > 0 && rounds < 11)
+		{
+			for (i = 0; i < rounds; i = i + 1)
+			{
+				if (i == 4)
+				{
+					drawpic([5, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+
+					savex = x_offset + (10*width/480);
+					x_offset = x_offset + (10*width/480);
+					continue;
+				}
+				if (i == 9)
+				{
+					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+
+					continue;
+				}
+				if (i > 4)
+					icon_num = i - 5;
+				else
+					icon_num = i;
+
+				drawpic([5 + x_offset, height - roundheight - (4*height/272),0], sb_round[icon_num], [roundwidth,roundheight, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+
+				x_offset = x_offset +  roundwidth + (3*width/480);
+			}
+		}
+		else
+		{
+			if (rounds >= 100)
+			{
+				num[2] = (int)(rounds/100);
+				drawpic([2+x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth_num,roundheight_num, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
+			}
+			else
+				num[2] = 0;
+			if (rounds >= 10)
+			{
+				num[1] = (int)((rounds - num[2]*100)/10);
+				drawpic([2+x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth_num,roundheight_num, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
+			}
+			else
+				num[1] = 0;
+
+			num[0] = rounds - num[2]*100 - num[1]*10;
+			drawpic([2+x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth_num,roundheight_num, 1], [color_shift[0]/255,color_shift[1]/255,color_shift[2]/255], 1);
+
+			x_offset = x_offset +  roundwidth_num - (8*width/480);
+		}
+	}
+	else
+	{
+		color_shift[0] = 107;
+		color_shift[1] = 1;
+		color_shift[2] = 0;
+		color_shift_init = 0;
+		alphabling = 0;
+		if (rounds > 0 && rounds < 11)
+		{
+			for (i = 0; i < rounds; i = i + 1)
+			{
+				if (i == 4)
+				{
+					drawpic([5, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [107/255,1/255,0], 1);
+
+					savex = x_offset + (10*width/480);
+					x_offset = x_offset + (10*width/480);
+					continue;
+				}
+				if (i == 9)
+				{
+					drawpic([5 + savex, height - roundheight - (4*height/272),0], sb_round[4], [roundwidth_4,roundheight_4, 1], [107/255,1/255,0], 1);
+
+					continue;
+				}
+				if (i > 4)
+					icon_num = i - 5;
+				else
+					icon_num = i;
+
+				drawpic([5 + x_offset, height - roundheight - (4*height/272),0], sb_round[icon_num], [roundwidth,roundheight, 1], [107/255,1/255,0], 1);
+
+				x_offset = x_offset +  roundwidth + (3*width/480);
+			}
+		}
+		else
+		{
+			if (rounds >= 100)
+			{
+				num[2] = (int)(rounds/100);
+				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[2]], [roundwidth_num,roundheight_num, 1], [107/255,1/255,0], 1);
+
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
+			}
+			else
+				num[2] = 0;
+			if (rounds >= 10)
+			{
+				num[1] = (int)((rounds - num[2]*100)/10);
+				drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[1]], [roundwidth_num,roundheight_num, 1], [107/255,1/255,0], 1);
+
+				x_offset = x_offset +  roundwidth_num - (8*width/480);
+			}
+			else
+				num[1] = 0;
+
+			num[0] = rounds - num[2]*100 - num[1]*10;
+			
+			if(rounds == 0)
+				return;
+			
+			drawpic([2 + x_offset, height - roundheight - (4*height/272),0], sb_round_num[num[0]], [roundwidth_num,roundheight_num, 1], [107/255,1/255,0], 1);
+
+			x_offset = x_offset +  roundwidth_num - (8*width/480);
+		}
+	}
 }
 
 void(float width, float height) HUD_Useprint =
@@ -224,7 +746,7 @@ void(float width, float height) HUD_Useprint =
 		}
 			print_width = stringwidth (usestring, 0, [0.015*width, 0.015*width, 0]);
 			x = (width - print_width)/2;
-			drawstring([x, 0.70*height, 0], usestring, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+			drawstring([x, 0.67*height, 0], usestring, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
 
 }
 
@@ -290,9 +812,11 @@ void(float width, float height) HUD_Weaponstring =
 	local float ws_offset;
 	
 	weaponstring = GetWeaponName(getstatf(STAT_ACTIVEWEAPON));
-	ws_offset = (strlen(weaponstring) - 1);
+	ws_offset = (strlen(weaponstring));
 	
-	drawstring([0.925*width - ws_offset*10, 0.75*height, 0], weaponstring, [0.0175*width, 0.0175*width, 0], [1, 1, 1], 1, 1); // naievil (FIXME) exact location later
+	//	drawstring([width - (42/480)*width - (benis*20*width/1024), 0.96*height, 0], ammostring, [0.02*width, 0.02*width, 0], [1, 1, 1], 1, 1);
+	
+	drawstring([0.925*width + (40*width/1024) - ws_offset*20*width/1024, 0.75*height + 10, 0], weaponstring, [0.02*width, 0.02*width, 0], [1, 1, 1], 1, 1);
 }
 
 void(float width, float height) HUD_Progressbar =
@@ -320,7 +844,7 @@ void(float width, float height) HUD_Progressbar =
 }
 
 void(float width, float height) HUD_Draw = 
-{
+{	
 	HUD_Health(width, height);
 	
 	if (HUD_Change_time > time)
@@ -870,6 +1394,8 @@ noref void() CSQC_Parse_Event =
 			case 1: 
 				HUD_Change_time = time + var_1; 
 				break;
+			case 2:
+				rounds_change = var_1;
 			default: 
 				break;
 		}

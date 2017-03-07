@@ -1,15 +1,48 @@
-map pap
-map pap
-impulse 22
-map pap
-impulse 22
-impulse 22
-map pap
-impulse 22
-map pap
-impulse 22
-impulse 22
-map pap
-impulse 22
-map pap
-impulse 22
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+qui
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+QUIT
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+QUIT
+quit
+quit
+quit
+quit
+quit
+quit
+restart
+quit
+quit
+quit
+quit
+fov 65
+quit
+quit
+quit
+fov 67
+map example_01
+quit
+map example_01
+quit
+quit
+map example_01
+quit

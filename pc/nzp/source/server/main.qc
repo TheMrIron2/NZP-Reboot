@@ -24,6 +24,11 @@ void() StartFrame =
 		Round_Core();
 		Do_Zombie_AI ();
 	} else {
+	
+	entity SpawnedIn;
+	SpawnedIn = find(world, classname, "player");
+	
+	if (SpawnedIn)
 		InitRounds();
 	}
 }
