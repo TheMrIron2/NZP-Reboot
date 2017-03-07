@@ -21,6 +21,12 @@ void() PlayerJump =
 
 void() PlayerPreThink =
 {
+
+	if (self.downed) {
+		self.maxspeed = 30;
+	} else {
+		self.maxspeed = 175*GetWeaponWalkSpeed(self.weapon);
+	}
 	if(self.isspec != 0)
 	{
 		if(self.button0)
