@@ -1086,6 +1086,70 @@ float GetWeaponWalkSpeed (int weapontype)
 		return 1;
 }
 
+vector GetWeaponADSPos(float wep) {
+	switch (wep) {
+		case W_COLT:
+			return [-2.99, 2.77, 0.92];
+		case W_KAR:
+		case W_ARMAGEDDON:
+			return [-2.19, 2.77, 1.42];
+		case W_THOMPSON:
+		case W_GIBS:
+			return [-2.9, 3.16, 1.71];
+		case W_357:
+		case W_KILLU:
+			return [-2.6, 4.16, 0.5];
+		case W_BAR:
+		case W_WIDOW:
+			return [-0.6, 2, 1.47];
+		case W_BROWNING:
+		case W_ACCELERATOR:
+			return [-1.6, 7.7, 6.5];
+		case W_DB:
+		case W_BORE:
+		case W_SAWNOFF:
+			return [-0.6, 2.9, 1.47];
+		case W_FG:
+		case W_IMPELLER:
+			return [-6.5, 7.4, 3.27];
+		case W_GEWEHR:
+		case W_COMPRESSOR:
+			return [-0.2, 3.28, 2.57];
+		case W_KAR_SCOPE:
+		case W_HEADCRACKER:
+			return [-2.19, 2.77, 1.42];
+		case W_M1:
+		case W_M1000:
+			return [-2.6, 2.46, 1.12];
+		case W_M1A1:
+		case W_WIDDER:
+			return [-0.6, 2.7, 1.94];
+		case W_MP40:
+		case W_AFTERBURNER:
+			return [-3.79, 6.1, 4.04];
+		case W_MG:
+		case W_BARRACUDA:
+			return [-3.9, 3.5, 1.84];
+		case W_PPSH:
+		case W_REAPER:
+			return [-9.79, 5.5, 2.94];
+		case W_PTRS:
+		case W_PENETRATOR:
+			return [-9.79, 6.6, 2.44];
+		case W_STG:
+		case W_SPATZ:
+			return [-9.79, 7.3, 4.94];
+		case W_TRENCH:
+		case W_GUT:
+			return [-9.79, 7.3, 4.94];
+		case W_TYPE:
+		case W_SAMURAI:
+			return [0.41, 2.8, 1.34];
+		default:
+			return [0, 0, 0];
+	}
+}
+
 float(float wep, float frametype) GetFrame =
 {
 	switch (wep)

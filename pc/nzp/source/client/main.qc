@@ -68,10 +68,16 @@ noref void() CSQC_WorldLoaded =
 	
 };
 
+#define ADS_THOMPSON    '-3 +5.80 +4.52'
+
+/*float adsOffset;
+float adsAmount;
+float adsDir;*/
 void() Update_Vmodel =
 {
-	local vector offset;
+	local vector offset, adsoffset;
 	local vector dir;
+    local float ads;
 	
 	offset_x = 0.6 * sin(time * 1.2);
 	offset_y = 0.4 * cos(time * 1.5);
@@ -96,7 +102,20 @@ void() Update_Vmodel =
 	vmodel.angles += (vmodel_avelocity * 128) * frametime;
 	vmodel_avelocity *= 1 - frametime * 30;
 	
-	vmodel.origin = vmodel_currentpos + offset;
+	adsoffset = GetWeaponADSPos(weapon);
+
+    ads = getstatf(STAT_WEAPONZOOM); //get the zoomtoggle value 
+    if(ads == 1)
+    {  
+        vmodel_currentpos += (adsoffset * 0.15 * 128) * frametime;
+        vmodel.origin = vmodel_currentpos + adsoffset;    
+        setviewprop(VF_DRAWCROSSHAIR, 0);      
+    }
+    else
+    {
+        setviewprop(VF_DRAWCROSSHAIR, 1);    
+        vmodel.origin = vmodel_currentpos + offset;
+    }
 
 	if(weapon == 1)
 	{
@@ -296,7 +315,49 @@ noref float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent
 				Menu_Click();
 				return TRUE;
 			}
+
 		}
+
+		/*if (scanx == K_UPARROW) {
+			adsOffset.z += adsAmount;
+			print(vtos(adsOffset), "\n");
+		}
+		if (scanx == K_DOWNARROW) {
+			adsOffset.z -= adsAmount;
+			print(vtos(adsOffset), "\n");
+		}
+		if (scanx == K_LEFTARROW) {
+			adsOffset.y += adsAmount;
+			print(vtos(adsOffset), "\n");
+		}
+		if (scanx == K_RIGHTARROW) {
+			adsOffset.y -= adsAmount;
+			print(vtos(adsOffset), "\n");
+		}
+		if (scanx == K_KP_PLUS) {
+			adsOffset.x += adsAmount;
+			print(vtos(adsOffset), "\n");
+		}
+		if (scanx == K_KP_MINUS) {
+			adsOffset.x -= adsAmount;
+			print(vtos(adsOffset), "\n");
+		}
+		if (scanx == K_LCTRL) {
+			if (!adsAmount) {
+				adsAmount = 1;
+			}
+
+			adsAmount *= 0.1;
+			print(ftos(adsAmount), "\n");
+		}
+		if (scanx == K_RCTRL) {
+			if (!adsAmount) {
+				adsAmount = 1;
+			}
+
+			adsAmount *= 10;
+			print(ftos(adsAmount), "\n");
+		}*/
 		return FALSE;
 	case IE_KEYUP:
 		return FALSE;
