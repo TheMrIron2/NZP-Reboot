@@ -1,35 +1,11 @@
+give
+give 14
 quit
+sound
+soundcontrol
+soundcontrol off
 quit
-quit
-quit
-quit
-quit
-quit
-qui
-quit
-quit
-quit
-quit
-quit
-quit
-quit
-quit
-QUIT
-quit
-quit
-quit
-quit
-quit
-quit
-quit
-QUIT
-quit
-quit
-quit
-quit
-quit
-quit
-restart
+soundcontrol off
 quit
 quit
 quit
@@ -38,11 +14,7 @@ fov 65
 quit
 quit
 quit
-fov 67
-map example_01
-quit
-map example_01
 quit
 quit
-map example_01
+quit
 quit

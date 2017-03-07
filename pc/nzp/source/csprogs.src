@@ -5,4 +5,5 @@ shared/weapon_defines.qc
 client/math.qc
 client/customdefs.qc
 client/menu.qc
+client/hud.qc
 client/main.qc

@@ -65,3 +65,10 @@ float interpolating2;
 float rounds;
 float perks;
 float rounds_change;
+
+#define 	P_JUG		1
+#define 	P_DOUBLE	2
+#define 	P_SPEED		4
+#define 	P_REVIVE	8
+#define 	P_FLOP		16
+#define 	P_STAMIN	32
