@@ -165,6 +165,9 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 			return;
 		}
 		
+		if (victim.perks & P_JUG)
+			damage = ceil(damage*0.5);
+		
 		victim.health = victim.health - damage;
 		victim.health_delay = time + 2;
 

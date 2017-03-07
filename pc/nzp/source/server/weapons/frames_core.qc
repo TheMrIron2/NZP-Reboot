@@ -160,7 +160,12 @@ void Set_W_Frame (float startframe, float endframe, float duration, float funcca
 			UpdateV2model(self.weapon2model, GetWepSkin(self.weapon));
 		} else {
 			self.weaponmodel = set_model;
-			UpdateVmodel(self.weaponmodel, GetWepSkin(self.weapon));
+			
+			if (set_model != "models/machines/v_perk.mdl")
+				UpdateVmodel(self.weaponmodel, GetWepSkin(self.weapon));
+			else	
+				UpdateVmodel(self.weaponmodel, self.weaponskin);
+
 			
 			if (set_model == "progs/VModels/v_nade.mdl" || set_model == "progs/VModels/v_betty.mdl") {
 				self.weapon2model = "";
