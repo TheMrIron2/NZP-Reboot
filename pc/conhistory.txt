@@ -16,5 +16,3 @@ map example_01
 quit
 map example_01
 restart
-qui
-quit
