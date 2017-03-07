@@ -13,3 +13,30 @@ map pap
 impulse 22
 map pap
 impulse 22
+map example_01
+map example_01
+quit
+/sv_time
+restart
+quit
+restart
+map ndu
+quit
+quit
+map example_01
+map ndu
+quit
+map example_01
+quit
+map ndu
+quit
+quit
+quit
+map nd
+map ndu
+quit
+quit
+quit
+quit
+map example_01
+quit

@@ -33,7 +33,7 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	registercommand("startwalk");
 	registercommand("stopwalk");
 	registercommand("promptjoin");
-	
+		
 	print("CSQC Started\n");
 	dummy = spawn();
 	if(serverkey("constate") == "disconnected")
@@ -65,6 +65,7 @@ noref void() CSQC_WorldLoaded =
 	mzlflash.renderflags = vmodel.renderflags;
 	mzlflash.origin = vmodel.origin + vmodel_muzzleoffset;
 	//setmodel(mzlflash,"models/weapons/mg/mzl.iqm");
+	
 };
 
 void() Update_Vmodel =
@@ -204,13 +205,12 @@ int 	blinking;
 string sb_round[5];
 string sb_round_num[10];
 int alphabling;
+float endroundchange;
 float round_center_x;
 float round_center_y;
-float endroundchange;
 
 void(float width, float height) HUD_Rounds =
-{
-
+{	
 	float roundheight = 48/272*height;
 	float roundwidth = 0.02291666*width;
 	
@@ -243,6 +243,12 @@ void(float width, float height) HUD_Rounds =
 	sb_round_num[7] = "gfx/hud/r_num7.tga";
 	sb_round_num[8] = "gfx/hud/r_num8.tga";
 	sb_round_num[9] = "gfx/hud/r_num9.tga";
+	
+	if (rounds_change == 1)
+	{
+		round_center_x = (g_width - (11*g_width/480)) /2;
+		round_center_y = (g_height - (48*g_height/272)) /2;
+	}
 
 	if (rounds_change == 1)//this is the rounds icon at the middle of the screen
 	{
@@ -879,13 +885,7 @@ void(float width, float height) HUD_Progressbar =
 }
 
 void(float width, float height) HUD_Draw = 
-{
-	if (time <= 1)
-	{
-		round_center_x = (width - (11*width/480)) /2;
-		round_center_y = (height - (48*height/272)) /2;
-	}
-	
+{	
 	HUD_Health(width, height);
 	
 	if (HUD_Change_time > time)

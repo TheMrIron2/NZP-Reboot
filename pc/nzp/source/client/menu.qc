@@ -83,7 +83,7 @@ void() menu_join =
 };
 
 void() game_join =
-{
+{	
 	localcmd("cmd joingame\n");
 	in_menu = MENU_NONE;
 	setcursormode(FALSE);
