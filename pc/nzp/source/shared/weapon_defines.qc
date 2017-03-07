@@ -982,6 +982,110 @@ float(float wep, float delaytype) getWeaponDelay =
     return 0;
 }
 
+float GetWeaponWalkSpeed (int weapontype)
+{
+	if (weapontype == W_COLT)
+		return 1;
+	else if (weapontype == W_KAR)
+		return 0.9;
+	else if (weapontype == W_THOMPSON)
+		return 1;
+	else if (weapontype == W_BIATCH)
+		return 1;
+	else if (weapontype == W_357)
+		return 0.9;
+	else if (weapontype == W_GEWEHR)
+		return 0.9;
+	else if (weapontype == W_M1)
+		return 0.9;
+	else if (weapontype == W_RAY)
+		return 1;
+	else if (weapontype == W_M1A1)
+		return 0.9;
+	else if (weapontype == W_M2)
+		return 0.67;
+	else if (weapontype == W_TESLA)
+		return 1;
+	else if (weapontype == W_TYPE)
+		return 1;
+	else if (weapontype == W_MP40)
+		return 1;
+	else if (weapontype == W_STG)
+		return 1;
+	else if (weapontype == W_SAWNOFF)
+		return 1;
+	else if (weapontype == W_DB)
+		return 1;
+	else if (weapontype == W_FG)
+		return 1;
+	else if (weapontype == W_MG)
+		return 0.75;
+	else if (weapontype == W_BROWNING)
+		return 0.75;
+	else if (weapontype == W_TRENCH)
+		return 1;
+	else if (weapontype == W_PPSH)
+		return 1;
+	else if(weapontype == W_KAR_SCOPE)//FIXME
+		return 0.9;
+	else if (weapontype == W_PANZER)
+		return 0.75;
+	else if(weapontype == W_PTRS)
+		return 0.75;
+	else if(weapontype == W_BAR)
+		return 1;
+	else if(weapontype == W_BK)//FIXME
+		return 1;
+	else if (weapontype == W_KILLU)
+		return 0.9;
+	else if (weapontype == W_COMPRESSOR)
+		return 0.9;
+	else if (weapontype == W_M1000)
+		return 0.9;
+	else if (weapontype == W_PORTER)
+		return 1;
+	else if (weapontype == W_WIDDER)
+		return 0.9;
+	else if (weapontype == W_FIW)
+		return 0.85;
+	else if (weapontype == W_ARMAGEDDON)
+		return 0.9;
+	else if (weapontype == W_WUNDER)
+		return 1;
+	else if (weapontype == W_GIBS)
+		return 1;
+	else if (weapontype == W_SAMURAI)
+		return 1;
+	else if (weapontype == W_AFTERBURNER)
+		return 1;
+	else if (weapontype == W_SPATZ)
+		return 1;
+	else if (weapontype == W_SNUFF)
+		return 1;
+	else if (weapontype == W_BORE)
+		return 1;
+	else if (weapontype == W_IMPELLER)
+		return 1;
+	else if (weapontype == W_BARRACUDA)
+		return 0.75;
+	else if (weapontype == W_ACCELERATOR)
+		return 0.75;
+	else if (weapontype == W_GUT)
+		return 1;
+	else if (weapontype == W_REAPER)
+		return 1;
+	else if(weapontype == W_HEADCRACKER)
+		return 0.9;
+	else if (weapontype == W_LONGINUS)
+		return 1;
+	else if(weapontype == W_PENETRATOR)
+		return 0.75;
+	else if(weapontype == W_WIDOW)
+		return 1;
+	else
+		return 1;
+}
+
 float(float wep, float frametype) GetFrame =
 {
 	switch (wep)

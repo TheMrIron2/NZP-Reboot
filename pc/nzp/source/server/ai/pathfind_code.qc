@@ -328,9 +328,7 @@ void LoadWaypointData() {
 		switch (point) {
 			case 0:
 				if (h == "waypoint") {
-					if (!new_way) {
-						new_way = spawn();
-					}
+					new_way = spawn();
 					new_way.solid = SOLID_TRIGGER;
 
 					setmodel(new_way, "models/way/normal_way.spr");
