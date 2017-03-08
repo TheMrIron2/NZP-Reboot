@@ -14,6 +14,30 @@ void() ReturnWeaponModel =
 	UpdateVmodel(self.weaponmodel, GetWepSkin(self.weapon));
 }
 
+void() W_AimIn =
+{
+	if (IsDualWeapon(self.weapon) ||
+		self.zoom ||
+		self.reload_delay > time ||
+		self.new_anim_stop) {
+		return;
+	}
+	
+	self.zoom = 1;
+	self.viewzoom = 0.9;
+}
+
+void() W_AimOut =
+{
+	if (!self.zoom ||
+		self.new_anim_stop) {
+		return;
+	}
+	
+	self.zoom = 0;
+	self.viewzoom = 1;
+}
+
 void() sprintstop =
 {
 	float startframe;
@@ -78,6 +102,8 @@ void() W_PutOut =
 		return;
 	}
 	
+	W_AimOut();
+	
 	if (self.secondaryweapon && !self.new_anim_stop)
 	{
 		float startframe;
@@ -94,6 +120,7 @@ void() W_PutOut =
 		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
 	}
 }
+
 
 
 //RELOAD
@@ -215,6 +242,7 @@ void(float side) W_Reload =
 
 		return;
 	}
+	W_AimOut();
 
 	float endframe, startframe, reloadcancelframe, delay;
 	string modelname;
@@ -289,6 +317,8 @@ void(float side) W_Reload =
 		} else {
 			self.reload_delay2 = delay + time;
 		}
+		
+		self.zoom = false;
 		Set_W_Frame (startframe, endframe, delay, reloadcancelframe, RELOAD, endanimfunc, modelname, TRUE, side);
 	}
 	
@@ -622,6 +652,18 @@ void(float side) W_Fire =
 	delay = getWeaponDelay(self.weapon, FIRE);
 	spread = GetWeaponSpread(self.weapon);
 
+	if (self.zoom == 1) {
+		if (self.weapon == W_TRENCH ||
+			self.weapon == W_DB ||
+			self.weapon == W_SAWNOFF ||
+			self.weapon == W_GUT ||
+			self.weapon == W_BORE) {
+				spread = spread * 0.75;
+			} else {
+				spread = spread * 0.1;
+			}
+	}
+
 
 	//Fire weapons
 	if (firetype == 1)
@@ -675,6 +717,7 @@ void(float side) W_Fire =
 	
 	SetUpdate(self, UT_HUD, 6, 0, 0);
 }
+
 
 /******************************
 * W_Knife                  *
@@ -1065,7 +1108,7 @@ void () Weapon_Logic =
 			self.semi2 = FALSE;
 		}
 
-		if (self.button8 && IsDualWeapon(self.weapon)) {
+		if (self.button8) {
 			W_Fire(S_RIGHT);
 		} else {
 			self.semi = FALSE;
@@ -1075,6 +1118,12 @@ void () Weapon_Logic =
 			W_Fire(S_RIGHT);
 		} else {
 			self.semi = FALSE;
+		}
+
+		if (self.button8 && !self.zoom) {
+			W_AimIn();
+		} else if (!self.button8 && self.zoom) {
+			W_AimOut();
 		}
 	}
 
