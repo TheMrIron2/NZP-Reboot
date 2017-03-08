@@ -456,6 +456,8 @@ noref void() CSQC_Parse_Event =
 		norm_z = readcoord();
 		
 		traceent = readentitynum();
+		
+		crosshair_spread_time = time + 100/getWeaponRecoilReturn(getstatf(STAT_ACTIVEWEAPON));
 
 		if(entnum == player_localentnum)
 		{

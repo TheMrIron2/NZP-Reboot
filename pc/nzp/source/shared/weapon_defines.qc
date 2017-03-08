@@ -2824,3 +2824,149 @@ void(float weptype) precache_extra =
 			break;
 	}
 }
+
+float(float wep) getWeaponRecoilReturn =
+{
+	switch (wep)
+	{
+		case W_COLT:
+			return 750;
+			break;
+		case W_BIATCH:
+			return 750;
+			break;
+		case W_KAR:
+			return 750;
+			break;
+		case W_ARMAGEDDON:
+			return 750;
+			break;
+		case W_THOMPSON:
+			return 1813;
+			break;
+		case W_GIBS:
+			return 1813;
+			break;
+		case W_357:
+			return 1500;
+			break;
+		case W_KILLU:
+			return 1500;
+			break;
+		case W_BAR:
+			return 2823;
+			break;
+		case W_WIDOW:
+			return 2823;
+			break;
+		case W_BROWNING:
+			return 2510;
+			break;
+		case W_ACCELERATOR:
+			return 2510;
+			break;
+		case W_DB:
+			return 1000;
+			break;
+		case W_BORE:
+			return 1000;
+			break;
+		case W_FG:
+			return 1129;
+			break;
+		case W_IMPELLER:
+			return 1129;
+			break;
+		case W_GEWEHR:
+			return 1500;
+			break;
+		case W_COMPRESSOR:
+			return 1500;
+			break;
+		case W_KAR_SCOPE:
+			return 750;
+			break;
+		case W_HEADCRACKER:
+			return 750;
+			break;
+		case W_M1:
+			return 1500;
+			break;
+		case W_M1000:
+			return 1500;
+			break;
+		case W_M1A1:
+			return 1500;
+			break;
+		case W_WIDDER:
+			return 1500;
+			break;
+		case W_MP40:
+			return 2538;
+			break;
+		case W_AFTERBURNER:
+			return 2538;
+			break;
+		case W_MG:
+			return 1778;
+			break;
+		case W_BARRACUDA:
+			return 1778;
+			break;
+		case W_PANZER:
+			return 0;
+			break;
+		case W_LONGINUS:
+			return 0;
+			break;
+		case W_PPSH:
+			return 1255;
+			break;
+		case W_REAPER:
+			return 1255;
+			break;
+		case W_PTRS:
+			return 1500;
+			break;
+		case W_PENETRATOR:
+			return 1500;
+			break;
+		case W_RAY:
+			return 0;
+			break;
+		case W_PORTER:
+			return 0;
+			break;
+		case W_SAWNOFF:
+			return 1000;
+			break;
+		case W_SNUFF:
+			return 1000;
+			break;
+		case W_STG:
+			return 2400;
+			break;
+		case W_SPATZ:
+			return 2400;
+			break;
+		case W_TRENCH:
+			return 500;
+			break;
+		case W_GUT:
+			return 500;
+			break;
+		case W_TYPE:
+			return 1813;
+			break;
+		case W_SAMURAI:
+			return 1813;
+			break;
+		case W_MP5:
+			return 1255;
+			break;
+		case W_TESLA:
+			return 1813;
+			break;
+	}
+	return 0;
+}

@@ -859,7 +859,6 @@ void() HUD_Hitmark =
 //extern cvar_t crosshair;
 float croshhairmoving; // naievil (FIXME) used to see if we are moving or not
 //extern cvar_t cl_zoom;
-float Hitmark_Time, crosshair_spread_time;
 float cur_spread;
 float crosshair_offset_step;
 
@@ -1051,7 +1050,12 @@ int CrossHairMaxSpread (void)
 }
 
 void() Draw_Crosshair =
-{     
+{
+	if (walk)
+		croshhairmoving = 1;
+	else
+		croshhairmoving = 0;
+	
 	if (getstatf(STAT_WEAPONZOOM) == 2)
     {
 		drawpic([0,0,0], "gfx/hud/scope.tga", [g_width, g_height, 1], [1,1,1], 1);
@@ -1078,7 +1082,7 @@ void() Draw_Crosshair =
 
 	if (getstatf(STAT_ACTIVEWEAPON) == W_M2)
 	{
-		drawstring([(g_width/2 - g_width*0.0175/2), (g_height/2 - g_height*0.0175/2), 0], "O", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1); // naievil -- use width in order to keep squre 
+		drawstring([(g_width/2 - g_width*0.0175/2), (g_height/2 - g_height*0.0175/2), 0], "O", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1);
 	}
 	else if (/*crosshair.value == 1 && */getstatf(STAT_WEAPONZOOM) != 1 && getstatf(STAT_WEAPONZOOM) != 2 && getstatf(STAT_ACTIVEWEAPON) != W_PANZER) // naievil (FIXME) crosshair cvar
     {
