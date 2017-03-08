@@ -51,6 +51,7 @@ float useprint_cost;
 float useprint_time;
 
 float HUD_Change_time; 
+float Hitmark_time;
 
 float weaponframetime;
 float weapon2frametime;
@@ -65,6 +66,8 @@ float interpolating2;
 float rounds;
 float perks;
 float rounds_change;
+
+float crosshair_spread_time;
 
 #define 	P_JUG		1
 #define 	P_DOUBLE	2

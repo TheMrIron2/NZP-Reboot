@@ -1,16 +1,35 @@
-give
-give 14
-quit
-sound
-soundcontrol
-soundcontrol off
-quit
-soundcontrol off
 quit
 quit
 quit
 quit
-fov 65
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
 quit
 quit
 quit

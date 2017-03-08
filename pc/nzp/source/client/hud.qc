@@ -840,12 +840,299 @@ void(float width, float height) HUD_Progressbar =
 	drawfill ([bar_x - 1, bar_y - 1, 0], [bar_width+2, bar_height, 0], [0, 0, 0], 0.4);
 	drawfill ([bar_x, bar_y, 0], [bar_width * percent, bar_height-2, 0], [1, 1, 1], 0.4);
 	
-	drawstring([(width - (88))/2, height*0.75 + 10, 0], "Reviving...", [0.0175*width, 0.0175*width, 0], [1, 1, 1], 1, 1); // naievil (FIXME) exact location later
+	drawstring([(width - (88))/2, height*0.75 + 10, 0], "Reviving...", [0.0175*width, 0.0175*width, 0], [1, 1, 1], 1, 1); 
 }
+
+/*******************
+*    HUD Hitmark   *
+*******************/
+
+void() HUD_Hitmark =
+{
+	drawpic([g_width/2 - (8/480)*g_width, g_height/2 - (8/480)*g_width,0], "gfx/hud/hit_marker.lmp", [(16/480)*g_width, (16/480)*g_width, 1], [1,1,1], 1);
+}
+
+/*******************
+*   HUD Crosshair  *
+*******************/
+
+//extern cvar_t crosshair;
+float croshhairmoving; // naievil (FIXME) used to see if we are moving or not
+//extern cvar_t cl_zoom;
+float cur_spread;
+float crosshair_offset_step;
+
+int() CrossHairWeapon =
+{
+    if (getstatf(STAT_ACTIVEWEAPON) == W_COLT)
+        return 15;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_KAR)
+        return 50;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_ARMAGEDDON)
+        return 50;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_THOMPSON)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_GIBS)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_RAY)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_PORTER)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_KAR_SCOPE)
+        return 50;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_HEADCRACKER)
+        return 50;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_BAR)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_WIDOW)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_M1A1)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_WIDDER)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_TESLA)
+        return -0;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_TYPE)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_SAMURAI)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_SAWNOFF)
+        return 30;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_SNUFF)
+        return 30;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_PPSH)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_REAPER)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_DB)
+        return 25;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_BORE)
+        return 25;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_FG)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_IMPELLER)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_TRENCH)
+        return 25;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_GUT)
+        return 25;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_MG)
+        return 20;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_BARRACUDA)
+        return 20;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_GEWEHR)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_COMPRESSOR)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_BROWNING)
+        return 20;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_ACCELERATOR)
+        return 20;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_357)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_KILLU)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_M1)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_M1000)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_MP40)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_AFTERBURNER)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_PTRS)
+        return 50;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_PENETRATOR)
+        return 50;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_STG)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_SPATZ)
+        return 10;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_BIATCH)
+        return 15;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_MP5)
+        return 10;
+
+    return 0;
+}
+int CrossHairMaxSpread (void)
+{
+    if (getstatf(STAT_ACTIVEWEAPON) == W_COLT)
+        return 30;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_KAR)
+        return 75;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_THOMPSON)
+        return 25;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_RAY)
+        return 20;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_KAR_SCOPE)
+        return 75;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_BAR)
+        return 35;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_M1A1)
+        return 35;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_TESLA)
+        return -0;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_TYPE)
+        return 25;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_SAWNOFF)
+        return 30;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_PPSH)
+        return 25;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_DB)
+        return 25;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_FG)
+        return 40;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_TRENCH)
+        return 25;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_MG)
+        return 50;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_GEWEHR)
+        return 35;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_BROWNING)
+        return 50;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_357)
+        return 20;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_M1)
+        return 35;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_MP40)
+        return 25;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_PTRS)
+        return 75;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_STG)
+        return 35;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_BIATCH)
+        return 30;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_ARMAGEDDON)
+        return 75;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_GIBS)
+        return 25;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_PORTER)
+        return 20;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_HEADCRACKER)
+        return 75;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_WIDOW)
+        return 35;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_WIDDER)
+        return 35;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_SAMURAI)
+        return 25;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_SNUFF)
+        return 30;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_REAPER)
+        return 25;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_BORE)
+        return 25;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_IMPELLER)
+        return 40;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_GUT)
+        return 25;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_BARRACUDA)
+        return 50;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_COMPRESSOR)
+        return 35;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_ACCELERATOR)
+        return 50;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_KILLU)
+        return 20;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_M1000)
+        return 35;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_AFTERBURNER)
+        return 25;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_PENETRATOR)
+        return 75;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_SPATZ)
+        return 35;
+    if (getstatf(STAT_ACTIVEWEAPON) == W_MP5)
+        return 25;
+		
+    return 0;
+}
+
+void() Draw_Crosshair =
+{
+	if (walk)
+		croshhairmoving = 1;
+	else
+		croshhairmoving = 0;
+	
+	if (getstatf(STAT_WEAPONZOOM) == 2)
+    {
+		drawpic([0,0,0], "gfx/hud/scope.tga", [g_width, g_height, 1], [1,1,1], 1);
+	}
+    
+	if (getstatf(STAT_HEALTH) < 11)
+		return;
+		
+	if (crosshair_spread_time > time && crosshair_spread_time)
+    {
+        cur_spread = cur_spread + 10;
+		if (cur_spread >= CrossHairMaxSpread())
+			cur_spread = CrossHairMaxSpread();
+    }
+    else if (crosshair_spread_time < time && crosshair_spread_time)
+    {
+        cur_spread = cur_spread - 4;
+		if (cur_spread <= 0)
+		{
+			cur_spread = 0;
+			crosshair_spread_time = 0;
+		}
+    }
+
+	if (getstatf(STAT_ACTIVEWEAPON) == W_M2)
+	{
+		drawstring([(g_width/2 - g_width*0.0175/2), (g_height/2 - g_height*0.0175/2), 0], "O", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1);
+	}
+	else if (/*crosshair.value == 1 && */getstatf(STAT_WEAPONZOOM) != 1 && getstatf(STAT_WEAPONZOOM) != 2 && getstatf(STAT_ACTIVEWEAPON) != W_PANZER) // naievil (FIXME) crosshair cvar
+    {
+        int x_value, y_value;
+        int crosshair_offset; /*= CrossHairWeapon() + cur_spread;*/
+        
+        /*if (sv_player->v.view_ofs[2] != 32) // naievil -- changed weapon spread if crouched or not
+         crosshair_offset = CrossHairWeapon()*(.8) + cur_spread;
+        else*/
+         crosshair_offset = CrossHairWeapon() + cur_spread;
+        
+		if (CrossHairMaxSpread() < crosshair_offset || croshhairmoving)
+			crosshair_offset = CrossHairMaxSpread();
+
+		crosshair_offset_step += (crosshair_offset - crosshair_offset_step) * 0.5;
+
+		x_value = ((480 - 8)/2 - crosshair_offset_step)*(g_width/480);
+		y_value = ((272 - 8)/2)*g_height/272;
+		drawstring([x_value, y_value, 0], "-", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1); 
+
+		x_value = ((480 - 8)/2 + crosshair_offset_step)*(g_width/480);
+		y_value = ((272 - 8)/2)*g_height/272;
+		drawstring([x_value, y_value, 0], "-", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1); 
+
+		x_value = ((480 - 8)/2)*(g_width/480);
+		y_value = ((272 - 8)/2 - crosshair_offset_step)*g_height/272;
+		drawstring([x_value, y_value, 0], "|", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1); 
+
+		x_value = ((480 - 8)/2)*(g_width/480);
+		y_value = ((272 - 8)/2 + crosshair_offset_step)*g_height/272;
+		drawstring([x_value, y_value, 0], "|", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1); 
+
+    }
+    else if (/*crosshair.value && */getstatf(STAT_WEAPONZOOM) != 1 && getstatf(STAT_WEAPONZOOM) != 2) // naievil (FIXME) crosshair cvar
+		drawstring([((480 - 8)/2/480)*g_width, ((272 - 8)/2)*(g_height/272), 0], ".", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1); 
+}
+
+
+
+/*******************
+*     HUD Draw     *
+*******************/
 
 void(float width, float height) HUD_Draw = 
 {	
 	HUD_Health(width, height);
+	HUD_Points(width, height);
+	HUD_Rounds(width, height);
+	HUD_Perks(width, height);
+	HUD_Progressbar(width, height);
 	
 	if (HUD_Change_time > time)
 	{
@@ -854,14 +1141,12 @@ void(float width, float height) HUD_Draw =
 		HUD_Weaponstring(width, height);
 		HUD_AmmoString();
 	}
-	HUD_Points(width, height);
-	HUD_Rounds(width, height);
-	HUD_Perks(width, height);
-	HUD_Progressbar(width, height);
 		
-	// fix me: change the 51 and 50 to human readable const floats like STAT_PISTOLAMMO, STAT_MGAMMO or something	
-
 	if (useprint_time > time) 
 		HUD_Useprint(width, height);
-
+		
+	if (Hitmark_time > time)
+		HUD_Hitmark();
+		
+	Draw_Crosshair();
 }

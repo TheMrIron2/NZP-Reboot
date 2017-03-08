@@ -306,6 +306,7 @@ waypoint_ai waypoints[MAX_WAYPOINTS];
 
 #define UT_HUD 				1
 #define UT_ROUNDS_CHANGE 	2
+#define UT_HM				3
 
 
 //FIXME(Jukki) Place in better place
