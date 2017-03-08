@@ -715,7 +715,7 @@ noref void() CSQC_Parse_Event =
 				break;
 			case 3:
 				if (Hitmark_time < time)
-					Hitmark_time = time + 1;
+					Hitmark_time = time + 0.2;
 				break;
 			default: 
 				break;
