@@ -22,3 +22,41 @@ fov 75
 quit
 fov 70
 quit
+map example_01
+quit
+fov 70
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
