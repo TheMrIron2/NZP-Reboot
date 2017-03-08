@@ -38,19 +38,39 @@ void() W_AimOut =
 	self.viewzoom = 1;
 }
 
-void() sprintstop =
+void() W_SprintStop =
 {
-	float startframe;
-	float endframe;
-	string modelname;
-	startframe = GetFrame(self.weapon,SPRINT_OUT_START);
-	endframe = GetFrame(self.weapon,SPRINT_OUT_END);
-	modelname = GetWeaponModel(self.weapon, 0);
-	Set_W_Frame (startframe, endframe, 0, 0, SPRINT, /*ContinueRun*/ SUB_Null, modelname, false, S_BOTH);//FIXME
-	self.zoom = 0;
+	float startframe = GetFrame(self.weapon,SPRINT_OUT_START);
+	float endframe = GetFrame(self.weapon,SPRINT_OUT_END);
+	string modelname = GetWeaponModel(self.weapon, 0);
+
+	Set_W_Frame (startframe, endframe, 0, 0, SPRINT, SUB_Null, modelname, false, S_BOTH);
+	self.sprinting = 0;
 	self.into_sprint = 0;
 	self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
-	yeahIamrunning = false;
+}
+
+void W_SprintStart () {
+
+	if (self.fire_delay > time ||
+		self.fire_delay2 > time ||
+		self.new_anim_stop ||
+		self.new_anim2_stop ||
+		!(self.flags & FL_ONGROUND)) {
+		return;
+	}
+
+	float startframe = GetFrame(self.weapon,SPRINT_IN_START);
+	float endframe = GetFrame(self.weapon,SPRINT_IN_END);
+	string modelname = GetWeaponModel(self.weapon, 0);
+
+	
+	if (startframe || endframe) {
+		Set_W_Frame (startframe, endframe, 0, 0, SPRINT, ContinueRun, modelname, false, S_BOTH);
+	}
+
+	self.sprinting = true;
+	self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
 }
 
 void() W_Switch =
@@ -1085,6 +1105,9 @@ void () Impulse_Functions =
 			benis = find (world, classname, "player");
 			addmoney(benis, 10000, 0);
 			//crouchset();
+			break;
+		case 23:
+			W_SprintStart();
 			break;
 	}
 	

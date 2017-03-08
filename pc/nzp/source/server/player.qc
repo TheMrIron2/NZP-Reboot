@@ -25,7 +25,14 @@ void() PlayerPreThink =
 	if (self.downed) {
 		self.maxspeed = 30;
 	} else {
-		self.maxspeed = 400;//175*GetWeaponWalkSpeed(self.weapon);
+		self.maxspeed = 175;
+		if (self.sprinting) {
+			self.maxspeed *= 1.66;
+		} else if (self.zoom == 1) {
+			self.maxspeed *= 0.5;
+		}
+
+		self.maxspeed *= GetWeaponWalkSpeed(self.weapon);
 	}
 	if(self.isspec != 0)
 	{
@@ -122,6 +129,27 @@ void() PlayerPostThink =
 		} else {
 			float remaining = self.progress_bar - time;
 			self.progress_bar_percent = (remaining / self.progress_bar_time);
+		}
+	}
+
+
+	if (self.sprinting) {
+		if (!self.velocity)//we are not moving, stop sprinting
+			W_SprintStop();
+		
+		if (self.perks & P_STAMIN) {
+			self.stamina = self.stamina - 0.015*frametime;
+		} else {
+			self.stamina = self.stamina - 0.03*frametime;
+		}
+
+		if (self.stamina <= 0) {
+			W_SprintStop();
+		}
+	} else if (self.stamina < 3) 	{
+		self.stamina = self.stamina + 0.06*frametime;
+		if (self.stamina > 3) {
+			self.stamina = 3;
 		}
 	}
 

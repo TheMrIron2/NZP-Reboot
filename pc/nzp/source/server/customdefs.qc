@@ -34,10 +34,12 @@ entity activator;
 
 //player funcs
 .float zoom;
+.float sprinting;
 .float weaponskin;
-void() sprintstop;
+.float stamina;
+void() W_SprintStop;
 .float into_sprint;
-float yeahIamrunning;
+
 
 //Weaponsystem defines
 void SwitchWeapon(float to);

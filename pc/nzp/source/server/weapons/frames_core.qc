@@ -1,4 +1,21 @@
-
+void() ContinueRun =
+{
+	float startframe;
+	float endframe;
+	string modelname;
+	startframe = GetFrame(self.weapon,SPRINT_START);
+	endframe = GetFrame(self.weapon,SPRINT_END);
+	if(!startframe && !endframe)
+	{
+		startframe = GetFrame(self.weapon,SPRINT_IN_END);
+		endframe = GetFrame(self.weapon,SPRINT_IN_END);
+	}
+	if (!self.downed) {
+		modelname = GetWeaponModel(self.weapon, 0);
+	} else
+		modelname = "";
+	Set_W_Frame (startframe, endframe, 0, 0, SPRINT, ContinueRun, modelname, false, S_BOTH);
+}
 
 
 void () W2_Frame_Update =

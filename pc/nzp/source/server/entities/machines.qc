@@ -149,7 +149,7 @@ void() touch_perk =
 			addmoney (other, -500, 0);
 			tempe = self;
 			self = other;
-			sprintstop();
+			W_SprintStop();
 			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.5 + time;	
 			other.weaponskin = 3;			
 			Set_W_Frame (0, 22, 0, 0, PERK, give_revive, "models/machines/v_perk.mdl", true, S_RIGHT);
@@ -166,7 +166,7 @@ void() touch_perk =
 			addmoney (other, -1500, 0);
 			tempe = self;
 			self = other;
-			sprintstop();
+			W_SprintStop();
 			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 3;
 			Set_W_Frame (0, 39, 0, 0, PERK, give_revive, "models/machines/v_perk.mdl", true, S_RIGHT);
@@ -188,7 +188,7 @@ void() touch_perk =
 			addmoney (other, -2000, 0);
 			tempe = self;
 			self = other;
-			sprintstop();
+			W_SprintStop();
 			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 4;
 			Set_W_Frame (0, 39, 0, 0, PERK, give_flopper, "models/machines/v_perk.mdl", true, S_RIGHT);
@@ -210,7 +210,7 @@ void() touch_perk =
 			addmoney (other, -2500, 0);
 			tempe = self;
 			self = other;
-			sprintstop();
+			W_SprintStop();
 			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 2;
 			Set_W_Frame (0, 39, 0, 0, PERK, give_juggernog, "models/machines/v_perk.mdl", true, S_RIGHT);
@@ -232,7 +232,7 @@ void() touch_perk =
 			addmoney (other, -2000, 0);
 			tempe = self;
 			self = other;
-			sprintstop();
+			W_SprintStop();
 			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 2;
 			Set_W_Frame (0, 39, 0, 0, PERK, give_staminup, "models/machines/v_perk.mdl", true, S_RIGHT);
@@ -255,7 +255,7 @@ void() touch_perk =
 			addmoney (other, -3000, 0);
 			tempe = self;
 			self = other;
-			sprintstop();
+			W_SprintStop();
 			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 1;
 			Set_W_Frame (0, 39, 0, 0, PERK, give_speedcola, "models/machines/v_perk.mdl", true, S_RIGHT);
@@ -277,7 +277,7 @@ void() touch_perk =
 			addmoney (other, -2000, 0);
 			tempe = self;
 			self = other;
-			sprintstop();
+			W_SprintStop();
 			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
 			other.weaponskin = 0;
 			Set_W_Frame (0, 39, 0, 0, PERK, give_doubletap, "models/machines/v_perk.mdl", true, S_RIGHT);
