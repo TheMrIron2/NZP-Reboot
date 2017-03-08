@@ -1438,6 +1438,14 @@ vector pathfind_result_path[NAV_MAX_POLIES];
 //How many points are in the path
 float pathfind_result_length;
 
+//Together, these two arrays hold the list of portals (edges) we cross on the path
+float pathfind_portals_left_vert[NAV_MAX_POLIES];
+float pathfind_portals_right_vert[NAV_MAX_POLIES];
+//pathfind_portals_length is the same as (pathfind_result_node_length - 1)
+//How many portals are in the pathfind_portals_left_vert
+float pathfind_portals_length;
+
+
 //TODO: when I add funnel algorithm, keep a list of vectors instead of a list of polygon indices
 
 
@@ -1481,6 +1489,70 @@ void pathfind_clear_temp_data()
 	}
 	pathfind_result_node_length = 0;
 	pathfind_result_length = 0;
+}
+
+//Applies a funnel algorithm to the path defined by the array pathfind_result_node_path 
+// and populates pathfind result path
+void pathfind_smooth_path()
+{
+	//TODO: evaluate portals and identify left and right vertices of the portals
+		//Vector from previous poly center point to next poly center point, identify left / right vertices using this vector
+	//TODO: implement funnel algorithm
+	
+	//starting at start_pos (not at start center point)
+	//get vectors that point to first left edge and first right edge
+	
+	//if advancing the left edge narrows the cone:
+		//advance left edge
+	//if advancing the left edge crosses the right edge:
+		//set apex as the right edge
+	//if advancing the right edge narrows the cone:
+		//advance the right edge
+	//if advancing the right edge crosses the left edge:
+		//set apex as the left edge
+		
+	//the last left edge / right edge is the goal position
+}
+
+//Evaluates the path that is found in the pathfinding algorithm and populates an array with the nodes in the path from start to goal
+void pathfind_trace_path(float start, float goal)
+{
+	float current = start;
+	//Count the length of the path (how many polygons the path traverses)
+	current = goal;
+	pathfind_result_node_length = 1;
+	do
+	{
+		print("Poly ");
+		print(ftos(current));
+		print(" came from  ");
+		print(ftos(pathfind_poly_prev[current]));
+		print(".\n");
+		current = pathfind_poly_prev[current];
+		pathfind_result_node_length++;
+	} while(current != start);
+	
+	
+	//Starting at goal waypoint, add the traversed waypoints to the result path in reverse order
+	current = goal;
+	for(float i = 0; i < pathfind_result_node_length; i++)
+	{
+		pathfind_result_node_path[pathfind_result_node_length - 1 - i] = current;
+		current = pathfind_poly_prev[current];
+	}
+	
+	print("Pathfind success, path length: ");
+	print(ftos(pathfind_result_node_length));
+	print(".\n");
+	
+	print("Path: ");
+	for(float i = 0; i < pathfind_result_node_length; i++)
+	{
+		if(i > 0)
+			print(" , ");
+		print(ftos(pathfind_result_node_path[i]));
+	}
+	print(" .\n");
 }
 
 //Accepts start polygon and goal polygon
@@ -1596,42 +1668,9 @@ float pathfind_start(float start, float goal, vector end_pos)
 	//Tracing the pathfind results
 	if(pathfind_success == TRUE)
 	{
-		//Count the length of the path
-		current = goal;
-		pathfind_result_node_length = 1;
-		do
-		{
-			print("Poly ");
-			print(ftos(current));
-			print(" came from  ");
-			print(ftos(pathfind_poly_prev[current]));
-			print(".\n");
-			current = pathfind_poly_prev[current];
-			pathfind_result_node_length++;
-		} while(current != start);
+		pathfind_trace_path(start,goal);
 		
-		
-		//Starting at goal waypoint, add the traversed waypoints to the result path in reverse order
-		current = goal;
-		for(float i = 0; i < pathfind_result_node_length; i++)
-		{
-			pathfind_result_node_path[pathfind_result_node_length - 1 - i] = current;
-			current = pathfind_poly_prev[current];
-		}
-		
-		print("Pathfind success, path length: ");
-		print(ftos(pathfind_result_node_length));
-		print(".\n");
-		
-		print("Path: ");
-		for(float i = 0; i < pathfind_result_node_length; i++)
-		{
-			if(i > 0)
-				print(" , ");
-			print(ftos(pathfind_result_node_path[i]));
-		}
-		print(" .\n");
-		
+		//TODO: funnel algorithm
 		
 		return 1;
 	}
