@@ -420,6 +420,11 @@ void WeaponSwitch(entity player) {
 	cammo = other.currentammo;
 	other.currentammo = other.secondaryammo;
 	other.secondaryammo = cammo;
+
+	entity tempe = self;
+	self = player;
+	SwitchWeapon(other.weapon);
+	self = tempe;
 }
 
 //naievil (FIXME) No idea where this should go, maybe a dummys

@@ -877,14 +877,11 @@ void() mystery_touch =
 				}
 				else if (!other.secondaryweapon)
 				{
-					other.secondaryweapon = other.weapon;
+					WeaponSwitch(other);
 					other.weapon = self.boxweapon.weapon;
-
-					other.secondaryammo = other.currentammo;
 					other.currentammo = getWeaponAmmo(self.boxweapon.weapon);
-
-					other.secondarymag = other.currentmag;
 					other.currentmag = getWeaponMag(self.boxweapon.weapon);
+					other.weaponskin = GetWepSkin(self.boxweapon.weapon);
 				}
 				sound(self, 0,"sounds/misc/ching.wav", 1, 1);
 				tempe = self;
@@ -893,6 +890,7 @@ void() mystery_touch =
 				endframe = GetFrame(self.weapon,TAKE_OUT_END);
 				modelname = GetWeaponModel(self.weapon, 0);
 				Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
+				SwitchWeapon(self.weapon);
 				self = tempe;
 				remove (self.boxweapon);
 				box_close1();
