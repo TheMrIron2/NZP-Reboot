@@ -1112,6 +1112,9 @@ void () Impulse_Functions =
 		case 23:
 			W_SprintStart();
 			break;
+		case 24:
+			W_SprintStop();
+			break;
 	}
 	
 	self.impulse = 0;

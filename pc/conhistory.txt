@@ -1,55 +1,9 @@
-give
-give 14
-quit
-sound
-soundcontrol
-soundcontrol off
-quit
-soundcontrol off
-quit
-quit
-quit
-quit
-fov 65
-quit
-quit
-quit
-quit
-quit
-quit
-quit
-map pap
-give 2
-give 3
-give 4
-give 5
-give 6
-give 7
-give 8
-give 9
-give 10
-give 11
-give 12
-give 13
-give 14
-give 15
-give 16
-give 17
-give 18
-fov 90
-fov 20
-fov 55
-fov
-fov 90
-give 19
-give 20
-give 21
-give 22
-give 23
-fov 90
-give 17
-give 14
-give 13
+disconnect
+disconnect
+disconnect
+r_drawfps
+fps
+disconnect
 disconnect
 disconnect
 disconnect

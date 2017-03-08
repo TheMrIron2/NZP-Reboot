@@ -134,20 +134,21 @@ void() PlayerPostThink =
 
 
 	if (self.sprinting) {
-		if (!self.velocity)//we are not moving, stop sprinting
+		if (!self.velocity) {
 			W_SprintStop();
+		}
 		
 		if (self.perks & P_STAMIN) {
-			self.stamina = self.stamina - 0.015*frametime;
+			self.stamina = self.stamina - 5*frametime;
 		} else {
-			self.stamina = self.stamina - 0.03*frametime;
+			self.stamina = self.stamina - (10*frametime);
 		}
 
 		if (self.stamina <= 0) {
 			W_SprintStop();
 		}
 	} else if (self.stamina < 3) 	{
-		self.stamina = self.stamina + 0.06*frametime;
+		self.stamina = self.stamina + 10*frametime;
 		if (self.stamina > 3) {
 			self.stamina = 3;
 		}
@@ -207,6 +208,8 @@ void() PlayerSpawn =
 	stuffcmd(self, "cl_gunx 8;cl_guny 16;cl_gunz 25\n");
 
 	SetRound(self, rounds);
+
+	self.stamina = 3;
 
 	if (rounds < 1) {
 		sound (self, CHAN_AUTO, "sounds/rounds/splash.wav", 1, ATTN_NONE);//temporarily here.
