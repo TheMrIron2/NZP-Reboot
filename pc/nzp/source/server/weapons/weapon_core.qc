@@ -19,6 +19,7 @@ void() W_AimIn =
 	if (IsDualWeapon(self.weapon) ||
 		self.zoom ||
 		self.reload_delay > time ||
+		self.sprinting ||
 		self.new_anim_stop) {
 		return;
 	}
@@ -38,19 +39,39 @@ void() W_AimOut =
 	self.viewzoom = 1;
 }
 
-void() sprintstop =
+void() W_SprintStop =
 {
-	float startframe;
-	float endframe;
-	string modelname;
-	startframe = GetFrame(self.weapon,SPRINT_OUT_START);
-	endframe = GetFrame(self.weapon,SPRINT_OUT_END);
-	modelname = GetWeaponModel(self.weapon, 0);
-	Set_W_Frame (startframe, endframe, 0, 0, SPRINT, /*ContinueRun*/ SUB_Null, modelname, false, S_BOTH);//FIXME
-	self.zoom = 0;
+	float startframe = GetFrame(self.weapon,SPRINT_OUT_START);
+	float endframe = GetFrame(self.weapon,SPRINT_OUT_END);
+	string modelname = GetWeaponModel(self.weapon, 0);
+
+	Set_W_Frame (startframe, endframe, 0, 0, SPRINT, SUB_Null, modelname, false, S_BOTH);
+	self.sprinting = 0;
 	self.into_sprint = 0;
 	self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
-	yeahIamrunning = false;
+}
+
+void W_SprintStart () {
+
+	if (self.fire_delay > time ||
+		self.fire_delay2 > time ||
+		self.new_anim_stop ||
+		self.new_anim2_stop ||
+		!(self.flags & FL_ONGROUND)) {
+		return;
+	}
+
+	float startframe = GetFrame(self.weapon,SPRINT_IN_START);
+	float endframe = GetFrame(self.weapon,SPRINT_IN_END);
+	string modelname = GetWeaponModel(self.weapon, 0);
+
+	
+	if (startframe || endframe) {
+		Set_W_Frame (startframe, endframe, 0, 0, SPRINT, ContinueRun, modelname, false, S_BOTH);
+	}
+
+	self.sprinting = true;
+	self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
 }
 
 void() W_Switch =
@@ -113,9 +134,6 @@ void() W_PutOut =
 		endframe = GetFrame(self.weapon,PUT_OUT_END);
 		modelname = GetWeaponModel(self.weapon, 0);
 	
-		//UpdateWeapons(1);
-		//if (self.weaponslot1.dualwield)
-		//	Set_W2_Frame (self.weaponslot1.PutOutStart, self.weaponslot1.PutOutEnd, (self.weaponslot1.PutOutEnd - self.weaponslot1.PutOutStart)/10, 0, SWITCHWEP, W_Switch, self.weaponslot1.v_model2, false);//FIXME
 		Set_W_Frame (startframe, endframe, (endframe - startframe)/10, 0, SWITCHWEP, W_Switch, modelname, false, S_BOTH);//FIXME
 		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
 	}
@@ -238,11 +256,11 @@ void(float side) W_Reload =
 	if (side == S_LEFT &&
 		(self.reload_delay2 > time ||
 		self.new_anim2_stop ||
-		self.currentmag2 >= getWeaponMag(self.weapon))){
-
+		self.currentmag2 >= getWeaponMag(self.weapon))) {
 		return;
 	}
 	W_AimOut();
+	W_SprintStop();
 
 	float endframe, startframe, reloadcancelframe, delay;
 	string modelname;
@@ -319,7 +337,7 @@ void(float side) W_Reload =
 		}
 		
 		self.zoom = false;
-		Set_W_Frame (startframe, endframe, delay, reloadcancelframe, RELOAD, endanimfunc, modelname, TRUE, side);
+		Set_W_Frame (startframe, endframe, delay, reloadcancelframe, RELOAD, endanimfunc, modelname, false, side);
 	}
 	
 	if (self.weapon != W_TRENCH) {
@@ -606,6 +624,11 @@ void(float side) W_Fire =
 		return;
 	}
 
+	if (self.sprinting) {
+		W_SprintStop();
+		return;
+	}
+
 	float startframe;
 	float endframe;
 	float firetype;
@@ -725,7 +748,7 @@ void(float side) W_Fire =
 
 void () W_Knife =
 {
-	if (time < self.fire_delay || time < self.knife_delay || self.new_anim_stop)
+	if (time < self.knife_delay || self.new_anim_stop)
 		return;
 	
 	if (self.zoom == 2 || self.zoom == 3)//dolphin dive here when its time has come
@@ -842,13 +865,13 @@ void() switch_nade =
 		return;
 	}
 
-    if (self.isBuying == true)
+    if (self.isBuying)
 		return;
       
     if (!(self.grenades & 2))
 		return;
       
-    if (self.semiswitch == true)
+    if (self.semiswitch)
       return;
 /*		tempf = self.primary_grenades;
 		self.primary_grenades = self.secondary_grenades;
@@ -1085,6 +1108,12 @@ void () Impulse_Functions =
 			benis = find (world, classname, "player");
 			addmoney(benis, 10000, 0);
 			//crouchset();
+			break;
+		case 23:
+			W_SprintStart();
+			break;
+		case 24:
+			W_SprintStop();
 			break;
 	}
 	

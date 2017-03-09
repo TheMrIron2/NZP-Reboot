@@ -1,3 +1,15 @@
+<<<<<<< HEAD
+disconnect
+disconnect
+disconnect
+r_drawfps
+fps
+disconnect
+disconnect
+disconnect
+disconnect
+disconnect
+=======
 quit
 quit
 quit
@@ -9,3 +21,4 @@ quit
 wuit
 quit
 quit
+>>>>>>> naitemp

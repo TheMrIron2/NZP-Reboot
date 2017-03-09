@@ -25,7 +25,14 @@ void() PlayerPreThink =
 	if (self.downed) {
 		self.maxspeed = 30;
 	} else {
-		self.maxspeed = 400;//175*GetWeaponWalkSpeed(self.weapon);
+		self.maxspeed = 175;
+		if (self.sprinting) {
+			self.maxspeed *= 1.66;
+		} else if (self.zoom == 1) {
+			self.maxspeed *= 0.5;
+		}
+
+		self.maxspeed *= GetWeaponWalkSpeed(self.weapon);
 	}
 	if(self.isspec != 0)
 	{
@@ -125,6 +132,28 @@ void() PlayerPostThink =
 		}
 	}
 
+
+	if (self.sprinting) {
+		if (!self.velocity) {
+			W_SprintStop();
+		}
+		
+		if (self.perks & P_STAMIN) {
+			self.stamina = self.stamina - 5*frametime;
+		} else {
+			self.stamina = self.stamina - (10*frametime);
+		}
+
+		if (self.stamina <= 0) {
+			W_SprintStop();
+		}
+	} else if (self.stamina < 3) 	{
+		self.stamina = self.stamina + 10*frametime;
+		if (self.stamina > 3) {
+			self.stamina = 3;
+		}
+	}
+
 	self.oldvelocity = self.velocity;
 };
 
@@ -179,6 +208,8 @@ void() PlayerSpawn =
 	stuffcmd(self, "cl_gunx 8;cl_guny 16;cl_gunz 25\n");
 
 	SetRound(self, rounds);
+
+	self.stamina = 3;
 
 	if (rounds < 1) {
 		sound (self, CHAN_AUTO, "sounds/rounds/splash.wav", 1, ATTN_NONE);//temporarily here.

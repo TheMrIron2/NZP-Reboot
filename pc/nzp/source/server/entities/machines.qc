@@ -2,119 +2,101 @@
 float backupWepSkin;
 float sound_perk_delay; 
 void() W_Switch;
-void() give_revive =
-{ 
+
+void GivePerk(float perk) {
+	switch(perk) {
+		case P_REVIVE:
+			self.perks = self.perks | 8;
+			break;
+		case P_FLOP:
+			self.perks = self.perks | 16;
+			break;
+		case P_JUG:
+			self.perks = self.perks | 1;
+			break;
+		case P_STAMIN:
+			self.perks = self.perks | 32;
+			break;
+		case P_SPEED:
+			self.perks = self.perks | 4;
+			break;
+		case P_DOUBLE:
+			self.perks = self.perks | 2;
+			break;
+		default:
+			print("Unknown perk type, wtf?\n");
+	}
   	sound_perk_delay = time + 4.5;
-  
 	self.isBuying = false;
-	string modelname;
-	float startframe;
-	float endframe;
-	self.perks = self.perks | 8;
+	string modelname = GetWeaponModel(self.weapon, 0);
+	float startframe = GetFrame(self.weapon,TAKE_OUT_START);
+	float endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	self.weaponskin = backupWepSkin;
 	self.perk_delay = self.fire_delay;
-	startframe = GetFrame(self.weapon,TAKE_OUT_START);
-	endframe = GetFrame(self.weapon,TAKE_OUT_END);
-	modelname = GetWeaponModel(self.weapon, 0);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
-	
-	SetPerk(self, self.perks);
-}
-void() give_juggernog =
-{
-
-  	sound_perk_delay = time + 4.5;
-
-	self.isBuying = false;
-	string modelname;
-	float startframe;
-	float endframe;
-	self.perks = self.perks | 1;
-	self.weaponskin = backupWepSkin;
-	startframe = GetFrame(self.weapon,TAKE_OUT_START);
-	endframe = GetFrame(self.weapon,TAKE_OUT_END);
-	modelname = GetWeaponModel(self.weapon, 0);
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
-		
 	SetPerk(self, self.perks);
 }
 
-void() give_doubletap =
-{
+void() give_revive = { GivePerk(P_SPEED); }
+void() give_juggernog = { GivePerk(P_JUG); }
 
-  	sound_perk_delay = time + 4.5;
+void() give_doubletap = { GivePerk(P_DOUBLE); }
 
-	self.isBuying = false;
-  	string modelname;
-	float startframe;
-	float endframe;
-	self.perks = self.perks | 2;
-	self.weaponskin = backupWepSkin;
-	startframe = GetFrame(self.weapon,TAKE_OUT_START);
-	endframe = GetFrame(self.weapon,TAKE_OUT_END);
-	modelname = GetWeaponModel(self.weapon, 0);
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
-		
-	SetPerk(self, self.perks);
-}
-void() give_speedcola =
-{
-  sound_perk_delay = time + 4.5;
+void() give_speedcola = { GivePerk(P_SPEED); }
 
-	self.isBuying = false;
-	string modelname;
-	float startframe;
-	float endframe;
-	self.perks = self.perks | 4;
-	self.weaponskin = backupWepSkin;
-	startframe = GetFrame(self.weapon,TAKE_OUT_START);
-	endframe = GetFrame(self.weapon,TAKE_OUT_END);
-	modelname = GetWeaponModel(self.weapon, 0);
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
-		
-	SetPerk(self, self.perks);
-}
-void() give_flopper =
-{
+void() give_flopper = { GivePerk(P_FLOP); }
 
-  sound_perk_delay = time + 4.5;
+void() give_staminup = { GivePerk(P_FLOP); }
 
-	self.isBuying = false;
-	string modelname;
-	float startframe;
-	float endframe;
-	self.perks = self.perks | 16;
-	self.weaponskin = backupWepSkin;
-	startframe = GetFrame(self.weapon,TAKE_OUT_START);
-	endframe = GetFrame(self.weapon,TAKE_OUT_END);
-	modelname = GetWeaponModel(self.weapon, 0);
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
-		
-	SetPerk(self, self.perks);
-}
-void() give_staminup =
-{
 
-  sound_perk_delay = time + 4.5;
+void DrinkPerk(float perk) {
 
-	self.isBuying = false;
-	string modelname;
-	float startframe;
-	float endframe;
-	self.perks = self.perks | 32;
-	self.weaponskin = backupWepSkin;
-	startframe = GetFrame(self.weapon,TAKE_OUT_START);
-	endframe = GetFrame(self.weapon,TAKE_OUT_END);
-	modelname = GetWeaponModel(self.weapon, 0);
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
-		
-	SetPerk(self, self.perks);
+	void(optional float f) func;
+
+	switch(perk) {
+		case P_REVIVE:
+			other.weaponskin = 3;	
+			func = give_revive;
+			break;
+		case P_FLOP:
+			other.weaponskin = 4;	
+			func = give_flopper;
+			break;
+		case P_JUG:
+			other.weaponskin = 2;	
+			func = give_juggernog;
+			break;
+		case P_STAMIN:
+			other.weaponskin = 2;	
+			func = give_staminup;
+			break;
+		case P_SPEED:
+			other.weaponskin = 1;	
+			func = give_speedcola;
+			break;
+		case P_DOUBLE:
+			other.weaponskin = 0;	
+			func = give_doubletap;
+			break;
+		default:
+			print("Unknown perk type, wtf?\n");
+	}
+	self.isBuying = true;
+	entity tempe = self;
+	self = other;
+	if (self.sprinting) {
+		W_SprintStop();
+	}
+	self.knife_delay = self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.5 + time;		
+	Set_W_Frame (0, 22, 0, 0, PERK, func, "models/machines/v_perk.mdl", true, S_RIGHT);
+	self = tempe;
+	sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
+
 }
 
 .float requirespower;
 void() touch_perk =
 {  
-	entity tempe;
 	if (other.classname != "player" || other.downed)
 		return;
 
@@ -144,34 +126,18 @@ void() touch_perk =
 		}
 		if (!deathmatch && !coop && other.points >= 500 && other.button7)
 		{
-			self.isBuying = true;
-			self.fire_delay = time + 4.5;
+
 			addmoney (other, -500, 0);
-			tempe = self;
-			self = other;
-			sprintstop();
-			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.5 + time;	
-			other.weaponskin = 3;			
-			Set_W_Frame (0, 22, 0, 0, PERK, give_revive, "models/machines/v_perk.mdl", true, S_RIGHT);
-			self = tempe;
-			sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
+			DrinkPerk(P_REVIVE);
+
 			self.revivesoda++;
 			if (self.revivesoda == 3)
 				remove (self);
 		}
 		else if ((coop || deathmatch) && other.points >= 1500 && other.button7)
 		{
-			self.isBuying = true;
-			self.fire_delay = time + 4;
 			addmoney (other, -1500, 0);
-			tempe = self;
-			self = other;
-			sprintstop();
-			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
-			other.weaponskin = 3;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_revive, "models/machines/v_perk.mdl", true, S_RIGHT);
-			self = tempe;
-			sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
+			DrinkPerk(P_REVIVE);
 		}
 		else if (other.button7)
 		{
@@ -183,17 +149,8 @@ void() touch_perk =
 		useprint (other, 9, 2000, 6);
 		if (other.points >= 2000 && other.button7)
 		{
-			self.isBuying = true;
-			self.fire_delay = time + 3;
 			addmoney (other, -2000, 0);
-			tempe = self;
-			self = other;
-			sprintstop();
-			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
-			other.weaponskin = 4;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_flopper, "models/machines/v_perk.mdl", true, S_RIGHT);
-			self = tempe;
-			sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
+			DrinkPerk(P_FLOP);
 		}
 		else if (other.button7)
 		{
@@ -205,17 +162,8 @@ void() touch_perk =
 		useprint (other, 9, 2500, 2);
 		if (other.points >= 2500 && other.button7)
 		{
-			self.isBuying = true;
-			self.fire_delay = time + 3;
 			addmoney (other, -2500, 0);
-			tempe = self;
-			self = other;
-			sprintstop();
-			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
-			other.weaponskin = 2;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_juggernog, "models/machines/v_perk.mdl", true, S_RIGHT);
-			self = tempe;
-			sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
+			DrinkPerk(P_JUG);
 		}
 		else if (other.button7)
 		{
@@ -227,18 +175,8 @@ void() touch_perk =
 		useprint (other, 9, 2000, 5);
 		if (other.points >= 2000 && other.button7)
 		{
-			self.isBuying = true;
-			self.fire_delay = time + 3;
 			addmoney (other, -2000, 0);
-			tempe = self;
-			self = other;
-			sprintstop();
-			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
-			other.weaponskin = 2;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_staminup, "models/machines/v_perk.mdl", true, S_RIGHT);
-			self = tempe;
-			other.weaponskin = 0;
-			sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
+			DrinkPerk(P_STAMIN);
 		}
 		else if (other.button7)
 		{
@@ -250,17 +188,8 @@ void() touch_perk =
 		useprint (other, 9, 3000, 3);
 		if (other.points >= 3000 && other.button7)
 		{
-			self.isBuying = true;
-			self.fire_delay = time + 3;
 			addmoney (other, -3000, 0);
-			tempe = self;
-			self = other;
-			sprintstop();
-			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
-			other.weaponskin = 1;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_speedcola, "models/machines/v_perk.mdl", true, S_RIGHT);
-			self = tempe;
-			sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
+			DrinkPerk(P_SPEED);
 		}
 		else if (other.button7)
 		{
@@ -272,17 +201,8 @@ void() touch_perk =
 		useprint (other, 9, 2000, 4);
 		if (other.points >= 2000 && other.button7)
 		{
-			self.isBuying = true;
-			self.fire_delay = time + 3;
 			addmoney (other, -2000, 0);
-			tempe = self;
-			self = other;
-			sprintstop();
-			self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.0 + time;
-			other.weaponskin = 0;
-			Set_W_Frame (0, 39, 0, 0, PERK, give_doubletap, "models/machines/v_perk.mdl", true, S_RIGHT);
-			self = tempe;
-			sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
+			DrinkPerk(P_DOUBLE);
 		}
 		else if (other.button7)
 		{
@@ -957,14 +877,11 @@ void() mystery_touch =
 				}
 				else if (!other.secondaryweapon)
 				{
-					other.secondaryweapon = other.weapon;
+					WeaponSwitch(other);
 					other.weapon = self.boxweapon.weapon;
-
-					other.secondaryammo = other.currentammo;
 					other.currentammo = getWeaponAmmo(self.boxweapon.weapon);
-
-					other.secondarymag = other.currentmag;
 					other.currentmag = getWeaponMag(self.boxweapon.weapon);
+					other.weaponskin = GetWepSkin(self.boxweapon.weapon);
 				}
 				sound(self, 0,"sounds/misc/ching.wav", 1, 1);
 				tempe = self;
@@ -973,6 +890,7 @@ void() mystery_touch =
 				endframe = GetFrame(self.weapon,TAKE_OUT_END);
 				modelname = GetWeaponModel(self.weapon, 0);
 				Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
+				SwitchWeapon(self.weapon);
 				self = tempe;
 				remove (self.boxweapon);
 				box_close1();

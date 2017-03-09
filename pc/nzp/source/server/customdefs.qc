@@ -34,10 +34,12 @@ entity activator;
 
 //player funcs
 .float zoom;
+.float sprinting;
 .float weaponskin;
-void() sprintstop;
+.float stamina;
+void() W_SprintStop;
 .float into_sprint;
-float yeahIamrunning;
+
 
 //Weaponsystem defines
 void SwitchWeapon(float to);
@@ -420,6 +422,11 @@ void WeaponSwitch(entity player) {
 	cammo = other.currentammo;
 	other.currentammo = other.secondaryammo;
 	other.secondaryammo = cammo;
+
+	entity tempe = self;
+	self = player;
+	SwitchWeapon(other.weapon);
+	self = tempe;
 }
 
 //naievil (FIXME) No idea where this should go, maybe a dummys
