@@ -1,24 +1,11 @@
-<<<<<<< HEAD
-disconnect
-disconnect
-disconnect
-r_drawfps
-fps
-disconnect
-disconnect
-disconnect
-disconnect
-disconnect
-=======
+fov 65
 quit
 quit
 quit
 quit
-quir
+give 5
+fov 65
 quit
+give 15
+fov 65
 quit
-quit
-wuit
-quit
-quit
->>>>>>> naitemp

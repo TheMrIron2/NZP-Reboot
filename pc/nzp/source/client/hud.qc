@@ -814,6 +814,7 @@ void() Draw_Crosshair =
 		croshhairmoving = 1;
 	else
 		croshhairmoving = 0;
+	
 
 	if (getstatf(STAT_WEAPONZOOM) == 2)
     {
@@ -828,6 +829,9 @@ void() Draw_Crosshair =
         cur_spread = cur_spread + 10;
 		if (cur_spread >= CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON)))
 			cur_spread = CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON));
+		
+		if (!croshhairmoving)
+			cur_spread *= 1/2;
     }
     else if (crosshair_spread_time < time && crosshair_spread_time)
     {
