@@ -2970,3 +2970,350 @@ float(float wep) getWeaponRecoilReturn =
 	}
 	return 0;
 }
+
+float(float weapon) CrossHairWeapon =
+{
+	switch(weapon)
+	{
+		case W_COLT:
+			return 15;
+			break;
+		case W_BIATCH:
+			return 15; // naievil -- real var not known
+			break;
+		case W_KAR:
+			return 50;
+			break;
+		case W_ARMAGEDDON:
+			return 50;
+			break;
+		case W_THOMPSON:
+			return 10;
+			break;
+		case W_GIBS:
+			return 10;
+			break;
+		case W_357:
+			return 10;
+			break;
+		case W_KILLU:
+			return 10;
+			break;
+		case W_BAR:
+			return 10;
+			break;
+		case W_WIDOW:
+			return 10;
+			break;
+		case W_BROWNING:
+			return 20;
+			break;
+		case W_ACCELERATOR:
+			return 20;
+			break;
+		case W_DB:
+			return 25;
+			break;
+		case W_BORE:
+			return 25;
+			break;
+		case W_FG:
+			return 10;
+			break;
+		case W_IMPELLER:
+			return 10;
+			break;
+		case W_GEWEHR:
+			return 10;
+			break;
+		case W_COMPRESSOR:
+			return 10;
+			break;
+		case W_KAR_SCOPE:
+			return 50;
+			break;
+		case W_HEADCRACKER:
+			return 50;
+			break;
+		case W_M1:
+			return 10;
+			break;
+		case W_M1000:
+			return 10;
+			break;
+		case W_M1A1:
+			return 10;
+			break;
+		case W_WIDDER:
+			return 10;
+			break;
+		case W_MP40:
+			return 10;
+			break;
+		case W_AFTERBURNER:
+			return 10;
+			break;
+		case W_MG:
+			return 20;
+			break;
+		case W_BARRACUDA:
+			return 20;
+			break;
+		case W_PANZER:
+			return 0;
+			break;
+		case W_LONGINUS:
+			return 0;
+			break;
+		case W_PPSH:
+			return 10;
+			break;
+		case W_REAPER:
+			return 10;
+			break;
+		case W_PTRS:
+			return 50;
+			break;
+		case W_PENETRATOR:
+			return 50;
+			break;
+		case W_RAY:
+			return 10;
+			break;
+		case W_PORTER:
+			return 10;
+			break;
+		case W_SAWNOFF:
+			return 30;
+			break;
+		case W_SNUFF:
+			return 30;
+			break;
+		case W_STG:
+			return 10;
+			break;
+		case W_SPATZ:
+			return 10;
+			break;
+		case W_TRENCH:
+			return 25;
+			break;
+		case W_GUT:
+			return 25;
+			break;
+		case W_TYPE:
+			return 10;
+			break;
+		case W_SAMURAI:
+			return 10;
+			break;
+		case W_MP5:
+			return 10;
+			break;
+		case W_TESLA:
+			return 0;
+			break;
+	}
+	return 0;	
+}
+
+float(float weapon) CrossHairMaxSpread =
+{
+
+	switch(weapon)
+	{
+		case W_COLT:
+			return 30;
+			break;
+		case W_BIATCH:
+			return 30; // naievil -- real var not known
+			break;
+		case W_KAR:
+			return 75;
+			break;
+		case W_ARMAGEDDON:
+			return 75;
+			break;
+		case W_THOMPSON:
+			return 25;
+			break;
+		case W_GIBS:
+			return 25;
+			break;
+		case W_357:
+			return 20;
+			break;
+		case W_KILLU:
+			return 20;
+			break;
+		case W_BAR:
+			return 35;
+			break;
+		case W_WIDOW:
+			return 35;
+			break;
+		case W_BROWNING:
+			return 50;
+			break;
+		case W_ACCELERATOR:
+			return 50;
+			break;
+		case W_DB:
+			return 25;
+			break;
+		case W_BORE:
+			return 25;
+			break;
+		case W_FG:
+			return 40;
+			break;
+		case W_IMPELLER:
+			return 40;
+			break;
+		case W_GEWEHR:
+			return 35;
+			break;
+		case W_COMPRESSOR:
+			return 35;
+			break;
+		case W_KAR_SCOPE:
+			return 75;
+			break;
+		case W_HEADCRACKER:
+			return 75;
+			break;
+		case W_M1:
+			return 35;
+			break;
+		case W_M1000:
+			return 35;
+			break;
+		case W_M1A1:
+			return 35;
+			break;
+		case W_WIDDER:
+			return 35;
+			break;
+		case W_MP40:
+			return 25;
+			break;
+		case W_AFTERBURNER:
+			return 25;
+			break;
+		case W_MG:
+			return 50;
+			break;
+		case W_BARRACUDA:
+			return 50;
+			break;
+		case W_PANZER:
+			return 0;
+			break;
+		case W_LONGINUS:
+			return 0;
+			break;
+		case W_PPSH:
+			return 25;
+			break;
+		case W_REAPER:
+			return 25;
+			break;
+		case W_PTRS:
+			return 75;
+			break;
+		case W_PENETRATOR:
+			return 75;
+			break;
+		case W_RAY:
+			return 20;
+			break;
+		case W_PORTER:
+			return 20;
+			break;
+		case W_SAWNOFF:
+			return 30;
+			break;
+		case W_SNUFF:
+			return 30;
+			break;
+		case W_STG:
+			return 35;
+			break;
+		case W_SPATZ:
+			return 35;
+			break;
+		case W_TRENCH:
+			return 25;
+			break;
+		case W_GUT:
+			return 25;
+			break;
+		case W_TYPE:
+			return 25;
+			break;
+		case W_SAMURAI:
+			return 25;
+			break;
+		case W_MP5:
+			return 25;
+			break;
+		case W_TESLA:
+			return 0;
+			break;
+	}
+	return 0;
+}
+
+int(int weapon, int type) GetLowAmmo = // determine what ammo value you should have that turns shells red
+{
+	switch (weapon)
+	{
+		case W_COLT: if (type) return 2; else return 16; 
+		case W_KAR: if (type) return 1; else return 10;
+		case W_KAR_SCOPE: if (type) return 1; else return 10;
+		case W_M1A1: if (type) return 4; else return 24;
+		case W_SAWNOFF: if (type) return 1; else return 12;
+		case W_DB: if (type) return 1; else return 12;
+		case W_THOMPSON: if (type) return 6; else return 40;
+		case W_BAR: if (type) return 6; else return 28;
+		case W_BIATCH: if (type) return 2; else return 16;
+		case W_FG: if (type) return 8; else return 32;
+		case W_357: if (type) return 2; else return 12; 
+		case W_BROWNING: if (type) return 25; else return 125;
+		case W_GEWEHR: if (type) return 3; else return 20;
+		case W_M1: if (type) return 2; else return 24;
+		case W_MP40: if (type) return 8; else return 64; 
+		case W_MG: if (type) return 25; else return 125;
+		case W_PANZER: if (type) return 0; else return 4;
+		case W_PPSH: if (type) return 25; else return 71;
+		case W_PTRS: if (type) return 2; else return 12; 
+		case W_RAY: if (type) return 5; else return 40;
+		case W_STG: if (type) return 12; else return 60;
+		case W_TRENCH: if (type) return 2; else return 12;
+		case W_TYPE: if (type) return 12; else return 60;
+		case W_COMPRESSOR: if (type) return 3; else return 36;
+		case W_M1000: if (type) return 3; else return 36;
+		case W_GIBS: if (type) return 8; else return 80;
+		case W_SAMURAI: if (type) return 12; else return 60;
+		case W_AFTERBURNER: if (type) return 12; else return 64;
+		case W_SPATZ: if (type) return 12; else return 120;
+		case W_SNUFF: if (type) return 1; else return 14;
+		case W_BORE: if (type) return 1; else return 14;
+		case W_IMPELLER: if (type) return 12; else return 128;
+		case W_BARRACUDA: if (type) return 25; else return 125;
+		case W_ACCELERATOR: if (type) return 25; else return 125;
+		case W_GUT: if (type) return 3; else return 15;
+		case W_REAPER: if (type) return 23; else return 115;
+		case W_HEADCRACKER: if (type) return 2; else return 16;
+		case W_LONGINUS: if (type) return 1; else return 12;
+		case W_PENETRATOR: if (type) return 2; else return 16;
+		case W_WIDOW: if (type) return 6; else return 60;
+		case W_PORTER: if (type) return 8; else return 40;
+		case W_ARMAGEDDON: if (type) return 2; else return 15;
+		case W_WIDDER: if (type) return 4; else return 30;
+		case W_KILLU: if (type) return 2; else return 20;
+		case W_TESLA: if (type) return 1; else return 6;
+		case 0: if (type) return -1; else return -1;
+		default: return 0;
+	}
+}

@@ -113,7 +113,7 @@ void() Update_Vmodel =
     }
     else
     {
-        setviewprop(VF_DRAWCROSSHAIR, 1);    
+        setviewprop(VF_DRAWCROSSHAIR, 0);    
         vmodel.origin = vmodel_currentpos + offset;
     }
 
@@ -150,7 +150,7 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 
 	//disable quake status bar and quake crosshair
 	setviewprop(VF_DRAWENGINESBAR, 0);	
-	setviewprop(VF_DRAWCROSSHAIR, 1);
+	setviewprop(VF_DRAWCROSSHAIR, 0);
 	
 	//autoadd entities received from servers for drawing	
 	addentities(MASK_ENGINE);
@@ -317,6 +317,21 @@ noref float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent
 			}
 
 		}
+		
+		/* check to see if movekeys were pressed */
+		tokenize(findkeysforcommand("+moveleft"));
+		if (scanx == stof(argv(0)))
+			leftdown = 1;
+		tokenize(findkeysforcommand("+moveright"));
+		if (scanx == stof(argv(0)))
+			rightdown = 1;
+		tokenize(findkeysforcommand("+forward"));
+		if (scanx == stof(argv(0)))
+			forwarddown = 1;
+		tokenize(findkeysforcommand("+back"));
+		if (scanx == stof(argv(0)))
+			backdown = 1;
+		/* end check for movekey press */
 
 		/*if (scanx == K_UPARROW) {
 			adsOffset.z += adsAmount;
@@ -360,6 +375,22 @@ noref float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent
 		}*/
 		return FALSE;
 	case IE_KEYUP:
+	
+		/* check to see if movekeys were released */
+		tokenize(findkeysforcommand("+moveleft"));
+		if (scanx == stof(argv(0)))
+			leftdown = 0;
+		tokenize(findkeysforcommand("+moveright"));
+		if (scanx == stof(argv(0)))
+			rightdown = 0;
+		tokenize(findkeysforcommand("+forward"));
+		if (scanx == stof(argv(0)))
+			forwarddown = 0;
+		tokenize(findkeysforcommand("+back"));
+		if (scanx == stof(argv(0)))
+			backdown = 0;
+		/* end check for key release */
+	
 		return FALSE;
 	case IE_MOUSEDELTA:
 		return FALSE;
@@ -457,7 +488,7 @@ noref void() CSQC_Parse_Event =
 		
 		traceent = readentitynum();
 		
-		crosshair_spread_time = time + 100/getWeaponRecoilReturn(getstatf(STAT_ACTIVEWEAPON));
+		crosshair_spread_time = time + 70/getWeaponRecoilReturn(getstatf(STAT_ACTIVEWEAPON));
 
 		if(entnum == player_localentnum)
 		{

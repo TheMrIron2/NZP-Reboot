@@ -284,6 +284,8 @@ entity active_way;
 .string targets[MAX_WAY_TARGETS];
 
 
+
+
 //pathfinds
 #define MAX_WAYPOINTS 256 //max waypoints
 void LoadWaypointData();
