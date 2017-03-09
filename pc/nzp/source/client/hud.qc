@@ -810,7 +810,7 @@ float crosshair_offset_step;
 
 void() Draw_Crosshair =
 {
-	if (backdown || forwarddown || leftdown || rightdown)
+	if (K_BACKDOWN || K_FORWARDDOWN || K_LEFTDOWN || K_RIGHTDOWN)
 		croshhairmoving = 1;
 	else
 		croshhairmoving = 0;

@@ -68,7 +68,7 @@ float perks;
 float rounds_change;
 
 float crosshair_spread_time;
-float leftdown, rightdown, backdown, forwarddown;
+float K_LEFTDOWN, K_RIGHTDOWN, K_BACKDOWN, K_FORWARDDOWN;
 
 #define 	P_JUG		1
 #define 	P_DOUBLE	2
