@@ -733,6 +733,7 @@ noref void() CSQC_Parse_Event =
 		}
 		
 		perks = newperks;
+		
 	}
 	else if (first == EVENT_UPDATE) 
 	{

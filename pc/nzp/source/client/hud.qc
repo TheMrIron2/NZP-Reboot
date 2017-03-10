@@ -818,7 +818,6 @@ void() Draw_Crosshair =
 
 	if (getstatf(STAT_WEAPONZOOM) == 2 && zoom_2_time < time)
     {
-		//return 0;
 		setmodel(vmodel, "");
 		setmodel(v2model, "");
 		drawpic([0,0,0], "gfx/hud/scope.tga", [g_width, g_height, 1], [1,1,1], 1);

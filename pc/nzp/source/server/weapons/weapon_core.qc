@@ -14,7 +14,7 @@ void() ReturnWeaponModel =
 }
 
 void() W_AimIn =
-{
+{	
 	if (IsDualWeapon(self.weapon) ||
 		self.zoom ||
 		self.reload_delay > time ||
@@ -27,6 +27,7 @@ void() W_AimIn =
 	{
 		self.zoom = 2;
 		SetUpdate(self, 4, 0, 0, 0);
+		self.viewzoom = 0.5;
 	}
 	else
 	{
@@ -686,7 +687,7 @@ void(float side) W_Fire =
 	delay = getWeaponDelay(self.weapon, FIRE);
 	spread = GetWeaponSpread(self.weapon);
 
-	if (self.zoom == 1 || self.zoom == 2) {
+	if (self.zoom == 1) {
 		if (self.weapon == W_TRENCH ||
 			self.weapon == W_DB ||
 			self.weapon == W_SAWNOFF ||
@@ -696,7 +697,8 @@ void(float side) W_Fire =
 			} else {
 				spread = spread * 0.1;
 			}
-	}
+	} else if (self.zoom == 2)
+		spread = spread * 0.05;
 
 
 	//Fire weapons
