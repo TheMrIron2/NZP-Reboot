@@ -39,3 +39,8 @@ noclip
 nav_delete_poly
 nav_delete_verts
 bind y screenshot
+nav_delete_verts
+nav_delete_poly
+nav_delete_verts
+nav_delete_verts
+bind y screenshot

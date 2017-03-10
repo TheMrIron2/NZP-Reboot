@@ -90,7 +90,8 @@ void() navmesh_place_test_goalent;
 void() navmesh_place_test_startent;
 void(float is_goal) navmesh_draw_test_ent;
 float(vector pos) navmesh_get_containing_poly;
-float(float start, float goal, vector end_pos) pathfind_start;
+float(float start, float goal, vector start_pos, vector end_pos) pathfind_start;
 
 void() pathfind_draw_result_node_path;
 void() pathfind_draw_result_path;
+void() pathfind_draw_result_portals;
