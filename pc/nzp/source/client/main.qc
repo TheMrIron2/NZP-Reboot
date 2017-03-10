@@ -70,7 +70,7 @@ noref void() CSQC_WorldLoaded =
 
 #define ADS_THOMPSON    '-3 +5.80 +4.52'
 
-/*float adsOffset;
+/*vector adsOffset;
 float adsAmount;
 float adsDir;*/
 void() Update_Vmodel =
