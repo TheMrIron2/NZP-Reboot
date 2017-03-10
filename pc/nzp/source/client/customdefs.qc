@@ -52,6 +52,8 @@ float useprint_time;
 
 float HUD_Change_time; 
 float Hitmark_time;
+float crosshair_spread_time;
+float zoom_2_time;
 
 float weaponframetime;
 float weapon2frametime;
@@ -67,8 +69,7 @@ float rounds;
 float perks;
 float rounds_change;
 
-float crosshair_spread_time;
-float leftdown, rightdown, backdown, forwarddown;
+float K_LEFTDOWN, K_RIGHTDOWN, K_BACKDOWN, K_FORWARDDOWN;
 
 #define 	P_JUG		1
 #define 	P_DOUBLE	2

@@ -1,6 +1,5 @@
 void() W_PutOut;
 
-
 void() ReturnWeaponModel =
 {
 	self.weaponmodel = GetWeaponModel(self.weapon, 0);
@@ -15,7 +14,7 @@ void() ReturnWeaponModel =
 }
 
 void() W_AimIn =
-{
+{	
 	if (IsDualWeapon(self.weapon) ||
 		self.zoom ||
 		self.reload_delay > time ||
@@ -23,9 +22,19 @@ void() W_AimIn =
 		self.new_anim_stop) {
 		return;
 	}
-	
-	self.zoom = 1;
-	self.viewzoom = 0.9;
+	if (self.weapon == 11 || self.weapon == 19 ||
+	    self.weapon == 49 || self.weapon == 51)
+	{
+		self.zoom = 2;
+		SetUpdate(self, 4, 0, 0, 0);
+		self.viewzoom = 0.5;
+	}
+	else
+	{
+		self.zoom = 1;
+		self.viewzoom = 0.9;
+	}
+		
 }
 
 void() W_AimOut =
@@ -34,6 +43,9 @@ void() W_AimOut =
 		self.new_anim_stop) {
 		return;
 	}
+	if (self.weapon == 11 || self.weapon == 19 ||
+	    self.weapon == 49 || self.weapon == 51)
+		ReturnWeaponModel();
 	
 	self.zoom = 0;
 	self.viewzoom = 1;
@@ -685,7 +697,8 @@ void(float side) W_Fire =
 			} else {
 				spread = spread * 0.1;
 			}
-	}
+	} else if (self.zoom == 2)
+		spread = spread * 0.05;
 
 
 	//Fire weapons
@@ -1161,7 +1174,7 @@ void () Weapon_Logic =
 		self.semiuse = false;
 	}
 	
-	if (self.button4 && !self.semiswitch && self.secondaryweapon && self.secondaryweapon !=0)
+	if (self.button4 && !self.semiswitch && self.secondaryweapon && self.secondaryweapon !=0 && !self.zoom)
 	{
 		W_PutOut();
 		self.semiswitch = true;

@@ -1117,7 +1117,7 @@ vector GetWeaponADSPos(float wep) {
 			return [-0.2, 3.28, 2.57];
 		case W_KAR_SCOPE:
 		case W_HEADCRACKER:
-			return [-2.19, 2.77, 1.42];
+			return [-2.19, 2.67, 0.42];
 		case W_M1:
 		case W_M1000:
 			return [-2.6, 2.46, 1.12];
@@ -2842,10 +2842,10 @@ float(float wep) getWeaponRecoilReturn =
 			return 750;
 			break;
 		case W_THOMPSON:
-			return 1813;
+			return 950;
 			break;
 		case W_GIBS:
-			return 1813;
+			return 950;
 			break;
 		case W_357:
 			return 1500;
@@ -2854,16 +2854,16 @@ float(float wep) getWeaponRecoilReturn =
 			return 1500;
 			break;
 		case W_BAR:
-			return 2823;
+			return 460;
 			break;
 		case W_WIDOW:
-			return 2823;
+			return 460;
 			break;
 		case W_BROWNING:
-			return 2510;
+			return 950;
 			break;
 		case W_ACCELERATOR:
-			return 2510;
+			return 950;
 			break;
 		case W_DB:
 			return 1000;

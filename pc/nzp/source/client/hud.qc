@@ -810,13 +810,16 @@ float crosshair_offset_step;
 
 void() Draw_Crosshair =
 {
-	if (backdown || forwarddown || leftdown || rightdown)
+	if (K_BACKDOWN || K_FORWARDDOWN || K_LEFTDOWN || K_RIGHTDOWN)
 		croshhairmoving = 1;
 	else
 		croshhairmoving = 0;
+	
 
-	if (getstatf(STAT_WEAPONZOOM) == 2)
+	if (getstatf(STAT_WEAPONZOOM) == 2 && zoom_2_time < time)
     {
+		setmodel(vmodel, "");
+		setmodel(v2model, "");
 		drawpic([0,0,0], "gfx/hud/scope.tga", [g_width, g_height, 1], [1,1,1], 1);
 	}
     
@@ -828,6 +831,9 @@ void() Draw_Crosshair =
         cur_spread = cur_spread + 10;
 		if (cur_spread >= CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON)))
 			cur_spread = CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON));
+		
+		if (!croshhairmoving)
+			cur_spread *= 1/2;
     }
     else if (crosshair_spread_time < time && crosshair_spread_time)
     {

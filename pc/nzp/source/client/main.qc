@@ -109,11 +109,15 @@ void() Update_Vmodel =
     {  
         vmodel_currentpos += (adsoffset * 0.15 * 128) * frametime;
         vmodel.origin = vmodel_currentpos + adsoffset;    
-        setviewprop(VF_DRAWCROSSHAIR, 0);      
     }
+	else if (ads == 2)
+	{
+		vmodel_currentpos += (adsoffset * 0.15 * 128) * frametime;
+        vmodel.origin = vmodel_currentpos + adsoffset;    
+	}
     else
     {
-        setviewprop(VF_DRAWCROSSHAIR, 0);    
+        //setviewprop(VF_DRAWCROSSHAIR, 0);    
         vmodel.origin = vmodel_currentpos + offset;
     }
 
@@ -302,6 +306,31 @@ noref float(string cmd) CSQC_ConsoleCommand =
 	}
 	return FALSE;
 };
+//**********************************************************************//
+// Input_Keycheck                                                       //
+//                                                                      //
+// Called at InputEvent and allows to set var if key is at that state   //
+// NOTE: ALL movekeys are called in order to prevent unsetting keys     //
+//**********************************************************************//
+
+void(float scanx, float setval) Input_Movecheck = 
+{
+	tokenize(findkeysforcommand("+moveleft"));
+	if (scanx == stof(argv(0)))
+		K_LEFTDOWN = setval;
+	
+	tokenize(findkeysforcommand("+moveright"));
+	if (scanx == stof(argv(0)))
+		K_RIGHTDOWN = setval;
+		
+	tokenize(findkeysforcommand("+forward"));
+	if (scanx == stof(argv(0)))
+		K_FORWARDDOWN = setval;
+		
+	tokenize(findkeysforcommand("+back"));
+	if (scanx == stof(argv(0)))
+		K_BACKDOWN = setval;
+}
 
 noref float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent =
 {
@@ -318,20 +347,7 @@ noref float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent
 
 		}
 		
-		/* check to see if movekeys were pressed */
-		tokenize(findkeysforcommand("+moveleft"));
-		if (scanx == stof(argv(0)))
-			leftdown = 1;
-		tokenize(findkeysforcommand("+moveright"));
-		if (scanx == stof(argv(0)))
-			rightdown = 1;
-		tokenize(findkeysforcommand("+forward"));
-		if (scanx == stof(argv(0)))
-			forwarddown = 1;
-		tokenize(findkeysforcommand("+back"));
-		if (scanx == stof(argv(0)))
-			backdown = 1;
-		/* end check for movekey press */
+		Input_Movecheck(scanx, 1);
 
 		/*if (scanx == K_UPARROW) {
 			adsOffset.z += adsAmount;
@@ -376,20 +392,7 @@ noref float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent
 		return FALSE;
 	case IE_KEYUP:
 	
-		/* check to see if movekeys were released */
-		tokenize(findkeysforcommand("+moveleft"));
-		if (scanx == stof(argv(0)))
-			leftdown = 0;
-		tokenize(findkeysforcommand("+moveright"));
-		if (scanx == stof(argv(0)))
-			rightdown = 0;
-		tokenize(findkeysforcommand("+forward"));
-		if (scanx == stof(argv(0)))
-			forwarddown = 0;
-		tokenize(findkeysforcommand("+back"));
-		if (scanx == stof(argv(0)))
-			backdown = 0;
-		/* end check for key release */
+		Input_Movecheck(scanx, 0);
 	
 		return FALSE;
 	case IE_MOUSEDELTA:
@@ -730,6 +733,7 @@ noref void() CSQC_Parse_Event =
 		}
 		
 		perks = newperks;
+		
 	}
 	else if (first == EVENT_UPDATE) 
 	{
@@ -749,6 +753,9 @@ noref void() CSQC_Parse_Event =
 			case 3:
 				if (Hitmark_time < time)
 					Hitmark_time = time + 0.2;
+				break;
+			case 4:
+				zoom_2_time = time + 0.25;
 				break;
 			default: 
 				break;

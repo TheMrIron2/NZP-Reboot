@@ -37,16 +37,12 @@ void GivePerk(float perk) {
 	SetPerk(self, self.perks);
 }
 
-void() give_revive = { GivePerk(P_SPEED); }
+void() give_revive = { GivePerk(P_REVIVE); }
 void() give_juggernog = { GivePerk(P_JUG); }
-
 void() give_doubletap = { GivePerk(P_DOUBLE); }
-
 void() give_speedcola = { GivePerk(P_SPEED); }
-
 void() give_flopper = { GivePerk(P_FLOP); }
-
-void() give_staminup = { GivePerk(P_FLOP); }
+void() give_staminup = { GivePerk(P_STAMIN); }
 
 
 void DrinkPerk(float perk) {

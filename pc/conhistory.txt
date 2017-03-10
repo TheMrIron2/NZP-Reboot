@@ -1,56 +1,19 @@
-<<<<<<< HEAD
-disconnect
-disconnect
-disconnect
-r_drawfps
-fps
-disconnect
-disconnect
-disconnect
-disconnect
-disconnect
-=======
 quit
-qiut
+map example_01
 quit
-quit
-quit
-quit
-qiut
-quit
-quit
-quit
-quit
-quit
-maxspeed
-quit
-quit
-quit
-quit
+map example_01
+restart
 fov 65
 quit
 fov 65
 quit
-quit
-quit
-quit
-quit
-quit
-quit
-quit
-quit
-quit
-quit
-quit
+/viewsize 
+viewsize 60
+viewsize
 quit
 fov 65
 quit
 fov 65
+fov 30
+fov 65
 quit
-quit
-quit
-quit
-quit
-quit
-quit
->>>>>>> naitemp
