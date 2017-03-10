@@ -686,7 +686,7 @@ void(float side) W_Fire =
 	delay = getWeaponDelay(self.weapon, FIRE);
 	spread = GetWeaponSpread(self.weapon);
 
-	if (self.zoom == 1) {
+	if (self.zoom == 1 || self.zoom == 2) {
 		if (self.weapon == W_TRENCH ||
 			self.weapon == W_DB ||
 			self.weapon == W_SAWNOFF ||

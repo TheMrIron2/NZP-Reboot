@@ -38,3 +38,10 @@ quit
 quit
 quit
 quit
+fov 65
+quit
+fov 65
+quit
+fov 65
+quit
+quit
