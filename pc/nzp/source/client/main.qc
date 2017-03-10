@@ -109,11 +109,15 @@ void() Update_Vmodel =
     {  
         vmodel_currentpos += (adsoffset * 0.15 * 128) * frametime;
         vmodel.origin = vmodel_currentpos + adsoffset;    
-        setviewprop(VF_DRAWCROSSHAIR, 0);      
     }
+	else if (ads == 2)
+	{
+		vmodel_currentpos += (adsoffset * 0.15 * 128) * frametime;
+        vmodel.origin = vmodel_currentpos + adsoffset;    
+	}
     else
     {
-        setviewprop(VF_DRAWCROSSHAIR, 0);    
+        //setviewprop(VF_DRAWCROSSHAIR, 0);    
         vmodel.origin = vmodel_currentpos + offset;
     }
 
@@ -748,6 +752,9 @@ noref void() CSQC_Parse_Event =
 			case 3:
 				if (Hitmark_time < time)
 					Hitmark_time = time + 0.2;
+				break;
+			case 4:
+				zoom_2_time = time + 0.25;
 				break;
 			default: 
 				break;

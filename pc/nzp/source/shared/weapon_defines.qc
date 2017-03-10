@@ -1117,7 +1117,7 @@ vector GetWeaponADSPos(float wep) {
 			return [-0.2, 3.28, 2.57];
 		case W_KAR_SCOPE:
 		case W_HEADCRACKER:
-			return [-2.19, 2.77, 1.42];
+			return [-2.19, 2.67, 0.42];
 		case W_M1:
 		case W_M1000:
 			return [-2.6, 2.46, 1.12];

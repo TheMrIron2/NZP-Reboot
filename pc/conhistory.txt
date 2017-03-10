@@ -9,3 +9,32 @@ quit
 give 15
 fov 65
 quit
+quit
+quit
+quit
+restart
+quit
+fov 65
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+fov 65
+quit
+quit
+fov 65
+quit
+fov 65
+quit
+fov 65
+quit
+quit
+quit
+quit
