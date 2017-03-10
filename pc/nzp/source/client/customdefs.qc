@@ -66,6 +66,8 @@ float interpolating;
 float rounds;
 
 
+#define printf(x, ...) print(sprintf(x, __VA_ARGS__))
+
 //Navmesh defs
 float navmesh_mode;
 void() toggle_navmesh_editor;

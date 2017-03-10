@@ -1,46 +1,4 @@
-navtest_place_start
-navtest_place_start
-navtest_place_start
-navtest_place_start
-navtest_place_start
-navtest_place_start
-navtest_place_start
-navtest_place_start
-navtest_place_start
-navtest_place_start
-navtest_place_start
-navtest_place_start
-navtest_place_start
-navtest_place_start
-navtest_place_start
-navtest_place_start
-bind y navtest_place_start
-bind y navtest_place_start
-bind y navtest_place_start
-bind y navtest_place_start
-bind y navtest_place_start
-bind y navtest_place_start
-nav_delete_poly
-bind y navtest_place_start
-bind y navtest_place_start
-bind y navtest_place_start
-bind y navtest_place_start
-nav_delete_verts
-nav_delete_verts
-nav_delete_verts
-nav_delete_poly
-nav_delete_verts
-s
-fog 0
-r_fog 0
-noclip
-sv_cheats 1
-noclip
-nav_delete_poly
-nav_delete_verts
 bind y screenshot
-nav_delete_verts
-nav_delete_poly
-nav_delete_verts
-nav_delete_verts
+clear
+clear
 bind y screenshot
