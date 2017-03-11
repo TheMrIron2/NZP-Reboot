@@ -30,8 +30,12 @@ struct navmesh_poly
 	float vert_count;
 	
 	//The following two fields are for the pathfinding usage, they are useless for the editor itself
+	//So these variables shouldn't be in the editor navmesh poly struct, but are essential for the pathfinding navmesh struct
 	float connected_polies[4];//What polygons we share an edge with (similar to links), more than 4 should be impossible
 	float connected_polies_count;
+	//TODO: precalculate the left / right vertices of connected polies
+	//i.e.: the edge shared with connected_polies[0] has a left vertex & right vertex as: connected_poly_left_vert[0] & connected_poly_right_vert[0]
+	//Calculate these values at export
 	//FIXME: we can do directional polygons by in some way calculating this connected polies field in some other way
 	vector center;//The center of the polygon in 3D space
 };
@@ -214,6 +218,8 @@ void navmesh_editor_draw()
 	pathfind_draw_result_portals();
 	pathfind_draw_result_path();
 	
+	
+	//The following code block is for detecting and placing waypoints at bsp map corners
 	if(navmesh_place_corner_state == NAVMESH_PLACE_CORNER_PLACING || navmesh_place_corner_state == NAVMESH_PLACE_CORNER_CONFIRM)
 	{
 		
@@ -1196,7 +1202,9 @@ void navmesh_place_test_goalent()
 	
 	if(goalent_set == TRUE && startent_set == TRUE)
 	{
+		print("Getting start poly.");
 		float start = navmesh_get_containing_poly(startent_pos);
+		print("Getting goal poly.");
 		float goal = navmesh_get_containing_poly(goalent_pos);
 		pathfind_start(start,goal,startent_pos,goalent_pos);
 	}
@@ -1285,7 +1293,7 @@ float navmesh_2D_line_point_dist(vector l1, vector l2, vector pos)
 }
 
 //Returns distance from pos to an edge of the poly if pos is very close to an edge of the poly at index poly_index, -1 otherwise
-float navmesh_is_close_to_poly(vector pos, float poly_index)
+float navmesh_dist_to_poly(vector pos, float poly_index)
 {
 	float leeway = 30;//Must be within 30 qu of edge to be considered close
 	
@@ -1318,9 +1326,6 @@ float navmesh_is_close_to_poly(vector pos, float poly_index)
 		
 		if(temp_dist < shortest_dist)
 		{
-			print("shorter dist: ");
-			print(ftos(temp_dist));
-			print(".\n");
 			shortest_dist = temp_dist;
 		}	
 	}
@@ -1374,13 +1379,14 @@ float navmesh_get_containing_poly(vector pos)
 		}
 		
 		//If we are not in polygon i, check if we are very close to one of its edges
-		float dist = navmesh_is_close_to_poly(pos,i);
+		float dist = navmesh_dist_to_poly(pos,i);
 		
 		if(dist >= 0)
 		{
 			if(dist < closest_poly_dist)
 			{
 				closest_poly = i;
+				closest_poly_dist = dist;
 			}
 		}
 
@@ -1624,7 +1630,14 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 	float funnel_right_index = 0;
 	vector funnel_right = navmesh_verts[pathfind_portals_right_vert[0]].pos;
 	
-	float last_cos_squared = -1;
+//	float last_cos_squared = -1;
+	
+	vector next_funnel_left;
+	vector next_funnel_right;
+	
+	
+	float inside_right_edge;
+	float inside_left_edge;
 	
 	while(1)
 	{
@@ -1636,7 +1649,6 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 		float advanced_left = FALSE;
 		float advanced_right = FALSE;
 		
-		float cos_squared = 0;
 		
 		
 		//Consider the end goal point as the last portal
@@ -1644,8 +1656,6 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 		if(funnel_left_index < pathfind_portals_length)
 		{
 			print("Trying to advance left edge.\n");
-			//Calculate the angle of advancing the left portal
-			vector next_funnel_left;
 			
 			if(funnel_left_index < pathfind_portals_length - 1)
 			{
@@ -1660,11 +1670,10 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 				//If funnel_left is pointing to the last portal in the array, consider the goal_point the last portal
 				next_funnel_left = goal_point;
 			}
-			//Get cos^2 of angle between vectors
-			cos_squared = pathfind_signed_cos_squared(funnel_apex, next_funnel_left, funnel_right);
-			
+
+			inside_right_edge = pathfind_point_is_to_left(funnel_apex,funnel_right,next_funnel_left);
 			//If the next left edge crosses the current right edge
-			if(pathfind_point_is_to_left(funnel_apex,funnel_right,next_funnel_left) < 0)
+			if(inside_right_edge < 0)
 			{
 				print("next left edge crosses current right edge.\n");
 				//Add funnel right point to path
@@ -1685,20 +1694,18 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 				funnel_left = navmesh_verts[pathfind_portals_left_vert[funnel_left_index]].pos;
 				funnel_right_index = funnel_right_index + 1;
 				funnel_right = navmesh_verts[pathfind_portals_right_vert[funnel_right_index]].pos;
-				last_cos_squared = pathfind_signed_cos_squared(funnel_apex, funnel_left, funnel_right);
 				continue;
 			}
-			
-			//If the next left edge narrows the funnel
-			if(cos_squared >= last_cos_squared)
+			//If the next left edge is in the funnel
+			inside_left_edge = pathfind_point_is_to_left(funnel_left,funnel_apex,next_funnel_left);
+			if(inside_left_edge >= 0 && inside_right_edge >= 0)
 			{
-				printf("next left edge narrows the funnel, %f >= %f.\n",cos_squared,last_cos_squared);
+				print("next left edge is in the funnel.\n");
 				//Advance the left edge
 				funnel_left = next_funnel_left;
 				funnel_left_index++;
 				
 				advanced_left = TRUE;
-				last_cos_squared = cos_squared;
 				
 				//Check if the portal we just added was the goal point (will be after the list)
 				if(funnel_left_index >= pathfind_portals_length)
@@ -1712,8 +1719,6 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 		if(funnel_right_index < pathfind_portals_length)
 		{
 			print("Trying to advance right edge:.\n");
-			//Calculate the angle of advancing the left portal
-			vector next_funnel_right;
 			
 			if(funnel_right_index < pathfind_portals_length - 1)
 			{
@@ -1728,11 +1733,10 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 				//If funnel_right is pointing to the last portal in the array, consider the goal_point the last portal
 				next_funnel_right = goal_point;
 			}
-			//Get cos^2 of angle between vectors
-			cos_squared = pathfind_signed_cos_squared(funnel_apex, funnel_left, next_funnel_right);
 			
 			//If the next right edge crosses the current left edge
-			if(pathfind_point_is_to_left(funnel_apex,funnel_left,next_funnel_right) > 0)
+			inside_left_edge = pathfind_point_is_to_left(funnel_left,funnel_apex,next_funnel_right);
+			if(inside_left_edge < 0)
 			{
 				print("next right edge crosses current left edge.\n");
 				//Add funnel left point to path
@@ -1753,20 +1757,18 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 				funnel_right = navmesh_verts[pathfind_portals_right_vert[funnel_right_index]].pos;
 				funnel_left_index = funnel_left_index + 1;
 				funnel_left = navmesh_verts[pathfind_portals_left_vert[funnel_left_index]].pos;
-				last_cos_squared = pathfind_signed_cos_squared(funnel_apex, funnel_left, funnel_right);
 				continue;
 			}
-			
-			//If the next right edge narrows the funnel
-			if(cos_squared >= last_cos_squared)
+			//If the next right edge is in the funnel
+			inside_right_edge = pathfind_point_is_to_left(funnel_apex,funnel_right,next_funnel_right);			
+			if(inside_left_edge >= 0 && inside_right_edge >= 0)
 			{
-				printf("next right edge narrows the funnel, %f >= %f.\n",cos_squared,last_cos_squared);
+				print("next right edge is in the funnel.\n");
 				//Advance the left edge
 				funnel_right = next_funnel_right;
 				funnel_right_index++;
 				
 				advanced_right = TRUE;
-				last_cos_squared = cos_squared;
 				
 				//Check if the portal we just added was the goal point (will be after the list)
 				if(funnel_right_index >= pathfind_portals_length)
@@ -1779,20 +1781,182 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 		if(advanced_left == FALSE && advanced_right == FALSE)
 		{
 			print("Hit funnel freeze condition.\n");
-			return;
-			//If neither the right nor the left vertex was advanced:
-			//find the closest vert in the portal left verts that either crosses or is in the funnel
-			//find the closest vert in the portal right verts that either crosses or is in the funnel
-			//if any of the vertices cross, pick the one with the lower portal index:
-			//	place a path corner at the opposite vertex of the current funnel
-			//	resume the algorithm
-			//if one or both of the found vertices are in the funnel:
-			//	update the corresponding funnel edge points with the new corners
-			//	resume the algorithm
 			
-			//TODO: when finding min verts, if the next one is the same as the current vertex, skip it (not sure if vertex equality is defined)
-			//TODO: replace pathfind_portals array with vectors, and set the last one as the goal position
+			float left_vert = -1;
+			float left_type;
+			float left_portal_index;//index of the vertex in the list of portals
 			
+			float right_vert = -1;
+			float right_type;
+			float right_portal_index;//index of the vertex in the list of portals
+			
+			float crossed = 1;//Indicates the vert crossed the funnel
+			float contained = 2;//Indicates a vert is in the funnel
+			
+			float last_vert = -1;//used to skip calculating the same vertex more than once
+			
+			
+			//Find the closest vertex in the portal left with the lowest index that crosses the funnel or is in the funnel
+			for(float i = funnel_left_index + 1; i < pathfind_portals_length + 1; i++)
+			{
+				if(i < pathfind_portals_length - 1)
+				{
+					//Don't calculate the same vertex again
+					if(last_vert == pathfind_portals_left_vert[i])
+						continue;
+					last_vert = pathfind_portals_left_vert[i];
+					next_funnel_left = navmesh_verts[last_vert].pos;
+				}
+				else//consider goal pos as last portal edge
+				{
+					next_funnel_left = goal_point;
+				}
+				
+				inside_right_edge = pathfind_point_is_to_left(funnel_apex,funnel_right,next_funnel_left);
+				
+				//If the left vertex crosses the funnel (left vertex is outside the funnel's right edge)
+				if(inside_right_edge < 0)
+				{
+					left_vert = pathfind_portals_left_vert[i];
+					left_type = crossed;
+					break;
+				}
+				
+				inside_left_edge = pathfind_point_is_to_left(funnel_left,funnel_apex,next_funnel_left);
+				
+				//If the left vertex is within the funnel
+				if(inside_left_edge >= 0 && inside_right_edge >= 0)
+				{
+					left_vert = pathfind_portals_left_vert[i];
+					left_type = contained;
+					left_portal_index = i;
+					break;
+				}
+			}
+			
+			last_vert = -1;
+			
+			//Find the closest vertex in the portal right with the lowest index that crosses the funnel or is in the funnel
+			for(float i = funnel_right_index + 1; i < pathfind_portals_length; i++)
+			{
+				if(i < pathfind_portals_length - 1)
+				{
+					//Don't calculate the same vertex again
+					if(last_vert == pathfind_portals_right_vert[i])
+						continue;
+					last_vert = pathfind_portals_right_vert[i];
+					next_funnel_right = navmesh_verts[last_vert].pos;
+				}
+				else//consider goal pos as last portal edge
+				{
+					next_funnel_right = goal_point;
+				}
+				
+				inside_left_edge = pathfind_point_is_to_left(funnel_left,funnel_apex,next_funnel_right);
+				
+				//If the right vertex crosses the funnel (right vertex is outside the funnel's left edge)
+				if(inside_left_edge < 0)
+				{
+					right_vert = pathfind_portals_right_vert[i];
+					right_type = crossed;
+					break;
+				}
+				
+				inside_right_edge = pathfind_point_is_to_left(funnel_apex,funnel_right,next_funnel_right);
+				
+				//If the right vertex is within the funnel
+				if(inside_left_edge >= 0 && inside_right_edge >= 0)
+				{
+					right_vert = pathfind_portals_right_vert[i];
+					right_type = contained;
+					right_portal_index = i;
+					break;
+				}
+			}
+			
+			//If no vertices were found, goal is reachable from here
+			if(left_vert == -1 && right_vert == -1)
+			{
+				pathfind_result_path[pathfind_result_length++] = goal_point;
+				return;
+			}
+			
+			
+			float use_left;
+			
+			//If both verts were found
+			//Find which vertex has a lower index
+			if(left_vert != -1 && right_vert != -1) 
+			{
+				if(left_portal_index < right_portal_index)
+				{	
+					use_left = TRUE;
+				}
+				else
+				{	
+					use_left = FALSE;
+				}	
+			}
+			
+			//if left vert was found
+			if(left_vert != -1)
+			{
+				use_left = TRUE;
+			}
+			//else right vert was found
+			else
+			{
+				use_left = FALSE;
+			}
+			
+			if(use_left)
+			{
+				if(left_type == crossed)
+				{
+					//Place corner at current right funnel edge
+					pathfind_result_path[pathfind_result_length++] = funnel_right;
+					
+					//Restart algorithm with the portal after the right point
+					funnel_apex = funnel_right;
+					
+					funnel_right = navmesh_verts[pathfind_portals_right_vert[++funnel_right_index]].pos;
+					funnel_left_index = funnel_right_index;
+					funnel_left = navmesh_verts[pathfind_portals_left_vert[funnel_left_index]].pos;
+					continue;
+				}
+				else//in funnel
+				{
+					//Update current left funnel edge to use this vertex
+					funnel_left = next_funnel_left;
+					funnel_left_index = left_portal_index;
+					
+					continue;
+				}
+			}
+			else//use right
+			{
+				if(right_type == crossed)
+				{
+					//Place corner at current left funnel edge
+					pathfind_result_path[pathfind_result_length++] = funnel_left;
+					
+					//Restart algorithm with the portal after the left point
+					funnel_apex = funnel_left;
+					
+					funnel_left = navmesh_verts[pathfind_portals_left_vert[++funnel_left_index]].pos;
+					funnel_right_index = funnel_left_index;
+					funnel_right = navmesh_verts[pathfind_portals_right_vert[funnel_right_index]].pos;
+					continue;
+				}
+				else//in funnel
+				{
+					//Update current right funnel edge to use this vertex
+					funnel_right = next_funnel_right;
+					funnel_right_index = right_portal_index;
+					
+					continue;
+				}
+			}			
 		}
 	print("==========================\n");
 	}
