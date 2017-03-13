@@ -1522,20 +1522,6 @@ float pathfind_point_is_to_left(vector a, vector b, vector p)
 	return (b.x - a.x)*(p.y - a.y) - (b.y - a.y)*(p.x - a.x);
 }
 
-//Returns the signed cos^2(theta) where theta is the smaller angle between the vectors (left-apex) and (right-apex)
-float pathfind_signed_cos_squared(vector apex, vector left, vector right)
-{
-	//v1 is the left edge of the funnel
-	vector v1 = left - apex;
-	//v2 is the right edge of the funnel
-	vector v2 = right - apex;
-	
-	float dot = v1*v2;
-	//Getting the sign of the dot product (because we lose it when squaring it)
-	float sign = dot / fabs(dot);
-	return sign * (dot*dot) / ((v1*v1)*(v2*v2));
-}
-
 //Applies a funnel algorithm to the path defined by the array pathfind_result_node_path 
 // and populates pathfind result path
 void pathfind_smooth_path(vector start_point, vector goal_point)
@@ -1545,15 +1531,6 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 	{
 		float prev_poly = pathfind_result_node_path[i-1];
 		float poly = pathfind_result_node_path[i];
-		/*vector prev_poly_pos;
-		prev_poly_pos.x = navmesh_polies[prev_poly].center.x;
-		prev_poly_pos.y = navmesh_polies[prev_poly].center.y;
-		prev_poly_pos.z = navmesh_polies[prev_poly].center.z;
-		vector poly_pos;
-		poly_pos.x = navmesh_polies[poly].center.x;
-		poly_pos.y = navmesh_polies[poly].center.y;
-		poly_pos.z = navmesh_polies[poly].center.z;*/
-		//Was going to use 
 		
 		//Find the two vertices that these polygons share
 		//Because polygons must share two consecutive verts:
@@ -1983,11 +1960,11 @@ void pathfind_trace_path(float start, float goal)
 	pathfind_result_node_length = 1;
 	do
 	{
-		print("Poly ");
-		print(ftos(current));
-		print(" came from  ");
-		print(ftos(pathfind_poly_prev[current]));
-		print(".\n");
+		//print("Poly ");
+		//print(ftos(current));
+		//print(" came from  ");
+		//print(ftos(pathfind_poly_prev[current]));
+		//print(".\n");
 		current = pathfind_poly_prev[current];
 		pathfind_result_node_length++;
 	} while(current != start);
@@ -2073,7 +2050,7 @@ float pathfind_start(float start, float goal, vector start_pos, vector end_pos)
 	{
 		if(current == goal)
 		{
-			print("Current is now goal. Breaking.\n");
+			//print("Current is now goal. Breaking.\n");
 			pathfind_success = TRUE;
 			break;
 		}
@@ -2084,22 +2061,22 @@ float pathfind_start(float start, float goal, vector start_pos, vector end_pos)
 		{
 			float neighbor = navmesh_polies[current].connected_polies[i];
 			
-			print("Checking poly ");
+			/*print("Checking poly ");
 			print(ftos(current));
 			print("'s neighbor ");
 			print(ftos(neighbor));
-			print(".\n");
+			print(".\n");*/
 			
 			if(pathfind_poly_set[neighbor] != PATHFIND_POLY_SET_CLOSED)
 			{
-				print("Neighbor is not in closed list.\n");
+				//print("Neighbor is not in closed list.\n");
 				//Calculate tentative f score
 				//Calculate tentative g score (distance from start to current + distance from current to neighbor)
 				float tentative_g_score = pathfind_poly_g_score[current] + vlen(navmesh_polies[neighbor].center - navmesh_polies[current].center);
 				
 				if(pathfind_poly_set[neighbor] != PATHFIND_POLY_SET_OPEN || tentative_g_score < pathfind_poly_g_score[neighbor])
 				{
-					print("Neighbor is not in open list, or a better g score has been found.\n");
+					//print("Neighbor is not in open list, or a better g score has been found.\n");
 					//Adding neighbor to open set
 					pathfind_poly_set[neighbor] = PATHFIND_POLY_SET_OPEN;
 					
@@ -2111,11 +2088,11 @@ float pathfind_start(float start, float goal, vector start_pos, vector end_pos)
 					//Linking neighbor node to current node (for tracing path)
 					pathfind_poly_prev[neighbor] = current;
 					
-					print("Assigning Poly ");
+					/*print("Assigning Poly ");
 					print(ftos(neighbor));
 					print(" came from  ");
 					print(ftos(current));
-					print(".\n");
+					print(".\n");*/
 				}
 				
 			}
