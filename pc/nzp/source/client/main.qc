@@ -53,7 +53,6 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	registercommand("navtest_place_start");
 	
 	//===================================
-	
 	print("CSQC Started\n");
 	dummy = spawn();
 	if(serverkey("constate") == "disconnected")
@@ -85,12 +84,19 @@ noref void() CSQC_WorldLoaded =
 	mzlflash.renderflags = vmodel.renderflags;
 	mzlflash.origin = vmodel.origin + vmodel_muzzleoffset;
 	//setmodel(mzlflash,"models/weapons/mg/mzl.iqm");
+	
 };
 
+#define ADS_THOMPSON    '-3 +5.80 +4.52'
+
+/*vector adsOffset;
+float adsAmount;
+float adsDir;*/
 void() Update_Vmodel =
 {
-	local vector offset;
+	local vector offset, adsoffset;
 	local vector dir;
+    local float ads;
 	
 	offset_x = 0.6 * sin(time * 1.2);
 	offset_y = 0.4 * cos(time * 1.5);
@@ -115,7 +121,24 @@ void() Update_Vmodel =
 	vmodel.angles += (vmodel_avelocity * 128) * frametime;
 	vmodel_avelocity *= 1 - frametime * 30;
 	
-	vmodel.origin = vmodel_currentpos + offset;
+	adsoffset = GetWeaponADSPos(weapon);
+
+    ads = getstatf(STAT_WEAPONZOOM); //get the zoomtoggle value 
+    if(ads == 1)
+    {  
+        vmodel_currentpos += (adsoffset * 0.15 * 128) * frametime;
+        vmodel.origin = vmodel_currentpos + adsoffset;    
+    }
+	else if (ads == 2)
+	{
+		vmodel_currentpos += (adsoffset * 0.15 * 128) * frametime;
+        vmodel.origin = vmodel_currentpos + adsoffset;    
+	}
+    else
+    {
+        //setviewprop(VF_DRAWCROSSHAIR, 0);    
+        vmodel.origin = vmodel_currentpos + offset;
+    }
 
 	if(weapon == 1)
 	{
@@ -137,7 +160,7 @@ noref void(float isnew) CSQC_Ent_Update =
 {
 	if(isnew)
 		print(strcat(etos(self),"\n"));
-}	
+}
 
 
 // CALLED EVERY CLIENT RENDER FRAME
@@ -151,7 +174,7 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 
 	//disable quake status bar and quake crosshair
 	setviewprop(VF_DRAWENGINESBAR, 0);	
-	setviewprop(VF_DRAWCROSSHAIR, 1);
+	setviewprop(VF_DRAWCROSSHAIR, 0);
 	
 	//autoadd entities received from servers for drawing	
 	addentities(MASK_ENGINE);
@@ -171,10 +194,15 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 		//vmodel.origin -= vorg;
 		//vmodel.angles -= vang;
 		//addentity(vmodel);
-		float weaponframe;
+		float weaponframe, weapon2frame;
 		weaponframe = getstatf(STAT_WEAPONFRAME);
-		
 
+		float duration = getstatf(STAT_WEAPONDURATION);
+
+		if (!duration) {
+			duration = 0.1;
+		}
+		
 		if (curweaponframe != weaponframe) {
 			interpolating = TRUE;
 			vmodel.lerpfrac = 0;
@@ -182,22 +210,50 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 		}
 		
 		if (interpolating == TRUE) {
-			vmodel.lerpfrac += frametime * 10;
-			v2model.lerpfrac += frametime * 10;
+			vmodel.lerpfrac += frametime * (1/duration);
 
 			if (vmodel.lerpfrac >= 1.0) {
 				oldweaponframe = curweaponframe;
 				vmodel.lerpfrac = 0;
-				v2model.lerpfrac = 0;
 				interpolating = FALSE;	
 			}
 			
 		}
 		vmodel.frame = oldweaponframe;
 		vmodel.frame2 = curweaponframe;
-		//v2model.frame = getstatf(STAT_WEAPON2FRAME);
-		v2model.frame = oldweaponframe;
-		v2model.frame2 = curweaponframe;
+
+		if (IsDualWeapon(getstatf(STAT_ACTIVEWEAPON))) {
+			float duration2 = getstatf(STAT_WEAPON2DURATION);
+			if (!duration2) {
+				duration2 = 0.1;
+			}
+			weapon2frame = getstatf(STAT_WEAPON2FRAME);
+			if (curweapon2frame != weapon2frame) {
+				interpolating2 = TRUE;
+				v2model.lerpfrac = 0;
+				curweapon2frame = weapon2frame;
+			}
+			
+			if (interpolating2 == TRUE) {
+				v2model.lerpfrac += frametime * (1/duration2);
+
+				if (v2model.lerpfrac >= 1.0) {
+					oldweapon2frame = curweapon2frame;
+					v2model.lerpfrac = 0;
+					interpolating2 = FALSE;	
+				}
+				
+			}
+
+			v2model.frame = oldweapon2frame;
+			v2model.frame2 = curweapon2frame;
+
+		} else {
+			//v2model.frame = getstatf(STAT_WEAPON2FRAME);
+			v2model.lerpfrac = vmodel.lerpfrac;
+			v2model.frame = oldweaponframe;
+			v2model.frame2 = curweaponframe;
+		}
 		v2model.angles = vmodel.angles;
 		v2model.origin = vmodel.origin;
 		if(mzlflash.alpha > 0.09)
@@ -237,81 +293,7 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 	}
 	else
 	{
-		local float health, ammo, curmag, points, grenades;
-		string ammostring;
-		health = getstatf(STAT_HEALTH);
-		// fix me: change the 51 and 50 to human readable const floats like STAT_PISTOLAMMO, STAT_MGAMMO or something
-		curmag = getstatf(STAT_CURRENTMAG);
-		points = getstatf(STAT_POINTS);
-		ammo = getstatf(STAT_AMMO);
-		grenades = getstatf(STAT_GRENADES);
-
-		ammostring = strcat(ftos(curmag), strcat("/",ftos(ammo)));
-		drawstring([0.01*width, 0.94*height, 0], strcat("+",ftos(health)), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
-		drawstring([0.01*width, 0.90*height, 0], ftos(rounds), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
-		
-		drawstring([0.97*width, 0.94*height, 0], ftos(grenades), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1); // nai -- draw grenade val
-
-
-		drawstring([0.80*width, 0.90*height, 0], ftos(points), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
-		
-		drawstring([0.75*width, 0.94*height, 0], ammostring, [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
-
-
-		//Draw useprint
-		if (useprint_time > time) {
-			string usestring, usebutton;
-			float print_width, x;
-			
-			tokenize(findkeysforcommand("+button7"));
-			usebutton = strtoupper(keynumtostring(stof(argv(0))));
-			//usebutton = keynumtostring(-1);
-
-
-			switch (useprint_type) {
-				case 0://clear
-					usestring = "";
-					break;
-				case 1://door
-					usestring = strcat("Hold ",usebutton, " to open door [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 2://debris
-					usestring = strcat("Hold ",usebutton, " to remove debris [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 3://ammo
-					usestring = strcat("Hold ",usebutton, " to buy ammo for ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 4://weapon
-					usestring = strcat("Hold ",usebutton, " to buy ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 5://window
-					usestring = strcat("Hold ",usebutton, " to Rebuild Barrier");
-					break;
-				case 6://box
-					usestring = strcat("Hold ",usebutton, " to buy a random weapon [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 7://box take
-					usestring = strcat("Hold ",usebutton, " to take weapon");
-					break;
-				case 8://power
-					usestring = "The power must be activated first";
-					break;
-				case 9://perk
-					usestring = strcat("Hold ",usebutton, " to buy ", "PERK", " [Cost:", ftos(useprint_cost),"]");
-					break;
-				case 10://turn on power
-					usestring = strcat("Hold ",usebutton, " to turn on the power");
-					break;
-				default:
-					usestring = "This should not happen you dum fuck";
-					break;
-			}
-
-			print_width = stringwidth (usestring, 0, [0.015*width, 0.015*width, 0]);
-			x = (width - print_width)/2;
-
-			drawstring([x, 0.70*height, 0], usestring, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
-		}
+		HUD_Draw(g_width, g_height);
 	}
 	if(serverkey("constate") != "active" && serverkey("disconnected"))
 	{
@@ -398,6 +380,31 @@ noref float(string cmd) CSQC_ConsoleCommand =
 	}
 	return FALSE;
 };
+//**********************************************************************//
+// Input_Keycheck                                                       //
+//                                                                      //
+// Called at InputEvent and allows to set var if key is at that state   //
+// NOTE: ALL movekeys are called in order to prevent unsetting keys     //
+//**********************************************************************//
+
+void(float scanx, float setval) Input_Movecheck = 
+{
+	tokenize(findkeysforcommand("+moveleft"));
+	if (scanx == stof(argv(0)))
+		K_LEFTDOWN = setval;
+	
+	tokenize(findkeysforcommand("+moveright"));
+	if (scanx == stof(argv(0)))
+		K_RIGHTDOWN = setval;
+		
+	tokenize(findkeysforcommand("+forward"));
+	if (scanx == stof(argv(0)))
+		K_FORWARDDOWN = setval;
+		
+	tokenize(findkeysforcommand("+back"));
+	if (scanx == stof(argv(0)))
+		K_BACKDOWN = setval;
+}
 
 noref float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent =
 {
@@ -411,9 +418,56 @@ noref float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent
 				Menu_Click();
 				return TRUE;
 			}
+
 		}
+		
+		Input_Movecheck(scanx, 1);
+
+		/*if (scanx == K_UPARROW) {
+			adsOffset.z += adsAmount;
+			print(vtos(adsOffset), "\n");
+		}
+		if (scanx == K_DOWNARROW) {
+			adsOffset.z -= adsAmount;
+			print(vtos(adsOffset), "\n");
+		}
+		if (scanx == K_LEFTARROW) {
+			adsOffset.y += adsAmount;
+			print(vtos(adsOffset), "\n");
+		}
+		if (scanx == K_RIGHTARROW) {
+			adsOffset.y -= adsAmount;
+			print(vtos(adsOffset), "\n");
+		}
+		if (scanx == K_KP_PLUS) {
+			adsOffset.x += adsAmount;
+			print(vtos(adsOffset), "\n");
+		}
+		if (scanx == K_KP_MINUS) {
+			adsOffset.x -= adsAmount;
+			print(vtos(adsOffset), "\n");
+		}
+		if (scanx == K_LCTRL) {
+			if (!adsAmount) {
+				adsAmount = 1;
+			}
+
+			adsAmount *= 0.1;
+			print(ftos(adsAmount), "\n");
+		}
+		if (scanx == K_RCTRL) {
+			if (!adsAmount) {
+				adsAmount = 1;
+			}
+
+			adsAmount *= 10;
+			print(ftos(adsAmount), "\n");
+		}*/
 		return FALSE;
 	case IE_KEYUP:
+	
+		Input_Movecheck(scanx, 0);
+	
 		return FALSE;
 	case IE_MOUSEDELTA:
 		return FALSE;
@@ -501,7 +555,7 @@ noref void() CSQC_Parse_Event =
 		local float entnum, traceent;
 		local vector pos, norm;
 		entnum = readentitynum();
-
+		
 		pos_x = readcoord();
 		pos_y = readcoord();
 		pos_z = readcoord();
@@ -510,6 +564,8 @@ noref void() CSQC_Parse_Event =
 		norm_z = readcoord();
 		
 		traceent = readentitynum();
+		
+		crosshair_spread_time = time + 70/getWeaponRecoilReturn(getstatf(STAT_ACTIVEWEAPON));
 
 		if(entnum == player_localentnum)
 		{
@@ -560,6 +616,7 @@ noref void() CSQC_Parse_Event =
 			splat.targetpos = norm * 1.5;
 			splat.predraw = alphafade;
 		}
+		
 	}
 	else if(first == EVENT_WEAPONCHANGE)
 	{
@@ -579,18 +636,23 @@ noref void() CSQC_Parse_Event =
 		v2model_targetpos = vmodel_targetpos = vmodel.origin;
 		v2model_muzzleoffset = vmodel_muzzleoffset = '12 0 1';
 		weapon = to;
+		
+		HUD_Change_time = time + 6;
 	}
 	else if(first == EVENT_UPDATEVMODEL)
 	{
 		local string new;
+		local float skin2;
 		new = readstring();
 		setmodel(vmodel,new);
+		vmodel.skin = readbyte();
 	}
 	else if(first == EVENT_UPDATEV2MODEL)
 	{
 		local string new2;
 		new2 = readstring();
 		setmodel(v2model,new2);
+		v2model.skin = readbyte();
 	}
 	else if(first == EVENT_USEPRINT) {
 		useprint_type = readbyte();
@@ -601,7 +663,178 @@ noref void() CSQC_Parse_Event =
 		
 	} else if(first == EVENT_NEWROUND) {
 		rounds = readbyte();
+		HUD_Change_time = time + 6;
 	} else if (first == EVENT_SETROUND) {
 		rounds = readbyte();
+	}
+}
+	else if (first == EVENT_PERK) 
+	{
+		float newperks, s;
+		
+		newperks = readlong();
+				
+		if (newperks & P_JUG && !(perks & P_JUG))
+		{
+			perk_order[current_perk_order] = P_JUG;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (newperks & P_DOUBLE && !(perks & P_DOUBLE))
+		{
+			perk_order[current_perk_order] = P_DOUBLE;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (newperks & P_SPEED && !(perks & P_SPEED))
+		{
+			perk_order[current_perk_order] = P_SPEED;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (newperks & P_REVIVE && !(perks & P_REVIVE))
+		{
+			perk_order[current_perk_order] = P_REVIVE;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (newperks & P_FLOP && !(perks & P_FLOP))
+		{
+			perk_order[current_perk_order] = P_FLOP;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (newperks & P_STAMIN && !(perks & P_STAMIN))
+		{
+			perk_order[current_perk_order] = P_STAMIN;
+			current_perk_order = current_perk_order + 1;
+		}
+		if (perks & P_JUG && !(newperks & P_JUG))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_JUG)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
+		}
+		if (perks & P_DOUBLE && !(newperks & P_DOUBLE))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_DOUBLE)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
+		}
+		if (perks & P_SPEED && !(newperks & P_SPEED))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_SPEED)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
+		}
+		if (perks & P_REVIVE && !(newperks & P_REVIVE))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_REVIVE)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
+		}
+		if (perks & P_FLOP && !(newperks & P_FLOP))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_FLOP)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
+		}
+		if (perks & P_STAMIN && !(newperks & P_STAMIN))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == P_STAMIN)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order = current_perk_order - 1;
+		}
+		
+		perks = newperks;
+		
+	}
+	else if (first == EVENT_UPDATE) 
+	{
+		float updatetype = readbyte();
+		float var_1 = readbyte();
+		float var_2 = readbyte();
+		float var_3 = readbyte();
+		
+		switch (updatetype)
+		{
+			case 1: 
+				HUD_Change_time = time + var_1; 
+				break;
+			case 2:
+				rounds_change = var_1;
+				break;
+			case 3:
+				if (Hitmark_time < time)
+					Hitmark_time = time + 0.2;
+				break;
+			case 4:
+				zoom_2_time = time + 0.25;
+				break;
+			default: 
+				break;
+		}
+		
 	}
 }

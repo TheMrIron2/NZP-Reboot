@@ -36,7 +36,7 @@ float IsActive(float way) {
 		door = find(world, wayTarget, waypoints[way].targetdoor);
 
 		if (door != world) {
-			if (door.state = STATE_BOTTOM) {
+			if (door.state == STATE_BOTTOM) {
 				return 0;
 			}
 		}
@@ -161,13 +161,13 @@ float Pathfind (entity z, float s_wp, float e_wp)
 
 			// go to the furthest one on the path that we can actually see
 			
-			if (tracebox(waypoints[s_wp].org,VEC_HULL_MIN,VEC_HULL_MAX,waypoints[i].org,TRUE,z))
+			if (tracemove(waypoints[s_wp].org,VEC_HULL_MIN,VEC_HULL_MAX,waypoints[i].org,TRUE,z))
 			{
 				//VectorCopy(waypoints[i].origin, res);
 				//print("Giving third wp ", ftos(i), "\n");
 				return i;
 			}
-			else if (tracebox(waypoints[s_wp].org,VEC_HULL_MIN,VEC_HULL_MAX,waypoints[j].org,TRUE,z))
+			else if (tracemove(waypoints[s_wp].org,VEC_HULL_MIN,VEC_HULL_MAX,waypoints[j].org,TRUE,z))
 			{
 				//VectorCopy(waypoints[j].origin, res);
 				//print("Giving second wp ", ftos(j), "\n");
@@ -179,8 +179,6 @@ float Pathfind (entity z, float s_wp, float e_wp)
 				//print("Giving first wp ", ftos(current), "\n");
 				return current;
 			}
-
-			return;
 		}
 
 
@@ -294,9 +292,8 @@ void CalcDistances() {
 void creator_way_touch();
 void LoadWaypointData() 
 {
-    float file, which, point;
+	float file, which, point;
 	string h;
-	local vector where;
 	float targetcount, loop, waycount;
 	entity new_way;
 
@@ -329,6 +326,7 @@ void LoadWaypointData()
 		}
 	}
 
+	new_way = spawn();
 	point = 0;
 	waycount = 0;
 	targetcount = 0;
@@ -434,6 +432,12 @@ void LoadWaypointData()
 					targetcount++;
 				}
 				break;
+		}
+	}
+
+	if (new_way) {
+		if (!cvar("waypoint_mode")) {
+			remove(new_way);
 		}
 	}
 

@@ -27,6 +27,7 @@ void(string s) playSoundAtPlayers =
 void() EndRound =
 {
 	rounds_change = 4;
+	SetUpdate(self, UT_ROUNDS_CHANGE, rounds_change, 0, 0);
 	playSoundAtPlayers("sounds/rounds/eround.wav");
 	round_changetime = time + 5;
 }
@@ -46,6 +47,7 @@ void() NewRound =
 	{
 		playSoundAtPlayers("sounds/rounds/nround.wav");
 		rounds_change = 6;
+		SetUpdate(self, UT_ROUNDS_CHANGE, rounds_change, 0, 0);
 		blink_return = time + 2;
 	}
 	rounds = rounds + 1;
@@ -122,8 +124,9 @@ void() Round_Core =
 		rounds_change = 2;
 	}
 
-	if (round_changetime <= (time + 2) && rounds && round_changetime)
+	if (round_changetime <= (time + 2) && rounds && round_changetime) {
 		rounds_change = 5;
+	}
 
 	if (blink_return && blink_return < time && rounds_change == 6)
 	{
@@ -156,6 +159,8 @@ void() Round_Core =
 		Delay_Time = 0;
 		EndRound();
 	}
+	
+	SetUpdate(self, UT_ROUNDS_CHANGE, rounds_change, 0, 0);
 }
 
 void() InitRounds =
@@ -168,4 +173,5 @@ void() InitRounds =
 	round_changetime = time + 2;
 	rounds_change = 1;
 	roundinit = 1;
+	SetUpdate(self, UT_ROUNDS_CHANGE, rounds_change, 0, 0);
 }

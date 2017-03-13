@@ -24,6 +24,11 @@ void() StartFrame =
 		Round_Core();
 		Do_Zombie_AI ();
 	} else {
+	
+	entity SpawnedIn;
+	SpawnedIn = find(world, classname, "player");
+	
+	if (SpawnedIn)
 		InitRounds();
 	}
 }
@@ -59,13 +64,20 @@ void() worldspawn =
 	precache_sound("sounds/weapons/colt/magout.wav");
 	precache_sound("sounds/weapons/colt/shoot.wav");
 	precache_sound("sounds/weapons/colt/slide.wav");
+
+	precache_sound("sounds/weapons/papfire.wav");
 	
 	precache_sound("sounds/weapons/grenade/prime.wav");
 	precache_sound("sounds/weapons/grenade/throw.wav");
 	
+	precache_sound("sounds/weapons/knife/knife_hitbod.wav");
+	precache_sound("sounds/weapons/knife/knife.wav");
+	precache_sound("sounds/weapons/knife/knife_hit.wav");
+	
 	precache_sound("sounds/rounds/eround.wav");
 	precache_sound("sounds/rounds/nround.wav");
 	precache_sound("sounds/rounds/splash.wav");
+	precache_sound("sounds/music/end.wav");
 	precache_sound("sounds/null.wav");
 
 	precache_sound("sounds/misc/buy.wav");
@@ -74,6 +86,7 @@ void() worldspawn =
 
 	
 	precache_model ("models/weapons/m1911/v_colt.mdl");
+	precache_model ("models/weapons/m1911/g_colt.mdl");
 	precache_model ("progs/VModels/v_nade.mdl");
 	precache_model ("progs/GModels/g_grenade.mdl");
 	precache_model ("progs/GModels/g_betty.mdl");
@@ -146,11 +159,16 @@ void() worldspawn =
 	precache_sound ("sounds/zombie/sc1.wav");
 
 	clientstat(STAT_CURRENTMAG, EV_FLOAT, currentmag);
+	clientstat(STAT_CURRENTMAG2, EV_FLOAT, currentmag2);
 	clientstat(STAT_POINTS, EV_FLOAT, points);
 	clientstat(STAT_WEAPON2FRAME, EV_FLOAT, weapon2frame);
 	clientstat(STAT_WEAPON2MODEL, EV_STRING, weapon2model);
 	clientstat(STAT_GRENADES, EV_FLOAT, primary_grenades);
 	clientstat(STAT_SECGRENADES, EV_FLOAT, secondary_grenades);
+	clientstat(STAT_PROGRESSBAR, EV_FLOAT, progress_bar_percent);
+	clientstat(STAT_WEAPONDURATION, EV_FLOAT, weapon_animduration);
+	clientstat(STAT_WEAPON2DURATION, EV_FLOAT, weapon2_animduration);
+	clientstat(STAT_WEAPONZOOM, EV_FLOAT, zoom);
 
 	mappath = strcat("maps/", mapname);
 	mappath = strzone(mappath);

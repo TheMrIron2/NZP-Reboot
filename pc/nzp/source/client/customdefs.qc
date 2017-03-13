@@ -57,11 +57,26 @@ float useprint_weapon;
 float useprint_cost;
 float useprint_time;
 
-float weaponframetime;
-float oldweaponframe;
-float curweaponframe;
-float interpolating;
+float HUD_Change_time; 
+float Hitmark_time;
+float crosshair_spread_time;
+float zoom_2_time;
 
+float weaponframetime;
+float weapon2frametime;
+float oldweaponframe;
+float oldweapon2frame;
+float curweaponframe;
+float curweapon2frame;
+float interpolating;
+float interpolating2;
+
+
+float rounds;
+float perks;
+float rounds_change;
+
+float K_LEFTDOWN, K_RIGHTDOWN, K_BACKDOWN, K_FORWARDDOWN;
 
 float rounds;
 
@@ -97,3 +112,9 @@ float(float start, float goal, vector start_pos, vector end_pos) pathfind_start;
 void() pathfind_draw_result_node_path;
 void() pathfind_draw_result_path;
 void() pathfind_draw_result_portals;
+#define 	P_JUG		1
+#define 	P_DOUBLE	2
+#define 	P_SPEED		4
+#define 	P_REVIVE	8
+#define 	P_FLOP		16
+#define 	P_STAMIN	32

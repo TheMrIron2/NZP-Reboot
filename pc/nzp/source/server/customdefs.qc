@@ -34,30 +34,55 @@ entity activator;
 
 //player funcs
 .float zoom;
+.float sprinting;
 .float weaponskin;
-void() sprintstop;
 .float stamina;
+void() W_SprintStop;
 .float into_sprint;
-float yeahIamrunning;
+
 
 //Weaponsystem defines
 void SwitchWeapon(float to);
+void GetUp();
 void Weapon_Logic();
 .float downed;
 .float fire_delay;
+.float fire_delay2;
 .float reload_delay;
+.float reload_delay2;
+.float health_delay;
+.float progress_bar;
+.float progress_bar_time;
+.float progress_bar_percent;
+.float weaponbk;
 .float currentmag;
+.float currentmag2;
+.float currentmagbk;
+.float currentmagbk2;
+.float currentammobk;
 .float secondaryammo;
 .float semi;
+.float semi2;
 .float semiuse;
 .float semiswitch;
 .float semireload;
 .float secondarymag;
+.float secondarymag2;
 .float secondaryweapon;
 .float NeedLoad;
 .string weapon2model;
 .float weapon2frame;
 .float reloadinterupted;
+.float hitcount;
+
+#define S_LEFT 0
+#define S_RIGHT 1
+#define S_BOTH 2
+
+//Knife 
+.float semiknife;
+.float knife_delay;
+.float bowie;
 
 //Grenades
 .float grenades;
@@ -69,15 +94,23 @@ void Weapon_Logic();
 .float throw_delay;
 
 //weapon frames
-void Set_W_Frame (float startframe, float endframe, float duration, float funccalledin, float animtype, void() endanimfunc, string set_model, float dontstartnew);
+void Set_W_Frame (float startframe, float endframe, float duration, float funccalledin, float animtype, void(optional float t) endanimfunc, string set_model, float dontstartnew, float side);
 .float weapon_animduration;
+.float weapon2_animduration;
 .float weapon_anim_type;
+.float weapon2_anim_type;
 .float anim_weapon_time;
+.float anim_weapon2_time;
 .float weaponframe_end;
+.float weapon2frame_end;
 .float callfuncat;
+.float callfuncat2;
 .float new_anim_stop;
+.float new_anim2_stop;
 .float anim_reversed;
+.float anim2_reversed;
 .void() animend;
+.void(optional float t) animend2;
 
 
 //Null functions
@@ -91,12 +124,12 @@ vector	VEC_HULL_MAX = '16 16 40';
 vector	VEC_HULL2_MIN = '-32 -32 -24';
 vector	VEC_HULL2_MAX = '32 32 64';
 vector  VEC_VIEW_OFS  = '0 0 32';
+vector	trace_plane_normal;
 
 
 // AI definitions
 //Used for global one-zombie-at-a-time type ai
 void Do_Zombie_AI();
-float ai_delay_time;
 .string aistatus;
 entity lastzombie;
 //Other AI definitions
@@ -174,9 +207,7 @@ float sounds_playing;
 .float washit;
 .float hitamount;
 
-.float currentHitBoxSetup;
 .float laststep;
-.vector		bbmins, bbmaxs;		// Used for zombie hitboxes
 //void(entity who) makeCrawler;
 .float state;//used to delay making a crawler, ex) when zombie is rising from ground or climbing over barrier, turn zombie into a crawler afterwards
 
@@ -201,16 +232,21 @@ float crandom();
 
 //Perk and Power system
 float isPowerOn;
-float isBuying; // naievil -- used for checking if a perk is being consumed, limits glitching
+.float isBuying; // naievil -- used for checking if a perk is being consumed, limits glitching
 .float perks;
 .float perk_delay;
 .float revivesoda;
 
+.float boxstatus;
+.entity boxweapon;
+
+.float papState;
+
 //powerups
 float instakill_finished;
-float insta_blink;
+//float insta_blink;
 float x2_finished;
-float x2_blink;
+//float x2_blink;
 float total_windows_down;
 float total_powerup_points;
 float powerup_activate;
@@ -248,6 +284,8 @@ entity active_way;
 .string targets[MAX_WAY_TARGETS];
 
 
+
+
 //pathfinds
 #define MAX_WAYPOINTS 256 //max waypoints
 void LoadWaypointData();
@@ -269,6 +307,10 @@ typedef struct
 #define SET_CLOSED	2
 
 waypoint_ai waypoints[MAX_WAYPOINTS];
+
+#define UT_HUD 				1
+#define UT_ROUNDS_CHANGE 	2
+#define UT_HM				3
 
 
 //FIXME(Jukki) Place in better place
@@ -299,6 +341,92 @@ void SetRound(entity client, float to) {
 	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
 	WriteByte(MSG_ONE, EVENT_SETROUND);
 	WriteByte(MSG_ONE, to);
+}
+
+void SetPerk(entity client, float to) 
+{
+    msg_entity = client;
+	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
+	WriteByte(MSG_ONE, EVENT_PERK);
+	WriteLong(MSG_ONE, to);
+}
+
+void(float to) SwitchWeapon =
+{
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_WEAPONCHANGE);
+	WriteByte(MSG_MULTICAST, to);
+	msg_entity = self;
+	multicast('0 0 0', MULTICAST_ONE);
+}
+
+void(string to, float skin) UpdateVmodel =
+{
+	
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_UPDATEVMODEL);
+	WriteString(MSG_MULTICAST, to);
+	WriteByte(MSG_MULTICAST, skin);
+	msg_entity = self;
+	multicast('0 0 0', MULTICAST_ONE);
+}
+
+void(string to, float skin) UpdateV2model =
+{
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_UPDATEV2MODEL);
+	WriteString(MSG_MULTICAST, to);
+	WriteByte(MSG_MULTICAST, skin);
+	msg_entity = self;
+	multicast('0 0 0', MULTICAST_ONE);
+}
+
+void SetUpdate(entity client, float type, float val1, float val2, float val3)
+{
+	if (type != 2)
+	{
+		msg_entity = client;
+		WriteByte(MSG_ONE, SVC_CGAMEPACKET);
+		WriteByte(MSG_ONE, EVENT_UPDATE);
+		WriteByte(MSG_ONE, type); // UT_HUD, UT_ROUNDS_CHANGE
+		WriteByte(MSG_ONE, val1); 
+		WriteByte(MSG_ONE, val2);
+		WriteByte(MSG_ONE, val3); // misc flags/vars for later if needed
+	}
+	else
+	{
+		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
+		WriteByte(MSG_ALL, EVENT_UPDATE);
+		WriteByte(MSG_ALL, type); // UT_HUD, UT_ROUNDS_CHANGE
+		WriteByte(MSG_ALL, val1); 
+		WriteByte(MSG_ALL, val2);
+		WriteByte(MSG_ALL, val3); // misc flags/vars for later if needed
+	}
+}
+
+void WeaponSwitch(entity player) {
+	float wep, cmag, cmag2, cammo;
+
+	wep = other.weapon;
+	other.weapon = other.secondaryweapon;
+	other.secondaryweapon = wep;
+
+	cmag = other.currentmag;
+	other.currentmag = other.secondarymag;
+	other.secondarymag = cmag;
+
+	cmag2 = other.currentmag2;
+	other.currentmag2 = other.secondarymag2;
+	other.secondarymag2 = cmag2;
+
+	cammo = other.currentammo;
+	other.currentammo = other.secondaryammo;
+	other.secondaryammo = cammo;
+
+	entity tempe = self;
+	self = player;
+	SwitchWeapon(other.weapon);
+	self = tempe;
 }
 
 //naievil (FIXME) No idea where this should go, maybe a dummys

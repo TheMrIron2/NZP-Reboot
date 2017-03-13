@@ -83,7 +83,7 @@ void() menu_join =
 };
 
 void() game_join =
-{
+{	
 	localcmd("cmd joingame\n");
 	in_menu = MENU_NONE;
 	setcursormode(FALSE);
@@ -204,6 +204,7 @@ void(float index) Button_Click =
 	if(cursor_pos_x > pos_x && cursor_pos_x < pos_x + scale_x && cursor_pos_y > pos_y && cursor_pos_y < pos_y + scale_y )
 	{
 		buttons[index].action(); //do whatever this button is supposed to do
+		sound(self, 0, "sounds/menu/enter.wav", 1, ATTN_NONE);
 	}
 };
 
@@ -221,7 +222,8 @@ void() Menu_Click =
 
 void() Draw_Menu =
 {
-
+	precache_sound("sounds/menu/enter.wav");
+	
 	//Background picture with a nice scrolling effect, scrolling happens in the shader in scripts/menu.shader
 	if(serverkey("constate") == "disconnected")
 	{
@@ -265,7 +267,7 @@ void() Draw_Menu =
 			title = "RESTART";
 			break;
 		default:
-			title = "FTEQW Example";
+			title = "Nazi Zombies: Portable";
 	}
 
 	local float chars_to_keep;
@@ -282,11 +284,12 @@ void() Draw_Menu =
 	drawstring([0.025*g_width, 0.05*g_height, 0], substring(title, 0, chars_to_keep), [g_height * 0.05, g_height * 0.05, 1], [0.8, 0.8, 0.8], 1, 1);
 	
 	//Credits
-	local string name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16 = "";
-	local string role1, role2, role3, role4, role5, role6 = "";
+	local string name1 = "", name2 = "", name3 = "", name4 = "", name5 = "", name6 = "", name7 = "", name8 = "", name9 = "", name10 = "", name11 = "", name12 = "", name13 = "", name14 = "", name15 = "", name16 = "";
+	local string role1 = "", role2 = "", role3 = "", role4 = "", role5 = "", role6 = "";
+	
 	switch(in_menu)
 	{
-		case MENU_ABOUT:
+		case MENU_ABOUT:/*
 			role1 = "PROGRAMMERS";
 			name1 = "- MotoLegacy";
 			name2 = "- Jukki";
@@ -309,6 +312,29 @@ void() Draw_Menu =
 			name14 = "- Spike";
 			name15 = "- shpuld";
 			name16 = "- blubswillrule";
+			break;*/
+			
+			// naievil -- changed credits
+			drawstring([0.03*g_width, 0.15*g_height, 0], "Blubswillrule: Coding, Models, GFX, Sounds,", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+			drawstring([0.03*g_width, 0.185*g_height, 0], "               Animations, Music", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+			drawfill ([.03*g_width, 0.15*g_height + g_height*0.025 + 3, 0], [strlen("Blubswillrule")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+			
+			drawstring([0.03*g_width, 0.25*g_height, 0], "Ju[s]tice:     Maps, Models, GFX", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+			drawfill ([.03*g_width, 0.25*g_height + g_height*0.025 + 3, 0], [strlen("Ju[s]tice")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+
+				
+			drawstring([0.03*g_width, 0.35*g_height, 0], "Jukki:         Coding", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+			drawfill ([.03*g_width, 0.35*g_height + g_height*0.025 + 3, 0], [strlen("Jukki")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+												
+			drawstring([0.03*g_width, 0.45*g_height, 0], "Special Thanks:", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+			drawfill ([.03*g_width, 0.45*g_height + g_height*0.025 + 3, 0], [strlen("Special Thanks")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+			
+			drawstring([0.25*g_width, 0.525*g_height, 0], "- Spike", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+			drawstring([0.25*g_width, 0.575*g_height, 0], "- Shpuld", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+			drawstring([0.25*g_width, 0.625*g_height, 0], "- DR_Mabuse1981", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+			drawstring([0.25*g_width, 0.675*g_height, 0], "- Naievil", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1); 
+			drawstring([0.25*g_width, 0.725*g_height, 0], "- Biodude", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+			drawstring([0.25*g_width, 0.775*g_height, 0], "- MotoLegacy", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
 		default:
 			break;
 	}
@@ -318,7 +344,7 @@ void() Draw_Menu =
 	
 	chars_to_keep2 = 90;
 	
-	drawstring([0.025*g_width, 0.15*g_height, 0], substring(role1, 0, chars_to_keep2), [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+	/*drawstring([0.025*g_width, 0.15*g_height, 0], substring(role1, 0, chars_to_keep2), [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 	drawstring([0.025*g_width, 0.25*g_height, 0], substring(name1, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
 	drawstring([0.025*g_width, 0.3*g_height, 0], substring(name2, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
 	drawstring([0.025*g_width, 0.35*g_height, 0], substring(name3, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
@@ -339,10 +365,11 @@ void() Draw_Menu =
 	drawstring([0.5*g_width, 0.7*g_height, 0], substring(name13, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
 	drawstring([0.5*g_width, 0.75*g_height, 0], substring(name14, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
 	drawstring([0.5*g_width, 0.8*g_height, 0], substring(name15, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.5*g_width, 0.85*g_height, 0], substring(name16, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.5*g_width, 0.85*g_height, 0], substring(name16, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);*/
 
 	//Restart Confirmation
-	local string confirm, confirm2 = "";
+	local string confirm = "";
+	local string confirm2 = "";
 	switch(in_menu)
 	{
 		case MENU_RES:

@@ -408,10 +408,10 @@ void() zombie_attack2 =
 	}
 	else if (self.enemy.classname == "player")
 	{
-		/*if(vlen(self.enemy.origin - self.origin) < 60)
+		if(vlen(self.enemy.origin - self.origin) < 60)
 		{
 			DamageHandler (self.enemy, self, 50, S_ZOMBIE);
-		}*/
+		}
 	}
 	else return;
 };
@@ -519,7 +519,7 @@ void() zombie_attack_through_window =
 	{
 		if(who.classname == "player")
 		{
-			//DamageHandler (who, self, 50, S_ZOMBIE);
+			DamageHandler (who, self, 50, S_ZOMBIE);
 		}
 		who = who.chain;
 	}
@@ -1090,6 +1090,7 @@ float() spawn_a_zombieA =
 	local float FAIL;
 	
 	FAIL = false;
+	pcount = 0;
 	szombie = getFreeZombieEnt(self);
 	if(szombie == world)
 	{

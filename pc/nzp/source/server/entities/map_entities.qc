@@ -309,7 +309,7 @@ void () buy_weapon_touch =
 		endframe = GetFrame(self.weapon,TAKE_OUT_END);
 		modelname = GetWeaponModel(self.weapon, 0);
 		SwitchWeapon(self.weapon);
-		Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false);//FIXME
+		Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
 		self = tempe;
 	}
 };

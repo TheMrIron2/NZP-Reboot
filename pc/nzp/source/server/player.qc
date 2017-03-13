@@ -9,6 +9,10 @@ void() PlayerJump =
 
 	if ( !(self.flags & FL_JUMPRELEASED) )
 		return;
+
+	if (self.downed) {
+		return;
+	}
 			
 	self.flags = self.flags - (self.flags & FL_JUMPRELEASED);
 	sound(self, CHAN_VOICE, "sounds/player/jump.wav", 1, 1.75);
@@ -17,6 +21,19 @@ void() PlayerJump =
 
 void() PlayerPreThink =
 {
+
+	if (self.downed) {
+		self.maxspeed = 30;
+	} else {
+		self.maxspeed = 175;
+		if (self.sprinting) {
+			self.maxspeed *= 1.66;
+		} else if (self.zoom == 1) {
+			self.maxspeed *= 0.5;
+		}
+
+		self.maxspeed *= GetWeaponWalkSpeed(self.weapon);
+	}
 	if(self.isspec != 0)
 	{
 		if(self.button0)
@@ -96,6 +113,47 @@ void() PlayerPostThink =
 		}
 	}
 	
+	if (self.health_delay < time && self.health != self.max_health && !self.downed)
+	{
+		self.health = self.health + 5;
+		if (self.max_health < self.health)
+			self.health = self.max_health;
+	}
+	
+	if (self.progress_bar) {
+		if (self.progress_bar < time) {
+			GetUp();
+			self.progress_bar = 0;
+			self.progress_bar_time = 0;
+			self.progress_bar_percent = 0;
+		} else {
+			float remaining = self.progress_bar - time;
+			self.progress_bar_percent = (remaining / self.progress_bar_time);
+		}
+	}
+
+
+	if (self.sprinting) {
+		if (!self.velocity) {
+			W_SprintStop();
+		}
+		
+		if (self.perks & P_STAMIN) {
+			self.stamina = self.stamina - 5*frametime;
+		} else {
+			self.stamina = self.stamina - (10*frametime);
+		}
+
+		if (self.stamina <= 0) {
+			W_SprintStop();
+		}
+	} else if (self.stamina < 3) 	{
+		self.stamina = self.stamina + 10*frametime;
+		if (self.stamina > 3) {
+			self.stamina = 3;
+		}
+	}
+
 	self.oldvelocity = self.velocity;
 };
 
@@ -122,7 +180,7 @@ void() PlayerSpawn =
 	self.solid = SOLID_SLIDEBOX;
 	setmodel(self, "models/player.mdl");
 	self.movetype = MOVETYPE_WALK;
-	self.health = 100;
+	self.max_health = self.health = 100;
 	self.origin = spawnpoint.origin + [0,0,1];
 	self.fixangle = TRUE;
 	setsize(self, [-16, -16, -24], [16, 16, 32]);
@@ -136,18 +194,22 @@ void() PlayerSpawn =
 	self.pri_grenade_state = 0; 		// defines that frag grenades are for player first, not betty
 	self.secondary_grenades = 0;
 
-	/*self.secondaryweapon = W_TRENCH;
+	self.secondaryweapon = W_KAR_SCOPE;
 	self.secondaryammo = getWeaponAmmo(self.secondaryweapon);
-	self.secondarymag = getWeaponMag(self.secondaryweapon);*/
+	self.secondarymag = getWeaponMag(self.secondaryweapon);
+	//self.secondarymag2 = getWeaponMag(self.secondaryweapon);
 
-	addmoney(self, 500, 0);
+	addmoney(self, 5000, 0);
 
 	self.weaponmodel = GetWeaponModel(self.weapon, 0);// Give weapon model
 
 	SwitchWeapon(self.weapon);
+	UpdateV2model("", 0);
 	stuffcmd(self, "cl_gunx 8;cl_guny 16;cl_gunz 25\n");
 
 	SetRound(self, rounds);
+
+	self.stamina = 3;
 
 	if (rounds < 1) {
 		sound (self, CHAN_AUTO, "sounds/rounds/splash.wav", 1, ATTN_NONE);//temporarily here.
@@ -224,6 +286,41 @@ void(string com) SV_ParseClientCommand =
 			bprint(PRINT_HIGH, " has joined the spectators.\n");*/
 			
 			PlayerSpawn();
+		}
+	}
+	else
+	{
+		tokenize(com);
+
+		switch(argv(0))
+		{
+			case "give":
+				float wep = stof(argv(1));
+
+				if (wep) {
+					if (!self.secondaryweapon) {
+						WeaponSwitch(self);
+					}
+					float startframe, endframe;
+					string modelname;
+
+					self.weapon = wep;
+					self.currentammo = getWeaponAmmo(wep);
+					self.currentmag = getWeaponMag(wep);
+					if (IsDualWeapon(wep)) {
+						self.currentmag2 = self.currentmag;
+					}
+
+					startframe = GetFrame(self.weapon,TAKE_OUT_START);
+					endframe = GetFrame(self.weapon,TAKE_OUT_END);
+					modelname = GetWeaponModel(wep, 0);
+
+					SwitchWeapon(wep);
+					
+					Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
+					
+					self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
+				}
 		}
 	}
 };
