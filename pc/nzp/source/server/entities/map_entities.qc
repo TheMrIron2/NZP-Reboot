@@ -344,3 +344,44 @@ void() buy_weapon =
 
 	precache_sound("sounds/misc/ching.wav");
 };
+
+
+
+void() BarrelExplode =
+{
+	DamgageExplode (self, self.enemy, 500, 75, 200);//was 256 inch radius, kicked it down to 128 because 21 feet exploding radius is... a bit overkill...
+	te_explosionquad(self.origin);
+
+	SUB_Remove ();
+};
+
+void() barrel_hit =
+{
+	if (self.health <= 0) {
+		BarrelExplode();
+	} else if (self.health <= 200) {
+		makevectors(self.angles);
+		self.think = barrel_hit;
+		self.nextthink = time + 0.1;
+		self.health = self.health - 1;
+		if (self.health > 100)
+			particle (self.origin + '0 0 30', v_up*8, 111, 0);
+		else
+			particle (self.origin + '0 0 30', v_up*8, 112, 0);
+    
+	}
+}
+
+void() explosive_barrel = 
+{
+	precache_model ("models/props/barrel_m.mdl");
+
+	self.movetype = MOVETYPE_NONE;	// so it doesn't get pushed by anything
+	self.solid=SOLID_BBOX;
+	self.classname = "explosive_barrel";
+	setmodel (self, "models/props/barrel_m.mdl");
+	setsize (self, '-10 -10 ', '10 10 38');
+
+	self.takedamage = DAMAGE_YES;
+	self.health = 300;
+};
