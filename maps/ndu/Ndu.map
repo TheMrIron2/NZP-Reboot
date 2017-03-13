@@ -3691,9 +3691,9 @@
 }
 {
 "classname" "info_player_start"
-"angles" "-0 163 -0"
+"angles" "0 158 0"
 "sequence" "0"
-"origin" "1264 2040 88"
+"origin" "1248 2048 96"
 }
 {
 "classname" "func_door_nzp"
