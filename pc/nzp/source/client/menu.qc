@@ -105,6 +105,7 @@ void() menu_resume =
 void() menu_main =
 {
 	in_menu = MENU_MAIN;
+	localcmd("disconnect\n");
 };
 
 //struct for all buttons, note pos and scale are going to be multiplied with width/height in draw step, so keep them between 0 and 1
