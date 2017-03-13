@@ -188,7 +188,7 @@
 	
 	]
 	
-@PointClass size(-16 -16 -16, 16 16 51 ) base(Item, Appearflags) color(147 132 108) studio("progs/Misc/power_switch.mdl") = 
+@PointClass size(-16 -16 -16, 16 16 51 ) base(Item, Appearflags) color(147 132 108) studio("models/machines/power_switch.mdl") = 
 	power_switch : "Power Switch" []
 
 
@@ -302,7 +302,7 @@
 ]
 
 //@PointClass base(Monster) size(-16 -16 -24, 16 16 40) = monster_army : //"Grunt" []
-@PointClass base(Monster) size(-16 -16 -32, 16 16 16) studio("progs/dog.mdl") = spawn_dog : "Hellhound" 
+@PointClass base(Monster) size(-16 -16 -32, 16 16 16) studio("models/ai/dog.mdl") = spawn_dog : "Hellhound" 
 [
 	spawnflags(Flags) = 
 	[
