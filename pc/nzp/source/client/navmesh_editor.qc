@@ -1096,6 +1096,69 @@ void navmesh_calc_polies_centers()
 }
 
 
+//Saves the current navmesh to a file
+void navmesh_editor_save_navmesh()
+{
+	float file;
+	string h;
+	
+	h = strcat(mappath, ".nav");
+	file = fopen(h,FILE_WRITE);
+	
+	if(file == -1)
+	{
+		print("Error: unable to write to file \"",h,"\".\n");
+		return;
+	}
+	
+	float fsize = 0;
+	fsize = sizeof(fsize);
+
+	fwrite(file, &navmesh_vert_count, fsize);
+	//	fputs(file,"waypoint\n");
+	//	fputs(file,"{\n");
+	//	fputs(file, " id: ", dway.waynum, "\n");
+	//	fputs(file, " origin: ", vtos(dway.origin), "\n");
+}
+//Overwrites current navmesh with an empty navmesh
+void navmesh_editor_clear_navmesh()
+{
+	
+}
+//Overwrites currently loaded navmesh with navmesh stored in fail
+void navmesh_editor_load_navmesh()
+{
+	//TODO: clear navmesh
+	float file;
+	string h;
+	
+	h = strcat(mappath, ".nav");
+	file = fopen(h,FILE_READ);
+	
+	if(file == -1)
+	{
+		print("Error: file \"",h,"\" not found.\n");
+		return;
+	}
+	
+	float v;
+	
+	fread(file,&v,sizeof(v));
+	
+	print("Read value: ",ftos(v),".\n");
+	
+	/*new_way = spawn();
+	targetcount = 0;
+	point = 0;
+	loop = 1;
+	while (loop)
+	{
+		string line;
+		line = fgets(file);
+	}*/
+}
+
+
 //==================================================================
 //TEMP TEMP TEMP for testing
 float pathfinding_specific_navmesh_data_calculated;
@@ -2261,3 +2324,94 @@ void pathfind_draw_result_path()
 }
 
 //==========================================================================================================================
+
+
+
+void() register_navmesh_commands = 
+{
+	registercommand("nav_editor");
+	registercommand("nav_place_vert");
+	registercommand("nav_delete_verts");
+	registercommand("nav_select_vert");
+	registercommand("nav_deselect_vert");
+	registercommand("nav_deselect_all");
+	registercommand("nav_make_poly");
+	registercommand("nav_delete_poly");
+	registercommand("nav_resolve_corner");
+	registercommand("nav_place_corner");
+	registercommand("nav_cancel_corner");
+	registercommand("nav_confirm_corner");
+	registercommand("nav_calc_connected_polies");
+	registercommand("nav_calc_poly_centers");
+	registercommand("navtest_place_goal");
+	registercommand("navtest_place_start");
+	registercommand("nav_load_navmesh");
+}
+
+float(string cmd) navmesh_console_commands = 
+{
+	tokenize(cmd);
+	switch(argv(0))
+	{
+		case "nav_editor":
+			toggle_navmesh_editor();
+			return TRUE;
+		default:
+			break;
+	}
+	if(!navmesh_mode)
+		return FALSE;
+	switch(argv(0))
+	{
+		case "nav_place_vert":
+			navmesh_place_vert();
+			return TRUE;
+		case "nav_delete_verts":
+			navmesh_delete_verts();
+			return TRUE;
+		case "nav_select_vert":
+			navmesh_select_vert();
+			return TRUE;
+		case "nav_deselect_vert":
+			navmesh_deselect_vert();
+			return TRUE;
+		case "nav_deselect_all":
+			navmesh_deselect_all();
+			return TRUE;
+		case "nav_make_poly":
+			navmesh_make_poly();
+			return TRUE;
+		case "nav_delete_poly":
+			navmesh_delete_poly();
+			return TRUE;
+		case "nav_resolve_corner":
+			navmesh_resolve_corner();
+			return TRUE;
+		case "nav_place_corner":
+			navmesh_place_corner();
+			return TRUE;
+		case "nav_cancel_corner":
+			navmesh_cancel_corner();
+			return TRUE;
+		case "nav_confirm_corner":
+			navmesh_confirm_corner();
+			return TRUE;
+		case "nav_calc_connected_polies":
+			navmesh_calc_connected_polies();
+			return TRUE;
+		case "nav_calc_poly_centers":
+			navmesh_calc_polies_centers();
+			return TRUE;
+		case "navtest_place_goal":
+			navmesh_place_test_goalent();
+			return TRUE;
+		case "navtest_place_start":
+			navmesh_place_test_startent();
+			return TRUE;
+		case "nav_load_navmesh":
+			navmesh_editor_load_navmesh();
+			return TRUE;
+		default:
+			return FALSE;
+	}
+}

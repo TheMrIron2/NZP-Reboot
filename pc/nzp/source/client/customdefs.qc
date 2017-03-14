@@ -50,7 +50,7 @@ vector	VEC_HULL2_MIN = '-32 -32 -24';
 vector	VEC_HULL2_MAX = '32 32 64';
 vector  VEC_VIEW_OFS  = '0 0 32';
 
-
+string mappath;
 
 float useprint_type;
 float useprint_weapon;
@@ -80,10 +80,12 @@ float K_LEFTDOWN, K_RIGHTDOWN, K_BACKDOWN, K_FORWARDDOWN;
 
 float rounds;
 
-
 #define printf(x, ...) print(sprintf(x, __VA_ARGS__))
 
 //Navmesh defs
+void() register_navmesh_commands;
+float(string cmd) navmesh_console_commands;
+
 float navmesh_mode;
 void() toggle_navmesh_editor;
 void() navmesh_editor_draw;
@@ -112,6 +114,7 @@ float(float start, float goal, vector start_pos, vector end_pos) pathfind_start;
 void() pathfind_draw_result_node_path;
 void() pathfind_draw_result_path;
 void() pathfind_draw_result_portals;
+
 #define 	P_JUG		1
 #define 	P_DOUBLE	2
 #define 	P_SPEED		4

@@ -34,25 +34,8 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	registercommand("stopwalk");
 	registercommand("promptjoin");
 	
-	//======= Navmesh commands =========
-	registercommand("nav_editor");
-	registercommand("nav_place_vert");
-	registercommand("nav_delete_verts");
-	registercommand("nav_select_vert");
-	registercommand("nav_deselect_vert");
-	registercommand("nav_deselect_all");
-	registercommand("nav_make_poly");
-	registercommand("nav_delete_poly");
-	registercommand("nav_resolve_corner");
-	registercommand("nav_place_corner");
-	registercommand("nav_cancel_corner");
-	registercommand("nav_confirm_corner");
-	registercommand("nav_calc_connected_polies");
-	registercommand("nav_calc_poly_centers");
-	registercommand("navtest_place_goal");
-	registercommand("navtest_place_start");
+	register_navmesh_commands();
 	
-	//===================================
 	print("CSQC Started\n");
 	dummy = spawn();
 	if(serverkey("constate") == "disconnected")
@@ -84,7 +67,9 @@ noref void() CSQC_WorldLoaded =
 	mzlflash.renderflags = vmodel.renderflags;
 	mzlflash.origin = vmodel.origin + vmodel_muzzleoffset;
 	//setmodel(mzlflash,"models/weapons/mg/mzl.iqm");
-	
+
+	mappath = strcat("maps/",mapname);
+	mappath = strzone(mappath);
 };
 
 #define ADS_THOMPSON    '-3 +5.80 +4.52'
@@ -327,55 +312,9 @@ noref float(string cmd) CSQC_ConsoleCommand =
 		case "promptjoin":
 			menu_join();
 			return TRUE;
-		case "nav_editor":
-			toggle_navmesh_editor();
-			return TRUE;
-		case "nav_place_vert":
-			navmesh_place_vert();
-			return TRUE;
-		case "nav_delete_verts":
-			navmesh_delete_verts();
-			return TRUE;
-		case "nav_select_vert":
-			navmesh_select_vert();
-			return TRUE;
-		case "nav_deselect_vert":
-			navmesh_deselect_vert();
-			return TRUE;
-		case "nav_deselect_all":
-			navmesh_deselect_all();
-			return TRUE;
-		case "nav_make_poly":
-			navmesh_make_poly();
-			return TRUE;
-		case "nav_delete_poly":
-			navmesh_delete_poly();
-			return TRUE;
-		case "nav_resolve_corner":
-			navmesh_resolve_corner();
-			return TRUE;
-		case "nav_place_corner":
-			navmesh_place_corner();
-			return TRUE;
-		case "nav_cancel_corner":
-			navmesh_cancel_corner();
-			return TRUE;
-		case "nav_confirm_corner":
-			navmesh_confirm_corner();
-			return TRUE;
-		case "nav_calc_connected_polies":
-			navmesh_calc_connected_polies();
-			return TRUE;
-		case "nav_calc_poly_centers":
-			navmesh_calc_polies_centers();
-			return TRUE;
-		case "navtest_place_goal":
-			navmesh_place_test_goalent();
-			return TRUE;
-		case "navtest_place_start":
-			navmesh_place_test_startent();
-			return TRUE;
 		default:
+			if(navmesh_console_commands(cmd))
+				return TRUE;
 			return FALSE;
 	}
 	return FALSE;
@@ -624,9 +563,12 @@ noref void() CSQC_Parse_Event =
 		to = readbyte();
 		setmodel(vmodel,GetWeaponModel(to, FALSE));
 
-		if (to == W_KAR_SCOPE && vmodel.model == "models/weapons/kar/v_kar.mdl") {
+		if (to == W_KAR_SCOPE && vmodel.model == "models/weapons/kar/v_kar.mdl") 
+		{
 			setmodel(v2model,"models/weapons/kar/v_karscope.mdl");
-		} else {
+		} 
+		else 
+		{
 			setmodel(v2model,"");
 		}
 
@@ -654,20 +596,24 @@ noref void() CSQC_Parse_Event =
 		setmodel(v2model,new2);
 		v2model.skin = readbyte();
 	}
-	else if(first == EVENT_USEPRINT) {
+	else if(first == EVENT_USEPRINT) 
+	{
 		useprint_type = readbyte();
 		useprint_cost = readshort();
 		useprint_weapon = readbyte();
 
 		useprint_time = time + 0.1;
 		
-	} else if(first == EVENT_NEWROUND) {
+	} 
+	else if(first == EVENT_NEWROUND)
+	{
 		rounds = readbyte();
 		HUD_Change_time = time + 6;
-	} else if (first == EVENT_SETROUND) {
+	} 
+	else if (first == EVENT_SETROUND)
+	{
 		rounds = readbyte();
 	}
-}
 	else if (first == EVENT_PERK) 
 	{
 		float newperks, s;

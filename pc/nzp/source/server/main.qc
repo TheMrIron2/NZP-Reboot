@@ -16,20 +16,23 @@ void() StartFrame =
 	coop = cvar("coop");
 	framecount = framecount + 1;
 
-	if (waypoint_mode) {
+	if (waypoint_mode) 
+	{
 		return;
 	}
 	
-	if (roundinit) {
+	if (roundinit) 
+	{
 		Round_Core();
 		Do_Zombie_AI ();
-	} else {
+	}
+	else 
+	{
+		entity SpawnedIn;
+		SpawnedIn = find(world, classname, "player");
 	
-	entity SpawnedIn;
-	SpawnedIn = find(world, classname, "player");
-	
-	if (SpawnedIn)
-		InitRounds();
+		if (SpawnedIn)
+			InitRounds();
 	}
 }
 
@@ -172,6 +175,7 @@ void() worldspawn =
 
 	mappath = strcat("maps/", mapname);
 	mappath = strzone(mappath);
+	
 
 	LoadWaypointData();
 }
