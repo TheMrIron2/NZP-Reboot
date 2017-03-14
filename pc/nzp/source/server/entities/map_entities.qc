@@ -385,3 +385,60 @@ void() explosive_barrel =
 	self.takedamage = DAMAGE_YES;
 	self.health = 300;
 };
+
+
+
+
+.float radioState;
+void() radioPlay =
+{
+	self.health = 1;
+
+	if (self.radioState == 1) {
+		sound (self, CHAN_ITEM, "sounds/music/tune1.wav", 1, ATTN_NORM);
+		self.nextthink = time + 10;
+		self.think = radioPlay;
+	} else if (self.radioState == 2) {
+		sound (self, CHAN_ITEM, "sounds/music/tune1.wav", 1, ATTN_NONE);
+		self.nextthink = time + 10;
+		self.think = radioPlay;
+	} else if (self.radioState == 0) {
+		sound (self, CHAN_ITEM, "sounds/null.wav", 1, ATTN_NONE);
+		self.nextthink = 0;
+		self.think = SUB_Null;
+	}
+}
+
+void() radio_hit =
+{
+	self.health = 1;
+
+	sound (self, CHAN_ITEM, "sounds/misc/radio.wav", 1, ATTN_NORM);
+	self.nextthink = time + 1;//getSoundLen("sounds/music/tune1.wav");
+	self.think = radioPlay;
+	
+	if (self.radioState == 0)
+		self.radioState = 1;
+	else if (self.radioState == 1)
+		self.radioState = 2;
+	else if (self.radioState == 2)
+		self.radioState = 0;
+}
+
+void() item_radio = 
+{
+	precache_model ("models/props/radio.mdl");
+	precache_sound ("sounds/misc/radio.wav");
+	precache_sound ("sounds/music/tune1.wav");
+
+	self.movetype = MOVETYPE_NONE;	// so it doesn't get pushed by anything
+	self.solid=SOLID_BBOX;
+	self.classname = "item_radio";
+	setmodel (self, "models/props/radio.mdl");
+	setsize (self, '-8 -8 -4', '8 8 4');
+
+	self.takedamage = DAMAGE_YES;
+	self.health = 1;
+	self.radioState = 0;
+	self.th_die = radio_hit;
+};

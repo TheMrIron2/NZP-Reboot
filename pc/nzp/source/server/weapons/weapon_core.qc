@@ -471,7 +471,6 @@ void() LungeKnifeHit =
 
 	if (trace_ent.takedamage)
 	{
-		sound (self, CHAN_WEAPON, "sounds/weapons/knife/knife_hitbod.wav", 1, ATTN_NORM);
 		if(trace_ent.classname == "item_radio" || trace_ent.classname == "teddy_spawn")
 		{
 			entity oldself;
@@ -481,6 +480,7 @@ void() LungeKnifeHit =
 			self = oldself;
 			return;
 		}
+		sound (self, CHAN_WEAPON, "sounds/weapons/knife/knife_hitbod.wav", 1, ATTN_NORM);
 		
 		if (self.bowie && self.weapon == W_BK)
 			f_damage = 1200;
@@ -530,6 +530,15 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 
 	if (hit_ent.takedamage) {
 		if (trace_fraction >= 1) {
+			return;
+		}
+		if(hit_ent.classname == "item_radio" || hit_ent.classname == "teddy_spawn")
+		{
+			entity oldself;
+			oldself  = self;
+			self = hit_ent;
+			self.th_die();
+			self = oldself;
 			return;
 		}
 
