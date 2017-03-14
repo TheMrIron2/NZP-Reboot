@@ -85,7 +85,11 @@
 	message(string) : "Message"
 ]
 
-@PointClass size(-9 -9 -4, 9 9 4) base(Item) color(35 67 36) studio("models/props/radio.mdl") =  item_radio : "Radio" []
+@PointClass size(-9 -9 -4, 9 9 4) base(Item) color(35 67 36) studio("models/props/radio.mdl") =  item_radio : "Radio" 
+[
+	tune(string) : "tune"
+	length(integer) : "length"
+]
 
 @PointClass size(-8 -8 -8, 8 8 8) base(Item)  color(141 85 29) studio("progs/Misc/teddy.mdl") =  teddy_spawn : "Teddy spawn location" []
 @PointClass size(-12 -12 -8, 12 12 8) base(Item)  color(35 67 36)  =  item_switch : "Electro-Shock Activation Switch" []

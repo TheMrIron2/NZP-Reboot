@@ -390,17 +390,15 @@ void() explosive_barrel =
 
 
 .float radioState;
+.float length;
+.string tune;
 void() radioPlay =
 {
 	self.health = 1;
 
 	if (self.radioState == 1) {
-		sound (self, CHAN_ITEM, "sounds/music/tune1.wav", 1, ATTN_NORM);
-		self.nextthink = time + 10;
-		self.think = radioPlay;
-	} else if (self.radioState == 2) {
-		sound (self, CHAN_ITEM, "sounds/music/tune1.wav", 1, ATTN_NONE);
-		self.nextthink = time + 10;
+		sound (self, CHAN_ITEM, self.tune, 1, ATTN_NORM);
+		self.nextthink = time + self.length;
 		self.think = radioPlay;
 	} else if (self.radioState == 0) {
 		sound (self, CHAN_ITEM, "sounds/null.wav", 1, ATTN_NONE);
@@ -420,8 +418,6 @@ void() radio_hit =
 	if (self.radioState == 0)
 		self.radioState = 1;
 	else if (self.radioState == 1)
-		self.radioState = 2;
-	else if (self.radioState == 2)
 		self.radioState = 0;
 }
 
@@ -429,7 +425,7 @@ void() item_radio =
 {
 	precache_model ("models/props/radio.mdl");
 	precache_sound ("sounds/misc/radio.wav");
-	precache_sound ("sounds/music/tune1.wav");
+	precache_sound (self.tune);
 
 	self.movetype = MOVETYPE_NONE;	// so it doesn't get pushed by anything
 	self.solid=SOLID_BBOX;
