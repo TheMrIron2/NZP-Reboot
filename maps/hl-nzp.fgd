@@ -92,8 +92,11 @@
 ]
 
 @PointClass size(-8 -8 -8, 8 8 8) base(Item)  color(141 85 29) studio("progs/Misc/teddy.mdl") =  teddy_spawn : "Teddy spawn location" []
-@PointClass size(-12 -12 -8, 12 12 8) base(Item)  color(35 67 36)  =  item_switch : "Electro-Shock Activation Switch" []
 
+
+@PointClass size(-12 -12 -8, 12 12 8) base(Item)  color(35 67 36) studio("models/machines/zapper/z_switch.mdl")  =  zapper_switch : "Electro-Shock Activation Switch" []
+@PointClass size(-12 -12 -8, 12 12 8) base(Item)  color(35 67 36) studio("models/machines/zapper/z_zap.mdl")  =  zapper_node : "Electro-Shock Node" []
+@PointClass size(-12 -12 -8, 12 12 8) base(Item)  color(35 67 36) studio("models/machines/zapper/z_light.mdl")  =  zapper_light : "Electro-Shock Node" []
 
 //
 //NZP Perk Machines

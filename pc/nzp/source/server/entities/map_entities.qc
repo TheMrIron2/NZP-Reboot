@@ -425,7 +425,10 @@ void() item_radio =
 {
 	precache_model ("models/props/radio.mdl");
 	precache_sound ("sounds/misc/radio.wav");
-	precache_sound (self.tune);
+
+	if(self.tune) {
+		precache_sound (self.tune);
+	}
 
 	self.movetype = MOVETYPE_NONE;	// so it doesn't get pushed by anything
 	self.solid=SOLID_BBOX;
@@ -437,4 +440,39 @@ void() item_radio =
 	self.health = 1;
 	self.radioState = 0;
 	self.th_die = radio_hit;
+};
+
+
+
+void() zapper_switch = 
+{
+	precache_model ("models/machines/zapper/z_switch.mdl");
+	self.movetype = MOVETYPE_NONE;
+	self.solid = SOLID_TRIGGER;
+	//self.touch = switch_touch;
+	self.classname = "zapper_switch";
+	setmodel(self, "models/machines/zapper/z_switch.mdl");
+	setsize (self, '-4 -4 -4', '4 4 4');
+};
+
+void() zapper_node = 
+{
+	precache_model ("models/machines/zapper/z_zap.mdl");
+	self.movetype = MOVETYPE_NONE;
+	self.solid = SOLID_TRIGGER;
+	//self.touch = switch_touch;
+	self.classname = "zapper_switch";
+	setmodel(self, "models/machines/zapper/z_zap.mdl");
+	setsize (self, '-4 -4 -4', '4 4 4');
+};
+
+void() zapper_light = 
+{
+	precache_model ("models/machines/zapper/z_light.mdl");
+	self.movetype = MOVETYPE_NONE;
+	self.solid = SOLID_TRIGGER;
+	//self.touch = switch_touch;
+	self.classname = "zapper_switch";
+	setmodel(self, "models/machines/zapper/z_light.mdl");
+	setsize (self, '-4 -4 -4', '4 4 4');
 };

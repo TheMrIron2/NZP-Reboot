@@ -6451,7 +6451,7 @@
 {
 "classname" "place_model"
 "angles" "0 0 0"
-"model" "progs/props/lamp_oil.mdl"
+"model" "models/props/lamp_oil.mdl"
 "origin" "48 -640 -192"
 }
 {
@@ -7082,14 +7082,14 @@
 "classname" "place_model"
 "spawnflags" "1"
 "angles" "0 0 0"
-"model" "progs/props/lamp_oil.mdl"
+"model" "models/props/lamp_oil.mdl"
 "origin" "376 448 -299"
 }
 {
 "classname" "place_model"
 "spawnflags" "1"
 "angles" "-0 294 0"
-"model" "progs/props/lamp_oil.mdl"
+"model" "models/props/lamp_oil.mdl"
 "skin" "0"
 "origin" "144 -128 -328"
 }
@@ -7178,72 +7178,72 @@
 "origin" "328 -352 -80"
 }
 {
-"classname" "zapper2"
+"classname" "zapper_node"
 "targetname" "fap1"
 "angles" "0 0 0"
 "origin" "-432 -408 -328"
 }
 {
-"classname" "zapper2"
+"classname" "zapper_node"
 "targetname" "fap4"
 "angles" "0 0 0"
 "origin" "-464 -408 -328"
 }
 {
-"classname" "zapper2"
+"classname" "zapper_node"
 "targetname" "fap2"
 "angles" "0 0 0"
 "origin" "-496 -408 -328"
 }
 {
-"classname" "zapper2"
+"classname" "zapper_node"
 "targetname" "fap3"
 "angles" "0 0 0"
 "origin" "-528 -408 -328"
 }
 {
-"classname" "item_switch"
+"classname" "zapper_switch"
 "target" "zap1"
 "targetname" "zap1"
 "angles" "0 270 0"
 "origin" "-560 8 -288"
 }
 {
-"classname" "zapper1"
+"classname" "zapper_node"
 "target" "fap3"
 "targetname" "zap1"
 "angles" "0 270 0"
 "origin" "-528 -408 -224"
 }
 {
-"classname" "zapper1"
+"classname" "zapper_node"
 "target" "fap2"
 "targetname" "zap1"
 "angles" "0 270 0"
 "origin" "-496 -408 -224"
 }
 {
-"classname" "zapper1"
+"classname" "zapper_node"
 "target" "fap4"
 "targetname" "zap1"
 "angles" "0 270 0"
 "origin" "-464 -408 -224"
 }
 {
-"classname" "zapper1"
+"classname" "zapper_node"
 "target" "fap1"
 "targetname" "zap1"
 "angles" "0 270 0"
 "origin" "-432 -408 -224"
 }
 {
-"classname" "zap_light"
+"classname" "zapper_light"
 "targetname" "zap1"
 "angles" "0 90 0"
 "origin" "-480 -408 -216"
 }
 {
-"classname" "zap_light"
+"classname" "zapper_light"
 "targetname" "zap1"
 "angles" "0 270 0"
 "origin" "-480 -416 -216"
@@ -7303,7 +7303,7 @@
 {
 "classname" "place_model"
 "angles" "0 190 0"
-"model" "progs/props/shelf.mdl"
+"model" "models/props/shelf.mdl"
 "origin" "544 -152 -320"
 }
 {
@@ -7311,25 +7311,25 @@
 "angles" "0 108 0"
 "skin" "0"
 "frame" "0"
-"model" "progs/props/shelf.mdl"
+"model" "models/props/shelf.mdl"
 "origin" "800.966 -303.741 -320"
 }
 {
 "classname" "place_model"
 "angles" "0 248 0"
-"model" "progs/props/shelf.mdl"
+"model" "models/props/shelf.mdl"
 "origin" "261.966 -472.259 -296"
 }
 {
 "classname" "place_model"
 "angles" "0 90 0"
-"model" "progs/props/shelf.mdl"
+"model" "models/props/shelf.mdl"
 "origin" "56 80 -296"
 }
 {
 "classname" "place_model"
 "angles" "0 78 0"
-"model" "progs/props/shelf.mdl"
+"model" "models/props/shelf.mdl"
 "origin" "88 24 -296"
 }
 {
@@ -7349,13 +7349,13 @@
 "classname" "place_model"
 "spawnflags" "1"
 "angles" "-0 302 -0"
-"model" "progs/props/lamp_oil.mdl"
+"model" "models/props/lamp_oil.mdl"
 "origin" "992 208 -352"
 }
 {
 "classname" "place_model"
 "angles" "0 196 80"
-"model" "progs/props/table_sq.mdl"
+"model" "models/props/table_sq.mdl"
 "frame" "0"
 "skin" "1"
 "origin" "-320 -616 -312"
@@ -7363,19 +7363,19 @@
 {
 "classname" "place_model"
 "angles" "0 307 0"
-"model" "progs/props/metal_chair.mdl"
+"model" "models/props/metal_chair.mdl"
 "origin" "132 -488 -328"
 }
 {
 "classname" "place_model"
 "angles" "0 290 0"
-"model" "progs/props/metal_chair.mdl"
+"model" "models/props/metal_chair.mdl"
 "origin" "328 448 -328"
 }
 {
 "classname" "place_model"
 "angles" "-0 344 -0"
-"model" "progs/props/metal_chair.mdl"
+"model" "models/props/metal_chair.mdl"
 "frame" "0"
 "skin" "0"
 "origin" "-636 -296 -192"
@@ -7390,7 +7390,7 @@
 {
 "classname" "place_model"
 "angles" "-0 330 -0"
-"model" "progs/Props/bed.mdl"
+"model" "models/Props/bed.mdl"
 "frame" "0"
 "skin" "0"
 "origin" "-496 -168 -192"
@@ -7398,7 +7398,7 @@
 {
 "classname" "place_model"
 "angles" "11 6 0"
-"model" "progs/props/bed.mdl"
+"model" "models/props/bed.mdl"
 "origin" "-176 432 -200"
 }
 {
@@ -7491,7 +7491,7 @@
 {
 "classname" "place_model"
 "angles" "0 90 0"
-"model" "progs/props/toilet.mdl"
+"model" "models/props/toilet.mdl"
 "frame" "0"
 "skin" "0"
 "origin" "256 72 -188"
@@ -7651,7 +7651,7 @@
 {
 "classname" "place_model"
 "angles" "25 350 90"
-"model" "progs/props/bed.mdl"
+"model" "models/props/bed.mdl"
 "frame" "0"
 "skin" "0"
 "origin" "-440 536 -266"
@@ -7803,7 +7803,7 @@
 }
 {
 "classname" "place_model"
-"model" "progs/props/sandbags.mdl"
+"model" "models/props/sandbags.mdl"
 "angles" "-0 0 -0"
 "frame" "0"
 "skin" "0"
@@ -7826,7 +7826,7 @@
 {
 "classname" "place_model"
 "angles" "0 180 0"
-"model" "progs/props/toilet.mdl"
+"model" "models/props/toilet.mdl"
 "skin" "0"
 "frame" "0"
 "origin" "222 140 -328"
@@ -7834,7 +7834,7 @@
 {
 "classname" "place_model"
 "angles" "-0 273 0"
-"model" "progs/props/bath.mdl"
+"model" "models/props/bath.mdl"
 "skin" "0"
 "origin" "-24 208 -328"
 }
@@ -8292,7 +8292,7 @@
 {
 "classname" "place_model"
 "spawnflags" "1"
-"model" "progs/props/lamp_ndu45.mdl"
+"model" "models/props/lamp_ndu45.mdl"
 "angles" "0 298 0"
 "frame" "0"
 "skin" "0"
@@ -8338,7 +8338,7 @@
 {
 "classname" "place_model"
 "angles" "15 266 -0"
-"model" "progs/props/metal_chair.mdl"
+"model" "models/props/metal_chair.mdl"
 "frame" "0"
 "skin" "0"
 "origin" "-584 -144 -192"
@@ -8575,7 +8575,7 @@
 "origin" "-720 296 -264"
 }
 {
-"classname" "item_switch"
+"classname" "zapper_switch"
 "target" "zap1"
 "targetname" "zap1"
 "angles" "0 270 0"
@@ -8593,20 +8593,6 @@
 "spawnflags" "7"
 "targetname" "dd5"
 "origin" "635 -269 -414"
-}
-{
-"classname" "func_wall"
-"renderamt" "180"
-"rendermode" "2"
-"spawnflags" "0"
-"angles" "0 0 0"
-{
-( -64 544 -328 ) ( -120 544 -328 ) ( -64 544 -224 ) {WOOD_TERM_BO [ 1 0 0 5 ] [ 0 0 -1 -9 ] 0 0.9 0.9
-( -120 544 -328 ) ( -96 552 -280 ) ( -120 544 -224 ) NULL [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 0.6 0.6
-( -96 552 -280 ) ( -64 544 -328 ) ( -64 544 -224 ) NULL [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 0.47 0.47
-( -120 544 -224 ) ( -96 552 -280 ) ( -64 544 -224 ) NULL [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
-( -64 544 -328 ) ( -96 552 -280 ) ( -120 544 -328 ) NULL [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
-}
 }
 {
 "classname" "place_model"
@@ -8643,7 +8629,7 @@
 {
 "classname" "place_model"
 "angles" "0 254 90"
-"model" "progs/Props/bed.mdl"
+"model" "models/Props/bed.mdl"
 "frame" "0"
 "skin" "0"
 "origin" "-630 -288 -170"
@@ -8651,7 +8637,7 @@
 {
 "classname" "place_model"
 "angles" "-0 90 -0"
-"model" "progs/Props/bed.mdl"
+"model" "models/Props/bed.mdl"
 "frame" "0"
 "skin" "0"
 "origin" "-632.673 -353.024 -192"
@@ -8659,7 +8645,7 @@
 {
 "classname" "place_model"
 "angles" "0 84 0"
-"model" "progs/Props/bed.mdl"
+"model" "models/Props/bed.mdl"
 "frame" "0"
 "skin" "0"
 "origin" "-528.673 -353.024 -192"
@@ -8746,7 +8732,7 @@
 "angles" "-0 209 -0"
 "skin" "0"
 "sequence" "5"
-"model" "progs/Props/rebar.mdl"
+"model" "models/Props/rebar.mdl"
 "origin" "604.843 -56.9045 -356.989"
 }
 {
@@ -8754,7 +8740,7 @@
 "angles" "0 296 180"
 "skin" "0"
 "sequence" "0"
-"model" "progs/Props/rebar.mdl"
+"model" "models/Props/rebar.mdl"
 "origin" "495.359 -33.2389 -354"
 }
 {
@@ -8762,7 +8748,7 @@
 "angles" "-0 1 -0"
 "skin" "0"
 "sequence" "3"
-"model" "progs/Props/rebar.mdl"
+"model" "models/Props/rebar.mdl"
 "origin" "575.324 90.6619 -354"
 }
 {
@@ -8770,7 +8756,7 @@
 "angles" "-0 92 -0"
 "skin" "0"
 "sequence" "3"
-"model" "progs/Props/rebar.mdl"
+"model" "models/Props/rebar.mdl"
 "origin" "878.336 290.105 -356"
 }
 {
@@ -8778,7 +8764,7 @@
 "angles" "-0 265 -0"
 "skin" "0"
 "sequence" "5"
-"model" "progs/Props/rebar.mdl"
+"model" "models/Props/rebar.mdl"
 "origin" "987.505 218.486 -356"
 }
 {
@@ -8931,5 +8917,19 @@
 ( -352 -1384 -352 ) ( -48 -1384 -352 ) ( -352 -1352 -368 ) NULL [ -1 -0 0 -12.0001 ] [ -0 1 0 0 ] 0 1 1
 ( -352 -1360 -328 ) ( -48 -1360 -328 ) ( -352 -1384 -352 ) NULL [ -1 -0 0 -12.0001 ] [ -0 1 0 0 ] 0 1 1
 ( -352 -1384 -352 ) ( -352 -1352 -368 ) ( -352 -1360 -328 ) {CLFNN [ 0 -1 0 -4 ] [ 0 0 -1 11 ] 0 0.5 0.5
+}
+}
+{
+"classname" "func_wall"
+"renderamt" "180"
+"rendermode" "2"
+"spawnflags" "0"
+"angles" "0 0 0"
+{
+( -64 544 -328 ) ( -120 544 -328 ) ( -64 544 -224 ) {WOOD_TERM_BO [ 1 0 0 5 ] [ 0 0 -1 -9 ] 0 0.9 0.9
+( -64 544 -328 ) ( -96 552 -280 ) ( -120 544 -328 ) NULL [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -120 544 -224 ) ( -96 552 -280 ) ( -64 544 -224 ) NULL [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -96 552 -280 ) ( -64 544 -328 ) ( -64 544 -224 ) NULL [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 0.47 0.47
+( -120 544 -328 ) ( -96 552 -280 ) ( -120 544 -224 ) NULL [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 0.6 0.6
 }
 }
