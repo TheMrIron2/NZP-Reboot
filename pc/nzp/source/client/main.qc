@@ -476,290 +476,153 @@ float() alphafade =
 noref void() CSQC_Parse_Event =
 {
 	local float first = readbyte();
-	if(first == EVENT_PISTOLFIRE)
-	{
-		local float entnum, traceent;
-		local vector pos, norm;
-		entnum = readentitynum();
-		
-		pos_x = readcoord();
-		pos_y = readcoord();
-		pos_z = readcoord();
-		norm_x = readcoord();
-		norm_y = readcoord();
-		norm_z = readcoord();
-		
-		traceent = readentitynum();
-		
-		crosshair_spread_time = time + 70/getWeaponRecoilReturn(getstatf(STAT_ACTIVEWEAPON));
 
-		if(entnum == player_localentnum)
-		{
-			tracercounter += 1;
-			if(tracercounter == 3)
-			{
-				tracercounter = 0;
-				makevectors(view_angles);
-				local vector offset = vmodel.origin + vmodel_muzzleoffset;
-				local vector muzzlepos;
-				muzzlepos = getviewprop(VF_ORIGIN);
-				muzzlepos += v_forward * offset_x;
-				muzzlepos -= v_right * offset_y;
-				muzzlepos += v_up * offset_z;
-
-				local entity tracer = spawn();
-				tracer.alpha = 1;
-				tracer.origin = muzzlepos;
-				tracer.targetpos = pos;
-				tracer.rate = 1/0.05;
-				tracer.angles = view_angles;
-				tracer.predraw = tracerthink;
-				tracer.drawmask = 1;
-			}
-
+	switch (first) {
+		case EVENT_PISTOLFIRE:
+			local float entnum, traceent;
+			local vector pos, norm;
+			entnum = readentitynum();
 			
-			//mzlflash.alpha = 1;
+			pos_x = readcoord();
+			pos_y = readcoord();
+			pos_z = readcoord();
+			norm_x = readcoord();
+			norm_y = readcoord();
+			norm_z = readcoord();
+			
+			traceent = readentitynum();
+			
+			crosshair_spread_time = time + 70/getWeaponRecoilReturn(getstatf(STAT_ACTIVEWEAPON));
 
-			mzlflash.angles_z = random() * 360;
-		}
-		
-		if(traceent == 0)
-		{
-			pointparticles(particleeffectnum("weapons.impact"), pos, norm*24, 1);
-			pointparticles(particleeffectnum("weapons.impact_decal"), pos, '0 0 0', 1);
-		}
-		else
-		{
-			local vector entorg;
-			entorg = getentity(traceent, GE_ORIGIN);
-			norm = (norm * 0.25) + (normalize(pos - (entorg + '0 0 12')) * 0.75);
-			local entity splat = spawn();
-//			setorigin(splat, pos + '0 0 0');
-			splat.drawmask = 1;
-			splat.alpha = 1;
-			splat.scale = 0.05;
-			splat.angles = [random()*360, random()*360, random()*360];
-			splat.targetpos = norm * 1.5;
-			splat.predraw = alphafade;
-		}
-		
-	}
-	else if(first == EVENT_WEAPONCHANGE)
-	{
-		local float to;
-		to = readbyte();
-		setmodel(vmodel,GetWeaponModel(to, FALSE));
+			if(entnum == player_localentnum)
+			{
+				tracercounter += 1;
+				if(tracercounter == 3)
+				{
+					tracercounter = 0;
+					makevectors(view_angles);
+					local vector offset = vmodel.origin + vmodel_muzzleoffset;
+					local vector muzzlepos;
+					muzzlepos = getviewprop(VF_ORIGIN);
+					muzzlepos += v_forward * offset_x;
+					muzzlepos -= v_right * offset_y;
+					muzzlepos += v_up * offset_z;
 
-		if (to == W_KAR_SCOPE && vmodel.model == "models/weapons/kar/v_kar.mdl") {
-			setmodel(v2model,"models/weapons/kar/v_karscope.mdl");
-		} else {
-			setmodel(v2model,"");
-		}
+					local entity tracer = spawn();
+					tracer.alpha = 1;
+					tracer.origin = muzzlepos;
+					tracer.targetpos = pos;
+					tracer.rate = 1/0.05;
+					tracer.angles = view_angles;
+					tracer.predraw = tracerthink;
+					tracer.drawmask = 1;
+				}
 
-		v2model.origin = vmodel.origin = '0 0 0';
-		v2model.angles = vmodel.angles = '-60 0 0';
-		v2model_currentpos = vmodel_currentpos = vmodel.origin + '0 0 -24';
-		v2model_targetpos = vmodel_targetpos = vmodel.origin;
-		v2model_muzzleoffset = vmodel_muzzleoffset = '12 0 1';
-		weapon = to;
-		
-		HUD_Change_time = time + 6;
-	}
-	else if(first == EVENT_UPDATEVMODEL)
-	{
-		local string new;
-		local float skin2;
-		new = readstring();
-		setmodel(vmodel,new);
-		vmodel.skin = readbyte();
-	}
-	else if(first == EVENT_UPDATEV2MODEL)
-	{
-		local string new2;
-		new2 = readstring();
-		setmodel(v2model,new2);
-		v2model.skin = readbyte();
-	}
-	else if(first == EVENT_USEPRINT) {
-		useprint_type = readbyte();
-		useprint_cost = readshort();
-		useprint_weapon = readbyte();
-
-		useprint_time = time + 0.1;
-		
-	} else if(first == EVENT_NEWROUND) {
-		rounds = readbyte();
-		HUD_Change_time = time + 6;
-	} else if (first == EVENT_SETROUND) {
-		rounds = readbyte();
-	}
-	else if (first == EVENT_PERK) 
-	{
-		float newperks, s;
-		
-		newperks = readlong();
 				
-		if (newperks & P_JUG && !(perks & P_JUG))
-		{
-			perk_order[current_perk_order] = P_JUG;
-			current_perk_order = current_perk_order + 1;
-		}
-		if (newperks & P_DOUBLE && !(perks & P_DOUBLE))
-		{
-			perk_order[current_perk_order] = P_DOUBLE;
-			current_perk_order = current_perk_order + 1;
-		}
-		if (newperks & P_SPEED && !(perks & P_SPEED))
-		{
-			perk_order[current_perk_order] = P_SPEED;
-			current_perk_order = current_perk_order + 1;
-		}
-		if (newperks & P_REVIVE && !(perks & P_REVIVE))
-		{
-			perk_order[current_perk_order] = P_REVIVE;
-			current_perk_order = current_perk_order + 1;
-		}
-		if (newperks & P_FLOP && !(perks & P_FLOP))
-		{
-			perk_order[current_perk_order] = P_FLOP;
-			current_perk_order = current_perk_order + 1;
-		}
-		if (newperks & P_STAMIN && !(perks & P_STAMIN))
-		{
-			perk_order[current_perk_order] = P_STAMIN;
-			current_perk_order = current_perk_order + 1;
-		}
-		if (perks & P_JUG && !(newperks & P_JUG))
-		{
-			for (s = 0; s < 8; s++)
-			{
-				if (perk_order[s] == P_JUG)
-				{
-					perk_order[s] = 0;
-					while (perk_order[s+1])
-					{
-						perk_order[s] = perk_order[s+1];
-						perk_order[s+1] = 0;
-					}
-					break;
-				}
+				//mzlflash.alpha = 1;
+
+				mzlflash.angles_z = random() * 360;
 			}
-			current_perk_order = current_perk_order - 1;
-		}
-		if (perks & P_DOUBLE && !(newperks & P_DOUBLE))
-		{
-			for (s = 0; s < 8; s++)
+			
+			if(traceent == 0)
 			{
-				if (perk_order[s] == P_DOUBLE)
-				{
-					perk_order[s] = 0;
-					while (perk_order[s+1])
-					{
-						perk_order[s] = perk_order[s+1];
-						perk_order[s+1] = 0;
-					}
-					break;
-				}
+				pointparticles(particleeffectnum("weapons.impact"), pos, norm*24, 1);
+				pointparticles(particleeffectnum("weapons.impact_decal"), pos, '0 0 0', 1);
 			}
-			current_perk_order = current_perk_order - 1;
-		}
-		if (perks & P_SPEED && !(newperks & P_SPEED))
-		{
-			for (s = 0; s < 8; s++)
+			else
 			{
-				if (perk_order[s] == P_SPEED)
-				{
-					perk_order[s] = 0;
-					while (perk_order[s+1])
-					{
-						perk_order[s] = perk_order[s+1];
-						perk_order[s+1] = 0;
-					}
-					break;
-				}
+				local vector entorg;
+				entorg = getentity(traceent, GE_ORIGIN);
+				norm = (norm * 0.25) + (normalize(pos - (entorg + '0 0 12')) * 0.75);
+				local entity splat = spawn();
+				splat.drawmask = 1;
+				splat.alpha = 1;
+				splat.scale = 0.05;
+				splat.angles = [random()*360, random()*360, random()*360];
+				splat.targetpos = norm * 1.5;
+				splat.predraw = alphafade;
 			}
-			current_perk_order = current_perk_order - 1;
-		}
-		if (perks & P_REVIVE && !(newperks & P_REVIVE))
-		{
-			for (s = 0; s < 8; s++)
-			{
-				if (perk_order[s] == P_REVIVE)
-				{
-					perk_order[s] = 0;
-					while (perk_order[s+1])
-					{
-						perk_order[s] = perk_order[s+1];
-						perk_order[s+1] = 0;
-					}
-					break;
-				}
-			}
-			current_perk_order = current_perk_order - 1;
-		}
-		if (perks & P_FLOP && !(newperks & P_FLOP))
-		{
-			for (s = 0; s < 8; s++)
-			{
-				if (perk_order[s] == P_FLOP)
-				{
-					perk_order[s] = 0;
-					while (perk_order[s+1])
-					{
-						perk_order[s] = perk_order[s+1];
-						perk_order[s+1] = 0;
-					}
-					break;
-				}
-			}
-			current_perk_order = current_perk_order - 1;
-		}
-		if (perks & P_STAMIN && !(newperks & P_STAMIN))
-		{
-			for (s = 0; s < 8; s++)
-			{
-				if (perk_order[s] == P_STAMIN)
-				{
-					perk_order[s] = 0;
-					while (perk_order[s+1])
-					{
-						perk_order[s] = perk_order[s+1];
-						perk_order[s+1] = 0;
-					}
-					break;
-				}
-			}
-			current_perk_order = current_perk_order - 1;
-		}
+			break;
 		
-		perks = newperks;
-		
-	}
-	else if (first == EVENT_UPDATE) 
-	{
-		float updatetype = readbyte();
-		float var_1 = readbyte();
-		float var_2 = readbyte();
-		float var_3 = readbyte();
-		
-		switch (updatetype)
-		{
-			case 1: 
-				HUD_Change_time = time + var_1; 
-				break;
-			case 2:
-				rounds_change = var_1;
-				break;
-			case 3:
-				if (Hitmark_time < time)
-					Hitmark_time = time + 0.2;
-				break;
-			case 4:
-				zoom_2_time = time + 0.25;
-				break;
-			default: 
-				break;
-		}
-		
+		case EVENT_WEAPONCHANGE:
+			local float to;
+			to = readbyte();
+			setmodel(vmodel,GetWeaponModel(to, FALSE));
+
+			if (to == W_KAR_SCOPE && vmodel.model == "models/weapons/kar/v_kar.mdl") {
+				setmodel(v2model,"models/weapons/kar/v_karscope.mdl");
+			} else {
+				setmodel(v2model,"");
+			}
+
+			v2model.origin = vmodel.origin = '0 0 0';
+			v2model.angles = vmodel.angles = '-60 0 0';
+			v2model_currentpos = vmodel_currentpos = vmodel.origin + '0 0 -24';
+			v2model_targetpos = vmodel_targetpos = vmodel.origin;
+			v2model_muzzleoffset = vmodel_muzzleoffset = '12 0 1';
+			weapon = to;
+			
+			HUD_Change_time = time + 6;
+			break;
+		case EVENT_UPDATEVMODEL:
+			local string new;
+			local float skin2;
+			new = readstring();
+			setmodel(vmodel,new);
+			vmodel.skin = readbyte();
+			break;
+		case EVENT_UPDATEV2MODEL:
+			local string new2;
+			new2 = readstring();
+			setmodel(v2model,new2);
+			v2model.skin = readbyte();
+			break;
+		case EVENT_USEPRINT:
+			useprint_type = readbyte();
+			useprint_cost = readshort();
+			useprint_weapon = readbyte();
+
+			useprint_time = time + 0.1;
+			break;
+			
+		case EVENT_NEWROUND:
+			rounds = readbyte();
+			HUD_Change_time = time + 6;
+			break;
+		case EVENT_SETROUND:
+			rounds = readbyte();
+			break;
+		case EVENT_PERK:
+			float newperks;
+			
+			newperks = readlong();
+
+			UpdatePerks(newperks);
+			break;
+		case EVENT_UPDATE:
+			float updatetype = readbyte();
+			float var_1 = readbyte();
+			float var_2 = readbyte();
+			float var_3 = readbyte();
+			
+			switch (updatetype)
+			{
+				case 1: 
+					HUD_Change_time = time + var_1; 
+					break;
+				case 2:
+					rounds_change = var_1;
+					break;
+				case 3:
+					if (Hitmark_time < time)
+						Hitmark_time = time + 0.2;
+					break;
+				case 4:
+					zoom_2_time = time + 0.25;
+					break;
+				default: 
+					break;
+			}
+			break;
 	}
 }
