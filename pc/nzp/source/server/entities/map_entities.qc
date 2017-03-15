@@ -485,7 +485,7 @@ void zapper_stop() {
 		} else if (zents.classname == "zapper_switch") {
 			tempe = self;
 			self = zents;
-			self.state = 1;
+			self.state = 0;
 			offswitch2();
 			self = tempe;
 		} else if (zents.classname == "zapper_node" && zents.target) {
