@@ -168,3 +168,29 @@
 "targetname" "z3b"
 "origin" "0 32 0"
 }
+{
+"classname" "weapon_wall"
+"angles" "0 270 0"
+"sequence" "2"
+"targetname" "thomp"
+"origin" "-32 -159 40"
+}
+{
+"classname" "buy_weapon"
+"cost" "100"
+"weapon" "3"
+"target" "thomp"
+{
+( -32 -140 52 ) ( -32 -140 0 ) ( -32 -180 52 ) TRIGGER [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -36 -180 52 ) ( -36 -180 0 ) ( -36 -140 52 ) TRIGGER [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -32 -180 52 ) ( -32 -180 0 ) ( -36 -180 52 ) TRIGGER [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -36 -140 52 ) ( -36 -140 0 ) ( -32 -140 52 ) TRIGGER [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -36 -140 0 ) ( -36 -180 0 ) ( -32 -140 0 ) TRIGGER [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 1 1
+( -32 -180 52 ) ( -36 -180 52 ) ( -32 -140 52 ) TRIGGER [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 1 1
+}
+}
+{
+"classname" "spawn_zombie"
+"spawnflags" "6"
+"origin" "194 4 32"
+}

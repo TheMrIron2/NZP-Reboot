@@ -453,12 +453,6 @@ void()	offswitch3		=[	3,		offswitch4		] {self.frame = 1;};
 void()	offswitch4		=[	4,		SUB_Null	] {self.frame = 0;};
 
 
-void(entity from, entity to) zap =
-{
-
-	te_lightning3(from, from.origin, to.origin);
-
-};
 
 void zapper_play () {
 	entity zents = find(world, targetname, self.target);
