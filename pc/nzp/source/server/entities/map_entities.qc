@@ -442,17 +442,106 @@ void() item_radio =
 	self.th_die = radio_hit;
 };
 
+.string zappername;
+void()	turnswitch1	=[	1,		turnswitch2	] {self.frame = 0;};
+void()	turnswitch2	=[	2,		turnswitch3	] {self.frame = 1;};
+void()	turnswitch3	=[	3,		turnswitch4	] {self.frame = 2;};
+void()	turnswitch4	=[	4,		SUB_Null	] {self.frame = 2;};
+
+void()	offswitch2		=[	2,		offswitch3		] {self.frame = 3;};
+void()	offswitch3		=[	3,		offswitch4		] {self.frame = 4;};
+void()	offswitch4		=[	4,		SUB_Null	] {self.frame = 5;};
+
+
+void(entity from, entity to) zap =
+{
+
+	te_lightning3(from, from.origin, to.origin);
+
+};
+
+void zapper_play () {
+	entity zents = find(world, targetname, self.target);
+
+	if (zents) {
+		te_lightning3(self, self.origin, zents.origin);
+	}
+
+	
+
+	self.think = zapper_play;
+	self.nextthink = time + (1*random());
+}
+
+void ActivateZapper() {
+	entity zents;
+	entity tempe;
+	self.state = 1;
+	turnswitch1();
+
+	zents = find(world, zappername, self.zappername);
+	while (zents)
+	{
+		if (zents != self) {
+			if (zents.classname == "zapper_light") {
+				zents.skin = 1;
+			} else if (zents.classname == "zapper_switch") {
+				tempe = self;
+				self = zents;
+				turnswitch1();
+				self = tempe;
+			} else if (zents.classname == "zapper_node" && zents.target) {
+				zents.think = zapper_play;
+				zents.nextthink = time + 0.1;
+			}
+		}
+		zents = find(zents, zappername, self.zappername);
+	}
+}
+
+
+void zapper_touch () {
+	if (other.classname != "player") {
+		return;
+	}
+	
+    
+	if (self.requirespower == true && !isPowerOn) {
+		useprint (other, 8, 0, 0);
+		return;
+	}
+	
+
+	if (self.state == 0) {
+		useprint (other, 11, self.cost, self.weapon);
+
+		if (!other.button7 || other.semiuse) {
+			return;
+		}
+
+		other.semiuse = true;
+		if (other.points < self.cost) {
+			centerprint(other, "You do not have enough points\n");
+			return;
+		}
+
+		ActivateZapper();
+		addmoney(other, -1*self.cost, false);
+	}
+}
 
 
 void() zapper_switch = 
 {
 	precache_model ("models/machines/zapper/z_switch.mdl");
 	self.movetype = MOVETYPE_NONE;
-	self.solid = SOLID_TRIGGER;
-	//self.touch = switch_touch;
 	self.classname = "zapper_switch";
 	setmodel(self, "models/machines/zapper/z_switch.mdl");
 	setsize (self, '-4 -4 -4', '4 4 4');
+
+	self.state = 0;
+	self.solid = SOLID_TRIGGER;
+	self.touch = zapper_touch;
 };
 
 void() zapper_node = 
@@ -461,7 +550,7 @@ void() zapper_node =
 	self.movetype = MOVETYPE_NONE;
 	self.solid = SOLID_TRIGGER;
 	//self.touch = switch_touch;
-	self.classname = "zapper_switch";
+	self.classname = "zapper_node";
 	setmodel(self, "models/machines/zapper/z_zap.mdl");
 	setsize (self, '-4 -4 -4', '4 4 4');
 };
@@ -472,7 +561,16 @@ void() zapper_light =
 	self.movetype = MOVETYPE_NONE;
 	self.solid = SOLID_TRIGGER;
 	//self.touch = switch_touch;
-	self.classname = "zapper_switch";
+	self.classname = "zapper_light";
 	setmodel(self, "models/machines/zapper/z_light.mdl");
 	setsize (self, '-4 -4 -4', '4 4 4');
+};
+
+
+void() trigger_electro =
+{
+	self.classname = "zapper_field";
+	InitTrigger ();
+	//self.touch = electro_touch;
+	self.solid = SOLID_TRIGGER;
 };

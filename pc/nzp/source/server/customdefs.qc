@@ -31,6 +31,7 @@ float STATE_DOWN		= 3;
 .float /*worldtype,*/ delay, wait, lip, /*light_lev,*/ speed, style/*, skill*/;
 
 entity activator;
+.float requirespower;
 
 //player funcs
 .float zoom;

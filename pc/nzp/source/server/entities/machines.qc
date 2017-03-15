@@ -90,7 +90,6 @@ void DrinkPerk(float perk) {
 
 }
 
-.float requirespower;
 void() touch_perk =
 {  
 	if (other.classname != "player" || other.downed)
