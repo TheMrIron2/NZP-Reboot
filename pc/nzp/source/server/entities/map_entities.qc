@@ -448,9 +448,9 @@ void()	turnswitch2	=[	2,		turnswitch3	] {self.frame = 1;};
 void()	turnswitch3	=[	3,		turnswitch4	] {self.frame = 2;};
 void()	turnswitch4	=[	4,		SUB_Null	] {self.frame = 2;};
 
-void()	offswitch2		=[	2,		offswitch3		] {self.frame = 3;};
-void()	offswitch3		=[	3,		offswitch4		] {self.frame = 4;};
-void()	offswitch4		=[	4,		SUB_Null	] {self.frame = 5;};
+void()	offswitch2		=[	2,		offswitch3		] {self.frame = 2;};
+void()	offswitch3		=[	3,		offswitch4		] {self.frame = 1;};
+void()	offswitch4		=[	4,		SUB_Null	] {self.frame = 0;};
 
 
 void(entity from, entity to) zap =
@@ -473,30 +473,57 @@ void zapper_play () {
 	self.nextthink = time + (1*random());
 }
 
-void ActivateZapper() {
+void zapper_stop() {
 	entity zents;
 	entity tempe;
-	self.state = 1;
-	turnswitch1();
 
 	zents = find(world, zappername, self.zappername);
 	while (zents)
 	{
-		if (zents != self) {
-			if (zents.classname == "zapper_light") {
-				zents.skin = 1;
-			} else if (zents.classname == "zapper_switch") {
-				tempe = self;
-				self = zents;
-				turnswitch1();
-				self = tempe;
-			} else if (zents.classname == "zapper_node" && zents.target) {
-				zents.think = zapper_play;
-				zents.nextthink = time + 0.1;
-			}
+		if (zents.classname == "zapper_light") {
+			zents.skin = 0;
+		} else if (zents.classname == "zapper_switch") {
+			tempe = self;
+			self = zents;
+			self.state = 1;
+			offswitch2();
+			self = tempe;
+		} else if (zents.classname == "zapper_node" && zents.target) {
+			zents.think = SUB_Null;
+			zents.nextthink = 0;
 		}
 		zents = find(zents, zappername, self.zappername);
 	}
+
+	remove(self);
+}
+
+void zapper_start(string zapper) {
+	entity zents;
+	entity tempe;
+
+	zents = find(world, zappername, zapper);
+	while (zents)
+	{
+		if (zents.classname == "zapper_light") {
+			zents.skin = 1;
+		} else if (zents.classname == "zapper_switch") {
+			tempe = self;
+			self = zents;
+			self.state = 1;
+			turnswitch1();
+			self = tempe;
+		} else if (zents.classname == "zapper_node" && zents.target) {
+			zents.think = zapper_play;
+			zents.nextthink = time + 0.1;
+		}
+		zents = find(zents, zappername, zapper);
+	}
+
+	tempe = spawn();
+	tempe.think = zapper_stop;
+	tempe.nextthink = time + 30;
+	tempe.zappername = zapper;
 }
 
 
@@ -525,7 +552,7 @@ void zapper_touch () {
 			return;
 		}
 
-		ActivateZapper();
+		zapper_start(self.zappername);
 		addmoney(other, -1*self.cost, false);
 	}
 }
