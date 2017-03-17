@@ -29,14 +29,14 @@ struct navmesh_poly
 	float verts[4];
 	float vert_count;
 	
-	//The following two fields are for the pathfinding usage, they are useless for the editor itself
-	//So these variables shouldn't be in the editor navmesh poly struct, but are essential for the pathfinding navmesh struct
-	float connected_polies[4];//What polygons we share an edge with (similar to links), more than 4 should be impossible
+	//The following fields are only used for navmesh pathfinding testing
+	//They are generated every time a test start/end point is placed (in case the navmesh changes)
+	//The values are calculated upon calling navmesh save
 	float connected_polies_count;
-	//TODO: precalculate the left / right vertices of connected polies
-	//i.e.: the edge shared with connected_polies[0] has a left vertex & right vertex as: connected_poly_left_vert[0] & connected_poly_right_vert[0]
-	//Calculate these values at export
-	//FIXME: we can do directional polygons by in some way calculating this connected polies field in some other way
+	float connected_polies[4];//What polygons we share an edge with (similar to links), more than 4 should be impossible
+	float connected_polies_left_vert[4];//The left vertex of the shared edge
+	float connected_polies_right_vert[4];//The left vertex of the shared edge
+
 	vector center;//The center of the polygon in 3D space
 };
 
@@ -1005,6 +1005,7 @@ void navmesh_calc_connected_polies()
 	{
 		for(float j = i + 1; j < navmesh_poly_count; j++)
 		{
+			
 			//Check if poly j shares an edge with poly i
 			
 			//Edge case: where two opposite corners (two corners not on the same edge) of a quad are shared with another poly
@@ -1016,34 +1017,47 @@ void navmesh_calc_connected_polies()
 			//		if two quads share 3: one of them is convex, one is concave 	-> bad topology
 			//		if a quad shares 3 with a tri: the tri is within the quad 	-> bad topology
 			//		if two tris share 3: they are the same 				-> bad topology
-			float shared_verts = 0;
 			
-			//Iterate over ith poly's verts
+			
+			float shared_verts[2];
+			shared_verts[0] = -1;
+			shared_verts[1] = -1;
+			float shared_verts_index[2];//The index of the vert in previous poly's vert list
+			shared_verts_index[0] = -1;
+			shared_verts_index[1] = -1;
+			float verts_found = 0;
+				
 			for(float k = 0; k < navmesh_polies[i].vert_count; k++)
 			{
-				//Iterate over jth poly's verts
 				for(float l = 0; l < navmesh_polies[j].vert_count; l++)
 				{
 					if(navmesh_polies[i].verts[k] == navmesh_polies[j].verts[l])
 					{
-						shared_verts++;
+						//If we have found more verts than should be allowed, count them for error print
+						if(verts_found > 2)
+						{
+							verts_found++;
+							continue;
+						}
+						
+						shared_verts[verts_found] = navmesh_polies[i].verts[k];
+						shared_verts_index[verts_found++] = k;
 					}
 				}
 			}
 			
 			//Print a warning if more than 2, should be impossible
-			if(shared_verts > 2)
+			if(verts_found > 2)
 			{
 				print("Warning: polygon ");
 				print(ftos(i));
 				print(" shares ");
-				print(ftos(shared_verts));
+				print(ftos(verts_found));
 				print(" vertices with polygon ");
 				print(ftos(j));
 				print(". There is an issue somewhere.\n");
 			}
-			//Should I print a warning if they share 3 or 4? (it's a result of bad topology)
-			if(shared_verts >= 2)
+			else if(verts_found == 2)
 			{
 				//Setting the polygons as connected to each other
 				if(navmesh_polies[i].connected_polies_count >= 4)
@@ -1060,8 +1074,56 @@ void navmesh_calc_connected_polies()
 					print(" shares an edge with more than 4 other polygons.\n");
 					break;
 				}
-				navmesh_polies[i].connected_polies[navmesh_polies[i].connected_polies_count++] = j;
-				navmesh_polies[j].connected_polies[navmesh_polies[j].connected_polies_count++] = i;
+				navmesh_polies[i].connected_polies[navmesh_polies[i].connected_polies_count] = j;
+				navmesh_polies[j].connected_polies[navmesh_polies[j].connected_polies_count] = i;
+				
+				
+				//=======================================================================================
+				//Calculating shared edge left / right vertices
+
+				//Calculating from the perspective of moving from poly[i] to poly[j]
+				
+				//Because polygon's vertices are stored in a ccw winding order:
+				//connected polygons must share two consecutive verts.
+				//the CCW winding of the triangle dictates that the next shared vertex is to the left of, and in the index after the first shared vertex
+				//i.e. of the two consecutive verts shard, the former is to the right, the latter is to the left
+				
+				//if first one is a quad: shared edge must be, where the first index is right and second index is left
+				//3-0, 0-1, 1-2, 2-3
+				//if first one is a tri: shared edge must be, where the first index is right and second index is left
+				//2-0, 0-1, 1-2
+				
+				//Two distinct cases:
+				//If index of first is 0, and index of second is 2 or 3
+				
+				float left_vert = -1;
+				float right_vert = -1;
+				
+				if(shared_verts_index[0] == 0 && shared_verts_index[1] >= 2)
+				{
+					//then right is 0, left is 3 or 4
+					left_vert = shared_verts[1];
+					right_vert = shared_verts[0];
+					
+				}
+				else
+				{
+					//Else, one with the lower index is right, higher index is left
+					left_vert = shared_verts[1];
+					right_vert = shared_verts[0];
+				}
+				
+				
+				//Assigning the link's left/right edges
+				navmesh_polies[i].connected_polies_left_vert[navmesh_polies[i].connected_polies_count] = left_vert;
+				navmesh_polies[i].connected_polies_right_vert[navmesh_polies[i].connected_polies_count++] = right_vert;
+				
+				//From j to i, left vert is on the right, and right vert is on the left
+				navmesh_polies[j].connected_polies_left_vert[navmesh_polies[j].connected_polies_count] = right_vert;
+				navmesh_polies[j].connected_polies_right_vert[navmesh_polies[j].connected_polies_count++] = left_vert;
+				
+				//=======================================================================================
+				
 				print("Poly ");
 				print(ftos(i));
 				print(" is connected to ");
@@ -1096,6 +1158,33 @@ void navmesh_calc_polies_centers()
 }
 
 
+//Navmesh file specification:
+//Vertex count
+//For each vert:
+	//Vertex position vector
+//Polygon count
+//For each polygon:
+		//vertex count (must be 3 or 4)
+		//vertex 0 index
+		//vertex 1 index
+		//vertex 2 index
+		//vertex 3 index (will be -1 for a tri)
+		//center (vector)
+		//link count
+		//link 0 index (will be set or -1 for a tri)
+		//link 1 index (will be set or -1 for a tri)
+		//link 2 index (will be set or -1 for a tri)
+		//link 3 index (will be set or -1 for a tri)
+		//link 0 left vert index (will be set or -1 for a tri)
+		//link 1 left vert index (will be set or -1 for a tri)
+		//link 2 left vert index (will be set or -1 for a tri)
+		//link 3 left vert index (will be set or -1 for a tri)
+		//link 0 right vert index (will be set or -1 for a tri)
+		//link 1 right vert index (will be set or -1 for a tri)
+		//link 2 right vert index (will be set or -1 for a tri)
+		//link 3 right vert index (will be set or -1 for a tri)
+
+
 //Saves the current navmesh to a file
 void navmesh_editor_save_navmesh()
 {
@@ -1111,61 +1200,191 @@ void navmesh_editor_save_navmesh()
 		return;
 	}
 	
-	float fsize = 0;
-	fsize = sizeof(fsize);
+	
+	//Calculating all links and polygon centers
+	//===========================================
+	navmesh_calc_polies_centers();
+	navmesh_calc_connected_polies();
+	//===========================================
 
-	fwrite(file, &navmesh_vert_count, fsize);
-	//	fputs(file,"waypoint\n");
-	//	fputs(file,"{\n");
-	//	fputs(file, " id: ", dway.waynum, "\n");
-	//	fputs(file, " origin: ", vtos(dway.origin), "\n");
+	//Write vertex count
+	fputs(file,ftos(navmesh_vert_count),"\n");
+	
+	//Write all vertex positions
+	for(float i = 0; i < navmesh_vert_count; i++)
+	{
+		fputs(file,vtos(navmesh_verts[i].pos),"\n");
+	}
+	
+	//Write polygon count
+	fputs(file,ftos(navmesh_poly_count),"\n");
+	
+	//Write all polygon data to file
+	for(float i = 0; i < navmesh_poly_count; i++)
+	{
+		//Writing vert count
+		fputs(file,ftos(navmesh_polies[i].vert_count),"\n");
+		//Writing vertices
+		fputs(file,ftos(navmesh_polies[i].verts[0]),"\n");
+		fputs(file,ftos(navmesh_polies[i].verts[1]),"\n");
+		fputs(file,ftos(navmesh_polies[i].verts[2]),"\n");
+		fputs(file,ftos(navmesh_polies[i].verts[3]),"\n");
+		fputs(file,vtos(navmesh_polies[i].center),"\n");
+		
+		//Writing link count
+		fputs(file,ftos(navmesh_polies[i].connected_polies_count),"\n");
+		//Writing links
+		fputs(file,ftos(navmesh_polies[i].connected_polies[0]),"\n");
+		fputs(file,ftos(navmesh_polies[i].connected_polies[1]),"\n");
+		fputs(file,ftos(navmesh_polies[i].connected_polies[2]),"\n");
+		fputs(file,ftos(navmesh_polies[i].connected_polies[3]),"\n");
+		//Writing left vertices of the links
+		fputs(file,ftos(navmesh_polies[i].connected_polies_left_vert[0]),"\n");
+		fputs(file,ftos(navmesh_polies[i].connected_polies_left_vert[1]),"\n");
+		fputs(file,ftos(navmesh_polies[i].connected_polies_left_vert[2]),"\n");
+		fputs(file,ftos(navmesh_polies[i].connected_polies_left_vert[3]),"\n");
+		//Writing right vertices of the links
+		fputs(file,ftos(navmesh_polies[i].connected_polies_right_vert[0]),"\n");
+		fputs(file,ftos(navmesh_polies[i].connected_polies_right_vert[1]),"\n");
+		fputs(file,ftos(navmesh_polies[i].connected_polies_right_vert[2]),"\n");
+		fputs(file,ftos(navmesh_polies[i].connected_polies_right_vert[3]),"\n");	
+	}
+	
+	fclose(file);
+	
+	print("Navmesh saved to file \"",h,"\".\n");
 }
 //Overwrites current navmesh with an empty navmesh
 void navmesh_editor_clear_navmesh()
 {
-	
+	navmesh_vert_count = 0;
+	for(float i = 0; i < navmesh_verts.length; i++)
+	{
+		navmesh_verts[i].pos.x = 0;
+		navmesh_verts[i].pos.y = 0;
+		navmesh_verts[i].pos.z = 0;
+	}
+	navmesh_poly_count = 0;
+	for(float i = 0; i < navmesh_polies.length; i++)
+	{
+		navmesh_polies[i].vert_count = 0;
+		
+		navmesh_polies[i].verts[0] = -1;
+		navmesh_polies[i].verts[1] = -1;
+		navmesh_polies[i].verts[2] = -1;
+		navmesh_polies[i].verts[3] = -1;
+		
+		navmesh_polies[i].center.x = 0;
+		navmesh_polies[i].center.y = 0;
+		navmesh_polies[i].center.z = 0;
+		
+		navmesh_polies[i].connected_polies_count = 0;
+		
+		navmesh_polies[i].connected_polies[0] = -1;
+		navmesh_polies[i].connected_polies[1] = -1;
+		navmesh_polies[i].connected_polies[2] = -1;
+		navmesh_polies[i].connected_polies[3] = -1;
+		
+		navmesh_polies[i].connected_polies_left_vert[0] = -1;
+		navmesh_polies[i].connected_polies_left_vert[1] = -1;
+		navmesh_polies[i].connected_polies_left_vert[2] = -1;
+		navmesh_polies[i].connected_polies_left_vert[3] = -1;
+		
+		navmesh_polies[i].connected_polies_right_vert[0] = -1;
+		navmesh_polies[i].connected_polies_right_vert[1] = -1;
+		navmesh_polies[i].connected_polies_right_vert[2] = -1;
+		navmesh_polies[i].connected_polies_right_vert[3] = -1;
+	}
 }
 //Overwrites currently loaded navmesh with navmesh stored in fail
 void navmesh_editor_load_navmesh()
 {
-	//TODO: clear navmesh
+	string filepath;
 	float file;
-	string h;
 	
-	h = strcat(mappath, ".nav");
-	file = fopen(h,FILE_READ);
+	filepath = strcat(mappath, ".nav");
+	file = fopen(filepath,FILE_READ);
 	
 	if(file == -1)
 	{
-		print("Error: file \"",h,"\" not found.\n");
+		print("Error: file \"",filepath,"\" not found.\n");
 		return;
 	}
 	
 	float v;
 	
-	fread(file,&v,sizeof(v));
+	//First line contains vertex count
+	string line = fgets(file);
 	
-	print("Read value: ",ftos(v),".\n");
+	float vert_count = stof(line);
 	
-	/*new_way = spawn();
-	targetcount = 0;
-	point = 0;
-	loop = 1;
-	while (loop)
+	if(vert_count > navmesh_verts.length)
 	{
-		string line;
+		print("Error: navmesh file \"",filepath,"\" has an invalid vert count. (" , line, " > ", ftos(navmesh_verts.length),").\n");
+		fclose(file);
+		return;
+	}
+	
+	//It appears to be valid, so clear the current navmesh before continuing.
+	navmesh_editor_clear_navmesh();
+	
+	navmesh_vert_count = vert_count;
+	
+	print("Vert count: ",line,"\n");
+
+	//Temp vector to assign component-wise
+	vector temp;
+	
+
+	//Reading all of the vertex positions
+	for(float i = 0; i < navmesh_vert_count; i++)
+	{
 		line = fgets(file);
-	}*/
+		temp = stov(line);
+		navmesh_verts[i].pos.x = temp.x;
+		navmesh_verts[i].pos.y = temp.y;
+		navmesh_verts[i].pos.z = temp.z;
+		//TODO: if something goes wrong, clear the partially loaded navmesh
+	}
+	
+	//Next line contains the number of polygons
+	navmesh_poly_count = stof(fgets(file));
+	
+	//The next lines are each polygon
+	for(float i = 0; i < navmesh_poly_count; i++)
+	{
+		//Getting vertex count
+		navmesh_polies[i].vert_count = stof(fgets(file));
+		//Getting vertices
+		navmesh_polies[i].verts[0] = stof(fgets(file));
+		navmesh_polies[i].verts[1] = stof(fgets(file));
+		navmesh_polies[i].verts[2] = stof(fgets(file));
+		navmesh_polies[i].verts[3] = stof(fgets(file));
+		//Don't care about polygon center
+		fgets(file);
+		//Don't care about link count
+		fgets(file);
+		//Don't care about links for now FIXME HANDLE DIRECTIONAL LINKS
+		fgets(file);//0
+		fgets(file);//1
+		fgets(file);//2
+		fgets(file);//3
+		//Don't care about link's left vertices
+		fgets(file);//0
+		fgets(file);//1
+		fgets(file);//2
+		fgets(file);//3
+		//Don't care about link's right vertices
+		fgets(file);//0
+		fgets(file);//1
+		fgets(file);//2
+		fgets(file);//3
+	}
+	
+	fclose(file);
 }
 
 
-//==================================================================
-//TEMP TEMP TEMP for testing
-float pathfinding_specific_navmesh_data_calculated;
-//This float is set to TRUE once we have calculated the polygon centers and connected polygons
-//We don't precalculate them because we don't care about this data in editor
-//This data should be calculated by navmesh exporter, and loaded in by navmesh importer
-//So this data should exist by the time pathfinding functions are executed, hence why I calculate it just before calling pathfind.
 //==================================================================
 
 
@@ -1255,13 +1474,9 @@ void navmesh_place_test_goalent()
 	goalent_set = TRUE;
 	
 	
-	//Calculate data that the navmesh exporer will calculate, but only do it once.
-	if(pathfinding_specific_navmesh_data_calculated == FALSE)
-	{
-		pathfinding_specific_navmesh_data_calculated = TRUE;
-		navmesh_calc_polies_centers();
-		navmesh_calc_connected_polies();
-	}
+	//Calculate data that the navmesh exporer will calculate
+	navmesh_calc_polies_centers();
+	navmesh_calc_connected_polies();
 	
 	if(goalent_set == TRUE && startent_set == TRUE)
 	{
@@ -1280,13 +1495,9 @@ void navmesh_place_test_startent()
 	
 	startent_set = TRUE;
 	
-	//Calculate data that the navmesh exporer will calculate, but only do it once.
-	if(pathfinding_specific_navmesh_data_calculated == FALSE)
-	{
-		pathfinding_specific_navmesh_data_calculated = TRUE;
-		navmesh_calc_polies_centers();
-		navmesh_calc_connected_polies();
-	}
+	//Calculate data that the navmesh exporer will calculate
+	navmesh_calc_polies_centers();
+	navmesh_calc_connected_polies();
 	
 	if(goalent_set == TRUE && startent_set == TRUE)
 	{
@@ -1595,56 +1806,24 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 		float prev_poly = pathfind_result_node_path[i-1];
 		float poly = pathfind_result_node_path[i];
 		
-		//Find the two vertices that these polygons share
-		//Because polygons must share two consecutive verts:
-		//the CCW winding of the triangle dictates that the next shared vertex is to the left of, and in the index after the first shared vertex
-		//i.e. of the two consecutive verts shard, the former is to the right
+		//TODO: find link index of portal
 		
-		float shared_verts[2];
-		shared_verts[0] = -1;
-		shared_verts[1] = -1;
-		float shared_verts_index[2];//The index of the vert in previous poly's vert list
-		shared_verts_index[0] = -1;
-		shared_verts_index[1] = -1;
-		float verts_found = 0;
+		//Finding what index prev_poly is linked to poly
 		
-		//TODO: consider precalculating the shared edge in the links
-		for(float j = 0; j < navmesh_polies[prev_poly].vert_count; j++)
+		float link_index = -1;
+		
+		for(float j = 0; j < navmesh_polies[prev_poly].connected_polies_count; j++)
 		{
-			for(float k = 0; k < navmesh_polies[poly].vert_count; k++)
+			if(navmesh_polies[prev_poly].connected_polies[j] == poly)
 			{
-				if(navmesh_polies[prev_poly].verts[j] == navmesh_polies[poly].verts[k])
-				{
-					shared_verts[verts_found] = navmesh_polies[prev_poly].verts[j];
-					shared_verts_index[verts_found++] = j;
-				}
-				if(verts_found > 1)
-					break;
-			}
-			if(verts_found > 1)
+				link_index = j;
 				break;
+			}
 		}
 		
-		//if first one is a quad: shared edge must be, where the first index is right and second index is left
-		//3-0, 0-1, 1-2, 2-3
-		//if first one is a tri: shared edge must be, where the first index is right and second index is left
-		//2-0, 0-1, 1-2
-		
-		//Two distinct cases:
-		//If index of first is 0, and index of second is 2 or 3
-		if(shared_verts_index[0] == 0 && shared_verts_index[1] >= 2)
-		{
-			//then left is 0, right is 3 or 4
-			pathfind_portals_left_vert[pathfind_portals_length] = shared_verts[0];
-			pathfind_portals_right_vert[pathfind_portals_length++] = shared_verts[1];
-			
-		}
-		else
-		{
-			//Else, one with the lower index is right, higher index is left
-			pathfind_portals_right_vert[pathfind_portals_length] = shared_verts[0];
-			pathfind_portals_left_vert[pathfind_portals_length++] = shared_verts[1];
-		}
+		//Use that index to get left and right vertices
+		pathfind_portals_left_vert[pathfind_portals_length] = navmesh_polies[prev_poly].connected_polies_left_vert[link_index];
+		pathfind_portals_right_vert[pathfind_portals_length++] = navmesh_polies[prev_poly].connected_polies_right_vert[link_index];
 	}
 	
 	print("Portals: ");
@@ -2345,8 +2524,11 @@ void() register_navmesh_commands =
 	registercommand("nav_calc_poly_centers");
 	registercommand("navtest_place_goal");
 	registercommand("navtest_place_start");
+	registercommand("nav_save_navmesh");
 	registercommand("nav_load_navmesh");
 }
+
+float confirm_clear_navmesh;
 
 float(string cmd) navmesh_console_commands = 
 {
@@ -2359,6 +2541,34 @@ float(string cmd) navmesh_console_commands =
 		default:
 			break;
 	}
+	
+	//nav_clear_navmesh must be run twice consecutively to execute it (for safety)
+	switch(argv(0))
+	{
+		case "nav_clear_navmesh":
+			confirm_clear_navmesh = 1;
+			print("Are you sure you want to clear the navmesh? All unsaved changes will be lost.\n");
+			return TRUE;
+		case "y":
+		case "Y":
+		case "Yes":
+		case "yes":
+		case "YES":
+		case "go":
+		case "imnotafraidtodie":
+		case "tryme":
+			if(confirm_clear_navmesh == 1)
+			{
+				print("Navmesh cleared.\n");
+				navmesh_editor_clear_navmesh();
+			}
+			confirm_clear_navmesh = 0;
+			return TRUE;
+		default:
+			confirm_clear_navmesh = 0;
+			break;
+	}
+	
 	if(!navmesh_mode)
 		return FALSE;
 	switch(argv(0))
@@ -2407,6 +2617,9 @@ float(string cmd) navmesh_console_commands =
 			return TRUE;
 		case "navtest_place_start":
 			navmesh_place_test_startent();
+			return TRUE;
+		case "nav_save_navmesh":
+			navmesh_editor_save_navmesh();
 			return TRUE;
 		case "nav_load_navmesh":
 			navmesh_editor_load_navmesh();
