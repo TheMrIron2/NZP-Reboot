@@ -1094,21 +1094,23 @@ void navmesh_calc_connected_polies()
 				//2-0, 0-1, 1-2
 				
 				//Two distinct cases:
-				//If index of first is 0, and index of second is 2 or 3
+				//The index of second is one greater than the index of the first
+				//OR
+				//The index of the first is 0, and index of second is 2 or 3
 				
 				float left_vert = -1;
 				float right_vert = -1;
 				
 				if(shared_verts_index[0] == 0 && shared_verts_index[1] >= 2)
 				{
-					//then right is 0, left is 3 or 4
-					left_vert = shared_verts[1];
-					right_vert = shared_verts[0];
+					//then right is the second, left is the first
+					right_vert = shared_verts[1];
+					left_vert = shared_verts[0];
 					
 				}
 				else
 				{
-					//Else, one with the lower index is right, higher index is left
+					//Else, right is the first, left is the second
 					left_vert = shared_verts[1];
 					right_vert = shared_verts[0];
 				}
@@ -2138,13 +2140,28 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 					//Restart algorithm with the portal after the right point
 					funnel_apex = funnel_right;
 					
-					funnel_right = navmesh_verts[pathfind_portals_right_vert[++funnel_right_index]].pos;
+					//Check if portal after this portal is goal:
+					funnel_right_index++;
+					if(funnel_right_index >= pathfind_portals_length)
+					{
+						pathfind_result_path[pathfind_result_length++] = goal_point;
+						return;
+					}
+					
+					funnel_right = navmesh_verts[pathfind_portals_right_vert[funnel_right_index]].pos;
 					funnel_left_index = funnel_right_index;
 					funnel_left = navmesh_verts[pathfind_portals_left_vert[funnel_left_index]].pos;
 					continue;
 				}
 				else//in funnel
 				{
+					//If the next funnel right is the goal, we are done
+					//Check if portal after this portal is goal:
+					if(right_portal_index >= pathfind_portals_length)
+					{
+						pathfind_result_path[pathfind_result_length++] = goal_point;
+						return;
+					}
 					//Update current left funnel edge to use this vertex
 					funnel_left = next_funnel_left;
 					funnel_left_index = left_portal_index;
@@ -2162,13 +2179,28 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 					//Restart algorithm with the portal after the left point
 					funnel_apex = funnel_left;
 					
-					funnel_left = navmesh_verts[pathfind_portals_left_vert[++funnel_left_index]].pos;
+					//Check if portal after this portal is goal:
+					funnel_left_index++;
+					if(funnel_left_index >= pathfind_portals_length)
+					{
+						pathfind_result_path[pathfind_result_length++] = goal_point;
+						return;
+					}
+					
+					funnel_left = navmesh_verts[pathfind_portals_left_vert[funnel_left_index]].pos;
 					funnel_right_index = funnel_left_index;
 					funnel_right = navmesh_verts[pathfind_portals_right_vert[funnel_right_index]].pos;
 					continue;
 				}
 				else//in funnel
 				{
+					//If the next funnel right is the goal, we are done
+					//Check if portal after this portal is goal:
+					if(right_portal_index >= pathfind_portals_length)
+					{
+						pathfind_result_path[pathfind_result_length++] = goal_point;
+						return;
+					}
 					//Update current right funnel edge to use this vertex
 					funnel_right = next_funnel_right;
 					funnel_right_index = right_portal_index;
@@ -2525,6 +2557,7 @@ void() register_navmesh_commands =
 	registercommand("navtest_place_goal");
 	registercommand("navtest_place_start");
 	registercommand("nav_save_navmesh");
+	registercommand("nav_clear_navmesh");
 	registercommand("nav_load_navmesh");
 }
 
