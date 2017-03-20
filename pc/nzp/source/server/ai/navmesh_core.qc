@@ -126,7 +126,6 @@ float sv_navmesh_dist_to_poly(vector pos, float poly_index)
 	float leeway = 30;//Must be within 30 qu of edge to be considered close
 	
 	//TODO: check if close enough on z-axis
-		
 	local vector vert;
 	local vector next_vert;
 	float vert_count = sv_navmesh_polies[poly_index].vert_count;

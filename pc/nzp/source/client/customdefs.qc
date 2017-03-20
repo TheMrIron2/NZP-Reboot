@@ -1,5 +1,5 @@
 //Various globals that are used in this FTEQW example are defined here, they are not used by the engine itself
-
+#pragma target FTE
 #pragma warning disable Q302
 vector cursor_pos; /* Current mouse cursor position, updated in csqc_inputevent */
 float g_width, g_height; /* Globals for screen width and height */
@@ -85,9 +85,7 @@ float rounds;
 //Navmesh defs
 void() cl_register_navmesh_commands;
 float(string cmd) cl_navmesh_console_commands;
-
 float cl_navmesh_mode;
-void() cl_toggle_navmesh_editor;
 void() cl_navmesh_editor_draw;
 
 #define 	P_JUG		1

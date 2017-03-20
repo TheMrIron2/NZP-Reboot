@@ -442,6 +442,23 @@ void(float dist) Window_Hop =
 
 void() PathfindToEnemy =
 {
+	//Navmesh usage
+	float result = sv_navmesh_pathfind(self,self.enemy);
+	
+	if(result == 1)
+	{
+		self.chase_time = time + 7;
+		setorigin(self.goaldummy,sv_zombie_pathfind_result[self.index].result_path[0]);
+		self.goalentity = self.goaldummy;
+	}
+	else
+	{
+		bprint(PRINT_HIGH, "Pathfind failure.\n");
+	}
+	
+	
+	//Waypoint usage
+	/*
 	float pathresult;
 	pathresult = Do_Pathfind(self,self.enemy);
 	self.way_cur = 0;
@@ -461,7 +478,9 @@ void() PathfindToEnemy =
 	else
 	{
 		bprint(PRINT_HIGH, "FirstPathfind Failure\n");
-	}
+	}*/
+	
+	
 }
 
 void() NextPathfindToEnemy {
@@ -503,7 +522,8 @@ float() TryWalkToEnemy =
 };
 
 
-void(float dist) Inside_Walk = {
+void(float dist) Inside_Walk = 
+{
 	if(self.enemy_timeout < time || self.enemy == world) {
 		self.enemy_timeout = time + 5;
 		local entity oldEnemy;
@@ -525,6 +545,9 @@ void(float dist) Inside_Walk = {
 		return;
 	}
 	
+	
+	PathfindToEnemy();
+	/*
 	if(vlen(self.enemy.origin - self.origin) < 600) {//50 feet
 		if(self.goalentity == self.enemy && self.chase_enemy_time > time) {
 			return;
@@ -557,7 +580,7 @@ void(float dist) Inside_Walk = {
 				PathfindToEnemy();
 			}
 		}
-	}
+	}*/
 }
 
 .float droptime;

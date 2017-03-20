@@ -217,6 +217,7 @@ float() spawn_a_zombieA;
 float z_health;
 .float bleedingtime;
 .float time_to_die;
+.float index;//Used as a zombie ID (zombie uses it to access it's own AI Pathfinding struct)
 
 
 float crandom();
@@ -272,6 +273,7 @@ float sounds_playing;
 float rounds;
 float rounds_change;
 
+#define MAX_ZOMBIES 12
 
 //Waypoints
 void () Waypoint_Logic;
@@ -314,6 +316,10 @@ waypoint_ai waypoints[MAX_WAYPOINTS];
 
 //======================= Navmesh defs ============================
 void() sv_load_navmesh_data;
+
+//One struct for temp pathfinding calculations per zombie 
+//pathfind_result sv_zombie_pathfind_result[MAX_ZOMBIES];
+pathfind_result* sv_zombie_pathfind_result;
 
 //=================================================================
 

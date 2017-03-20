@@ -69,6 +69,7 @@ float navmesh_2D_line_point_dist(vector l1, vector l2, vector pos)
 #define PATHFIND_POLY_SET_CLOSED 2
 
 
+
 struct pathfind_result
 {
 	//Contains the set that the ith polygon is in
@@ -97,8 +98,17 @@ struct pathfind_result
 	vector result_path[NAV_MAX_POLIES];
 	//How many points are in the path
 	float result_length;
-
 };
+
+//Returns some number > 0 if point p is to the left of line a->b
+//Returns some number < 0 if point is to the right of line a->b
+//Returns 0 if point is on the line
+//(Left / Right is defined in the xy plane, z=0)
+float pathfind_point_is_to_left(vector a, vector b, vector p)
+{
+	return (b.x - a.x)*(p.y - a.y) - (b.y - a.y)*(p.x - a.x);
+}
+
 
 //===========================================================================================================
 

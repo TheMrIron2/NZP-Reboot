@@ -949,14 +949,16 @@ void(float i) spawnSingleZombEnt =
 	zSpawn.classname = "freeZombieEntity";
 	zSpawn.aistatus = "0";
 	zSpawn.goaldummy = spawn();
+	setmodel(zSpawn.goaldummy,"models/way/normal_way.spr");
 	zSpawn.goaldummy.classname = "waypoint_target";
+	zSpawn.index = i;
 };
 
 void() spawnAllZombEnts =
 {
 	local float i;
 	i = 0;
-	while(i <12)//IMPORTANT VALUE, max zombies allowed in map
+	while(i < MAX_ZOMBIES)
 	{
 		spawnSingleZombEnt(i);
 		i++;
