@@ -178,6 +178,7 @@ void() worldspawn =
 	
 
 	LoadWaypointData();
+	sv_load_navmesh_data();
 }
 
 void() SpectatorConnect =

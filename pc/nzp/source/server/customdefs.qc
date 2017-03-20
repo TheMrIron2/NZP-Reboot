@@ -286,9 +286,9 @@ entity active_way;
 
 
 
-//pathfinds
+//Pathfind Defs
 #define MAX_WAYPOINTS 256 //max waypoints
-void LoadWaypointData();
+void() LoadWaypointData;
 typedef struct
 {
 	vector org;
@@ -312,6 +312,10 @@ waypoint_ai waypoints[MAX_WAYPOINTS];
 #define UT_ROUNDS_CHANGE 	2
 #define UT_HM				3
 
+//======================= Navmesh defs ============================
+void() sv_load_navmesh_data;
+
+//=================================================================
 
 //FIXME(Jukki) Place in better place
 void(entity to, float type, float cost, float weapon) useprint = {

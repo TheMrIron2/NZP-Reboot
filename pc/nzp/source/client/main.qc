@@ -34,7 +34,7 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	registercommand("stopwalk");
 	registercommand("promptjoin");
 	
-	register_navmesh_commands();
+	cl_register_navmesh_commands();
 	
 	print("CSQC Started\n");
 	dummy = spawn();
@@ -256,9 +256,9 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 		}
 	}
 	
-	if(navmesh_mode == TRUE)
+	if(cl_navmesh_mode == TRUE)
 	{
-		navmesh_editor_draw();
+		cl_navmesh_editor_draw();
 	}
 	
 	
@@ -313,7 +313,7 @@ noref float(string cmd) CSQC_ConsoleCommand =
 			menu_join();
 			return TRUE;
 		default:
-			if(navmesh_console_commands(cmd))
+			if(cl_navmesh_console_commands(cmd))
 				return TRUE;
 			return FALSE;
 	}

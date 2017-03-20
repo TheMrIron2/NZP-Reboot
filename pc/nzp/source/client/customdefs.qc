@@ -83,37 +83,12 @@ float rounds;
 #define printf(x, ...) print(sprintf(x, __VA_ARGS__))
 
 //Navmesh defs
-void() register_navmesh_commands;
-float(string cmd) navmesh_console_commands;
+void() cl_register_navmesh_commands;
+float(string cmd) cl_navmesh_console_commands;
 
-float navmesh_mode;
-void() toggle_navmesh_editor;
-void() navmesh_editor_draw;
-void() navmesh_place_vert;
-void() navmesh_delete_verts;
-//Vertex selection functions
-void() navmesh_select_vert;
-void() navmesh_deselect_vert;
-void() navmesh_deselect_all;
-void() navmesh_make_poly;
-void() navmesh_delete_poly;
-void() navmesh_resolve_corner;
-void() navmesh_place_corner;
-void() navmesh_cancel_corner;
-void() navmesh_confirm_corner;
-void(float poly_index) navmesh_delete_poly_at_index;
-void() navmesh_calc_connected_polies;
-void() navmesh_calc_polies_centers;
-//Methods for testing pathfinding
-void() navmesh_place_test_goalent;
-void() navmesh_place_test_startent;
-void(float is_goal) navmesh_draw_test_ent;
-float(vector pos) navmesh_get_containing_poly;
-float(float start, float goal, vector start_pos, vector end_pos) pathfind_start;
-
-void() pathfind_draw_result_node_path;
-void() pathfind_draw_result_path;
-void() pathfind_draw_result_portals;
+float cl_navmesh_mode;
+void() cl_toggle_navmesh_editor;
+void() cl_navmesh_editor_draw;
 
 #define 	P_JUG		1
 #define 	P_DOUBLE	2

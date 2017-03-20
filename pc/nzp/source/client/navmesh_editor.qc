@@ -1,68 +1,32 @@
 
 //=================================================================================================================
-//						Navmesh related functions
+//						Navmesh editing functions
 //=================================================================================================================
 
-//Outlining what exactly I'm going to do
-//List of all navmesh verts
-//Lists of all polygons, who in turn have list of indices of all vertices that make up the polygons
-
-//in editor:
-//	we place vertices wherever we want
-//	we select whatever vertices we want, and can make a polygon with them
-
-
-//Things I want to handle:
-//	placing two verts near a corner, and have them merge (sort of like find intersection between two edges and connect the edges at the intersection)
-
-
-struct navmesh_vertex
-{
-	vector pos;
-};
-
-
-
-//Either a tri or a quad
-struct navmesh_poly
-{
-	float verts[4];
-	float vert_count;
-	
-	//The following fields are only used for navmesh pathfinding testing
-	//They are generated every time a test start/end point is placed (in case the navmesh changes)
-	//The values are calculated upon calling navmesh save
-	float connected_polies_count;
-	float connected_polies[4];//What polygons we share an edge with (similar to links), more than 4 should be impossible
-	float connected_polies_left_vert[4];//The left vertex of the shared edge
-	float connected_polies_right_vert[4];//The left vertex of the shared edge
-
-	vector center;//The center of the polygon in 3D space
-};
-
-
-
-//All vertices that ngons use in linked list
-//navmesh_ngon_vert navmesh_all_verts[1024];
 #define NAV_MAX_SELECTED_VERTS 4
 float selected_verts[NAV_MAX_SELECTED_VERTS];
 float selected_vert_count;
 
-#define NAV_MAX_VERTS 1024
-navmesh_vertex navmesh_verts[NAV_MAX_VERTS];
-float navmesh_vert_count;
+navmesh_vertex cl_navmesh_verts[NAV_MAX_VERTS];
+float cl_navmesh_vert_count;
 
-#define NAV_MAX_POLIES 512
-navmesh_poly navmesh_polies[NAV_MAX_POLIES];
-float navmesh_poly_count;
+navmesh_poly cl_navmesh_polies[NAV_MAX_POLIES];
+float cl_navmesh_poly_count;
 
 
-float navmesh_place_corner_state;
+float cl_navmesh_place_corner_state;
 #define NAVMESH_PLACE_CORNER_PLACING 1
 #define NAVMESH_PLACE_CORNER_CONFIRM 2
 
+//Pre-defs
+void(float is_goal) cl_navmesh_draw_test_ent;
+void() cl_navmesh_delete_verts;
+void(float poly_index) cl_navmesh_delete_poly_at_index;
+float(vector pos) cl_navmesh_get_containing_poly;
 
-void navmesh_draw_vert(vector pos,float selected)
+
+
+void cl_navmesh_draw_vert(vector pos,float selected)
 {
 	//Assigning the shader as something else so that fte doesn't batch the calls (leading to colors not changing between draw calls)
 	R_BeginPolygon("debug/wireframe",0);
@@ -124,7 +88,7 @@ void navmesh_draw_vert(vector pos,float selected)
 }
 
 
-void navmesh_draw_poly(float poly_index)
+void cl_navmesh_draw_poly(float poly_index)
 {
 	//Assigning the shader as something else so that fte doesn't batch the calls (leading to colors not changing between draw calls)
 	R_BeginPolygon("debug/wireframe",0);
@@ -134,11 +98,11 @@ void navmesh_draw_poly(float poly_index)
 	
 	float face_alpha = 0.1;
 	
-	R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[0]].pos, [0,0,0], color, face_alpha);
-	R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[1]].pos, [0,0,0], color, face_alpha);
-	R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[2]].pos, [0,0,0], color, face_alpha);
-	if(navmesh_polies[poly_index].vert_count > 3)
-		R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[3]].pos, [0,0,0], color, face_alpha);
+	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos, [0,0,0], color, face_alpha);
+	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[1]].pos, [0,0,0], color, face_alpha);
+	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos, [0,0,0], color, face_alpha);
+	if(cl_navmesh_polies[poly_index].vert_count > 3)
+		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[3]].pos, [0,0,0], color, face_alpha);
 	R_EndPolygon();
 	
 	
@@ -150,45 +114,45 @@ void navmesh_draw_poly(float poly_index)
 	float edge_width = 2;
 	float edge_alpha = 0.2;
 	//Vert 0->1
-	R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[1]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-	R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[1]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-	R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[0]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-	R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[0]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[1]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[1]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
+	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
+	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
 	R_EndPolygon();
 	//Vert 1->2
-	R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[2]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-	R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[2]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-	R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[1]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-	R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[1]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
+	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[1]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
+	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[1]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
 	R_EndPolygon();
 	
-	if(navmesh_polies[poly_index].vert_count == 3)
+	if(cl_navmesh_polies[poly_index].vert_count == 3)
 	{
 		//Vert 2->0
-		R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[0]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[0]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[2]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[2]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
+		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
+		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
 		R_EndPolygon();
 	}
 	else//Quad
 	{
 		//Vert 2->3
-		R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[3]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[3]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[2]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[2]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[3]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[3]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
+		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
+		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
 		R_EndPolygon();
 		//Vert 3->0
-		R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[0]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[0]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[3]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(navmesh_verts[navmesh_polies[poly_index].verts[3]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
+		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[3]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
+		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[3]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
 		R_EndPolygon();
 	}
 }
 
-float navmesh_is_vert_selected(float vert_index)
+float cl_navmesh_is_vert_selected(float vert_index)
 {
 	for(float i = 0; i < selected_vert_count; i++)
 	{
@@ -199,28 +163,33 @@ float navmesh_is_vert_selected(float vert_index)
 }
 
 
-void navmesh_editor_draw()
+void() cl_navmesh_pathfind_draw_result_node_path;
+void() cl_navmesh_pathfind_draw_result_portals;
+void() cl_navmesh_pathfind_draw_result_path;
+
+
+void cl_navmesh_editor_draw()
 {
-	for(float i = 0; i < navmesh_vert_count; i++)
+	for(float i = 0; i < cl_navmesh_vert_count; i++)
 	{
-		navmesh_draw_vert(navmesh_verts[i].pos, navmesh_is_vert_selected(i) );
+		cl_navmesh_draw_vert(cl_navmesh_verts[i].pos, cl_navmesh_is_vert_selected(i) );
 	}
 	
-	for(float i = 0; i < navmesh_poly_count; i++)
+	for(float i = 0; i < cl_navmesh_poly_count; i++)
 	{
-		navmesh_draw_poly(i);
+		cl_navmesh_draw_poly(i);
 	}
 	
-	navmesh_draw_test_ent(0);
-	navmesh_draw_test_ent(1);
+	cl_navmesh_draw_test_ent(0);
+	cl_navmesh_draw_test_ent(1);
 	
-	pathfind_draw_result_node_path();
-	pathfind_draw_result_portals();
-	pathfind_draw_result_path();
+	cl_navmesh_pathfind_draw_result_node_path();
+	cl_navmesh_pathfind_draw_result_portals();
+	cl_navmesh_pathfind_draw_result_path();
 	
 	
 	//The following code block is for detecting and placing waypoints at bsp map corners
-	if(navmesh_place_corner_state == NAVMESH_PLACE_CORNER_PLACING || navmesh_place_corner_state == NAVMESH_PLACE_CORNER_CONFIRM)
+	if(cl_navmesh_place_corner_state == NAVMESH_PLACE_CORNER_PLACING || cl_navmesh_place_corner_state == NAVMESH_PLACE_CORNER_CONFIRM)
 	{
 		
 		//vector vorg = getviewprop(VF_ORIGIN);
@@ -279,10 +248,10 @@ void navmesh_editor_draw()
 		
 		vector hit_right2 = wall_hit_right2 + (([0,0,-1] * 2000) * trace_fraction);
 		
-		navmesh_draw_vert(hit_left1, 0 );
-		navmesh_draw_vert(hit_left2, 0 );
-		navmesh_draw_vert(hit_right1, 0 );
-		navmesh_draw_vert(hit_right2, 0 );
+		cl_navmesh_draw_vert(hit_left1, 0 );
+		cl_navmesh_draw_vert(hit_left2, 0 );
+		cl_navmesh_draw_vert(hit_right1, 0 );
+		cl_navmesh_draw_vert(hit_right2, 0 );
 		
 		//TODO: draw walls that we have hit (2 flat planes on the walls we hit)
 		
@@ -370,10 +339,10 @@ void navmesh_editor_draw()
 		//Checking if the lines are parallel and not skew
 		if(line_1_orient == line_2_orient && line_1_orient != skew)
 		{
-			if(navmesh_place_corner_state == NAVMESH_PLACE_CORNER_CONFIRM)
+			if(cl_navmesh_place_corner_state == NAVMESH_PLACE_CORNER_CONFIRM)
 			{
 				print("Cannot place corner for parallel walls (there is no corner).\n");
-				navmesh_place_corner_state = NAVMESH_PLACE_CORNER_PLACING;
+				cl_navmesh_place_corner_state = NAVMESH_PLACE_CORNER_PLACING;
 			}
 			return;
 		}
@@ -416,10 +385,10 @@ void navmesh_editor_draw()
 			//Checking if the walls are parallel
 			if(m1 == m2)
 			{
-				if(navmesh_place_corner_state == NAVMESH_PLACE_CORNER_CONFIRM)
+				if(cl_navmesh_place_corner_state == NAVMESH_PLACE_CORNER_CONFIRM)
 				{
 					print("Cannot place corner for skew parallel walls (there is no corner).\n");
-					navmesh_place_corner_state = NAVMESH_PLACE_CORNER_PLACING;
+					cl_navmesh_place_corner_state = NAVMESH_PLACE_CORNER_PLACING;
 				}
 				return;
 			}
@@ -449,17 +418,17 @@ void navmesh_editor_draw()
 		//================================================================================
 		
 		//Render the resolved vertex pos
-		navmesh_draw_vert(vert_loc, 1 );
+		cl_navmesh_draw_vert(vert_loc, 1 );
 			
-		if(navmesh_place_corner_state == NAVMESH_PLACE_CORNER_CONFIRM)
+		if(cl_navmesh_place_corner_state == NAVMESH_PLACE_CORNER_CONFIRM)
 		{	
-			navmesh_verts[navmesh_vert_count].pos.x = vert_loc.x;
-			navmesh_verts[navmesh_vert_count].pos.y = vert_loc.y;
-			navmesh_verts[navmesh_vert_count].pos.z = vert_loc.z;
+			cl_navmesh_verts[cl_navmesh_vert_count].pos.x = vert_loc.x;
+			cl_navmesh_verts[cl_navmesh_vert_count].pos.y = vert_loc.y;
+			cl_navmesh_verts[cl_navmesh_vert_count].pos.z = vert_loc.z;
 			
-			navmesh_vert_count++;
+			cl_navmesh_vert_count++;
 			
-			navmesh_place_corner_state = 0;
+			cl_navmesh_place_corner_state = 0;
 		}
 		
 	}
@@ -480,20 +449,20 @@ void navmesh_editor_draw()
 	
 	//Tracebox down from there
 	vector vpos1 = vorg+(v_forward*2000)*trace_fraction;
-	navmesh_draw_vert(vpos1, 0 );
+	cl_navmesh_draw_vert(vpos1, 0 );
 	
 	tracebox(vpos1,[-8,-8,-32],[8,8,30],vpos1+([0,0,-1] * 2000),1,self);
 	vector vpos2 = vpos1+(([0,0,-1] * 2000) * trace_fraction);
 	
-	navmesh_draw_vert(vpos2, 1 );*/
+	cl_navmesh_draw_vert(vpos2, 1 );*/
 	
 	//Tracebox down from there	
 }
 
 //Places a vertex at player position
-void navmesh_place_vert()
+void cl_navmesh_place_vert()
 {
-	if(navmesh_vert_count >= navmesh_verts.length)
+	if(cl_navmesh_vert_count >= cl_navmesh_verts.length)
 	{
 		print("Can't add vertex, max vert count has been reached.\n");
 		return;
@@ -502,19 +471,19 @@ void navmesh_place_vert()
 	//Placing the vert at player origin
 	vector vert_pos = getentity(player_localentnum, GE_ORIGIN);
 	
-	navmesh_verts[navmesh_vert_count].pos.x = vert_pos.x;
-	navmesh_verts[navmesh_vert_count].pos.y = vert_pos.y;
-	navmesh_verts[navmesh_vert_count].pos.z = vert_pos.z;
+	cl_navmesh_verts[cl_navmesh_vert_count].pos.x = vert_pos.x;
+	cl_navmesh_verts[cl_navmesh_vert_count].pos.y = vert_pos.y;
+	cl_navmesh_verts[cl_navmesh_vert_count].pos.z = vert_pos.z;
 
 	print("Vertex ");
-	print(ftos(navmesh_vert_count));
+	print(ftos(cl_navmesh_vert_count));
 	print(" created.\n");
 	
-	navmesh_vert_count++;
+	cl_navmesh_vert_count++;
 }
 
 //Deletes all selected vertices
-void navmesh_delete_verts()
+void cl_navmesh_delete_verts()
 {
 	if(selected_vert_count <= 0)
 	{
@@ -529,36 +498,36 @@ void navmesh_delete_verts()
 		print(ftos(vert));
 		print(".\n");
 		//Check if vertex is in any polygons, if so delete that polygon
-		for(float j = 0; j < navmesh_poly_count; j++)
+		for(float j = 0; j < cl_navmesh_poly_count; j++)
 		{
-			for(float k = 0; k < navmesh_polies[j].vert_count; k++)
+			for(float k = 0; k < cl_navmesh_polies[j].vert_count; k++)
 			{
-				if(navmesh_polies[j].verts[k] == vert)
-					navmesh_delete_poly_at_index(j);	
+				if(cl_navmesh_polies[j].verts[k] == vert)
+					cl_navmesh_delete_poly_at_index(j);	
 			}
 		}
 		
 		
 		//Bringing all vertices down to not leave any holes in the array
 		//Moving down every index to the right of what we deselected to not leave any holes
-		for(float j = vert; j < navmesh_vert_count - 1; j++)
+		for(float j = vert; j < cl_navmesh_vert_count - 1; j++)
 		{
-			navmesh_verts[j].pos.x = navmesh_verts[j+1].pos.x;
-			navmesh_verts[j].pos.y = navmesh_verts[j+1].pos.y;
-			navmesh_verts[j].pos.z = navmesh_verts[j+1].pos.z;
+			cl_navmesh_verts[j].pos.x = cl_navmesh_verts[j+1].pos.x;
+			cl_navmesh_verts[j].pos.y = cl_navmesh_verts[j+1].pos.y;
+			cl_navmesh_verts[j].pos.z = cl_navmesh_verts[j+1].pos.z;
 		}
 		//Clearing the last one
-		navmesh_verts[navmesh_vert_count-1].pos = [0,0,0];
-		navmesh_vert_count--;
+		cl_navmesh_verts[cl_navmesh_vert_count-1].pos = [0,0,0];
+		cl_navmesh_vert_count--;
 		
 		
 		//Fixing references to verts in all polygons
-		for(float j = 0; j < navmesh_poly_count; j++)
+		for(float j = 0; j < cl_navmesh_poly_count; j++)
 		{
-			for(float k = 0; k < navmesh_polies[j].vert_count; k++)
+			for(float k = 0; k < cl_navmesh_polies[j].vert_count; k++)
 			{
-				if(navmesh_polies[j].verts[k] >= vert)
-					navmesh_polies[j].verts[k]--;
+				if(cl_navmesh_polies[j].verts[k] >= vert)
+					cl_navmesh_polies[j].verts[k]--;
 			}
 		}
 		//Fixing references of selected verts
@@ -578,22 +547,22 @@ void navmesh_delete_verts()
 
 //=================================== Navmesh vertex selection functions ===================================
 //Returns index of the vertex that is nearest to the player
-float navmesh_get_nearest_vert()
+float cl_navmesh_get_nearest_vert()
 {
-	if(navmesh_vert_count <= 0)
+	if(cl_navmesh_vert_count <= 0)
 	{
 		return -1;
 	}
 	
 	vector player_pos = getentity(player_localentnum, GE_ORIGIN);
-	float closest_dist = vlen(player_pos - navmesh_verts[0].pos);
+	float closest_dist = vlen(player_pos - cl_navmesh_verts[0].pos);
 	float closest_index = 0;
 	
 	float temp_dist;
 	
-	for(float i = 1; i < navmesh_vert_count; i++)
+	for(float i = 1; i < cl_navmesh_vert_count; i++)
 	{
-		temp_dist = vlen(player_pos - navmesh_verts[i].pos);
+		temp_dist = vlen(player_pos - cl_navmesh_verts[i].pos);
 		
 		if(temp_dist < closest_dist)
 		{
@@ -605,7 +574,7 @@ float navmesh_get_nearest_vert()
 }
 
 //Selects the nearest vertex
-void navmesh_select_vert()
+void cl_navmesh_select_vert()
 {
 	if(selected_vert_count >= selected_verts.length)
 	{
@@ -613,13 +582,13 @@ void navmesh_select_vert()
 		return;
 	}
 	
-	float vert = navmesh_get_nearest_vert();
+	float vert = cl_navmesh_get_nearest_vert();
 	if(vert == -1)
 	{
 		print("No vertices to select");
 		return;
 	}
-	if(navmesh_is_vert_selected(vert))
+	if(cl_navmesh_is_vert_selected(vert))
 	{
 		print("Vert is already selected.\n");
 		return;
@@ -633,9 +602,9 @@ void navmesh_select_vert()
 
 
 //Deselects the nearest vertex
-void navmesh_deselect_vert()
+void cl_navmesh_deselect_vert()
 {
-	float vert = navmesh_get_nearest_vert();
+	float vert = cl_navmesh_get_nearest_vert();
 	
 	if(vert == -1)
 	{
@@ -667,7 +636,7 @@ void navmesh_deselect_vert()
 }
 
 //Deselects all vertices
-void navmesh_deselect_all()
+void cl_navmesh_deselect_all()
 {
 	for(float i = 0; i < selected_verts.length; i++)
 	{
@@ -681,12 +650,12 @@ void navmesh_deselect_all()
 
 //=============================================================================================================
 
-float navmesh_is_poly_selected()
+float cl_navmesh_is_poly_selected()
 {
 	//Check if this polygon already exists
 	float verts_selected[4];
 	
-	for(float i = 0; i < navmesh_poly_count; i++)
+	for(float i = 0; i < cl_navmesh_poly_count; i++)
 	{
 		verts_selected[0] = FALSE;
 		verts_selected[1] = FALSE;
@@ -694,12 +663,12 @@ float navmesh_is_poly_selected()
 		verts_selected[3] = FALSE;
 		
 		//Check each of the poly's verts
-		for(float j = 0; j < navmesh_polies[i].vert_count; j++)
+		for(float j = 0; j < cl_navmesh_polies[i].vert_count; j++)
 		{
 			//Check each of our selected verts to see if they are in this polygon
 			for(float k = 0; k < selected_vert_count; k++)
 			{
-				if(navmesh_polies[i].verts[j] == selected_verts[k])
+				if(cl_navmesh_polies[i].verts[j] == selected_verts[k])
 				{
 					verts_selected[j] = TRUE;
 				}
@@ -712,14 +681,14 @@ float navmesh_is_poly_selected()
 			}
 		}
 		
-		if(navmesh_polies[i].vert_count == 3)
+		if(cl_navmesh_polies[i].vert_count == 3)
 		{
 			if(verts_selected[0] == TRUE && verts_selected[1] == TRUE && verts_selected[2] == TRUE)
 			{
 				return TRUE;
 			}
 		}
-		else if(navmesh_polies[i].vert_count == 4)
+		else if(cl_navmesh_polies[i].vert_count == 4)
 		{
 			if(verts_selected[0] == TRUE && verts_selected[1] == TRUE && verts_selected[2] == TRUE && verts_selected[3] == TRUE)
 			{
@@ -731,7 +700,7 @@ float navmesh_is_poly_selected()
 }
 
 
-void navmesh_make_poly()
+void cl_navmesh_make_poly()
 {
 	if(selected_vert_count < 3)
 	{
@@ -739,13 +708,13 @@ void navmesh_make_poly()
 		return;
 	}
 	
-	if(navmesh_poly_count >= navmesh_polies.length)
+	if(cl_navmesh_poly_count >= cl_navmesh_polies.length)
 	{
 		print("Max polygon count reached.\n");
 		return;
 	}
 	
-	if(navmesh_is_poly_selected())
+	if(cl_navmesh_is_poly_selected())
 	{
 		print("This polygon already exists.\n");
 		return;
@@ -759,7 +728,7 @@ void navmesh_make_poly()
 	local vector center = [0,0,0];
 	for(float j = 0; j < selected_vert_count; j++)
 	{
-		center += navmesh_verts[selected_verts[j]].pos;
+		center += cl_navmesh_verts[selected_verts[j]].pos;
 	}
 	center /= selected_vert_count;
 	
@@ -768,7 +737,7 @@ void navmesh_make_poly()
 	//Calculating angle of verts
 	for(float j = 0; j < selected_vert_count; j++)
 	{
-		vert_angle[j] = atan2(navmesh_verts[selected_verts[j]].pos.y - center.y,navmesh_verts[selected_verts[j]].pos.x - center.x);
+		vert_angle[j] = atan2(cl_navmesh_verts[selected_verts[j]].pos.y - center.y,cl_navmesh_verts[selected_verts[j]].pos.x - center.x);
 	}
 	
 	//Sorting from least to greatest
@@ -799,39 +768,39 @@ void navmesh_make_poly()
 
 	for(float i = 0; i < selected_vert_count; i++)
 	{
-		navmesh_polies[navmesh_poly_count].verts[i] = selected_verts[i];
+		cl_navmesh_polies[cl_navmesh_poly_count].verts[i] = selected_verts[i];
 	}
-	navmesh_polies[navmesh_poly_count].vert_count = selected_vert_count;
-	navmesh_poly_count++;
+	cl_navmesh_polies[cl_navmesh_poly_count].vert_count = selected_vert_count;
+	cl_navmesh_poly_count++;
 }
 
-void navmesh_delete_poly_at_index(float poly_index)
+void cl_navmesh_delete_poly_at_index(float poly_index)
 {
 	//Starting at this polygon, move every polygon after in the array down one (leave no holes in the array)
 	//Moving down every index to the right of what we deselected to not leave any holes
-	for(float i = poly_index; i < navmesh_poly_count - 1; i++)
+	for(float i = poly_index; i < cl_navmesh_poly_count - 1; i++)
 	{
-		navmesh_polies[i].vert_count = navmesh_polies[i+1].vert_count;
-		for(float j = 0; j < navmesh_polies[i].verts.length; j++)
+		cl_navmesh_polies[i].vert_count = cl_navmesh_polies[i+1].vert_count;
+		for(float j = 0; j < cl_navmesh_polies[i].verts.length; j++)
 		{
-			navmesh_polies[i].verts[j] = navmesh_polies[i+1].verts[j];
+			cl_navmesh_polies[i].verts[j] = cl_navmesh_polies[i+1].verts[j];
 		}
 	}
 	//Clearing the last one
-	navmesh_polies[navmesh_poly_count-1].vert_count = 0;
-	for(float j = 0; j < navmesh_polies[navmesh_poly_count-1].verts.length; j++)
+	cl_navmesh_polies[cl_navmesh_poly_count-1].vert_count = 0;
+	for(float j = 0; j < cl_navmesh_polies[cl_navmesh_poly_count-1].verts.length; j++)
 	{
-		navmesh_polies[navmesh_poly_count-1].verts[j] = -1;
+		cl_navmesh_polies[cl_navmesh_poly_count-1].verts[j] = -1;
 	}
-	navmesh_poly_count--;
+	cl_navmesh_poly_count--;
 }
 
-void navmesh_delete_poly()
+void cl_navmesh_delete_poly()
 {
 	float verts_selected[4];
 	float poly_index = -1;
 	//Find index of the polygon whose vertices are all selected
-	for(float i = 0; i < navmesh_poly_count; i++)
+	for(float i = 0; i < cl_navmesh_poly_count; i++)
 	{
 		verts_selected[0] = FALSE;
 		verts_selected[1] = FALSE;
@@ -839,12 +808,12 @@ void navmesh_delete_poly()
 		verts_selected[3] = FALSE;
 		
 		//Check each of the poly's verts
-		for(float j = 0; j < navmesh_polies[i].vert_count; j++)
+		for(float j = 0; j < cl_navmesh_polies[i].vert_count; j++)
 		{
 			//Check each of our selected verts to see if they are in this polygon
 			for(float k = 0; k < selected_vert_count; k++)
 			{
-				if(navmesh_polies[i].verts[j] == selected_verts[k])
+				if(cl_navmesh_polies[i].verts[j] == selected_verts[k])
 				{
 					verts_selected[j] = TRUE;
 				}
@@ -857,7 +826,7 @@ void navmesh_delete_poly()
 			}
 		}
 		
-		if(navmesh_polies[i].vert_count == 3)
+		if(cl_navmesh_polies[i].vert_count == 3)
 		{
 			if(verts_selected[0] == TRUE && verts_selected[1] == TRUE && verts_selected[2] == TRUE)
 			{
@@ -865,7 +834,7 @@ void navmesh_delete_poly()
 				break;
 			}
 		}
-		else if(navmesh_polies[i].vert_count == 4)
+		else if(cl_navmesh_polies[i].vert_count == 4)
 		{
 			if(verts_selected[0] == TRUE && verts_selected[1] == TRUE && verts_selected[2] == TRUE && verts_selected[3] == TRUE)
 			{
@@ -882,26 +851,26 @@ void navmesh_delete_poly()
 	
 	//Starting at this polygon, move every polygon after in the array down one (leave no holes in the array)
 	//Moving down every index to the right of what we deselected to not leave any holes
-	for(float i = poly_index; i < navmesh_poly_count - 1; i++)
+	for(float i = poly_index; i < cl_navmesh_poly_count - 1; i++)
 	{
-		navmesh_polies[i].vert_count = navmesh_polies[i+1].vert_count;
-		for(float j = 0; j < navmesh_polies[i].verts.length; j++)
+		cl_navmesh_polies[i].vert_count = cl_navmesh_polies[i+1].vert_count;
+		for(float j = 0; j < cl_navmesh_polies[i].verts.length; j++)
 		{
-			navmesh_polies[i].verts[j] = navmesh_polies[i+1].verts[j];
+			cl_navmesh_polies[i].verts[j] = cl_navmesh_polies[i+1].verts[j];
 		}
 	}
 	//Clearing the last one
-	navmesh_polies[navmesh_poly_count-1].vert_count = 0;
-	for(float j = 0; j < navmesh_polies[navmesh_poly_count-1].verts.length; j++)
+	cl_navmesh_polies[cl_navmesh_poly_count-1].vert_count = 0;
+	for(float j = 0; j < cl_navmesh_polies[cl_navmesh_poly_count-1].verts.length; j++)
 	{
-		navmesh_polies[navmesh_poly_count-1].verts[j] = -1;
+		cl_navmesh_polies[cl_navmesh_poly_count-1].verts[j] = -1;
 	}
-	navmesh_poly_count--;			
+	cl_navmesh_poly_count--;			
 	print("Deleted polygon.\n");
 }
 
 //Treats 1st and 2nd selected verts as line 1, 3rd and 4th verts as line 2, places a new vertex at the intersection of these lines
-void navmesh_resolve_corner()
+void cl_navmesh_resolve_corner()
 {
 	if(selected_vert_count < 3)
 	{
@@ -911,10 +880,10 @@ void navmesh_resolve_corner()
 	
 	//Line 1 extends from l1a in direction l1_dir
 	vector l1a;
-	l1a = navmesh_verts[selected_verts[0]].pos;
-	vector l1_dir = normalize(navmesh_verts[selected_verts[1]].pos - l1a);
+	l1a = cl_navmesh_verts[selected_verts[0]].pos;
+	vector l1_dir = normalize(cl_navmesh_verts[selected_verts[1]].pos - l1a);
 	//The third point
-	vector p2 = navmesh_verts[selected_verts[2]].pos;
+	vector p2 = cl_navmesh_verts[selected_verts[2]].pos;
 	
 	
 	//Considering only l1_dir in the 2d plane of z=0
@@ -950,12 +919,12 @@ void navmesh_resolve_corner()
 	
 	
 	//Place a new vert at the location
-	navmesh_verts[navmesh_vert_count].pos.x = vert_loc.x;
-	navmesh_verts[navmesh_vert_count].pos.y = vert_loc.y;
-	navmesh_verts[navmesh_vert_count].pos.z = vert_loc.z;
+	cl_navmesh_verts[cl_navmesh_vert_count].pos.x = vert_loc.x;
+	cl_navmesh_verts[cl_navmesh_vert_count].pos.y = vert_loc.y;
+	cl_navmesh_verts[cl_navmesh_vert_count].pos.z = vert_loc.z;
 	
 	print("Resolved corner with vertex ");
-	print(ftos(navmesh_vert_count));
+	print(ftos(cl_navmesh_vert_count));
 	print(" at (");
 	print(ftos(vert_loc.x));
 	print(" , ");
@@ -965,45 +934,29 @@ void navmesh_resolve_corner()
 	print(").\n");
 	
 	
-	navmesh_vert_count++;
+	cl_navmesh_vert_count++;
 }
 
-void navmesh_place_corner()
+void cl_navmesh_place_corner()
 {
-	navmesh_place_corner_state = NAVMESH_PLACE_CORNER_PLACING;
+	cl_navmesh_place_corner_state = NAVMESH_PLACE_CORNER_PLACING;
 }
-void navmesh_cancel_corner()
+void cl_navmesh_cancel_corner()
 {
-	navmesh_place_corner_state = 0;
+	cl_navmesh_place_corner_state = 0;
 }
-void navmesh_confirm_corner()
+void cl_navmesh_confirm_corner()
 {
-	if(navmesh_place_corner_state == NAVMESH_PLACE_CORNER_PLACING)
-		navmesh_place_corner_state = NAVMESH_PLACE_CORNER_CONFIRM;
+	if(cl_navmesh_place_corner_state == NAVMESH_PLACE_CORNER_PLACING)
+		cl_navmesh_place_corner_state = NAVMESH_PLACE_CORNER_CONFIRM;
 }
 
-void toggle_navmesh_editor()
+
+void cl_navmesh_calc_connected_polies()
 {
-	
-	if(navmesh_mode == TRUE)
+	for(float i = 0; i < cl_navmesh_poly_count; i++)
 	{
-		print("navmesh editor: 0\n");
-		navmesh_mode = FALSE;
-	}
-	else
-	{
-		print("navmesh editor: 1\n");
-		navmesh_mode = TRUE;
-		navmesh_deselect_all();
-	}
-}
-
-
-void navmesh_calc_connected_polies()
-{
-	for(float i = 0; i < navmesh_poly_count; i++)
-	{
-		for(float j = i + 1; j < navmesh_poly_count; j++)
+		for(float j = i + 1; j < cl_navmesh_poly_count; j++)
 		{
 			
 			//Check if poly j shares an edge with poly i
@@ -1027,11 +980,11 @@ void navmesh_calc_connected_polies()
 			shared_verts_index[1] = -1;
 			float verts_found = 0;
 				
-			for(float k = 0; k < navmesh_polies[i].vert_count; k++)
+			for(float k = 0; k < cl_navmesh_polies[i].vert_count; k++)
 			{
-				for(float l = 0; l < navmesh_polies[j].vert_count; l++)
+				for(float l = 0; l < cl_navmesh_polies[j].vert_count; l++)
 				{
-					if(navmesh_polies[i].verts[k] == navmesh_polies[j].verts[l])
+					if(cl_navmesh_polies[i].verts[k] == cl_navmesh_polies[j].verts[l])
 					{
 						//If we have found more verts than should be allowed, count them for error print
 						if(verts_found > 2)
@@ -1040,7 +993,7 @@ void navmesh_calc_connected_polies()
 							continue;
 						}
 						
-						shared_verts[verts_found] = navmesh_polies[i].verts[k];
+						shared_verts[verts_found] = cl_navmesh_polies[i].verts[k];
 						shared_verts_index[verts_found++] = k;
 					}
 				}
@@ -1060,22 +1013,22 @@ void navmesh_calc_connected_polies()
 			else if(verts_found == 2)
 			{
 				//Setting the polygons as connected to each other
-				if(navmesh_polies[i].connected_polies_count >= 4)
+				if(cl_navmesh_polies[i].connected_polies_count >= 4)
 				{
 					print("Warning: polygon ");
 					print(ftos(i));
 					print(" shares an edge with more than 4 other polygons.\n");
 					break;
 				}
-				if(navmesh_polies[j].connected_polies_count >= 4)
+				if(cl_navmesh_polies[j].connected_polies_count >= 4)
 				{
 					print("Warning: polygon ");
 					print(ftos(j));
 					print(" shares an edge with more than 4 other polygons.\n");
 					break;
 				}
-				navmesh_polies[i].connected_polies[navmesh_polies[i].connected_polies_count] = j;
-				navmesh_polies[j].connected_polies[navmesh_polies[j].connected_polies_count] = i;
+				cl_navmesh_polies[i].connected_polies[cl_navmesh_polies[i].connected_polies_count] = j;
+				cl_navmesh_polies[j].connected_polies[cl_navmesh_polies[j].connected_polies_count] = i;
 				
 				
 				//=======================================================================================
@@ -1117,12 +1070,12 @@ void navmesh_calc_connected_polies()
 				
 				
 				//Assigning the link's left/right edges
-				navmesh_polies[i].connected_polies_left_vert[navmesh_polies[i].connected_polies_count] = left_vert;
-				navmesh_polies[i].connected_polies_right_vert[navmesh_polies[i].connected_polies_count++] = right_vert;
+				cl_navmesh_polies[i].connected_polies_left_vert[cl_navmesh_polies[i].connected_polies_count] = left_vert;
+				cl_navmesh_polies[i].connected_polies_right_vert[cl_navmesh_polies[i].connected_polies_count++] = right_vert;
 				
 				//From j to i, left vert is on the right, and right vert is on the left
-				navmesh_polies[j].connected_polies_left_vert[navmesh_polies[j].connected_polies_count] = right_vert;
-				navmesh_polies[j].connected_polies_right_vert[navmesh_polies[j].connected_polies_count++] = left_vert;
+				cl_navmesh_polies[j].connected_polies_left_vert[cl_navmesh_polies[j].connected_polies_count] = right_vert;
+				cl_navmesh_polies[j].connected_polies_right_vert[cl_navmesh_polies[j].connected_polies_count++] = left_vert;
 				
 				//=======================================================================================
 				
@@ -1142,19 +1095,19 @@ void navmesh_calc_connected_polies()
 }
 
 //We calculate this outside of polygon creation / editing because the polygon centers are not important to creation, only to actually using in pathfinding
-void navmesh_calc_polies_centers()
+void cl_navmesh_calc_polies_centers()
 {
-	for(float i = 0; i < navmesh_poly_count; i++)
+	for(float i = 0; i < cl_navmesh_poly_count; i++)
 	{
 		local vector cen = [0,0,0];
-		for(float j = 0; j < navmesh_polies[i].vert_count; j++)
+		for(float j = 0; j < cl_navmesh_polies[i].vert_count; j++)
 		{
-			cen += navmesh_verts[navmesh_polies[i].verts[j]].pos;
+			cen += cl_navmesh_verts[cl_navmesh_polies[i].verts[j]].pos;
 		}
-		cen /= navmesh_polies[i].vert_count;
-		navmesh_polies[i].center.x = cen.x;
-		navmesh_polies[i].center.y = cen.y;
-		navmesh_polies[i].center.z = cen.z;
+		cen /= cl_navmesh_polies[i].vert_count;
+		cl_navmesh_polies[i].center.x = cen.x;
+		cl_navmesh_polies[i].center.y = cen.y;
+		cl_navmesh_polies[i].center.z = cen.z;
 	}
 	print("Centers calculated.\n");
 }
@@ -1187,8 +1140,8 @@ void navmesh_calc_polies_centers()
 		//link 3 right vert index (will be set or -1 for a tri)
 
 
-//Saves the current navmesh to a file
-void navmesh_editor_save_navmesh()
+//Saves the current cl_navmesh to a file
+void cl_navmesh_editor_save_navmesh()
 {
 	float file;
 	string h;
@@ -1205,51 +1158,51 @@ void navmesh_editor_save_navmesh()
 	
 	//Calculating all links and polygon centers
 	//===========================================
-	navmesh_calc_polies_centers();
-	navmesh_calc_connected_polies();
+	cl_navmesh_calc_polies_centers();
+	cl_navmesh_calc_connected_polies();
 	//===========================================
 
 	//Write vertex count
-	fputs(file,ftos(navmesh_vert_count),"\n");
+	fputs(file,ftos(cl_navmesh_vert_count),"\n");
 	
 	//Write all vertex positions
-	for(float i = 0; i < navmesh_vert_count; i++)
+	for(float i = 0; i < cl_navmesh_vert_count; i++)
 	{
-		fputs(file,vtos(navmesh_verts[i].pos),"\n");
+		fputs(file,vtos(cl_navmesh_verts[i].pos),"\n");
 	}
 	
 	//Write polygon count
-	fputs(file,ftos(navmesh_poly_count),"\n");
+	fputs(file,ftos(cl_navmesh_poly_count),"\n");
 	
 	//Write all polygon data to file
-	for(float i = 0; i < navmesh_poly_count; i++)
+	for(float i = 0; i < cl_navmesh_poly_count; i++)
 	{
 		//Writing vert count
-		fputs(file,ftos(navmesh_polies[i].vert_count),"\n");
+		fputs(file,ftos(cl_navmesh_polies[i].vert_count),"\n");
 		//Writing vertices
-		fputs(file,ftos(navmesh_polies[i].verts[0]),"\n");
-		fputs(file,ftos(navmesh_polies[i].verts[1]),"\n");
-		fputs(file,ftos(navmesh_polies[i].verts[2]),"\n");
-		fputs(file,ftos(navmesh_polies[i].verts[3]),"\n");
-		fputs(file,vtos(navmesh_polies[i].center),"\n");
+		fputs(file,ftos(cl_navmesh_polies[i].verts[0]),"\n");
+		fputs(file,ftos(cl_navmesh_polies[i].verts[1]),"\n");
+		fputs(file,ftos(cl_navmesh_polies[i].verts[2]),"\n");
+		fputs(file,ftos(cl_navmesh_polies[i].verts[3]),"\n");
+		fputs(file,vtos(cl_navmesh_polies[i].center),"\n");
 		
 		//Writing link count
-		fputs(file,ftos(navmesh_polies[i].connected_polies_count),"\n");
+		fputs(file,ftos(cl_navmesh_polies[i].connected_polies_count),"\n");
 		//Writing links
-		fputs(file,ftos(navmesh_polies[i].connected_polies[0]),"\n");
-		fputs(file,ftos(navmesh_polies[i].connected_polies[1]),"\n");
-		fputs(file,ftos(navmesh_polies[i].connected_polies[2]),"\n");
-		fputs(file,ftos(navmesh_polies[i].connected_polies[3]),"\n");
+		fputs(file,ftos(cl_navmesh_polies[i].connected_polies[0]),"\n");
+		fputs(file,ftos(cl_navmesh_polies[i].connected_polies[1]),"\n");
+		fputs(file,ftos(cl_navmesh_polies[i].connected_polies[2]),"\n");
+		fputs(file,ftos(cl_navmesh_polies[i].connected_polies[3]),"\n");
 		//Writing left vertices of the links
-		fputs(file,ftos(navmesh_polies[i].connected_polies_left_vert[0]),"\n");
-		fputs(file,ftos(navmesh_polies[i].connected_polies_left_vert[1]),"\n");
-		fputs(file,ftos(navmesh_polies[i].connected_polies_left_vert[2]),"\n");
-		fputs(file,ftos(navmesh_polies[i].connected_polies_left_vert[3]),"\n");
+		fputs(file,ftos(cl_navmesh_polies[i].connected_polies_left_vert[0]),"\n");
+		fputs(file,ftos(cl_navmesh_polies[i].connected_polies_left_vert[1]),"\n");
+		fputs(file,ftos(cl_navmesh_polies[i].connected_polies_left_vert[2]),"\n");
+		fputs(file,ftos(cl_navmesh_polies[i].connected_polies_left_vert[3]),"\n");
 		//Writing right vertices of the links
-		fputs(file,ftos(navmesh_polies[i].connected_polies_right_vert[0]),"\n");
-		fputs(file,ftos(navmesh_polies[i].connected_polies_right_vert[1]),"\n");
-		fputs(file,ftos(navmesh_polies[i].connected_polies_right_vert[2]),"\n");
-		fputs(file,ftos(navmesh_polies[i].connected_polies_right_vert[3]),"\n");	
+		fputs(file,ftos(cl_navmesh_polies[i].connected_polies_right_vert[0]),"\n");
+		fputs(file,ftos(cl_navmesh_polies[i].connected_polies_right_vert[1]),"\n");
+		fputs(file,ftos(cl_navmesh_polies[i].connected_polies_right_vert[2]),"\n");
+		fputs(file,ftos(cl_navmesh_polies[i].connected_polies_right_vert[3]),"\n");	
 	}
 	
 	fclose(file);
@@ -1257,49 +1210,49 @@ void navmesh_editor_save_navmesh()
 	print("Navmesh saved to file \"",h,"\".\n");
 }
 //Overwrites current navmesh with an empty navmesh
-void navmesh_editor_clear_navmesh()
+void cl_navmesh_editor_clear_navmesh()
 {
-	navmesh_vert_count = 0;
-	for(float i = 0; i < navmesh_verts.length; i++)
+	cl_navmesh_vert_count = 0;
+	for(float i = 0; i < cl_navmesh_verts.length; i++)
 	{
-		navmesh_verts[i].pos.x = 0;
-		navmesh_verts[i].pos.y = 0;
-		navmesh_verts[i].pos.z = 0;
+		cl_navmesh_verts[i].pos.x = 0;
+		cl_navmesh_verts[i].pos.y = 0;
+		cl_navmesh_verts[i].pos.z = 0;
 	}
-	navmesh_poly_count = 0;
-	for(float i = 0; i < navmesh_polies.length; i++)
+	cl_navmesh_poly_count = 0;
+	for(float i = 0; i < cl_navmesh_polies.length; i++)
 	{
-		navmesh_polies[i].vert_count = 0;
+		cl_navmesh_polies[i].vert_count = 0;
 		
-		navmesh_polies[i].verts[0] = -1;
-		navmesh_polies[i].verts[1] = -1;
-		navmesh_polies[i].verts[2] = -1;
-		navmesh_polies[i].verts[3] = -1;
+		cl_navmesh_polies[i].verts[0] = -1;
+		cl_navmesh_polies[i].verts[1] = -1;
+		cl_navmesh_polies[i].verts[2] = -1;
+		cl_navmesh_polies[i].verts[3] = -1;
 		
-		navmesh_polies[i].center.x = 0;
-		navmesh_polies[i].center.y = 0;
-		navmesh_polies[i].center.z = 0;
+		cl_navmesh_polies[i].center.x = 0;
+		cl_navmesh_polies[i].center.y = 0;
+		cl_navmesh_polies[i].center.z = 0;
 		
-		navmesh_polies[i].connected_polies_count = 0;
+		cl_navmesh_polies[i].connected_polies_count = 0;
 		
-		navmesh_polies[i].connected_polies[0] = -1;
-		navmesh_polies[i].connected_polies[1] = -1;
-		navmesh_polies[i].connected_polies[2] = -1;
-		navmesh_polies[i].connected_polies[3] = -1;
+		cl_navmesh_polies[i].connected_polies[0] = -1;
+		cl_navmesh_polies[i].connected_polies[1] = -1;
+		cl_navmesh_polies[i].connected_polies[2] = -1;
+		cl_navmesh_polies[i].connected_polies[3] = -1;
 		
-		navmesh_polies[i].connected_polies_left_vert[0] = -1;
-		navmesh_polies[i].connected_polies_left_vert[1] = -1;
-		navmesh_polies[i].connected_polies_left_vert[2] = -1;
-		navmesh_polies[i].connected_polies_left_vert[3] = -1;
+		cl_navmesh_polies[i].connected_polies_left_vert[0] = -1;
+		cl_navmesh_polies[i].connected_polies_left_vert[1] = -1;
+		cl_navmesh_polies[i].connected_polies_left_vert[2] = -1;
+		cl_navmesh_polies[i].connected_polies_left_vert[3] = -1;
 		
-		navmesh_polies[i].connected_polies_right_vert[0] = -1;
-		navmesh_polies[i].connected_polies_right_vert[1] = -1;
-		navmesh_polies[i].connected_polies_right_vert[2] = -1;
-		navmesh_polies[i].connected_polies_right_vert[3] = -1;
+		cl_navmesh_polies[i].connected_polies_right_vert[0] = -1;
+		cl_navmesh_polies[i].connected_polies_right_vert[1] = -1;
+		cl_navmesh_polies[i].connected_polies_right_vert[2] = -1;
+		cl_navmesh_polies[i].connected_polies_right_vert[3] = -1;
 	}
 }
 //Overwrites currently loaded navmesh with navmesh stored in fail
-void navmesh_editor_load_navmesh()
+void cl_navmesh_editor_load_navmesh()
 {
 	string filepath;
 	float file;
@@ -1320,17 +1273,17 @@ void navmesh_editor_load_navmesh()
 	
 	float vert_count = stof(line);
 	
-	if(vert_count > navmesh_verts.length)
+	if(vert_count > cl_navmesh_verts.length)
 	{
-		print("Error: navmesh file \"",filepath,"\" has an invalid vert count. (" , line, " > ", ftos(navmesh_verts.length),").\n");
+		print("Error: navmesh file \"",filepath,"\" has an invalid vert count. (" , line, " > ", ftos(cl_navmesh_verts.length),").\n");
 		fclose(file);
 		return;
 	}
 	
 	//It appears to be valid, so clear the current navmesh before continuing.
-	navmesh_editor_clear_navmesh();
+	cl_navmesh_editor_clear_navmesh();
 	
-	navmesh_vert_count = vert_count;
+	cl_navmesh_vert_count = vert_count;
 	
 	print("Vert count: ",line,"\n");
 
@@ -1339,29 +1292,29 @@ void navmesh_editor_load_navmesh()
 	
 
 	//Reading all of the vertex positions
-	for(float i = 0; i < navmesh_vert_count; i++)
+	for(float i = 0; i < cl_navmesh_vert_count; i++)
 	{
 		line = fgets(file);
 		temp = stov(line);
-		navmesh_verts[i].pos.x = temp.x;
-		navmesh_verts[i].pos.y = temp.y;
-		navmesh_verts[i].pos.z = temp.z;
+		cl_navmesh_verts[i].pos.x = temp.x;
+		cl_navmesh_verts[i].pos.y = temp.y;
+		cl_navmesh_verts[i].pos.z = temp.z;
 		//TODO: if something goes wrong, clear the partially loaded navmesh
 	}
 	
 	//Next line contains the number of polygons
-	navmesh_poly_count = stof(fgets(file));
+	cl_navmesh_poly_count = stof(fgets(file));
 	
 	//The next lines are each polygon
-	for(float i = 0; i < navmesh_poly_count; i++)
+	for(float i = 0; i < cl_navmesh_poly_count; i++)
 	{
 		//Getting vertex count
-		navmesh_polies[i].vert_count = stof(fgets(file));
+		cl_navmesh_polies[i].vert_count = stof(fgets(file));
 		//Getting vertices
-		navmesh_polies[i].verts[0] = stof(fgets(file));
-		navmesh_polies[i].verts[1] = stof(fgets(file));
-		navmesh_polies[i].verts[2] = stof(fgets(file));
-		navmesh_polies[i].verts[3] = stof(fgets(file));
+		cl_navmesh_polies[i].verts[0] = stof(fgets(file));
+		cl_navmesh_polies[i].verts[1] = stof(fgets(file));
+		cl_navmesh_polies[i].verts[2] = stof(fgets(file));
+		cl_navmesh_polies[i].verts[3] = stof(fgets(file));
 		//Don't care about polygon center
 		fgets(file);
 		//Don't care about link count
@@ -1399,7 +1352,9 @@ float goalent_set;
 vector startent_pos;
 float startent_set;
 
-void navmesh_draw_test_ent(float is_goal)
+float(float start, float goal, vector start_pos, vector end_pos) cl_navmesh_pathfind_start;
+
+void cl_navmesh_draw_test_ent(float is_goal)
 {
 	//Assigning the shader as something else so that fte doesn't batch the calls (leading to colors not changing between draw calls)
 	R_BeginPolygon("debug/wireframe",0);
@@ -1469,7 +1424,7 @@ void navmesh_draw_test_ent(float is_goal)
 	R_EndPolygon();
 }
 
-void navmesh_place_test_goalent()
+void cl_navmesh_place_test_goalent()
 {
 	goalent_pos = getentity(player_localentnum, GE_ORIGIN);
 	
@@ -1477,40 +1432,40 @@ void navmesh_place_test_goalent()
 	
 	
 	//Calculate data that the navmesh exporer will calculate
-	navmesh_calc_polies_centers();
-	navmesh_calc_connected_polies();
+	cl_navmesh_calc_polies_centers();
+	cl_navmesh_calc_connected_polies();
 	
 	if(goalent_set == TRUE && startent_set == TRUE)
 	{
 		print("Getting start poly.");
-		float start = navmesh_get_containing_poly(startent_pos);
+		float start = cl_navmesh_get_containing_poly(startent_pos);
 		print("Getting goal poly.");
-		float goal = navmesh_get_containing_poly(goalent_pos);
-		pathfind_start(start,goal,startent_pos,goalent_pos);
+		float goal = cl_navmesh_get_containing_poly(goalent_pos);
+		cl_navmesh_pathfind_start(start,goal,startent_pos,goalent_pos);
 	}
 	
 
 }
-void navmesh_place_test_startent()
+void cl_navmesh_place_test_startent()
 {
 	startent_pos = getentity(player_localentnum, GE_ORIGIN);
 	
 	startent_set = TRUE;
 	
 	//Calculate data that the navmesh exporer will calculate
-	navmesh_calc_polies_centers();
-	navmesh_calc_connected_polies();
+	cl_navmesh_calc_polies_centers();
+	cl_navmesh_calc_connected_polies();
 	
 	if(goalent_set == TRUE && startent_set == TRUE)
 	{
-		float start = navmesh_get_containing_poly(startent_pos);
-		float goal = navmesh_get_containing_poly(goalent_pos);
-		pathfind_start(start,goal,startent_pos,goalent_pos);
+		float start = cl_navmesh_get_containing_poly(startent_pos);
+		float goal = cl_navmesh_get_containing_poly(goalent_pos);
+		cl_navmesh_pathfind_start(start,goal,startent_pos,goalent_pos);
 	}
 }
 
 //Returns 1 if pos is inside poly at index poly_index, 0 otherwise
-float navmesh_is_inside_poly(vector pos, float poly_index)
+float cl_navmesh_is_inside_poly(vector pos, float poly_index)
 {
 	
 	//TODO: check if z coord is close enough to poly
@@ -1519,12 +1474,12 @@ float navmesh_is_inside_poly(vector pos, float poly_index)
 	local vector vert_to_next;//points from vert to the next vertex
 	local vector vert;
 	local vector next_vert;
-	float vert_count = navmesh_polies[poly_index].vert_count;
+	float vert_count = cl_navmesh_polies[poly_index].vert_count;
 	//We are considered to be in the polygon, if pos is on the left of all edges of the polygon (if verts are ordered in CW order)
 	for(float i = 0; i < vert_count; i++)
 	{
-		vert = navmesh_verts[navmesh_polies[poly_index].verts[i]].pos;
-		next_vert = navmesh_verts[navmesh_polies[poly_index].verts[(i + 1) % vert_count]].pos;
+		vert = cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[i]].pos;
+		next_vert = cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[(i + 1) % vert_count]].pos;
 		
 		vert_to_pos = pos - vert;
 		vert_to_next = next_vert - vert;
@@ -1536,11 +1491,11 @@ float navmesh_is_inside_poly(vector pos, float poly_index)
 	
 	
 	//FOR DEBUG: select that polygon if succesfull
-	navmesh_deselect_all();
-	selected_vert_count = navmesh_polies[poly_index].vert_count;
+	cl_navmesh_deselect_all();
+	selected_vert_count = cl_navmesh_polies[poly_index].vert_count;
 	for(float i = 0; i < selected_vert_count; i++)
 	{
-		selected_verts[i] = navmesh_polies[poly_index].verts[i];
+		selected_verts[i] = cl_navmesh_polies[poly_index].verts[i];
 	}	
 	//============================================
 	
@@ -1549,7 +1504,7 @@ float navmesh_is_inside_poly(vector pos, float poly_index)
 }
 
 //Returns the distance between the 2d line l1->l2 and pos
-float navmesh_2D_line_point_dist(vector l1, vector l2, vector pos)
+float cl_navmesh_2D_line_point_dist(vector l1, vector l2, vector pos)
 {
 	float dot = (l2 - l1) * (pos - l2);
 	if(dot > 0)
@@ -1569,7 +1524,7 @@ float navmesh_2D_line_point_dist(vector l1, vector l2, vector pos)
 }
 
 //Returns distance from pos to an edge of the poly if pos is very close to an edge of the poly at index poly_index, -1 otherwise
-float navmesh_dist_to_poly(vector pos, float poly_index)
+float cl_navmesh_dist_to_poly(vector pos, float poly_index)
 {
 	float leeway = 30;//Must be within 30 qu of edge to be considered close
 	
@@ -1581,7 +1536,7 @@ float navmesh_dist_to_poly(vector pos, float poly_index)
 	
 	local vector vert;
 	local vector next_vert;
-	float vert_count = navmesh_polies[poly_index].vert_count;
+	float vert_count = cl_navmesh_polies[poly_index].vert_count;
 	
 	float shortest_dist = 100000;
 	
@@ -1591,14 +1546,14 @@ float navmesh_dist_to_poly(vector pos, float poly_index)
 	//We are considered to be in the polygon, if pos is on the left of all edges of the polygon (if verts are ordered in CW order)
 	for(float i = 0; i < vert_count; i++)
 	{
-		vert = navmesh_verts[navmesh_polies[poly_index].verts[i]].pos;
-		next_vert = navmesh_verts[navmesh_polies[poly_index].verts[(i + 1) % vert_count]].pos;
+		vert = cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[i]].pos;
+		next_vert = cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[(i + 1) % vert_count]].pos;
 		
 		//Calculating in 2D:
 		//vert.z = 0;
 		//next_vert.z = 0;
 		
-		float temp_dist = navmesh_2D_line_point_dist(vert, next_vert, pos);
+		float temp_dist = cl_navmesh_2D_line_point_dist(vert, next_vert, pos);
 		
 		if(temp_dist < shortest_dist)
 		{
@@ -1615,7 +1570,7 @@ float navmesh_dist_to_poly(vector pos, float poly_index)
 //Returns polygon that pos is inside of. 
 //If we are in no polygon, returns a polygon whose edge we are sufficiently close to (might be in but are not due to a small error)
 //Otherwise, returns -1
-float navmesh_get_containing_poly(vector pos)
+float cl_navmesh_get_containing_poly(vector pos)
 {
 	//Get nearest polygon, and check if pos is in that polygon
 	
@@ -1625,7 +1580,7 @@ float navmesh_get_containing_poly(vector pos)
 	float closest_poly_dist = 1000000;
 	
 	//In reality, there's no need to try ALL polygons, the one we are in should be within the nearest 10 or so, but checking all to be safe
-	for(float i = 0; i < navmesh_poly_count; i++)
+	for(float i = 0; i < cl_navmesh_poly_count; i++)
 	{
 		
 		//Find the first poly we haven't tried.
@@ -1633,9 +1588,9 @@ float navmesh_get_containing_poly(vector pos)
 		float lowest_dist = 100000;//Would initialize to first one, but we would have to find the first unused poly, which is a waste of calculations
 		float lowest_index = -1;
 		
-		for(float j = 0; j < navmesh_poly_count; j++)
+		for(float j = 0; j < cl_navmesh_poly_count; j++)
 		{
-			float temp_dist = vlen(navmesh_polies[0].center - pos);
+			float temp_dist = vlen(cl_navmesh_polies[0].center - pos);
 			
 			if(temp_dist < lowest_dist)
 			{
@@ -1646,7 +1601,7 @@ float navmesh_get_containing_poly(vector pos)
 		
 		
 		//Check if we are in polygon i
-		if(navmesh_is_inside_poly(pos,i))
+		if(cl_navmesh_is_inside_poly(pos,i))
 		{
 			print("Ent pos is inside poly: ");
 			print(ftos(i));
@@ -1655,7 +1610,7 @@ float navmesh_get_containing_poly(vector pos)
 		}
 		
 		//If we are not in polygon i, check if we are very close to one of its edges
-		float dist = navmesh_dist_to_poly(pos,i);
+		float dist = cl_navmesh_dist_to_poly(pos,i);
 		
 		if(dist >= 0)
 		{
@@ -1672,11 +1627,11 @@ float navmesh_get_containing_poly(vector pos)
 	//FOR DEBUG: select that polygon if succesfull
 	if(closest_poly != -1)
 	{
-		navmesh_deselect_all();
-		selected_vert_count = navmesh_polies[closest_poly].vert_count;
+		cl_navmesh_deselect_all();
+		selected_vert_count = cl_navmesh_polies[closest_poly].vert_count;
 		for(float i = 0; i < selected_vert_count; i++)
 		{
-			selected_verts[i] = navmesh_polies[closest_poly].verts[i];
+			selected_verts[i] = cl_navmesh_polies[closest_poly].verts[i];
 		}
 	}
 	//============================================
@@ -1701,9 +1656,6 @@ float navmesh_get_containing_poly(vector pos)
 //================================================================================================================
 
 
-#define PATHFIND_POLY_SET_NONE 0
-#define PATHFIND_POLY_SET_OPEN 1
-#define PATHFIND_POLY_SET_CLOSED 2
 //Contains what set the ith polygon is in
 float pathfind_poly_set[NAV_MAX_POLIES];
 //Contains the index of the last polygon that we used to get to the ith polygon
@@ -1715,7 +1667,7 @@ float pathfind_poly_g_score[NAV_MAX_POLIES];
 float pathfind_calc_h_score(float current, float goal)
 {
 	//FIXME: we could just as easily return vlen()^2 for comparisons... (saves a sqrt operation)
-	return vlen(navmesh_polies[goal].center - navmesh_polies[current].center);
+	return vlen(cl_navmesh_polies[goal].center - cl_navmesh_polies[current].center);
 }
 
 //f score = g score + h score
@@ -1740,8 +1692,8 @@ float pathfind_portals_right_vert[NAV_MAX_POLIES];
 float pathfind_portals_length;
 
 
-//TODO: when I add funnel algorithm, keep a list of vectors instead of a list of polygon indices
-
+//TODO: use this struct instead of the hardcoded arrays above:
+pathfind_result cl_test_pathfind_result;
 
 //Returns the polygon with the lowest f score from polygons the open set
 float pathfind_get_lowest_f_score()
@@ -1751,7 +1703,7 @@ float pathfind_get_lowest_f_score()
 	float best_score = 100000;
 	float best_score_index = -1;
 	
-	for(float i = 0; i < navmesh_poly_count; i++)
+	for(float i = 0; i < cl_navmesh_poly_count; i++)
 	{
 		if(pathfind_poly_set[i] == PATHFIND_POLY_SET_OPEN)
 		{
@@ -1814,9 +1766,9 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 		
 		float link_index = -1;
 		
-		for(float j = 0; j < navmesh_polies[prev_poly].connected_polies_count; j++)
+		for(float j = 0; j < cl_navmesh_polies[prev_poly].connected_polies_count; j++)
 		{
-			if(navmesh_polies[prev_poly].connected_polies[j] == poly)
+			if(cl_navmesh_polies[prev_poly].connected_polies[j] == poly)
 			{
 				link_index = j;
 				break;
@@ -1824,9 +1776,10 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 		}
 		
 		//Use that index to get left and right vertices
-		pathfind_portals_left_vert[pathfind_portals_length] = navmesh_polies[prev_poly].connected_polies_left_vert[link_index];
-		pathfind_portals_right_vert[pathfind_portals_length++] = navmesh_polies[prev_poly].connected_polies_right_vert[link_index];
+		pathfind_portals_left_vert[pathfind_portals_length] = cl_navmesh_polies[prev_poly].connected_polies_left_vert[link_index];
+		pathfind_portals_right_vert[pathfind_portals_length++] = cl_navmesh_polies[prev_poly].connected_polies_right_vert[link_index];
 	}
+	//the last left edge / right edge is the goal position
 	
 	print("Portals: ");
 	for(float i = 0; i < pathfind_portals_length; i++)
@@ -1846,12 +1799,10 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 	vector funnel_apex = start_point;
 	float funnel_left_index = 0;
 	//Index of the funnel's left vertex in the portal list
-	vector funnel_left = navmesh_verts[pathfind_portals_left_vert[0]].pos;
+	vector funnel_left = cl_navmesh_verts[pathfind_portals_left_vert[0]].pos;
 	//Index of the funnel's right vertex in the portal list
 	float funnel_right_index = 0;
-	vector funnel_right = navmesh_verts[pathfind_portals_right_vert[0]].pos;
-	
-//	float last_cos_squared = -1;
+	vector funnel_right = cl_navmesh_verts[pathfind_portals_right_vert[0]].pos;
 	
 	vector next_funnel_left;
 	vector next_funnel_right;
@@ -1880,7 +1831,7 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 			
 			if(funnel_left_index < pathfind_portals_length - 1)
 			{
-				next_funnel_left = navmesh_verts[pathfind_portals_left_vert[funnel_left_index+1]].pos;
+				next_funnel_left = cl_navmesh_verts[pathfind_portals_left_vert[funnel_left_index+1]].pos;
 				print("Next left edge is vert: ");
 				print(ftos(pathfind_portals_left_vert[funnel_left_index+1]));
 				print(".\n");
@@ -1912,9 +1863,9 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 				funnel_apex = funnel_right;
 				
 				funnel_left_index = funnel_right_index + 1;
-				funnel_left = navmesh_verts[pathfind_portals_left_vert[funnel_left_index]].pos;
+				funnel_left = cl_navmesh_verts[pathfind_portals_left_vert[funnel_left_index]].pos;
 				funnel_right_index = funnel_right_index + 1;
-				funnel_right = navmesh_verts[pathfind_portals_right_vert[funnel_right_index]].pos;
+				funnel_right = cl_navmesh_verts[pathfind_portals_right_vert[funnel_right_index]].pos;
 				continue;
 			}
 			//If the next left edge is in the funnel
@@ -1943,7 +1894,7 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 			
 			if(funnel_right_index < pathfind_portals_length - 1)
 			{
-				next_funnel_right = navmesh_verts[pathfind_portals_right_vert[funnel_right_index+1]].pos;
+				next_funnel_right = cl_navmesh_verts[pathfind_portals_right_vert[funnel_right_index+1]].pos;
 				print("Next right edge is vert: ");
 				print(ftos(pathfind_portals_right_vert[funnel_right_index+1]));
 				print(".\n");
@@ -1975,9 +1926,9 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 				funnel_apex = funnel_left;
 				
 				funnel_right_index = funnel_left_index + 1;
-				funnel_right = navmesh_verts[pathfind_portals_right_vert[funnel_right_index]].pos;
+				funnel_right = cl_navmesh_verts[pathfind_portals_right_vert[funnel_right_index]].pos;
 				funnel_left_index = funnel_left_index + 1;
-				funnel_left = navmesh_verts[pathfind_portals_left_vert[funnel_left_index]].pos;
+				funnel_left = cl_navmesh_verts[pathfind_portals_left_vert[funnel_left_index]].pos;
 				continue;
 			}
 			//If the next right edge is in the funnel
@@ -2026,7 +1977,7 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 					if(last_vert == pathfind_portals_left_vert[i])
 						continue;
 					last_vert = pathfind_portals_left_vert[i];
-					next_funnel_left = navmesh_verts[last_vert].pos;
+					next_funnel_left = cl_navmesh_verts[last_vert].pos;
 				}
 				else//consider goal pos as last portal edge
 				{
@@ -2066,7 +2017,7 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 					if(last_vert == pathfind_portals_right_vert[i])
 						continue;
 					last_vert = pathfind_portals_right_vert[i];
-					next_funnel_right = navmesh_verts[last_vert].pos;
+					next_funnel_right = cl_navmesh_verts[last_vert].pos;
 				}
 				else//consider goal pos as last portal edge
 				{
@@ -2148,9 +2099,9 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 						return;
 					}
 					
-					funnel_right = navmesh_verts[pathfind_portals_right_vert[funnel_right_index]].pos;
+					funnel_right = cl_navmesh_verts[pathfind_portals_right_vert[funnel_right_index]].pos;
 					funnel_left_index = funnel_right_index;
-					funnel_left = navmesh_verts[pathfind_portals_left_vert[funnel_left_index]].pos;
+					funnel_left = cl_navmesh_verts[pathfind_portals_left_vert[funnel_left_index]].pos;
 					continue;
 				}
 				else//in funnel
@@ -2187,9 +2138,9 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 						return;
 					}
 					
-					funnel_left = navmesh_verts[pathfind_portals_left_vert[funnel_left_index]].pos;
+					funnel_left = cl_navmesh_verts[pathfind_portals_left_vert[funnel_left_index]].pos;
 					funnel_right_index = funnel_left_index;
-					funnel_right = navmesh_verts[pathfind_portals_right_vert[funnel_right_index]].pos;
+					funnel_right = cl_navmesh_verts[pathfind_portals_right_vert[funnel_right_index]].pos;
 					continue;
 				}
 				else//in funnel
@@ -2211,18 +2162,6 @@ void pathfind_smooth_path(vector start_point, vector goal_point)
 		}
 	print("==========================\n");
 	}
-	//if advancing the left edge narrows the cone:
-		//advance left edge
-	//if advancing the left edge crosses the right edge:
-		//set apex as the right edge
-	//if advancing the right edge narrows the cone:
-		//advance the right edge
-	//if advancing the right edge crosses the left edge:
-		//set apex as the left edge
-	//if advancing the left edge widens and advancing the right edge widens
-		//skip this portal
-		
-	//the last left edge / right edge is the goal position
 }
 
 //Evaluates the path that is found in the pathfinding algorithm and populates an array with the nodes in the path from start to goal
@@ -2269,7 +2208,7 @@ void pathfind_trace_path(float start, float goal)
 //Accepts start polygon and goal polygon
 //Returns 1 on success.
 //Returns 0 on fail.
-float pathfind_start(float start, float goal, vector start_pos, vector end_pos)
+float cl_navmesh_pathfind_start(float start, float goal, vector start_pos, vector end_pos)
 {
 	if(start == -1)
 	{
@@ -2331,9 +2270,9 @@ float pathfind_start(float start, float goal, vector start_pos, vector end_pos)
 		//Add current node to the closed set
 		pathfind_poly_set[current] = PATHFIND_POLY_SET_CLOSED;
 		//Add connected nodes to the open set
-		for(float i = 0; i < navmesh_polies[current].connected_polies_count; i++)
+		for(float i = 0; i < cl_navmesh_polies[current].connected_polies_count; i++)
 		{
-			float neighbor = navmesh_polies[current].connected_polies[i];
+			float neighbor = cl_navmesh_polies[current].connected_polies[i];
 			
 			/*print("Checking poly ");
 			print(ftos(current));
@@ -2346,7 +2285,7 @@ float pathfind_start(float start, float goal, vector start_pos, vector end_pos)
 				//print("Neighbor is not in closed list.\n");
 				//Calculate tentative f score
 				//Calculate tentative g score (distance from start to current + distance from current to neighbor)
-				float tentative_g_score = pathfind_poly_g_score[current] + vlen(navmesh_polies[neighbor].center - navmesh_polies[current].center);
+				float tentative_g_score = pathfind_poly_g_score[current] + vlen(cl_navmesh_polies[neighbor].center - cl_navmesh_polies[current].center);
 				
 				if(pathfind_poly_set[neighbor] != PATHFIND_POLY_SET_OPEN || tentative_g_score < pathfind_poly_g_score[neighbor])
 				{
@@ -2391,7 +2330,7 @@ float pathfind_start(float start, float goal, vector start_pos, vector end_pos)
 
 
 //This renders the raw pathfind results (polygon center to polygon center)
-void pathfind_draw_result_node_path()
+void cl_navmesh_pathfind_draw_result_node_path()
 {
 	//FIXME: don't call if length is 0
 	if(pathfind_result_node_length < 1)
@@ -2410,7 +2349,7 @@ void pathfind_draw_result_node_path()
 	
 	for(float i = 0; i < pathfind_result_node_length; i++)
 	{
-		vector pos = navmesh_polies[pathfind_result_node_path[i]].center + [0,0,-5];
+		vector pos = cl_navmesh_polies[pathfind_result_node_path[i]].center + [0,0,-5];
 		//bottom face
 		R_PolygonVertex(pos + [-5,5,-5], [0,0,0], color,alpha);
 		R_PolygonVertex(pos + [5,5,-5], [0,0,0], color,alpha);
@@ -2451,10 +2390,10 @@ void pathfind_draw_result_node_path()
 		if(i > 0)
 		{
 			//Draw an edge connecting ith node to previous node
-			R_PolygonVertex(navmesh_polies[pathfind_result_node_path[i]].center + [0,0,-5] + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-			R_PolygonVertex(navmesh_polies[pathfind_result_node_path[i]].center + [0,0,-5] + [0,0,edge_width], [0,0,0], color, edge_alpha);
-			R_PolygonVertex(navmesh_polies[pathfind_result_node_path[i-1]].center + [0,0,-5] + [0,0,edge_width], [0,0,0], color, edge_alpha);
-			R_PolygonVertex(navmesh_polies[pathfind_result_node_path[i-1]].center + [0,0,-5] + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+			R_PolygonVertex(cl_navmesh_polies[pathfind_result_node_path[i]].center + [0,0,-5] + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+			R_PolygonVertex(cl_navmesh_polies[pathfind_result_node_path[i]].center + [0,0,-5] + [0,0,edge_width], [0,0,0], color, edge_alpha);
+			R_PolygonVertex(cl_navmesh_polies[pathfind_result_node_path[i-1]].center + [0,0,-5] + [0,0,edge_width], [0,0,0], color, edge_alpha);
+			R_PolygonVertex(cl_navmesh_polies[pathfind_result_node_path[i-1]].center + [0,0,-5] + [0,0,-edge_width], [0,0,0], color, edge_alpha);
 			R_EndPolygon();
 		}
 	}
@@ -2463,7 +2402,7 @@ void pathfind_draw_result_node_path()
 }
 
 
-void pathfind_draw_result_portals()
+void cl_navmesh_pathfind_draw_result_portals()
 {
 	if(pathfind_portals_length < 1)
 		return;
@@ -2474,22 +2413,22 @@ void pathfind_draw_result_portals()
 	
 	for(float i = 0; i < pathfind_portals_length; i++)
 	{
-		navmesh_draw_vert(navmesh_verts[pathfind_portals_left_vert[i]].pos + [0,0,-10],2);
-		navmesh_draw_vert(navmesh_verts[pathfind_portals_right_vert[i]].pos + [0,0,-8],3);
+		cl_navmesh_draw_vert(cl_navmesh_verts[pathfind_portals_left_vert[i]].pos + [0,0,-10],2);
+		cl_navmesh_draw_vert(cl_navmesh_verts[pathfind_portals_right_vert[i]].pos + [0,0,-8],3);
 		
 		R_BeginPolygon("debug/wireframe",0);
 		R_BeginPolygon("debug/solid_nocull",0);
 		
 		//Draw an edge connecting portals
-		R_PolygonVertex(navmesh_verts[pathfind_portals_left_vert[i]].pos + [0,0,-10] + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(navmesh_verts[pathfind_portals_left_vert[i]].pos + [0,0,-10] + [0,0,edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(navmesh_verts[pathfind_portals_right_vert[i]].pos + [0,0,-8] + [0,0,edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(navmesh_verts[pathfind_portals_right_vert[i]].pos + [0,0,-8] + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+		R_PolygonVertex(cl_navmesh_verts[pathfind_portals_left_vert[i]].pos + [0,0,-10] + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+		R_PolygonVertex(cl_navmesh_verts[pathfind_portals_left_vert[i]].pos + [0,0,-10] + [0,0,edge_width], [0,0,0], color, edge_alpha);
+		R_PolygonVertex(cl_navmesh_verts[pathfind_portals_right_vert[i]].pos + [0,0,-8] + [0,0,edge_width], [0,0,0], color, edge_alpha);
+		R_PolygonVertex(cl_navmesh_verts[pathfind_portals_right_vert[i]].pos + [0,0,-8] + [0,0,-edge_width], [0,0,0], color, edge_alpha);
 		R_EndPolygon();
 	}
 }
 
-void pathfind_draw_result_path()
+void cl_navmesh_pathfind_draw_result_path()
 {		
 	if(pathfind_result_length < 1)
 		return;
@@ -2500,7 +2439,7 @@ void pathfind_draw_result_path()
 	float edge_alpha = 0.2;//0.3
 	
 	//Drawing the a line connecting the start and first path node
-	navmesh_draw_vert(startent_pos + [0,0,10],4);
+	cl_navmesh_draw_vert(startent_pos + [0,0,10],4);
 	R_BeginPolygon("debug/wireframe",0);
 	R_BeginPolygon("debug/solid_nocull",0);
 	
@@ -2514,7 +2453,7 @@ void pathfind_draw_result_path()
 	
 	for(float i = 0; i < pathfind_result_length; i++)
 	{
-		navmesh_draw_vert(pathfind_result_path[i] + [0,0,10],4);
+		cl_navmesh_draw_vert(pathfind_result_path[i] + [0,0,10],4);
 		
 		if(i > 0)
 		{
@@ -2538,7 +2477,7 @@ void pathfind_draw_result_path()
 
 
 
-void() register_navmesh_commands = 
+void() cl_register_navmesh_commands = 
 {
 	registercommand("nav_editor");
 	registercommand("nav_place_vert");
@@ -2561,15 +2500,15 @@ void() register_navmesh_commands =
 	registercommand("nav_load_navmesh");
 }
 
-float confirm_clear_navmesh;
+float cl_confirm_clear_navmesh;
 
-float(string cmd) navmesh_console_commands = 
+float(string cmd) cl_navmesh_console_commands = 
 {
 	tokenize(cmd);
 	switch(argv(0))
 	{
 		case "nav_editor":
-			toggle_navmesh_editor();
+			cl_toggle_navmesh_editor();
 			return TRUE;
 		default:
 			break;
@@ -2579,7 +2518,7 @@ float(string cmd) navmesh_console_commands =
 	switch(argv(0))
 	{
 		case "nav_clear_navmesh":
-			confirm_clear_navmesh = 1;
+			cl_confirm_clear_navmesh = 1;
 			print("Are you sure you want to clear the navmesh? All unsaved changes will be lost.\n");
 			return TRUE;
 		case "y":
@@ -2590,74 +2529,90 @@ float(string cmd) navmesh_console_commands =
 		case "go":
 		case "imnotafraidtodie":
 		case "tryme":
-			if(confirm_clear_navmesh == 1)
+			if(cl_confirm_clear_navmesh == 1)
 			{
 				print("Navmesh cleared.\n");
-				navmesh_editor_clear_navmesh();
+				cl_navmesh_editor_clear_navmesh();
 			}
-			confirm_clear_navmesh = 0;
+			cl_confirm_clear_navmesh = 0;
 			return TRUE;
 		default:
-			confirm_clear_navmesh = 0;
+			cl_confirm_clear_navmesh = 0;
 			break;
 	}
 	
-	if(!navmesh_mode)
+	if(!cl_navmesh_mode)
 		return FALSE;
 	switch(argv(0))
 	{
 		case "nav_place_vert":
-			navmesh_place_vert();
+			cl_navmesh_place_vert();
 			return TRUE;
 		case "nav_delete_verts":
-			navmesh_delete_verts();
+			cl_navmesh_delete_verts();
 			return TRUE;
 		case "nav_select_vert":
-			navmesh_select_vert();
+			cl_navmesh_select_vert();
 			return TRUE;
 		case "nav_deselect_vert":
-			navmesh_deselect_vert();
+			cl_navmesh_deselect_vert();
 			return TRUE;
 		case "nav_deselect_all":
-			navmesh_deselect_all();
+			cl_navmesh_deselect_all();
 			return TRUE;
 		case "nav_make_poly":
-			navmesh_make_poly();
+			cl_navmesh_make_poly();
 			return TRUE;
 		case "nav_delete_poly":
-			navmesh_delete_poly();
+			cl_navmesh_delete_poly();
 			return TRUE;
 		case "nav_resolve_corner":
-			navmesh_resolve_corner();
+			cl_navmesh_resolve_corner();
 			return TRUE;
 		case "nav_place_corner":
-			navmesh_place_corner();
+			cl_navmesh_place_corner();
 			return TRUE;
 		case "nav_cancel_corner":
-			navmesh_cancel_corner();
+			cl_navmesh_cancel_corner();
 			return TRUE;
 		case "nav_confirm_corner":
-			navmesh_confirm_corner();
+			cl_navmesh_confirm_corner();
 			return TRUE;
 		case "nav_calc_connected_polies":
-			navmesh_calc_connected_polies();
+			cl_navmesh_calc_connected_polies();
 			return TRUE;
 		case "nav_calc_poly_centers":
-			navmesh_calc_polies_centers();
+			cl_navmesh_calc_polies_centers();
 			return TRUE;
 		case "navtest_place_goal":
-			navmesh_place_test_goalent();
+			cl_navmesh_place_test_goalent();
 			return TRUE;
 		case "navtest_place_start":
-			navmesh_place_test_startent();
+			cl_navmesh_place_test_startent();
 			return TRUE;
 		case "nav_save_navmesh":
-			navmesh_editor_save_navmesh();
+			cl_navmesh_editor_save_navmesh();
 			return TRUE;
 		case "nav_load_navmesh":
-			navmesh_editor_load_navmesh();
+			cl_navmesh_editor_load_navmesh();
 			return TRUE;
 		default:
 			return FALSE;
+	}
+}
+
+void cl_toggle_navmesh_editor()
+{
+	
+	if(cl_navmesh_mode == TRUE)
+	{
+		print("cl_navmesh editor: 0\n");
+		cl_navmesh_mode = FALSE;
+	}
+	else
+	{
+		print("cl_navmesh editor: 1\n");
+		cl_navmesh_mode = TRUE;
+		cl_navmesh_deselect_all();
 	}
 }
