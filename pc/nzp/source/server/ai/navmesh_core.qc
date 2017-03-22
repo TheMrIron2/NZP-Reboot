@@ -212,7 +212,6 @@ float sv_navmesh_get_containing_poly(vector pos)
 		}
 
 	}
-	
 	//============================================
 	
 	if(closest_poly == -1)

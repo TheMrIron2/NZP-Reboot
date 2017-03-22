@@ -952,6 +952,7 @@ void(float i) spawnSingleZombEnt =
 	setmodel(zSpawn.goaldummy,"models/way/normal_way.spr");
 	zSpawn.goaldummy.classname = "waypoint_target";
 	zSpawn.index = i;
+	//zSpawn.customphysics = ai_physics_movement;
 };
 
 void() spawnAllZombEnts =
@@ -1002,8 +1003,10 @@ void(entity where) spawn_a_zombieB =
 	szombie.hop_step = 0;
 	szombie.gravity = 1.0;
 	
-	szombie.mins = '-8 -8 -32';//-16 16 -32
-	szombie.maxs = '8 8 30';//16 16 40
+	//szombie.mins = '-8 -8 -32';//-16 16 -32
+	//szombie.maxs = '8 8 30';//16 16 40
+	szombie.mins = '-16 -16 -32';//-16 16 -32
+	szombie.maxs = '16 16 40';//16 16 40
 	setsize (szombie, szombie.mins, szombie.maxs);
 	
 	local float tex;

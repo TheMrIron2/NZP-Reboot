@@ -1697,8 +1697,6 @@ void cl_pathfind_smooth_path(vector start_point, vector goal_point)
 		float prev_poly = cl_test_pathfind_result.result_node_path[i-1];
 		float poly = cl_test_pathfind_result.result_node_path[i];
 		
-		//TODO: find link index of portal
-		
 		//Finding what index prev_poly is linked to poly
 		
 		float link_index = -1;
