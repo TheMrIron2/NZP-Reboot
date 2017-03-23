@@ -1557,26 +1557,15 @@ float cl_navmesh_get_containing_poly(vector pos)
 	
 	//In reality, there's no need to try ALL polygons, the one we are in should be within the nearest 10 or so, but checking all to be safe
 	for(float i = 0; i < cl_navmesh_poly_count; i++)
-	{
-		
-		//Find the first poly we haven't tried.
-	
-		float lowest_dist = 100000;//Would initialize to first one, but we would have to find the first unused poly, which is a waste of calculations
-		float lowest_index = -1;
-		
-		for(float j = 0; j < cl_navmesh_poly_count; j++)
+	{	
+		//Check if we are sufficiently close enough to polygon i in the z-axis
+		//Current method of checking: if pos is within 30 qu of polygon center in z-axis
+		if(fabs(cl_navmesh_polies[0].center.z - pos.z) >= 30)
 		{
-			float temp_dist = vlen(cl_navmesh_polies[0].center - pos);
-			
-			if(temp_dist < lowest_dist)
-			{
-				lowest_dist = temp_dist;
-				lowest_index = j;
-			}
+			continue;
 		}
 		
-		
-		//Check if we are in polygon i
+		//Check if we are in the 2d plane of polygon i
 		if(cl_navmesh_is_inside_poly(pos,i))
 		{
 			print("Ent pos is inside poly: ");
