@@ -952,7 +952,7 @@ void(float i) spawnSingleZombEnt =
 	setmodel(zSpawn.goaldummy,"models/way/normal_way.spr");
 	zSpawn.goaldummy.classname = "waypoint_target";
 	zSpawn.index = i;
-	//zSpawn.customphysics = ai_physics_movement;
+	zSpawn.customphysics = ai_physics_movement;
 };
 
 void() spawnAllZombEnts =

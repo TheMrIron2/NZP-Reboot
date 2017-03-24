@@ -5,16 +5,78 @@ void(float what) play_sound_z;
 
 void() ai_physics_movement =
 {
-	
 	if(self.think && self.nextthink < time)
 	{
 		self.think();
 	}
 	
+	//FIXME: zombies keep moving when they die, lol
+	
 	float max_step_size = 18;//max stair step size pulled straight from engine defs
 	float max_slope = 10.4;//18/tan(60) = 10.4, the length of the triangle formed by the max walkable slope of 60 degrees, and the max step height
 	
-	float gravity_accel = self.gravity * 800;//800 is default server gravity TODO: use server gravity value
+	vector goal_org;
+	
+	if(!(self.flags & FL_ONGROUND))
+	{
+		self.velocity.z  -= self.gravity * 800 * frametime;//FIXME: swap 800 with server velocity value
+		
+		goal_org = self.origin + [0,0,self.velocity.z] * frametime;
+		
+		tracebox(self.origin,self.mins,self.maxs,goal_org,MOVE_NOMONSTERS,self);
+		
+		//If falling and hit something
+		if(self.velocity.z < 0 && trace_fraction < 1)
+		{
+			self.flags |= FL_ONGROUND;
+		}
+		
+		setorigin(self, trace_endpos);
+		
+		return;
+	}
+	
+	
+	//=======================================================================================================================================
+	//This code is a translated version of dquake's step movetype
+	
+	goal_org = self.origin + self.velocity * frametime;
+	
+	//Push down from a step above goal org to find result position
+	
+	vector above_goal = goal_org + [0,0,max_step_size];
+	vector below_goal = goal_org - [0,0,max_step_size];
+	
+	tracebox(above_goal,self.mins,self.maxs,below_goal,MOVE_NOMONSTERS,self);
+	
+	if(trace_allsolid)
+		return;
+		
+	if(trace_startsolid)
+	{
+		tracebox(goal_org,self.mins,self.maxs,below_goal,MOVE_NOMONSTERS,self);
+		if(trace_allsolid || trace_startsolid)
+			return;
+	}
+	
+	if(trace_fraction >= 1)
+	{
+		//We walked off of a ledge
+		setorigin(self,goal_org);
+		self.flags &= ~FL_ONGROUND;
+		return;
+	}
+	
+	
+	setorigin(self, trace_endpos);
+	self.flags |= FL_ONGROUND;
+	
+	
+	
+	//=======================================================================================================================================
+	
+	
+	/*float gravity_accel = self.gravity * 800;//800 is default server gravity TODO: use server gravity value
 
 	//We assign only zombie velocity
 	//use this velocity to move the zombie
@@ -121,7 +183,7 @@ void() ai_physics_movement =
 		//add z-velocity
 		self.velocity.z += -gravity_accel * frametime;
 		return;
-	}
+	}*/
 	
 	//Outlining logic:
 	//=====================================================================================
@@ -320,15 +382,18 @@ void(float dist, vector vec) do_walk_to_vec =
 	ChangeYaw();
 	vector new_velocity;
 	
+	//Don't consider z-component
+	vector goal = [vec.x, vec.y, self.origin.z];
+	
 	float len;
-	len = vlen(self.origin - vec);
+	len = vlen(self.origin - goal);
 	
 	if(dist > len)//if we're moving past our goal position
 	{
 		dist = len;
 	}
 	//This movement method is moving directly towards the goal, regardless of where our yaw is facing (fixes several issues)
-	new_velocity = normalize(vec - self.origin) * dist * 10;//10 comes from logic ticks per second
+	new_velocity = normalize(goal - self.origin) * dist * 10;//10 comes from logic ticks per second
 	
 	new_velocity_z = self.velocity_z;
 	self.velocity = new_velocity;
