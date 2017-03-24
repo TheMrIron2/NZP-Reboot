@@ -10,29 +10,44 @@ void() ai_physics_movement =
 		self.think();
 	}
 	
-	//FIXME: zombies keep moving when they die, lol
+	//Don't run movement on non-instantiated zombie ents
+	if(strncmp(self.aistatus,"1"))
+	{
+		return;
+	}
+	
+	if(self.health <= 0)
+	{
+		self.velocity.x = self.velocity.y = 0;
+	}
 	
 	float max_step_size = 18;//max stair step size pulled straight from engine defs
 	float max_slope = 10.4;//18/tan(60) = 10.4, the length of the triangle formed by the max walkable slope of 60 degrees, and the max step height
 	
 	vector goal_org;
 	
+	vector org = [self.origin_x, self.origin_y, self.true_org_z];
+	
+	
 	if(!(self.flags & FL_ONGROUND))
 	{
-		self.velocity.z  -= self.gravity * 800 * frametime;//FIXME: swap 800 with server velocity value
+		self.velocity_z  -= self.gravity * sv_gravity * frametime;
 		
-		goal_org = self.origin + [0,0,self.velocity.z] * frametime;
+		//Clamping to server terminal velocity (-sv_maxspeed -> sv_maxspeed)
+		self.velocity_z = max(min(self.velocity_z, sv_maxspeed), -sv_maxspeed);
 		
-		tracebox(self.origin,self.mins,self.maxs,goal_org,MOVE_NOMONSTERS,self);
+		goal_org = org + [0,0,self.velocity.z] * frametime;
+		
+		tracebox(org,self.mins,self.maxs,goal_org,MOVE_NOMONSTERS,self);
 		
 		//If falling and hit something
 		if(self.velocity.z < 0 && trace_fraction < 1)
-		{
+		{	
 			self.flags |= FL_ONGROUND;
 		}
 		
+		self.true_org_z = trace_endpos_z;
 		setorigin(self, trace_endpos);
-		
 		return;
 	}
 	
@@ -40,7 +55,7 @@ void() ai_physics_movement =
 	//=======================================================================================================================================
 	//This code is a translated version of dquake's step movetype
 	
-	goal_org = self.origin + self.velocity * frametime;
+	goal_org = org + self.velocity * frametime;
 	
 	//Push down from a step above goal org to find result position
 	
@@ -62,13 +77,21 @@ void() ai_physics_movement =
 	if(trace_fraction >= 1)
 	{
 		//We walked off of a ledge
+		self.true_org_z = goal_org_z;
 		setorigin(self,goal_org);
 		self.flags &= ~FL_ONGROUND;
 		return;
 	}
 	
+	self.origin_x = trace_endpos_x;
+	self.origin_y = trace_endpos_y;
+	self.true_org_z = trace_endpos_z;
+	self.origin_z += 0.05*(self.true_org_z - self.origin_z);
 	
-	setorigin(self, trace_endpos);
+	setorigin(self, self.origin);
+	
+	//Lerping z-height:
+	
 	self.flags |= FL_ONGROUND;
 	
 	
@@ -832,18 +855,23 @@ void(float dist) Inside_Walk =
 }
 
 .float droptime;
-void(float dist) Zombie_Walk =  {
+void(float dist) Zombie_Walk =  
+{
 	//Resetting velocity from last frame (except for vertical)
 	self.velocity_x = 0;
 	self.velocity_y = 0;
 	//self.flags = self.flags | FL_PARTIALGROUND;
 
 	//check_onfire();
-	if (!(self.flags & FL_ONGROUND)) {
+	if (!(self.flags & FL_ONGROUND)) 
+	{
 
-		if (!self.droptime) {
+		if (!self.droptime) 
+		{
 			self.droptime = time + 1;
-		} else if (self.droptime < time) {
+		} 
+		else if (self.droptime < time) 
+		{
 			self.droptime = 0;
 			//bprint(PRINT_HIGH, "not on ground\n");
 			self.th_fall();
@@ -851,21 +879,26 @@ void(float dist) Zombie_Walk =  {
 		}
 	}
 	
-	if(self.outside == TRUE) {
+	if(self.outside == TRUE) 
+	{
 		//handle special walk case for walking to org
 		Window_Walk(dist);
 		return;
 	}
 	
-	if(self.outside == 2) {
+	if(self.outside == 2) 
+	{
 		//play_sound_z(2);
 		Window_Hop(dist);
 		//handle special walk case for walking to org
 		return;
 	}
-	if(self.outside == FALSE) {
-		if(self.goalentity == self.enemy) {
-			if(vlen(self.origin - self.enemy.origin) < 60) {
+	if(self.outside == FALSE) 
+	{
+		if(self.goalentity == self.enemy) 
+		{
+			if(vlen(self.origin - self.enemy.origin) < 60) 
+			{
 				return;
 			}
 		}
@@ -874,22 +907,26 @@ void(float dist) Zombie_Walk =  {
 }
 
 
-void() Zombie_AI = {
+void() Zombie_AI = 
+{	
 	//dist = 0;
 	float dist = 0;
 	self.flags = self.flags | FL_PARTIALGROUND;
 	//check_onfire();
 	
-	if(self.outside == TRUE) {
+	if(self.outside == TRUE) 
+	{
 		play_sound_z(2);
 		//self.calc_time = time + (0.3 * random());
 		//Window_Walk(dist);
 		return;
-	} else if(self.outside == 2) {
+	} else if(self.outside == 2)
+	{
 		play_sound_z(2);
 		//Window_Hop(0);
 		return;
-	} else if(self.outside == FALSE) {
+	} else if(self.outside == FALSE) 
+	{
 		play_sound_z(2);
 		//self.calc_time = time + (0.25 + (0.15 * random()));
 		Inside_Walk(dist);
@@ -897,13 +934,16 @@ void() Zombie_AI = {
 }
 
 //This function ensures that only one zombie's ai is done at a time, brings down lag significantly
-void() Do_Zombie_AI = {
+void() Do_Zombie_AI = 
+{
 	local entity z;
 	
 	z = find(lastzombie,aistatus,"1");
-	if(z == world) {
+	if(z == world) 
+	{
 		z = find(world,aistatus,"1");
-		if(z == world) {
+		if(z == world) 
+		{
 			return;//no zombies alive.
 		}
 	}

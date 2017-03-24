@@ -176,6 +176,10 @@ void() worldspawn =
 	mappath = strcat("maps/", mapname);
 	mappath = strzone(mappath);
 	
+	sv_gravity = cvar("sv_gravity");
+	sv_maxspeed = cvar("sv_maxspeed");
+	
+	print("Gravity: ",ftos(sv_gravity),", maxspeed: ",ftos(sv_maxspeed),"\n");
 
 	LoadWaypointData();
 	sv_load_navmesh_data();

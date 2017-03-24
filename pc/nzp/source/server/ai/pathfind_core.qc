@@ -938,7 +938,7 @@ void CalcDistances() {
 void creator_way_touch();
 void LoadWaypointData() 
 {
-	float file, which, point;
+	float file, point;
 	string h;
 	float targetcount, loop, waycount;
 	entity new_way;

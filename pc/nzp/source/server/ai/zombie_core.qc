@@ -1035,6 +1035,7 @@ void(entity where) spawn_a_zombieB =
 	szombie.aistatus = "1";
 	setorigin (szombie.goaldummy, '0 0 0');
 	szombie.origin_z = szombie.origin_z + 1;
+	szombie.true_org_z = szombie.origin_z;
 	szombie.outside = true;
 	szombie.takedamage = DAMAGE_YES;
 	setorigin(szombie, szombie.origin);

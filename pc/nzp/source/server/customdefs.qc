@@ -16,6 +16,11 @@ float coop;
 string mappath;
 
 
+//A few server variables
+//assigned once immediately after the map is loaded
+float sv_gravity;
+float sv_maxspeed;
+
 //money
 .float points;
 .float cost;
@@ -203,6 +208,7 @@ float sounds_playing;
 //.vector lastOrg;//Zombie's last origin, for checking stuckness
 //.float OrgStuckCount;
 .float crawling;
+.float true_org_z;//Zombie's actual current origin (origin_z lerps)
 
 .float washit;
 .float hitamount;
