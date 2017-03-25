@@ -1,7 +1,63 @@
 void(float what) play_sound_z;
 
 
-//TODO: assign zombie.custom_physics as this function
+//Duplicate of ai_physics_movement, but does the move in x-axis first then y-axis (for sliding along walls, etc)
+
+void() ai_component_wise_physics_movement = 
+{
+	float max_step_size = 18;//max stair step size pulled straight from engine defs
+	float max_slope = 10.4;//18/tan(60) = 10.4, the length of the triangle formed by the max walkable slope of 60 degrees, and the max step height
+	
+	vector goal_org;
+	
+	vector org = [self.origin_x, self.origin_y, self.true_org_z];
+	
+	vector delta_org;
+	
+	//Iterate over x-axis then y-axis
+	for(float i = 0; i < 2; i++)
+	{
+		delta_org = [0,0,0];
+		
+		delta_org[i] = self.velocity[i] * frametime;
+		
+		goal_org = org + delta_org;
+	
+		//Push down from a step above goal org to find result position
+		
+		vector above_goal = goal_org + [0,0,max_step_size];
+		vector below_goal = goal_org - [0,0,max_step_size];
+		
+		tracebox(above_goal,self.mins,self.maxs,below_goal,MOVE_NOMONSTERS,self);
+		
+		if(trace_allsolid)
+			continue;
+			
+		if(trace_startsolid)
+		{
+			tracebox(goal_org,self.mins,self.maxs,below_goal,MOVE_NOMONSTERS,self);
+			if(trace_allsolid || trace_startsolid)
+				continue;
+		}
+		
+		if(trace_fraction >= 1)
+		{
+			//We walked off of a ledge
+			self.true_org_z = goal_org_z;
+			setorigin(self,goal_org);
+			self.flags &= ~FL_ONGROUND;
+			continue;
+		}
+		
+		self.origin_x = trace_endpos_x;
+		self.origin_y = trace_endpos_y;
+		self.true_org_z = trace_endpos_z;
+		self.origin_z += 0.05*(self.true_org_z - self.origin_z);
+		setorigin(self, self.origin);
+		self.flags |= FL_ONGROUND;
+	}
+}
+
 
 void() ai_physics_movement =
 {
@@ -65,13 +121,21 @@ void() ai_physics_movement =
 	tracebox(above_goal,self.mins,self.maxs,below_goal,MOVE_NOMONSTERS,self);
 	
 	if(trace_allsolid)
+	{
+		//Try sliding along walls
+		ai_component_wise_physics_movement();
 		return;
+	}
 		
 	if(trace_startsolid)
 	{
 		tracebox(goal_org,self.mins,self.maxs,below_goal,MOVE_NOMONSTERS,self);
 		if(trace_allsolid || trace_startsolid)
+		{
+			//Try sliding along walls
+			ai_component_wise_physics_movement();
 			return;
+		}
 	}
 	
 	if(trace_fraction >= 1)
@@ -413,6 +477,9 @@ void(float dist, vector vec) do_walk_to_vec =
 	
 	if(dist > len)//if we're moving past our goal position
 	{
+		//FIXME: this may fix a glitch with a navmesh's innacuracy
+		//	setorigin(self,goal);
+		//	self.velocity = [0,0,0];
 		dist = len;
 	}
 	//This movement method is moving directly towards the goal, regardless of where our yaw is facing (fixes several issues)
