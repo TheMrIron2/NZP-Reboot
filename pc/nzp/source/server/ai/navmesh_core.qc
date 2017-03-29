@@ -183,9 +183,7 @@ float sv_navmesh_get_containing_poly(vector pos)
 		//Check if we are in polygon i
 		if(sv_navmesh_is_inside_poly(pos,i))
 		{
-			print("Ent pos is inside poly: ");
-			print(ftos(i));
-			print(".\n");
+			//print("Ent pos is inside poly: ",ftos(i),".\n");
 			return i;
 		}
 		
@@ -204,14 +202,14 @@ float sv_navmesh_get_containing_poly(vector pos)
 	}
 	//============================================
 	
-	if(closest_poly == -1)
+	/*if(closest_poly == -1)
 	{
 		print("Ent pos is not in or near any polygons.\n");
 	}
 	else
 	{
 		print("Ent pos is near but not in poly: closest_poly.\n");
-	}
+	}*/
 	
 	return closest_poly;
 }

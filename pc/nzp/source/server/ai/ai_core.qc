@@ -785,14 +785,15 @@ void() PathfindToEnemy =
 		//FIXME: need to verify that this solves the problem
 		if(vlen(self.origin - self.goaldummy.origin) < 2 && sv_zombie_pathfind_result[self.index].result_length > 1)
 		{
-			setorigin(self.goaldummy,sv_zombie_pathfind_result[self.index].result_path[1]);
+			print("Already at goal 1 after pathfinding, advancing to goal 2\n");
+			//setorigin(self.goaldummy,sv_zombie_pathfind_result[self.index].result_path[1]);
 		}
 		
 	}
-	else
-	{
-		bprint(PRINT_HIGH, "Pathfind failure.\n");
-	}
+	//else
+	//{
+		//bprint(PRINT_HIGH, "Pathfind failure.\n");
+	//}
 	
 	
 	//Waypoint usage

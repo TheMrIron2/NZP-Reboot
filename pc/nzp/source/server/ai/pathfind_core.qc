@@ -511,12 +511,12 @@ float sv_navmesh_pathfind_start(float start, float goal, vector start_pos, vecto
 {
 	if(start == -1)
 	{
-		print("Error: pathfind start node invalid.\n");
+		//print("Error: pathfind start node invalid.\n");
 		return 0;
 	}
 	if(goal == -1)
 	{
-		print("Error: pathfind goal node invalid.\n");
+		//print("Error: pathfind goal node invalid.\n");
 		return 0;
 	}
 	if(start == goal)
@@ -671,7 +671,9 @@ void SV_WP_ClearSet()
 	}
 }
 
-float IsActive(float way) {
+
+float IsActive(float way) 
+{
 	if (waypoints[way].targetdoor != "") {
 		entity door;
 
@@ -686,6 +688,8 @@ float IsActive(float way) {
 
 	return 1;
 }
+
+
 
 void SV_WP_SetAdd(float wp, float isopen)
 {

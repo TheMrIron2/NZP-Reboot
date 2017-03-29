@@ -170,6 +170,11 @@ void() cl_navmesh_pathfind_draw_result_path;
 
 void cl_navmesh_editor_draw()
 {
+	//===================================================================================================
+	//Trying a tracemove method
+	//===================================================================================================
+	
+	
 	for(float i = 0; i < cl_navmesh_vert_count; i++)
 	{
 		cl_navmesh_draw_vert(cl_navmesh_verts[i].pos, cl_navmesh_is_vert_selected(i) );
@@ -724,6 +729,15 @@ void cl_navmesh_make_poly()
 	//Sorting the verts so the polygon is build consecutively (i.e. vert 0 -> vert 1 is an edge, 1->2, 2->3, and 3->0 are all edges)
 	//Furthermore, this sorting will ensure the verts are sorted in a clockwise order, so we also apply it to tris
 	
+	
+	//Printing all polygon vertices
+	print("Selected Verts: [");
+	for(float j = 0; j < selected_vert_count; j++)
+	{
+		print("(",ftos(j),", ",ftos(selected_verts[j]),", ",vtos(cl_navmesh_verts[selected_verts[j]].pos),") , ");
+	}
+	print("]\n\n");
+	
 	//Calculating center of the polygon
 	local vector center = [0,0,0];
 	for(float j = 0; j < selected_vert_count; j++)
@@ -732,13 +746,20 @@ void cl_navmesh_make_poly()
 	}
 	center /= selected_vert_count;
 	
+	print("Center of selected polygon: ",vtos(center),".\n\n");
+	
 	float vert_angle[NAV_MAX_SELECTED_VERTS];
 	
-	//Sorting from least to greatest
+	//Calculating vertex angles:
 	for(float j = 0; j < selected_vert_count; j++)
 	{
 		//Calculating angle of vert
 		vert_angle[j] = atan2(cl_navmesh_verts[selected_verts[j]].pos.y - center.y,cl_navmesh_verts[selected_verts[j]].pos.x - center.x);
+	}
+	
+	//Sorting from least to greatest
+	for(float j = 0; j < selected_vert_count; j++)
+	{
 		//Finding lowest value from j to selected_vert_count
 		float lowest_value = vert_angle[j];
 		float lowest_index = j;
@@ -759,6 +780,22 @@ void cl_navmesh_make_poly()
 		selected_verts[j] = selected_verts[lowest_index];
 		selected_verts[lowest_index] = temp_vert;
 	}
+	
+	//Vert angles
+	print("Sorted Verts: [");
+	for(float j = 0; j < selected_vert_count; j++)
+	{
+		print("(",ftos(j),", ",ftos(selected_verts[j]),", ",vtos(cl_navmesh_verts[selected_verts[j]].pos),") ,");
+	}
+	print("]\n\n");
+	
+	print("Sorted Vert angles: [");
+	for(float j = 0; j < selected_vert_count; j++)
+	{
+		print(", ",ftos(vert_angle[j]));
+	}
+	print("]\n\n");
+	
 	
 	
 
@@ -2395,6 +2432,88 @@ void cl_navmesh_pathfind_draw_result_path()
 }
 
 //==========================================================================================================================
+//returns 0 if a vertex exists within dist of pos
+float vert_exists(vector pos,float dist)
+{
+	for(float i = 0; i < cl_navmesh_vert_count; i++)
+	{
+		for(float j = 0; j < 3; j++)
+		{
+			if(fabs(cl_navmesh_verts[i].pos[j] - pos[j]) >= dist)
+			{
+				break;
+			}
+			
+			if(j >= 2)
+				return 1;
+		}
+	}
+	return 0;
+}
+
+void recursive_flood_fill(vector where, float dist)
+{
+	if(cl_navmesh_vert_count >= 512)
+	{
+		print("Warning: ran out of vertices");
+		return;
+	}
+	cl_navmesh_verts[cl_navmesh_vert_count++].pos = where;
+	//dist is how far in the 4 directions we flood fill (sort of like resolution)
+	
+	//Try forward
+	vector delta = [0,dist,0];
+	
+	tracebox(where,VEC_HULL_MIN,VEC_HULL_MAX,where + delta,MOVE_NOMONSTERS,self);
+	if(trace_fraction >= 1 && !trace_allsolid && !trace_startsolid)
+	{
+		if(vert_exists(where + delta, dist) == 0)
+		{
+			recursive_flood_fill(where+delta,dist);
+		}
+	}
+	
+	//Try back
+	delta = [0,-dist,0];
+	
+	tracebox(where,VEC_HULL_MIN,VEC_HULL_MAX,where + delta,MOVE_NOMONSTERS,self);
+	if(trace_fraction >= 1 && !trace_allsolid && !trace_startsolid)
+	{
+		if(vert_exists(where + delta, dist) == 0)
+		{
+			
+			recursive_flood_fill(where+delta,dist);
+		}
+	}
+	
+	//Try left
+	delta = [-dist,0,0];
+	
+	tracebox(where,VEC_HULL_MIN,VEC_HULL_MAX,where + delta,MOVE_NOMONSTERS,self);
+	if(trace_fraction >= 1 && !trace_allsolid && !trace_startsolid)
+	{
+		if(vert_exists(where + delta, dist) == 0)
+		{
+			
+			recursive_flood_fill(where+delta,dist);
+		}
+	}
+	
+	//Try right
+	delta = [dist,0,0];
+	
+	tracebox(where,VEC_HULL_MIN,VEC_HULL_MAX,where + delta,MOVE_NOMONSTERS,self);
+	if(trace_fraction >= 1 && !trace_allsolid && !trace_startsolid)
+	{
+		if(vert_exists(where + delta, dist) == 0)
+		{
+			
+			recursive_flood_fill(where+delta,dist);
+		}
+	}
+	
+	
+}
 
 void cl_toggle_navmesh_editor()
 {
@@ -2409,6 +2528,53 @@ void cl_toggle_navmesh_editor()
 		print("cl_navmesh editor: 1\n");
 		cl_navmesh_mode = TRUE;
 		cl_navmesh_deselect_all();
+		
+		//======================== TEST FLOOD FILL =============================
+		
+		
+		//vector vorg = getviewprop(VF_ORIGIN);
+		vector vorg = getentity(player_localentnum, GE_ORIGIN);
+		
+		recursive_flood_fill(vorg + [0,0,10],32);
+		
+		
+		
+		/*vector vorg = getviewprop(VF_ORIGIN);
+		vector vang = getviewprop(VF_ANGLES);
+	
+		vector vang_left1 = vang + [0,6,0];//Two degrees to the left
+		vector vang_left2 = vang + [0,5,0];//Three degrees to the left
+		vector vang_right1 = vang + [0,-6,0];//Two degrees to the right
+		vector vang_right2 = vang + [0,-5,0];//Three degrees to the right
+		
+		makevectors(vang);
+		vector vang_fwd = v_forward;
+		
+		
+		
+		tracebox(vert_loc,VEC_HULL_MIN,VEC_HULL_MAX,vert_loc+([0,0,-1] * 2000),1,self);
+		vert_loc.z = vert_loc.z + (-2000 * trace_fraction);
+		
+		
+		//================================================================================
+		
+		//Render the resolved vertex pos
+		cl_navmesh_draw_vert(vert_loc, 1 );
+			
+		if(cl_navmesh_place_corner_state == NAVMESH_PLACE_CORNER_CONFIRM)
+		{	
+			cl_navmesh_verts[cl_navmesh_vert_count].pos.x = vert_loc.x;
+			cl_navmesh_verts[cl_navmesh_vert_count].pos.y = vert_loc.y;
+			cl_navmesh_verts[cl_navmesh_vert_count].pos.z = vert_loc.z;
+			
+			cl_navmesh_vert_count++;
+			
+			cl_navmesh_place_corner_state = 0;
+		}
+		*/
+		//======================================================================
+		
+		
 	}
 }
 
