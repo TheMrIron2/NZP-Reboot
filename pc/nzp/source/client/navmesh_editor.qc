@@ -2451,6 +2451,178 @@ float vert_exists(vector pos,float dist)
 	return 0;
 }
 
+//====================================================================================================================================
+//============================================ Testing navmesh generation ============================================================
+//====================================================================================================================================
+
+
+//Duplicate of ai_physics_movement, but does the move in x-axis first then y-axis (for sliding along walls, etc)
+
+void() ai_component_wise_physics_movement = 
+{
+	float max_step_size = 18;//max stair step size pulled straight from engine defs
+	float max_slope = 10.4;//18/tan(60) = 10.4, the length of the triangle formed by the max walkable slope of 60 degrees, and the max step height
+	
+	vector goal_org;
+	
+	vector org = [self.origin_x, self.origin_y, self.true_org_z];
+	
+	vector delta_org;
+	
+	//Iterate over x-axis then y-axis
+	for(float i = 0; i < 2; i++)
+	{
+		delta_org = [0,0,0];
+		
+		delta_org[i] = self.velocity[i] * frametime;
+		
+		goal_org = org + delta_org;
+	
+		//Push down from a step above goal org to find result position
+		
+		vector above_goal = goal_org + [0,0,max_step_size];
+		vector below_goal = goal_org - [0,0,max_step_size];
+		
+		tracebox(above_goal,self.mins,self.maxs,below_goal,MOVE_NOMONSTERS,self);
+		
+		if(trace_allsolid)
+			continue;
+			
+		if(trace_startsolid)
+		{
+			tracebox(goal_org,self.mins,self.maxs,below_goal,MOVE_NOMONSTERS,self);
+			if(trace_allsolid || trace_startsolid)
+				continue;
+		}
+		
+		if(trace_fraction >= 1)
+		{
+			//We walked off of a ledge
+			self.true_org_z = goal_org_z;
+			setorigin(self,goal_org);
+			self.flags &= ~FL_ONGROUND;
+			continue;
+		}
+		
+		self.origin_x = trace_endpos_x;
+		self.origin_y = trace_endpos_y;
+		self.true_org_z = trace_endpos_z;
+		self.origin_z += 0.05*(self.true_org_z - self.origin_z);
+		setorigin(self, self.origin);
+		self.flags |= FL_ONGROUND;
+	}
+}
+
+//TODO: change these methods to not actually move an entity, but to just check whether a move is possible (following these rules)
+void() ai_physics_movement =
+{
+	if(self.think && self.nextthink < time)
+	{
+		self.think();
+	}
+	
+	//Don't run movement on non-instantiated zombie ents
+	if(strncmp(self.aistatus,"1"))
+	{
+		return;
+	}
+	
+	if(self.health <= 0)
+	{
+		self.velocity.x = self.velocity.y = 0;
+	}
+	
+	float max_step_size = 18;//max stair step size pulled straight from engine defs
+	float max_slope = 10.4;//18/tan(60) = 10.4, the length of the triangle formed by the max walkable slope of 60 degrees, and the max step height
+	
+	vector goal_org;
+	
+	vector org = [self.origin_x, self.origin_y, self.true_org_z];
+	
+	
+	if(!(self.flags & FL_ONGROUND))
+	{
+		self.velocity_z  -= self.gravity * sv_gravity * frametime;
+		
+		//Clamping to server terminal velocity (-sv_maxspeed -> sv_maxspeed)
+		self.velocity_z = max(min(self.velocity_z, sv_maxspeed), -sv_maxspeed);
+		
+		goal_org = org + [0,0,self.velocity.z] * frametime;
+		
+		tracebox(org,self.mins,self.maxs,goal_org,MOVE_NOMONSTERS,self);
+		
+		//If falling and hit something
+		if(self.velocity.z < 0 && trace_fraction < 1)
+		{	
+			self.flags |= FL_ONGROUND;
+		}
+		
+		self.true_org_z = trace_endpos_z;
+		setorigin(self, trace_endpos);
+		return;
+	}
+	
+	//=======================================================================================================================================
+	//This code is a translated version of dquake's step movetype
+	
+	goal_org = org + self.velocity * frametime;
+	
+	//Push down from a step above goal org to find result position
+	
+	vector above_goal = goal_org + [0,0,max_step_size];
+	vector below_goal = goal_org - [0,0,max_step_size];
+	
+	tracebox(above_goal,self.mins,self.maxs,below_goal,MOVE_NOMONSTERS,self);
+	
+	if(trace_allsolid)
+	{
+		//Try sliding along walls
+		ai_component_wise_physics_movement();
+		return;
+	}
+		
+	if(trace_startsolid)
+	{
+		tracebox(goal_org,self.mins,self.maxs,below_goal,MOVE_NOMONSTERS,self);
+		if(trace_allsolid || trace_startsolid)
+		{
+			//Try sliding along walls
+			ai_component_wise_physics_movement();
+			return;
+		}
+	}
+	
+	if(trace_fraction >= 1)
+	{
+		//We walked off of a ledge
+		self.true_org_z = goal_org_z;
+		setorigin(self,goal_org);
+		self.flags &= ~FL_ONGROUND;
+		return;
+	}
+	
+	self.origin_x = trace_endpos_x;
+	self.origin_y = trace_endpos_y;
+	self.true_org_z = trace_endpos_z;
+	//Lerping z-height:
+	self.origin_z += 0.05*(self.true_org_z - self.origin_z);
+	
+	setorigin(self, self.origin);
+	
+
+	self.flags |= FL_ONGROUND;
+	//=======================================================================================================================================
+};
+
+//====================================================================================================================================
+//============================================== End navmesh generation test =========================================================
+//====================================================================================================================================
+
+float trace_move(vector start, vector mins, vector maxs, vector end)
+{
+	
+}
+
 void recursive_flood_fill(vector where, float dist)
 {
 	if(cl_navmesh_vert_count >= 512)
@@ -2511,8 +2683,6 @@ void recursive_flood_fill(vector where, float dist)
 			recursive_flood_fill(where+delta,dist);
 		}
 	}
-	
-	
 }
 
 void cl_toggle_navmesh_editor()

@@ -2,7 +2,6 @@ void(float what) play_sound_z;
 
 
 //Duplicate of ai_physics_movement, but does the move in x-axis first then y-axis (for sliding along walls, etc)
-
 void() ai_component_wise_physics_movement = 
 {
 	float max_step_size = 18;//max stair step size pulled straight from engine defs
@@ -150,176 +149,14 @@ void() ai_physics_movement =
 	self.origin_x = trace_endpos_x;
 	self.origin_y = trace_endpos_y;
 	self.true_org_z = trace_endpos_z;
+	//Lerping z-height:
 	self.origin_z += 0.05*(self.true_org_z - self.origin_z);
 	
 	setorigin(self, self.origin);
 	
-	//Lerping z-height:
-	
+
 	self.flags |= FL_ONGROUND;
-	
-	
-	
 	//=======================================================================================================================================
-	
-	
-	/*float gravity_accel = self.gravity * 800;//800 is default server gravity TODO: use server gravity value
-
-	//We assign only zombie velocity
-	//use this velocity to move the zombie
-	
-	float prev_onground = self.flags & FL_ONGROUND;
-	
-	//Removing the onground flag
-	self.flags &= ~FL_ONGROUND;
-	
-	vector org = self.origin;
-	vector new_org;
-	
-	
-	
-//	setorigin(self,self.origin + self.velocity*frametime);
-	
-//	self.flags |= FL_ONGROUND;
-	
-//	return;
-	
-	
-	//If we were previously on the ground
-	if(prev_onground)
-	{
-		self.velocity.z = 0;
-		new_org = org + (self.velocity * frametime);
-		//Try a move to the current destination
-		tracebox(org,self.mins,self.maxs,new_org,MOVE_NOMONSTERS,self);
-		
-		float non_step_fraction = trace_fraction;
-		
-		//If the move was successful
-		if(non_step_fraction >= 1)
-		{
-			//Check if we walked off of a ledge
-			tracebox(new_org,self.mins,self.maxs,new_org + [0,0,-2*max_step_size],MOVE_NOMONSTERS,self);
-			//If we fell more than the max step height
-			if(trace_fraction >= 0.5)
-			{
-				//add z-velocity
-				self.velocity.z += -gravity_accel * frametime;
-				setorigin(self,new_org + [0,0,-2*max_step_size*trace_fraction]);
-			}
-			else if(trace_fraction > 0)//We walked down the height of a step
-			{
-				//TODO: lerp vertical position to final pos
-				setorigin(self,new_org + [0,0,-2*max_step_size*trace_fraction]);
-				self.flags |= FL_ONGROUND;
-			}
-			else//We did not walk down
-			{
-				self.flags |= FL_ONGROUND;
-				setorigin(self,new_org);
-			}
-		}
-		else//Try the same move with a step up to see if we can complete the move
-		{
-			tracebox(org + [0,0,max_step_size],self.mins,self.maxs,new_org + [0,0,max_step_size],MOVE_NOMONSTERS,self);
-			if(trace_fraction >= 1)
-			{
-				//FIXME: this can climb up any degree slope < 90
-				//Tracebox down from this position to get our new ground height
-				tracebox(new_org + [0,0,max_step_size],self.mins,self.maxs,new_org,MOVE_NOMONSTERS,self);
-				
-				//TODO: lerp vertical position to final pos
-				setorigin(self,new_org + [0,0,max_step_size*(1 - trace_fraction)]);
-				self.flags |= FL_ONGROUND;
-			}
-			else//If not, just move as much as we could in the tracebox without the step
-			{
-				setorigin(self,self.origin + non_step_fraction*(new_org-org));
-				self.flags |= FL_ONGROUND;
-			}
-		}
-		
-	}
-	else//if we were not previously on the ground
-	{
-		vector delta_org = self.velocity * frametime;
-		//Applying x-axis velocity
-		tracebox(org,self.mins,self.maxs,org + [delta_org.x,0,0],MOVE_NOMONSTERS,self);
-		new_org = org + trace_fraction * [delta_org.x,0,0];
-		//Applying y-axis velocity
-		tracebox(new_org,self.mins,self.maxs,new_org + [0,delta_org.y,0],MOVE_NOMONSTERS,self);
-		new_org = new_org + trace_fraction * [0,delta_org.y,0];
-		//Applying z-axis velocity
-		tracebox(new_org,self.mins,self.maxs,new_org + [0,0,delta_org.z],MOVE_NOMONSTERS,self);
-		new_org = new_org + trace_fraction * [0,0,delta_org.z];
-		
-		setorigin(self,new_org);
-		
-		//Check if we hit something going down
-		if(delta_org.z <= 0)
-		{
-			if(trace_fraction < 1)
-			{
-				//We are now on ground
-				self.velocity.z = 0;
-				self.flags |= FL_ONGROUND;
-				return;
-			}
-		}
-
-		//add z-velocity
-		self.velocity.z += -gravity_accel * frametime;
-		return;
-	}*/
-	
-	//Outlining logic:
-	//=====================================================================================
-	//If we were not previously on the ground
-		//apply x-axis velocity
-		//apply y-axis velocity
-		//apply z-axis velocity
-			//Check if we are on ground (may be able to combine this with z-axis velocity)
-			//i.e. if z-axis velocity > 0, we are obviously not on ground because we have just raised above it
-			//if z-axis velocity < 0, and the attempt to move failed, we are now on ground
-		//apply gravity to the velocity
-	//else if we were previously on the ground
-		//check if we are on the ground now (EDIT: is this necessary?)
-		//try move
-			//if success: 
-				//check if we are on the ground after move
-				//if we are not on the ground
-					//if we went down less than a step height
-						//lerp down to that height
-					//if we went down more than a step height
-						//we are no longer on the ground
-			//if fail:
-				//try the move again a step above
-				//if success
-					//cast down to get our final ground position
-					//lerp to that height
-	//=====================================================================================
-
-
-	//Try move:
-	//Check if we can fall here:
-		//if so, add gravity to velocity & remove onground flag
-	//Else try move:
-		//if success, finish
-	//Else try move with a step up:
-		//if success, tracebox down from that position
-		//LERP THE STEP UP FROM FINAL VERTICAL OFFSET
-	//We don't want to repeatedly fall when going down a hill
-		//Check our final position to see if we fell a slight amount, if so, lerp the step down
-	
-	//for smoothly transitioning up stairs, we can store a float showing goal and current
-	//how can we smoothly and without jumps transition up entire staircases?
-	
-	//TODO: implement zombie walk physics
-	//we have to account for smooth transitions up stairs
-	//account for falling
-	//account for not sliding down hills / slowing down up hills AT ALL (when going up hill, maintain horizontal velocity)
-	//allow for zombies to walk through zombies
-	
 };
 
 
