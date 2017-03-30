@@ -715,32 +715,32 @@ void(float width, float height) HUD_Perks =
 		{
 			if (perk_order[i] == P_JUG)
 			{
-				drawpic([2,y,0], "gfx/hud/jug.lmp", [20, 20, 1], [1,1,1], 1);
+				drawpic([2,y,0], "gfx/hud/jug.tga", [20, 20, 1], [1,1,1], 1);
 				y = y - 22;
 			}
 			else if (perk_order[i] == P_DOUBLE)
 			{
-				drawpic([2,y,0], "gfx/hud/double.lmp", [20, 20, 1], [1,1,1], 1);
+				drawpic([2,y,0], "gfx/hud/double.tga", [20, 20, 1], [1,1,1], 1);
 				y = y - 22;
 			}
 			else if (perk_order[i] == P_SPEED)
 			{
-				drawpic([2,y,0], "gfx/hud/speed.lmp", [20, 20, 1], [1,1,1], 1);
+				drawpic([2,y,0], "gfx/hud/speed.tga", [20, 20, 1], [1,1,1], 1);
 				y = y - 22;
 			}
 			else if (perk_order[i] == P_REVIVE)
 			{
-				drawpic([2,y,0], "gfx/hud/revive.lmp", [20, 20, 1], [1,1,1], 1);
+				drawpic([2,y,0], "gfx/hud/revive.tga", [20, 20, 1], [1,1,1], 1);
 				y = y - 22;
 			}
 			else if (perk_order[i] == P_FLOP)
 			{
-				drawpic([2,y,0], "gfx/hud/flopper.lmp", [20, 20, 1], [1,1,1], 1);
+				drawpic([2,y,0], "gfx/hud/flopper.tga", [20, 20, 1], [1,1,1], 1);
 				y = y - 22;
 			}
 			else if (perk_order[i] == P_STAMIN)
 			{
-				drawpic([2,y,0], "gfx/hud/stamin.lmp", [20, 20, 1], [1,1,1], 1);
+				drawpic([2,y,0], "gfx/hud/stamin.tga", [20, 20, 1], [1,1,1], 1);
 				y = y - 22;
 			}
 		}
@@ -798,7 +798,7 @@ void(float width, float height) HUD_Progressbar =
 
 void() HUD_Hitmark =
 {
-	drawpic([g_width/2 - (8/480)*g_width, g_height/2 - (8/480)*g_width,0], "gfx/hud/hit_marker.lmp", [(16/480)*g_width, (16/480)*g_width, 1], [1,1,1], 1);
+	drawpic([g_width/2 - (8/480)*g_width, g_height/2 - (8/480)*g_width,0], "gfx/hud/hit_marker.tga", [(16/480)*g_width, (16/480)*g_width, 1], [1,1,1], 1);
 }
 
 /*******************
