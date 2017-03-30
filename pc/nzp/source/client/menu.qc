@@ -119,13 +119,14 @@ var struct
 	float group; //a bit field, button will be usable/visible when these bits are active
 } buttons[] =
 {
-	{[0.025, 0.500, 0], [0.25, 0.05, 0], "Solo", -1, menu_single, MENU_MAIN},
-	{[0.025, 0.575, 0], [0.25, 0.05, 0], "Cooperative", -1, menu_multi, MENU_MAIN},
-	{[0.025, 0.650, 0], [0.25, 0.05, 0], "Settings", -1, menu_settings, MENU_MAIN},
-	{[0.025, 0.725, 0], [0.25, 0.05, 0], "Credits", -1, menu_about, MENU_MAIN},
-	{[0.025, 0.925, 0], [0.25, 0.05, 0], "Quit", -1, menu_quit, MENU_MAIN},
+	{[0.025, 0.175, 0], [0.10, 0.04, 0], " Solo", -1, menu_single, MENU_MAIN},
+	{[0.025, 0.230, 0], [0.21, 0.04, 0], " Cooperative", -1, menu_multi, MENU_MAIN},
+	{[0.025, 0.300, 0], [0.16, 0.04, 0], " Settings", -1, menu_settings, MENU_MAIN},
+	{[0.025, 0.370, 0], [0.22, 0.04, 0], " Achievements", -1, menu_main, MENU_MAIN},
+	{[0.025, 0.440, 0], [0.15, 0.04, 0], " Credits", -1, menu_about, MENU_MAIN},
+	{[0.025, 0.510, 0], [0.10, 0.04, 0], " Quit", -1, menu_quit, MENU_MAIN},
 	{[0.025, 0.925, 0], [0.25, 0.05, 0], "Back", -1, menu_back, MENU_SINGLE + MENU_MULTI + MENU_SETTINGS + MENU_ABOUT},
-	{[0.025, 0.500, 0], [0.25, 0.05, 0], "NDU", -1, menu_loadndu, MENU_SINGLE},
+	{[0.025, 0.175, 0], [0.30, 0.04, 0], "Nacht Der Untoten", -1, menu_loadndu, MENU_SINGLE},
 	{[0.025, 0.575, 0], [0.25, 0.05, 0], "Warehouse", -1, menu_loadwh, MENU_SINGLE},
 	{[0.475, 0.500, 0], [0.25, 0.05, 0], "Join", -1, game_join, MENU_JOIN},
 	{[0.475, 0.575, 0], [0.25, 0.05, 0], "Spectate", -1, game_spec, MENU_JOIN},
@@ -139,7 +140,9 @@ var struct
 };
 
 //REMEMBER TO UPDATE THIS CONST IF YOU ADD BUTTONS
-const float BUTTONS_COUNT = 17;
+const float BUTTONS_COUNT = 18;
+
+float mapdesc = 0;
 
 
 //this function handles drawing the buttons and checking if they should be active/hilighted
@@ -165,19 +168,18 @@ void(float index) Update_Button =
 	
 	local float alphafactor;
 	
-	if(buttons[index].active > 0)
+	if(buttons[index].active > 0) //Add navigate.wav here when we figure out how to do a check to see if it was already executed.
+	{
 		alphafactor = 1;
+		drawfill(pos, scale, [0.6,0.6,0.6] + [0.15,0.15,0.15]*buttons[index].active, 0.3 * alphafactor); //Solid Background
+		drawline(1, pos, [pos_x + scale_x, pos_y, 0], [90,90,90], 1.5, 1); //top outline
+		drawline(1, [pos_x, pos_y + scale_y, 0], [pos_x + scale_x, pos_y + scale_y, 0], [90,90,90], 1.5, 1); //bottom outline
+	}
 	else
 		alphafactor = buttons[index].active + 1; //-1 invis, 0 normal
 	
 	if(cursor_pos_x > pos_x && cursor_pos_x < pos_x + scale_x && cursor_pos_y > pos_y && cursor_pos_y < pos_y + scale_y )
 		buttons[index].active = 1;
-	
-	drawfill(pos, scale, [0.6,0.6,0.6] + [0.15,0.15,0.15]*buttons[index].active, 0.3 * alphafactor);
-	drawline(1, pos, [pos_x + scale_x, pos_y, 0], [255,255,0], 1.5, 1); //top outline
-	//drawline(1, pos, [pos_x, pos_y + scale_y, 0], [0.6, 0.6, 0.6], 0.5, 1); //left outline
-	drawline(1, [pos_x, pos_y + scale_y, 0], [pos_x + scale_x, pos_y + scale_y, 0], [255,255,0], 1.5, 1); //bottom outline
-	//drawline(1, [pos_x + scale_x, pos_y, 0], [pos_x + scale_x, pos_y + scale_y, 0], [0.6, 0.6, 0.6], 0.5, 1); //right outline
 	drawstring(pos + [scale_x*0.05, scale_y*0.25, 0], buttons[index].text, [scale_y*0.5, scale_y*0.5, 1], [0.8,0.8,0.8], 1 * alphafactor, 1);
 	
 	if(buttons[index].active > 0)
@@ -224,8 +226,10 @@ void() Menu_Click =
 void() Draw_Menu =
 {
 	precache_sound("sounds/menu/enter.wav");
+	precache_sound("sounds/menu/tune1.wav");
 	
 	//Background picture with a nice scrolling effect, scrolling happens in the shader in scripts/menu.shader
+	//moto - put loading of demo.bsp when it's time has come.
 	if(serverkey("constate") == "disconnected")
 	{
 		if(g_width <= g_height * 1.77778)
@@ -239,12 +243,16 @@ void() Draw_Menu =
 	drawpic([0,0,0], "menu/gradient_l2r", [0.75*g_width, g_height, 1], [1, 1, 1], 1);
 	
 
-	//Title with a simple but nice animation
+	//Menu titles & cinematic lines.
 	local string title = "";
 	switch(in_menu)
 	{
 		case MENU_MAIN:
-			title = "NAZI ZOMBIES: PORTABLE";
+			title = "MAIN MENU";
+			drawfill ([0.025*g_width, 0.253*g_height + g_height*0.025 + 3, 0], [0.25*g_width, 0.0025*g_height, 0], [0.4, 0.4, 0.4], 1); //Play | Settings
+			drawfill ([0.025*g_width, 0.323*g_height + g_height*0.025 + 3, 0], [0.25*g_width, 0.0025*g_height, 0], [0.4, 0.4, 0.4], 1); //Settings | Achievements
+			drawfill ([0.025*g_width, 0.393*g_height + g_height*0.025 + 3, 0], [0.25*g_width, 0.0025*g_height, 0], [0.4, 0.4, 0.4], 1); //Achievements | Credits
+			drawfill ([0.025*g_width, 0.463*g_height + g_height*0.025 + 3, 0], [0.25*g_width, 0.0025*g_height, 0], [0.4, 0.4, 0.4], 1); //Credits | Quit 
 			break;
 		case MENU_SINGLE:
 			title = "SOLO";
@@ -285,37 +293,9 @@ void() Draw_Menu =
 	drawstring([0.025*g_width, 0.05*g_height, 0], substring(title, 0, chars_to_keep), [g_height * 0.05, g_height * 0.05, 1], [0.8, 0.8, 0.8], 1, 1);
 	
 	//Credits
-	local string name1 = "", name2 = "", name3 = "", name4 = "", name5 = "", name6 = "", name7 = "", name8 = "", name9 = "", name10 = "", name11 = "", name12 = "", name13 = "", name14 = "", name15 = "", name16 = "";
-	local string role1 = "", role2 = "", role3 = "", role4 = "", role5 = "", role6 = "";
-	
 	switch(in_menu)
 	{
-		case MENU_ABOUT:/*
-			role1 = "PROGRAMMERS";
-			name1 = "- MotoLegacy";
-			name2 = "- Jukki";
-			name3 = "- G33420";
-			name4 = "- Shadow";
-			role2 = "MODELERS";
-			name5 = "- Derped_Crusader";
-			role3 = "SOUND DESIGNERS";
-			name6 = "- Slugparty";
-			role4 = "ASSET CREATORS";
-			name7 = "- Leo 'Crow' Massie";
-			role5 = "MAPPERS";
-			name8 = "- mofu23";
-			name9 = "- Call16-Podolski";
-			name10 = "- Douch_Dagger";
-			role6 = "SPECIAL THANKS";
-			name11 = "- Naievil";
-			name12 = "- PerikiyoXD";
-			name13 = "- drmabuse1981";
-			name14 = "- Spike";
-			name15 = "- shpuld";
-			name16 = "- blubswillrule";
-			break;*/
-			
-			// naievil -- changed credits
+		case MENU_ABOUT:
 			drawstring([0.03*g_width, 0.15*g_height, 0], "Blubswillrule: Coding, Models, GFX, Sounds,", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
 			drawstring([0.03*g_width, 0.185*g_height, 0], "               Animations, Music", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
 			drawfill ([.03*g_width, 0.15*g_height + g_height*0.025 + 3, 0], [strlen("Blubswillrule")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
@@ -344,29 +324,6 @@ void() Draw_Menu =
 	time_in_menu += frametime;
 	
 	chars_to_keep2 = 90;
-	
-	/*drawstring([0.025*g_width, 0.15*g_height, 0], substring(role1, 0, chars_to_keep2), [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.025*g_width, 0.25*g_height, 0], substring(name1, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.025*g_width, 0.3*g_height, 0], substring(name2, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.025*g_width, 0.35*g_height, 0], substring(name3, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.025*g_width, 0.4*g_height, 0], substring(name4, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.025*g_width, 0.5*g_height, 0], substring(role2, 0, chars_to_keep2), [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.025*g_width, 0.55*g_height, 0], substring(name5, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.025*g_width, 0.65*g_height, 0], substring(role3, 0, chars_to_keep2), [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.025*g_width, 0.7*g_height, 0], substring(name6, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.5*g_width, 0.15*g_height, 0], substring(role4, 0, chars_to_keep2), [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.5*g_width, 0.25*g_height, 0], substring(name7, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.5*g_width, 0.35*g_height, 0], substring(role5, 0, chars_to_keep2), [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.5*g_width, 0.4*g_height, 0], substring(name8, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.5*g_width, 0.45*g_height, 0], substring(name9, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.5*g_width, 0.5*g_height, 0], substring(name10, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.5*g_width, 0.55*g_height, 0], substring(role6, 0, chars_to_keep2), [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.5*g_width, 0.6*g_height, 0], substring(name11, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.5*g_width, 0.65*g_height, 0], substring(name12, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.5*g_width, 0.7*g_height, 0], substring(name13, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.5*g_width, 0.75*g_height, 0], substring(name14, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.5*g_width, 0.8*g_height, 0], substring(name15, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.5*g_width, 0.85*g_height, 0], substring(name16, 0, chars_to_keep2), [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);*/
 
 	//Restart Confirmation
 	local string confirm = "";
