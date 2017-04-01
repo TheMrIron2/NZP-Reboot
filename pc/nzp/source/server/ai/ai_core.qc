@@ -9,15 +9,16 @@ void() ai_component_wise_physics_movement =
 	
 	vector goal_org;
 	
-	vector org = [self.origin_x, self.origin_y, self.true_org_z];
+	vector org;
 	
 	vector delta_org;
 	
 	//Iterate over x-axis then y-axis
 	for(float i = 0; i < 2; i++)
 	{
-		delta_org = [0,0,0];
+		org = [self.origin_x, self.origin_y, self.true_org_z];
 		
+		delta_org = [0,0,0];
 		delta_org[i] = self.velocity[i] * frametime;
 		
 		goal_org = org + delta_org;

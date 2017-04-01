@@ -87,6 +87,9 @@ void() cl_register_navmesh_commands;
 float(string cmd) cl_navmesh_console_commands;
 float cl_navmesh_mode;
 void() cl_navmesh_editor_draw;
+void() cl_navmesh_gen_navmesh;
+void() cl_navmesh_render_gen;
+
 
 #define 	P_JUG		1
 #define 	P_DOUBLE	2

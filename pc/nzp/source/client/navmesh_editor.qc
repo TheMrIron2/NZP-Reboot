@@ -87,6 +87,20 @@ void cl_navmesh_draw_vert(vector pos,float selected)
 	R_EndPolygon();
 }
 
+void cl_navmesh_draw_edge(vector start, vector end)
+{
+	R_BeginPolygon("debug/wireframe",0);
+	R_BeginPolygon("debug/solid_nocull",0);
+	vector color = [0.5,0.5,0.5];
+	float edge_width = 2;
+	float edge_alpha = 0.2;
+	
+	R_PolygonVertex(end + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+	R_PolygonVertex(end + [0,0,edge_width], [0,0,0], color, edge_alpha);
+	R_PolygonVertex(start + [0,0,edge_width], [0,0,0], color, edge_alpha);
+	R_PolygonVertex(start + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+	R_EndPolygon();
+}
 
 void cl_navmesh_draw_poly(float poly_index)
 {
@@ -107,48 +121,23 @@ void cl_navmesh_draw_poly(float poly_index)
 	
 	
 	//Drawing polygon border
-	//Assigning the shader as something else so that fte doesn't batch the calls (leading to colors not changing between draw calls)
-	R_BeginPolygon("debug/wireframe",0);
-	R_BeginPolygon("debug/solid_nocull",0);
-	color = [0.5,0.5,0.5];
-	float edge_width = 2;
-	float edge_alpha = 0.2;
+
 	//Vert 0->1
-	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[1]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[1]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-	R_EndPolygon();
+	cl_navmesh_draw_edge(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos,cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[1]].pos);
 	//Vert 1->2
-	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[1]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[1]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-	R_EndPolygon();
+	cl_navmesh_draw_edge(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[1]].pos,cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos);
 	
 	if(cl_navmesh_polies[poly_index].vert_count == 3)
 	{
 		//Vert 2->0
-		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-		R_EndPolygon();
+		cl_navmesh_draw_edge(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos,cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos);
 	}
 	else//Quad
 	{
 		//Vert 2->3
-		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[3]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[3]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-		R_EndPolygon();
+		cl_navmesh_draw_edge(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos,cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[3]].pos);
 		//Vert 3->0
-		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[3]].pos + [0,0,edge_width], [0,0,0], color, edge_alpha);
-		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[3]].pos + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-		R_EndPolygon();
+		cl_navmesh_draw_edge(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[3]].pos,cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos);
 	}
 }
 
@@ -171,7 +160,8 @@ void() cl_navmesh_pathfind_draw_result_path;
 void cl_navmesh_editor_draw()
 {
 	//===================================================================================================
-	//Trying a tracemove method
+	//Debug rendering navmesh generation intermediate results
+	cl_navmesh_render_gen();
 	//===================================================================================================
 	
 	
@@ -2431,260 +2421,6 @@ void cl_navmesh_pathfind_draw_result_path()
 	}
 }
 
-//==========================================================================================================================
-//returns 0 if a vertex exists within dist of pos
-float vert_exists(vector pos,float dist)
-{
-	for(float i = 0; i < cl_navmesh_vert_count; i++)
-	{
-		for(float j = 0; j < 3; j++)
-		{
-			if(fabs(cl_navmesh_verts[i].pos[j] - pos[j]) >= dist)
-			{
-				break;
-			}
-			
-			if(j >= 2)
-				return 1;
-		}
-	}
-	return 0;
-}
-
-//====================================================================================================================================
-//============================================ Testing navmesh generation ============================================================
-//====================================================================================================================================
-
-
-//Duplicate of ai_physics_movement, but does the move in x-axis first then y-axis (for sliding along walls, etc)
-
-void() ai_component_wise_physics_movement = 
-{
-	float max_step_size = 18;//max stair step size pulled straight from engine defs
-	float max_slope = 10.4;//18/tan(60) = 10.4, the length of the triangle formed by the max walkable slope of 60 degrees, and the max step height
-	
-	vector goal_org;
-	
-	vector org = [self.origin_x, self.origin_y, self.true_org_z];
-	
-	vector delta_org;
-	
-	//Iterate over x-axis then y-axis
-	for(float i = 0; i < 2; i++)
-	{
-		delta_org = [0,0,0];
-		
-		delta_org[i] = self.velocity[i] * frametime;
-		
-		goal_org = org + delta_org;
-	
-		//Push down from a step above goal org to find result position
-		
-		vector above_goal = goal_org + [0,0,max_step_size];
-		vector below_goal = goal_org - [0,0,max_step_size];
-		
-		tracebox(above_goal,self.mins,self.maxs,below_goal,MOVE_NOMONSTERS,self);
-		
-		if(trace_allsolid)
-			continue;
-			
-		if(trace_startsolid)
-		{
-			tracebox(goal_org,self.mins,self.maxs,below_goal,MOVE_NOMONSTERS,self);
-			if(trace_allsolid || trace_startsolid)
-				continue;
-		}
-		
-		if(trace_fraction >= 1)
-		{
-			//We walked off of a ledge
-			self.true_org_z = goal_org_z;
-			setorigin(self,goal_org);
-			self.flags &= ~FL_ONGROUND;
-			continue;
-		}
-		
-		self.origin_x = trace_endpos_x;
-		self.origin_y = trace_endpos_y;
-		self.true_org_z = trace_endpos_z;
-		self.origin_z += 0.05*(self.true_org_z - self.origin_z);
-		setorigin(self, self.origin);
-		self.flags |= FL_ONGROUND;
-	}
-}
-
-//TODO: change these methods to not actually move an entity, but to just check whether a move is possible (following these rules)
-void() ai_physics_movement =
-{
-	if(self.think && self.nextthink < time)
-	{
-		self.think();
-	}
-	
-	//Don't run movement on non-instantiated zombie ents
-	if(strncmp(self.aistatus,"1"))
-	{
-		return;
-	}
-	
-	if(self.health <= 0)
-	{
-		self.velocity.x = self.velocity.y = 0;
-	}
-	
-	float max_step_size = 18;//max stair step size pulled straight from engine defs
-	float max_slope = 10.4;//18/tan(60) = 10.4, the length of the triangle formed by the max walkable slope of 60 degrees, and the max step height
-	
-	vector goal_org;
-	
-	vector org = [self.origin_x, self.origin_y, self.true_org_z];
-	
-	
-	if(!(self.flags & FL_ONGROUND))
-	{
-		self.velocity_z  -= self.gravity * sv_gravity * frametime;
-		
-		//Clamping to server terminal velocity (-sv_maxspeed -> sv_maxspeed)
-		self.velocity_z = max(min(self.velocity_z, sv_maxspeed), -sv_maxspeed);
-		
-		goal_org = org + [0,0,self.velocity.z] * frametime;
-		
-		tracebox(org,self.mins,self.maxs,goal_org,MOVE_NOMONSTERS,self);
-		
-		//If falling and hit something
-		if(self.velocity.z < 0 && trace_fraction < 1)
-		{	
-			self.flags |= FL_ONGROUND;
-		}
-		
-		self.true_org_z = trace_endpos_z;
-		setorigin(self, trace_endpos);
-		return;
-	}
-	
-	//=======================================================================================================================================
-	//This code is a translated version of dquake's step movetype
-	
-	goal_org = org + self.velocity * frametime;
-	
-	//Push down from a step above goal org to find result position
-	
-	vector above_goal = goal_org + [0,0,max_step_size];
-	vector below_goal = goal_org - [0,0,max_step_size];
-	
-	tracebox(above_goal,self.mins,self.maxs,below_goal,MOVE_NOMONSTERS,self);
-	
-	if(trace_allsolid)
-	{
-		//Try sliding along walls
-		ai_component_wise_physics_movement();
-		return;
-	}
-		
-	if(trace_startsolid)
-	{
-		tracebox(goal_org,self.mins,self.maxs,below_goal,MOVE_NOMONSTERS,self);
-		if(trace_allsolid || trace_startsolid)
-		{
-			//Try sliding along walls
-			ai_component_wise_physics_movement();
-			return;
-		}
-	}
-	
-	if(trace_fraction >= 1)
-	{
-		//We walked off of a ledge
-		self.true_org_z = goal_org_z;
-		setorigin(self,goal_org);
-		self.flags &= ~FL_ONGROUND;
-		return;
-	}
-	
-	self.origin_x = trace_endpos_x;
-	self.origin_y = trace_endpos_y;
-	self.true_org_z = trace_endpos_z;
-	//Lerping z-height:
-	self.origin_z += 0.05*(self.true_org_z - self.origin_z);
-	
-	setorigin(self, self.origin);
-	
-
-	self.flags |= FL_ONGROUND;
-	//=======================================================================================================================================
-};
-
-//====================================================================================================================================
-//============================================== End navmesh generation test =========================================================
-//====================================================================================================================================
-
-float trace_move(vector start, vector mins, vector maxs, vector end)
-{
-	
-}
-
-void recursive_flood_fill(vector where, float dist)
-{
-	if(cl_navmesh_vert_count >= 512)
-	{
-		print("Warning: ran out of vertices");
-		return;
-	}
-	cl_navmesh_verts[cl_navmesh_vert_count++].pos = where;
-	//dist is how far in the 4 directions we flood fill (sort of like resolution)
-	
-	//Try forward
-	vector delta = [0,dist,0];
-	
-	tracebox(where,VEC_HULL_MIN,VEC_HULL_MAX,where + delta,MOVE_NOMONSTERS,self);
-	if(trace_fraction >= 1 && !trace_allsolid && !trace_startsolid)
-	{
-		if(vert_exists(where + delta, dist) == 0)
-		{
-			recursive_flood_fill(where+delta,dist);
-		}
-	}
-	
-	//Try back
-	delta = [0,-dist,0];
-	
-	tracebox(where,VEC_HULL_MIN,VEC_HULL_MAX,where + delta,MOVE_NOMONSTERS,self);
-	if(trace_fraction >= 1 && !trace_allsolid && !trace_startsolid)
-	{
-		if(vert_exists(where + delta, dist) == 0)
-		{
-			
-			recursive_flood_fill(where+delta,dist);
-		}
-	}
-	
-	//Try left
-	delta = [-dist,0,0];
-	
-	tracebox(where,VEC_HULL_MIN,VEC_HULL_MAX,where + delta,MOVE_NOMONSTERS,self);
-	if(trace_fraction >= 1 && !trace_allsolid && !trace_startsolid)
-	{
-		if(vert_exists(where + delta, dist) == 0)
-		{
-			
-			recursive_flood_fill(where+delta,dist);
-		}
-	}
-	
-	//Try right
-	delta = [dist,0,0];
-	
-	tracebox(where,VEC_HULL_MIN,VEC_HULL_MAX,where + delta,MOVE_NOMONSTERS,self);
-	if(trace_fraction >= 1 && !trace_allsolid && !trace_startsolid)
-	{
-		if(vert_exists(where + delta, dist) == 0)
-		{
-			
-			recursive_flood_fill(where+delta,dist);
-		}
-	}
-}
-
 void cl_toggle_navmesh_editor()
 {
 	
@@ -2699,52 +2435,8 @@ void cl_toggle_navmesh_editor()
 		cl_navmesh_mode = TRUE;
 		cl_navmesh_deselect_all();
 		
-		//======================== TEST FLOOD FILL =============================
-		
-		
-		//vector vorg = getviewprop(VF_ORIGIN);
-		vector vorg = getentity(player_localentnum, GE_ORIGIN);
-		
-		recursive_flood_fill(vorg + [0,0,10],32);
-		
-		
-		
-		/*vector vorg = getviewprop(VF_ORIGIN);
-		vector vang = getviewprop(VF_ANGLES);
-	
-		vector vang_left1 = vang + [0,6,0];//Two degrees to the left
-		vector vang_left2 = vang + [0,5,0];//Three degrees to the left
-		vector vang_right1 = vang + [0,-6,0];//Two degrees to the right
-		vector vang_right2 = vang + [0,-5,0];//Three degrees to the right
-		
-		makevectors(vang);
-		vector vang_fwd = v_forward;
-		
-		
-		
-		tracebox(vert_loc,VEC_HULL_MIN,VEC_HULL_MAX,vert_loc+([0,0,-1] * 2000),1,self);
-		vert_loc.z = vert_loc.z + (-2000 * trace_fraction);
-		
-		
-		//================================================================================
-		
-		//Render the resolved vertex pos
-		cl_navmesh_draw_vert(vert_loc, 1 );
-			
-		if(cl_navmesh_place_corner_state == NAVMESH_PLACE_CORNER_CONFIRM)
-		{	
-			cl_navmesh_verts[cl_navmesh_vert_count].pos.x = vert_loc.x;
-			cl_navmesh_verts[cl_navmesh_vert_count].pos.y = vert_loc.y;
-			cl_navmesh_verts[cl_navmesh_vert_count].pos.z = vert_loc.z;
-			
-			cl_navmesh_vert_count++;
-			
-			cl_navmesh_place_corner_state = 0;
-		}
-		*/
-		//======================================================================
-		
-		
+		//TEST NAVMESH GENERATION
+		cl_navmesh_gen_navmesh();
 	}
 }
 
