@@ -225,6 +225,32 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 	return 1;
 }
 
+//Walks to x & y coordinate of point, returns vector of how far we got
+//We walk in dist increments
+vector cl_navgen_gen_walk_to_point(vector start, vector point)
+{
+	/*float dist = 3;
+	
+	vector cur = start;
+	vector cur_ofs = normalize(point - cur) * dist;
+	float move;
+	while(1)
+	{
+		move = cl_navgen_gen_walk(cur,cur_ofs);
+		if(move == 0)
+			return start;
+			
+		start = trace_endpos;
+		
+		if(
+		
+		start
+	}
+	return start;*/
+	//TODO: implement method that walks from start to a point until the x & y coordinates match
+	//use this to get midpoint of an edge (where the midpoint)
+}
+
 
 void cl_navgen_gen_floodfill(navgen_vertex* vert)
 {	
