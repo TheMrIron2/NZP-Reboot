@@ -1582,3 +1582,6 @@ float(entity e, float s) getsurfacenumtriangles = #628;
 vector(entity e, float s, float n) getsurfacetriangle = #629;
 string(string digest, string data, ...) digest_hex = #639;
 #pragma noref 0
+
+float x2_icon;
+float insta_icon;

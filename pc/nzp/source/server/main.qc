@@ -49,6 +49,12 @@ void() worldspawn =
 	precache_model ("models/ai/zalc(.mdl");
 	precache_model ("models/ai/zarc(.mdl");
 	precache_model ("models/ai/zhc^.mdl");
+
+	precache_model ("progs/Misc/maxammo!.mdl");
+	precache_model ("progs/Misc/x2!.mdl");
+	precache_model ("progs/Misc/instakill!.mdl");
+	precache_model ("progs/Misc/nuke!.mdl");
+	precache_model ("progs/Misc/carpenter!.mdl");
 	
 	precache_sound("sounds/player/footstep1.wav");
 	precache_sound("sounds/player/footstep2.wav");
@@ -102,6 +108,7 @@ void() worldspawn =
 	precache_model ("models/way/normal_way_door.spr");
 	precache_model ("models/way/way_jump.spr");
 	precache_model ("models/way/way_land.spr");
+	precache_model ("progs/Sprites/sprkle.spr");
 
 
 	
@@ -157,6 +164,15 @@ void() worldspawn =
 	precache_sound ("sounds/zombie/s1.wav");
 	precache_sound ("sounds/zombie/sc0.wav");
 	precache_sound ("sounds/zombie/sc1.wav");
+	//Announce
+	precache_sound ("sounds/pu/pickup.wav");
+	precache_sound ("sounds/pu/maxammo.wav");
+	precache_sound ("sounds/pu/double_points.wav");
+	precache_sound ("sounds/pu/insta_kill.wav");
+	precache_sound ("sounds/pu/nuke.wav");
+	precache_sound ("sounds/pu/powerup.wav");
+	precache_sound ("sounds/pu/drop.wav");
+
 
 	clientstat(STAT_CURRENTMAG, EV_FLOAT, currentmag);
 	clientstat(STAT_CURRENTMAG2, EV_FLOAT, currentmag2);
