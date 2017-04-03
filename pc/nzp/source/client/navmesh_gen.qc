@@ -226,29 +226,41 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 }
 
 //Walks to x & y coordinate of point, returns vector of how far we got
-//We walk in dist increments
+//We walk in dist increments, and assume we are unobstructed
 vector cl_navgen_gen_walk_to_point(vector start, vector point)
 {
-	/*float dist = 3;
+	float dist = 3;
 	
 	vector cur = start;
-	vector cur_ofs = normalize(point - cur) * dist;
+	
+	vector dir = normalize(point - cur);
+	vector cur_ofs = dir * dist;
 	float move;
+	
 	while(1)
-	{
+	{	
 		move = cl_navgen_gen_walk(cur,cur_ofs);
-		if(move == 0)
+		if(move == 0 || move == 1)//We do not allow sliding or partial moves in this algorithm
 			return start;
-			
-		start = trace_endpos;
 		
-		if(
+		cur = trace_endpos;
 		
-		start
+		
+		cur_ofs = dir*dist;
+		
+		//Don't walk past endpoint
+		if(cur_ofs_x > (point_x - cur_x))
+			cur_ofs_x = point_x - cur_x;
+		if(cur_ofs_y > (point_y - cur_y))
+			cur_ofs_y = point_y - cur_y;
+		
+		//If we are at the endpoint
+		if(cur_ofs_x == 0 && cur_ofs_y == 0)
+		{
+			return point;
+		}
 	}
-	return start;*/
-	//TODO: implement method that walks from start to a point until the x & y coordinates match
-	//use this to get midpoint of an edge (where the midpoint)
+	return start;
 }
 
 
