@@ -78,7 +78,6 @@ void cl_navgen_free_vert(navgen_vertex* vert)
 	
 	memfree(vert);
 }
-//TODO: function for deleting a vertex from the list
 
 
 void cl_navmesh_render_vert(navgen_vertex* vert)
@@ -132,6 +131,7 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 	if(!trace_allsolid && !trace_startsolid)
 	{
 		trace_endpos = start;
+		print("We are not on ground to begin, returning 0");
 		return 0;
 	}
 	//========================================================================================
@@ -144,7 +144,7 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 	
 	vector delta_org;
 	
-	//0 means did not walk at all, 1 means we slid, 2 means we completed the move in x/y axis
+	//0 means did not walk at all, 1 means we slid, 2 means we completed the move in x & y axis
 	float success[2] = {0,0};
 	
 	//Iterate over x-axis then y-axis
@@ -205,7 +205,7 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 		}
 		
 		if(delta_org[i] != 0)
-			success[i] = 1;
+			success[i] = 2;
 		start_x = trace_endpos_x;
 		start_y = trace_endpos_y;
 		start_z = trace_endpos_z;
@@ -239,29 +239,76 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 	
 	while(1)
 	{	
-		move = cl_navgen_gen_walk(cur,cur_ofs);
-		if(move == 0 || move == 1)//We do not allow sliding or partial moves in this algorithm
-			return start;
-		
-		cur = trace_endpos;
-		
-		
 		cur_ofs = dir*dist;
 		
 		//Don't walk past endpoint
-		if(cur_ofs_x > (point_x - cur_x))
+		if((cur_ofs_x > 0 && cur_ofs_x > (point_x - cur_x)) || (cur_ofs_x < 0 && cur_ofs_x < (point_x - cur_x)))
+		{
 			cur_ofs_x = point_x - cur_x;
-		if(cur_ofs_y > (point_y - cur_y))
+		}
+		if((cur_ofs_y > 0 && cur_ofs_y > (point_y - cur_y)) || (cur_ofs_y < 0 && cur_ofs_y < (point_y - cur_y)))
+		{
 			cur_ofs_y = point_y - cur_y;
+		}
 		
 		//If we are at the endpoint
 		if(cur_ofs_x == 0 && cur_ofs_y == 0)
 		{
 			return point;
 		}
+		
+		move = cl_navgen_gen_walk(cur,cur_ofs);
+		cur = trace_endpos;
+
+		if(move == 0 || move == 1)//We do not allow sliding or partial moves in this algorithm
+		{
+			return start;
+		}
 	}
 	return start;
 }
+
+
+//Returns 0 if edge is unobstructed
+//Returns something else depending on situation (check against bsp brushes)
+//Walks from v1 to v2, and from v2 to v1, without sliding on walls
+float cl_navgen_check_edge(navgen_vertex* v1, navgen_vertex* v2)
+{
+	//Try walk from v1 to v1
+	//vector pos = v1->pos;
+	//do
+	//{
+	//	pos = cl_navgen_gen_walk_to_point(pos,v2->pos);
+	//}
+	//while(pos != v1->pos && pos != v2->pos);
+	
+	if(cl_navgen_gen_walk_to_point(v1->pos,v2->pos) != v2->pos)
+		return 1;
+	
+	
+	//if(pos == v1->pos)
+	//	return 1;
+	
+	//Try walk from v2 to v1
+	//pos = v2->pos;
+	/*do
+	{
+		pos = cl_navgen_gen_walk_to_point(pos,v1->pos);
+	}
+	while(pos != v1->pos && pos != v2->pos);*/
+	
+	if(cl_navgen_gen_walk_to_point(v2->pos,v1->pos) != v1->pos)
+		return 1;
+	
+	
+	//if(pos == v2->pos)
+	//	return 1;
+		
+	return 0;
+}
+
+//TODO: method that resolves a corner on a bsp hull, we essentially walk back and forth with one vert until:
+//	moving back and forth a tiny tiny amount is the difference between an obstructed edge and an unobstructed edge
 
 
 void cl_navgen_gen_floodfill(navgen_vertex* vert)
@@ -319,13 +366,26 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 		print("Move result: ",ftos(move),"\n");
 		if(!move && !did_move)
 		{
-			
 			break;
 		}
 		did_move = 1;
 		
 		
-		//check if left edge is obstructed
+		
+		//check if left edge was obstructed
+		if(cl_navgen_check_edge(vert->left,vert) != 0)
+		{
+			print("Left edge obstructed.\n");
+			return;
+		}
+	
+		//check if right edge was obstructed
+		if(cl_navgen_check_edge(vert,vert->right) != 0)
+		{
+			print("Right edge obstructed.\n");
+			return;
+		}
+		
 		//if(left edge is obstructed)
 		//	break;
 		
@@ -356,7 +416,6 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 			(vert->left)->right = new_vert;
 			new_vert->right = vert;
 			vert->left = new_vert;
-			cl_navgen_gen_floodfill(new_vert);
 			
 			//=========================
 			//Subdivide right edge
@@ -374,7 +433,6 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 			(vert->right)->left = new_vert;
 			new_vert->left = vert;
 			vert->right = new_vert;
-			cl_navgen_gen_floodfill(new_vert);
 			
 			break;
 		}
@@ -384,6 +442,9 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 		return;
 		
 	//Call cl_navgen_gen_floodfill on left and right verts
+	//cl_navgen_gen_floodfill(vert->left);
+	//cl_navgen_gen_floodfill(vert->right);
+	
 	
 	//if left / right edge was obstructed
 		//regress to last unobstructed position
