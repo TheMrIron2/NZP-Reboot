@@ -131,7 +131,7 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 	if(!trace_allsolid && !trace_startsolid)
 	{
 		trace_endpos = start;
-		print("We are not on ground to begin, returning 0");
+		print("We are not on ground to begin, returning 0\n");
 		return 0;
 	}
 	//========================================================================================
@@ -239,7 +239,6 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 	
 	while(1)
 	{	
-		cur_ofs = dir*dist;
 		
 		//Don't walk past endpoint
 		if((cur_ofs_x > 0 && cur_ofs_x > (point_x - cur_x)) || (cur_ofs_x < 0 && cur_ofs_x < (point_x - cur_x)))
@@ -254,6 +253,7 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 		//If we are at the endpoint
 		if(cur_ofs_x == 0 && cur_ofs_y == 0)
 		{
+			print("ofs is 0, walk_to_point succeeded\n");
 			return point;
 		}
 		
@@ -262,6 +262,8 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 
 		if(move == 0 || move == 1)//We do not allow sliding or partial moves in this algorithm
 		{
+			print("hit something along the way, walk_to_point failed\n");
+			print("cur: ",vtos(cur)," cur_ofs: ",vtos(cur_ofs),"\n");
 			return start;
 		}
 	}
@@ -269,40 +271,25 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 }
 
 
+
 //Returns 0 if edge is unobstructed
-//Returns something else depending on situation (check against bsp brushes)
-//Walks from v1 to v2, and from v2 to v1, without sliding on walls
-float cl_navgen_check_edge(navgen_vertex* v1, navgen_vertex* v2)
+//Returns 1 if walking directly from pos1 to pos2 fails
+//Returns 1 if walking directly from pos2 to pos1 fails
+//TODO: handle ledges and hitting the navmesh
+float cl_navgen_obstructed(vector pos1, vector pos2)
 {
-	//Try walk from v1 to v1
-	//vector pos = v1->pos;
-	//do
-	//{
-	//	pos = cl_navgen_gen_walk_to_point(pos,v2->pos);
-	//}
-	//while(pos != v1->pos && pos != v2->pos);
-	
-	if(cl_navgen_gen_walk_to_point(v1->pos,v2->pos) != v2->pos)
-		return 1;
-	
-	
-	//if(pos == v1->pos)
-	//	return 1;
-	
-	//Try walk from v2 to v1
-	//pos = v2->pos;
-	/*do
+	//Try walk from pos1 to pos2
+	if(cl_navgen_gen_walk_to_point(pos1,pos2) != pos2)
 	{
-		pos = cl_navgen_gen_walk_to_point(pos,v1->pos);
-	}
-	while(pos != v1->pos && pos != v2->pos);*/
-	
-	if(cl_navgen_gen_walk_to_point(v2->pos,v1->pos) != v1->pos)
+		print("could not walk from pos1 to pos2\n");
 		return 1;
-	
-	
-	//if(pos == v2->pos)
-	//	return 1;
+	}
+	//Try walk from pos2 to pos1
+	if(cl_navgen_gen_walk_to_point(pos2,pos1) != pos1)
+	{
+		print("coult not walk from pos2 to pos1\n");
+		return 1;
+	}
 		
 	return 0;
 }
@@ -373,25 +360,31 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 		
 		
 		//check if left edge was obstructed
-		if(cl_navgen_check_edge(vert->left,vert) != 0)
+		print("Checking left to vert edge\n");
+		if(cl_navgen_obstructed((vert->left)->pos,vert->pos))
 		{
+			//move back walk_dir direction
+			
+			//the theory is that, as we progressively move backwards from problem position
+			//how close we get to the end of the edge approaches the corner that we are trying to find
+			
+			//recursively hop back and forth until we can deduce the corner position?
+			//This can only happen once the back and forth hop is a really small amount
+			
+			
+			
 			print("Left edge obstructed.\n");
 			return;
 		}
 	
 		//check if right edge was obstructed
-		if(cl_navgen_check_edge(vert,vert->right) != 0)
+		print("Checking vert to right edge\n");
+		if(cl_navgen_obstructed(vert->pos,(vert->right)->pos))
 		{
 			print("Right edge obstructed.\n");
 			return;
 		}
 		
-		//if(left edge is obstructed)
-		//	break;
-		
-		//check if right edge is obstructed
-		//if(right edge is obstructed)
-		//	break;
 		
 		//check if we intersected with any other vertex edge
 			//walk along the edge and see if we hit one of the verts
@@ -484,9 +477,6 @@ void cl_navmesh_gen_navmesh()
 	
 	
 	cl_navgen_gen_floodfill(v1);
-	
-
-	
 }
 /*	
 	//vector vorg = getviewprop(VF_ORIGIN);
