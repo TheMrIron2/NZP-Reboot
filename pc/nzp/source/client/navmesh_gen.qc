@@ -139,18 +139,26 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 	//FIXME: fix this when we handle sliding along ledges
 	//========================================================================================
 	//for now, consider not on ground as a dead stop
-	tracebox(start - [0,0,1],VEC_HULL_MIN,VEC_HULL_MAX,start-[0,0,max_step_size],MOVE_NOMONSTERS,self);
-	if(!trace_allsolid && !trace_startsolid)
+	//tracebox(start - [0,0,1],VEC_HULL_MIN,VEC_HULL_MAX,start-[0,0,max_step_size],MOVE_NOMONSTERS,self);
+	tracebox(start,VEC_HULL_MIN,VEC_HULL_MAX,start-[0,0,2*max_step_size],MOVE_NOMONSTERS,self);
+	if((!trace_allsolid && !trace_startsolid) && trace_fraction > 0.5)
 	{
-		trace_endpos = start;
+		print("Trace fraction: ",ftos(trace_fraction),"\n");
+		print("start solid: ",ftos(trace_startsolid)," all solid: ",ftos(trace_allsolid),"\n");
 		print("We are not on ground to begin, returning 0\n");
 		return 0;
 	}
+	
+	//This is a problem for when we are checking left / right edges, because while walking the edge, we can never get to the vertex that
+	//has been pushed off of a ledge
+	//so, we must check for falling off of a ledge, but also 
 	//========================================================================================
 	
 	//Assuming we are on the ground
 	
 	//float max_slope = 10.4;//18/tan(60) = 10.4, the length of the triangle formed by the max walkable slope of 60 degrees, and the max step height
+	
+	vector cur = start;
 	
 	vector goal_org;
 	
@@ -164,9 +172,10 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 	{
 		
 		delta_org = [0,0,0];
+		
 		delta_org[i] = ofs[i];
 		
-		goal_org = start + delta_org;
+		goal_org = cur + delta_org;
 	
 		//Push down from a step above goal org to find result position
 		
@@ -184,13 +193,13 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 				success[i] = 0;
 				
 				//Try straight tracebox to wall
-				tracebox(start,VEC_HULL_MIN,VEC_HULL_MAX,goal_org,MOVE_NOMONSTERS,self);
+				tracebox(cur,VEC_HULL_MIN,VEC_HULL_MAX,goal_org,MOVE_NOMONSTERS,self);
 				
 				if(trace_fraction > 0)
 				{
 					//We still moved on this move
 					success[i] = 1;
-					start = trace_endpos;
+					cur = trace_endpos;
 				}
 				
 				continue;
@@ -201,34 +210,54 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 		{
 			//We walked off of a ledge
 			
-			//Try straight tracebox back to the ledge from the lowered goal polsition
+			//Try straight tracebox back to the ledge from the lowered goal position
 			tracebox(below_goal,VEC_HULL_MIN,VEC_HULL_MAX,below_goal-delta_org,MOVE_NOMONSTERS,self);
 			
-			start_x = trace_endpos_x;
-			start_y = trace_endpos_y;
-			start_z = trace_endpos_z + max_step_size;//don't lower the start_z
+			cur_x = trace_endpos_x;
+			cur_y = trace_endpos_y;
+			cur_z = trace_endpos_z + max_step_size;//don't lower the cur_z
 			
+			//cur should now be right up against the ledge, push back a tiny bit from the ledge so that we cannot fall
+			cur = cur - 0.1*normalize(delta_org);
+			
+			//If we moved back to start, we were already on ledge, so we did not move on this axis
+			if(vlen(cur - start) < 0.01)
+				success[i] = 0;//treat this as hitting a dead end
+			else
+				success[i] = 2;
+
 			//TODO: slide along the ledge until we hit a ledge corner
 			
-			success[i] = 1;
+			//We are now just barely on a ledge
 			
-			//We are no longer on the gorund
 			continue;
 		}
 		
-		if(delta_org[i] != 0)
-			success[i] = 2;
-		start_x = trace_endpos_x;
-		start_y = trace_endpos_y;
-		start_z = trace_endpos_z;
+		success[i] = 2;
+		
+		//If this is a zero move and the other is not, our success depends entirely on the other move
+		if(ofs[i] == 0 && ofs[(i+1)%2] != 0)
+		{
+			success[i] = -1;
+		}
+		
+		cur_x = trace_endpos_x;
+		cur_y = trace_endpos_y;
+		cur_z = trace_endpos_z;
 		//We are on the ground
 	}
 
 	//Assign trace end pos as where we ended up
-	trace_endpos_x = start_x;
-	trace_endpos_y = start_y;
-	trace_endpos_z = start_z;
+	trace_endpos_x = cur_x;
+	trace_endpos_y = cur_y;
+	trace_endpos_z = cur_z;
+	trace_endpos = cur;
 
+	//If either move was a zero move, the success of the move depends on the other
+	if(success[0] == -1)
+		return success[1];
+	if(success[1] == -1)
+		return success[0];
 
 	if(success[0] == success[1])
 	{
@@ -245,35 +274,62 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 	
 	vector cur = start;
 	
-	vector dir = normalize(point - cur);
+	
+	vector dir = (point - start);
+	dir_z = 0;
+	dir = normalize(dir);
 	vector cur_ofs = dir * dist;
 	float move;
+	float iters = 0;
+	
+
 	
 	while(1)
 	{	
 		
+		iters++;
 		//Don't walk past endpoint
 		if((cur_ofs_x > 0 && cur_ofs_x > (point_x - cur_x)) || (cur_ofs_x < 0 && cur_ofs_x < (point_x - cur_x)))
 		{
 			print("x walk dist exceeds actual dist, decreasing walk dist.\n");
+			
+			print("cur_ofs_x ",ftos(cur_ofs_x)," -> ",ftos(point_x - cur_x),"\n");
+			
 			cur_ofs_x = point_x - cur_x;
 		}
 		if((cur_ofs_y > 0 && cur_ofs_y > (point_y - cur_y)) || (cur_ofs_y < 0 && cur_ofs_y < (point_y - cur_y)))
 		{
 			print("y walk dist exceeds actual dist, decreasing walk dist.\n");
+			
+			print("cur_ofs_y ",ftos(cur_ofs_y)," -> ",ftos(point_y - cur_y),"\n");
+			
 			cur_ofs_y = point_y - cur_y;
+			
+		}
+		
+		if(fabs(cur_ofs_x) < 0.1 && fabs(cur_ofs_y) < 0.1)
+		{
+			print("Pre small delta print\n");
+			print("cur_ofs is small (",vtos(cur_ofs),")\n");
 		}
 		
 		//If we are at the endpoint
 		if(cur_ofs_x == 0 && cur_ofs_y == 0)
 		{
-			print("ofs is 0, walk_to_point succeeded\n");
+			print("ofs is 0, walk_to_point succeeded, point = ",vtos(point),"\n");
 			return point;
 		}
 		
+		if(fabs(cur_ofs_x) < 0.1 && fabs(cur_ofs_y) < 0.1)
+		{
+			print("Post small delta print\n");
+			print("cur_ofs is small (",vtos(cur_ofs),")\n");
+			print("blarg\n");
+		}
+		
+		
 		move = cl_navgen_gen_walk(cur,cur_ofs);
-		cur = trace_endpos;
-
+		
 		if(move == 0 || move == 1)//We do not allow sliding or partial moves in this algorithm
 		{
 			debug_hulls[debug_hull_count++] = cur;
@@ -282,6 +338,7 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 			print("cur: ",vtos(cur)," cur_ofs: ",vtos(cur_ofs),"\n");
 			return start;
 		}
+		cur = trace_endpos;
 	}
 	return start;
 }
@@ -295,8 +352,10 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 float cl_navgen_obstructed(vector pos1, vector pos2)
 {
 	//Try walk from pos1 to pos2
+	
 	if(cl_navgen_gen_walk_to_point(pos1,pos2) != pos2)
 	{
+		print("Result was not: ",vtos(pos2),"\n");
 		print("could not walk from pos1 to pos2\n");
 		return 1;
 	}
