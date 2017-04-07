@@ -90,6 +90,11 @@ void cl_navmesh_render_edge(navgen_vertex* from, navgen_vertex* to)
 	cl_navmesh_draw_edge(from->pos, to->pos);
 }
 
+//FOR DEBUG
+vector debug_hulls[200];
+float debug_hull_count;
+
+
 //A TEMP DEBUG METHOD THAT RENDERS INTERMEDIATE NAVMESH GENERATION RESULTS
 void cl_navmesh_render_gen()
 {
@@ -107,6 +112,12 @@ void cl_navmesh_render_gen()
 		
 		vert = vert->next;
 	}
+	
+	//Drawing debug collision hulls
+	for(float i = 0; i < debug_hull_count; i++)
+	{
+		cl_navmesh_draw_test_ent(debug_hulls[i],0);
+	}
 }
 
 //Given starting position and edge tangent, walk along the edge until we hit some form of a corner
@@ -115,6 +126,7 @@ float cl_navgen_gen_walkalongedge(vector start, vector edge_tan)
 	//FIXME: implement this
 	return 0;
 }
+
 
 //Method that checks if pos + ofs is okay to walk
 //returns 2 if walk is success
@@ -243,10 +255,12 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 		//Don't walk past endpoint
 		if((cur_ofs_x > 0 && cur_ofs_x > (point_x - cur_x)) || (cur_ofs_x < 0 && cur_ofs_x < (point_x - cur_x)))
 		{
+			print("x walk dist exceeds actual dist, decreasing walk dist.\n");
 			cur_ofs_x = point_x - cur_x;
 		}
 		if((cur_ofs_y > 0 && cur_ofs_y > (point_y - cur_y)) || (cur_ofs_y < 0 && cur_ofs_y < (point_y - cur_y)))
 		{
+			print("y walk dist exceeds actual dist, decreasing walk dist.\n");
 			cur_ofs_y = point_y - cur_y;
 		}
 		
@@ -262,6 +276,8 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 
 		if(move == 0 || move == 1)//We do not allow sliding or partial moves in this algorithm
 		{
+			debug_hulls[debug_hull_count++] = cur;
+			debug_hulls[debug_hull_count++] = cur + cur_ofs;
 			print("hit something along the way, walk_to_point failed\n");
 			print("cur: ",vtos(cur)," cur_ofs: ",vtos(cur_ofs),"\n");
 			return start;
@@ -287,7 +303,7 @@ float cl_navgen_obstructed(vector pos1, vector pos2)
 	//Try walk from pos2 to pos1
 	if(cl_navgen_gen_walk_to_point(pos2,pos1) != pos1)
 	{
-		print("coult not walk from pos2 to pos1\n");
+		print("could not walk from pos2 to pos1\n");
 		return 1;
 	}
 		

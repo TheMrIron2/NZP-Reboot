@@ -19,12 +19,17 @@ float cl_navmesh_place_corner_state;
 #define NAVMESH_PLACE_CORNER_CONFIRM 2
 
 //Pre-defs
-void(float is_goal) cl_navmesh_draw_test_ent;
+void(vector pos, float is_goal) cl_navmesh_draw_test_ent;
 void() cl_navmesh_delete_verts;
 void(float poly_index) cl_navmesh_delete_poly_at_index;
 float(vector pos) cl_navmesh_get_containing_poly;
 
 
+//This is for placing a temp entity to test the pathfinding
+vector goalent_pos;
+float goalent_set;
+vector startent_pos;
+float startent_set;
 
 void cl_navmesh_draw_vert(vector pos,float selected)
 {
@@ -175,8 +180,8 @@ void cl_navmesh_editor_draw()
 		cl_navmesh_draw_poly(i);
 	}
 	
-	cl_navmesh_draw_test_ent(0);
-	cl_navmesh_draw_test_ent(1);
+	cl_navmesh_draw_test_ent(startent_pos,0);
+	cl_navmesh_draw_test_ent(goalent_pos,1);
 	
 	cl_navmesh_pathfind_draw_result_node_path();
 	cl_navmesh_pathfind_draw_result_portals();
@@ -1369,15 +1374,11 @@ void cl_navmesh_editor_load_navmesh()
 //==========================================================================================================================
 //============================ The following methods are methods required in the pathfinding code ==========================
 //==========================================================================================================================
-//This is for placing a temp entity to test the pathfinding
-vector goalent_pos;
-float goalent_set;
-vector startent_pos;
-float startent_set;
+
 
 float(float start, float goal, vector start_pos, vector end_pos) cl_navmesh_pathfind_start;
 
-void cl_navmesh_draw_test_ent(float is_goal)
+void cl_navmesh_draw_test_ent(vector pos, float is_goal)
 {
 	//Assigning the shader as something else so that fte doesn't batch the calls (leading to colors not changing between draw calls)
 	R_BeginPolygon("debug/wireframe",0);
@@ -1394,16 +1395,13 @@ void cl_navmesh_draw_test_ent(float is_goal)
 	
 	vector color;
 	
-	vector pos;
 	
 	if(is_goal)
 	{
-		pos = goalent_pos;
 		color = [1,0,0];
 	}
 	else
 	{
-		pos = startent_pos;
 		color = [0,1,0];
 	}
 	
