@@ -79,6 +79,14 @@ void cl_navgen_free_vert(navgen_vertex* vert)
 	memfree(vert);
 }
 
+void cl_navgen_free_all_verts()
+{
+	while(navgen_verts_root)
+	{
+		cl_navgen_free_vert(navgen_verts_root);
+	}
+}
+
 
 void cl_navmesh_render_vert(navgen_vertex* vert)
 {
@@ -198,7 +206,7 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 				if(trace_fraction > 0)
 				{
 					//We still moved on this move
-					success[i] = 1;
+					success[i] = 2;
 					cur = trace_endpos;
 				}
 				
@@ -280,62 +288,44 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 	dir = normalize(dir);
 	vector cur_ofs = dir * dist;
 	float move;
-	float iters = 0;
-	
-
 	
 	while(1)
 	{	
-		
-		iters++;
 		//Don't walk past endpoint
 		if((cur_ofs_x > 0 && cur_ofs_x > (point_x - cur_x)) || (cur_ofs_x < 0 && cur_ofs_x < (point_x - cur_x)))
 		{
-			print("x walk dist exceeds actual dist, decreasing walk dist.\n");
+			//print("x walk dist exceeds actual dist, decreasing walk dist.\n");
 			
-			print("cur_ofs_x ",ftos(cur_ofs_x)," -> ",ftos(point_x - cur_x),"\n");
+			//print("cur_ofs_x ",ftos(cur_ofs_x)," -> ",ftos(point_x - cur_x),"\n");
 			
 			cur_ofs_x = point_x - cur_x;
 		}
 		if((cur_ofs_y > 0 && cur_ofs_y > (point_y - cur_y)) || (cur_ofs_y < 0 && cur_ofs_y < (point_y - cur_y)))
 		{
-			print("y walk dist exceeds actual dist, decreasing walk dist.\n");
+			//print("y walk dist exceeds actual dist, decreasing walk dist.\n");
 			
-			print("cur_ofs_y ",ftos(cur_ofs_y)," -> ",ftos(point_y - cur_y),"\n");
+			//print("cur_ofs_y ",ftos(cur_ofs_y)," -> ",ftos(point_y - cur_y),"\n");
 			
 			cur_ofs_y = point_y - cur_y;
 			
-		}
-		
-		if(fabs(cur_ofs_x) < 0.1 && fabs(cur_ofs_y) < 0.1)
-		{
-			print("Pre small delta print\n");
-			print("cur_ofs is small (",vtos(cur_ofs),")\n");
 		}
 		
 		//If we are at the endpoint
 		if(cur_ofs_x == 0 && cur_ofs_y == 0)
 		{
 			print("ofs is 0, walk_to_point succeeded, point = ",vtos(point),"\n");
+			trace_endpos = cur;
 			return point;
 		}
-		
-		if(fabs(cur_ofs_x) < 0.1 && fabs(cur_ofs_y) < 0.1)
-		{
-			print("Post small delta print\n");
-			print("cur_ofs is small (",vtos(cur_ofs),")\n");
-			print("blarg\n");
-		}
-		
 		
 		move = cl_navgen_gen_walk(cur,cur_ofs);
 		
 		if(move == 0 || move == 1)//We do not allow sliding or partial moves in this algorithm
 		{
-			debug_hulls[debug_hull_count++] = cur;
-			debug_hulls[debug_hull_count++] = cur + cur_ofs;
+			//debug_hulls[debug_hull_count++] = cur;
+			//debug_hulls[debug_hull_count++] = cur + cur_ofs;
 			print("hit something along the way, walk_to_point failed\n");
-			print("cur: ",vtos(cur)," cur_ofs: ",vtos(cur_ofs),"\n");
+			//print("cur: ",vtos(cur)," cur_ofs: ",vtos(cur_ofs),"\n");
 			return start;
 		}
 		cur = trace_endpos;
@@ -367,6 +357,46 @@ float cl_navgen_obstructed(vector pos1, vector pos2)
 	}
 		
 	return 0;
+}
+
+
+//Given pos1 that can walk to other, and pos2 that cannot walk to other
+//Returns furthest point from pos1 (on line from pos1 to pos2) that can still walk to other
+vector cl_navgen_find_min(vector pos1, vector pos2, vector other)
+{
+	vector min = pos1;
+	vector max = pos2;
+	vector mid;
+	
+	float delta = 0.01;//how close does the min and max have to be for us to accept min as the desired point?
+	
+	while(1)
+	{
+		if(vlen([max_x,max_y,0]-[min_x,min_y,0]) < delta)
+			return min;
+			
+		mid = (min+max)/2;
+		
+		if(cl_navgen_gen_walk_to_point(min,mid) == mid)
+		{
+			//This should always run
+			mid = trace_endpos;
+		}
+		else
+		{
+			print("!!!!!!!!!!!!!!!! Warning: could not walk to mid from min.\n");
+			//FIXME: this sometimes executes
+			//I guess we can't just rely on jumping back and forth across large gaps
+		}
+		
+		//debug_hulls[debug_hull_count++] = min;
+		//debug_hulls[debug_hull_count++] = max;
+		
+		if(cl_navgen_obstructed(mid,other))
+			max = mid;
+		else
+			min = mid;
+	}
 }
 
 //TODO: method that resolves a corner on a bsp hull, we essentially walk back and forth with one vert until:
@@ -417,10 +447,16 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 	
 	print("Walk dir: ",vtos(walk_dir),"\n");
 	
+	vector last_vert_pos;
+	
+	navgen_vertex* new_vert;
+	
 	//walk the vertex in the direction a small amount
 	while(1)
 	{
 		//Try walking a small amount forward
+		last_vert_pos = vert->pos;
+		
 		move = cl_navgen_gen_walk(vert->pos,walk_dir);
 		
 		vert->pos = trace_endpos;
@@ -438,17 +474,35 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 		print("Checking left to vert edge\n");
 		if(cl_navgen_obstructed((vert->left)->pos,vert->pos))
 		{
-			//move back walk_dir direction
-			
-			//the theory is that, as we progressively move backwards from problem position
-			//how close we get to the end of the edge approaches the corner that we are trying to find
-			
-			//recursively hop back and forth until we can deduce the corner position?
-			//This can only happen once the back and forth hop is a really small amount
-			
-			
-			
 			print("Left edge obstructed.\n");
+			
+			//Subdivide the left edge
+			//Insert the new vertex at our last vertex position
+			new_vert = cl_navgen_new_vert(last_vert_pos);
+			
+			new_vert->left = vert->left;
+			(vert->left)->right = new_vert;
+			new_vert->right = vert;
+			vert->left = new_vert;
+			
+			//Get new_vert as close as possible to our vert such that we can still walk to our left vert
+			new_vert->pos = cl_navgen_find_min(new_vert->pos,vert->pos,(new_vert->left)->pos);
+			//Get new_vert as close as possible to our left vert such that we can still walk to our vert
+			new_vert->pos = cl_navgen_find_min(new_vert->pos,(new_vert->left)->pos,vert->pos);
+			
+			vert->pos = last_vert_pos;
+			
+			//Check if the new vertex didn't move
+			if(vert->pos == new_vert->pos)
+			{
+				print("Subdivided vertex did not move, subdivision undone\n");
+				//Undo the subdivision
+				vert->left = new_vert->left;
+				(new_vert->left)->right = vert;
+				
+				cl_navgen_free_vert(new_vert);
+			}
+			
 			return;
 		}
 	
@@ -457,6 +511,34 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 		if(cl_navgen_obstructed(vert->pos,(vert->right)->pos))
 		{
 			print("Right edge obstructed.\n");
+			
+			//Subdivide the right edge
+			//Insert the new vertex at our last vertex position
+			new_vert = cl_navgen_new_vert(last_vert_pos);
+			
+			new_vert->right = vert->right;
+			(vert->right)->left = new_vert;
+			new_vert->left = vert;
+			vert->right = new_vert;
+			
+			//Get new_vert as close as possible to our vert such that we can still walk to our right vert
+			new_vert->pos = cl_navgen_find_min(new_vert->pos,vert->pos,(new_vert->right)->pos);
+			//Get new_vert as close as possible to our right vert such that we can still walk to our vert
+			new_vert->pos = cl_navgen_find_min(new_vert->pos,(new_vert->right)->pos,vert->pos);
+			
+			vert->pos = last_vert_pos;
+			
+			//Check if the new vertex didn't move
+			if(vert->pos == new_vert->pos)
+			{
+				print("Subdivided vertex did not move, subdivision undone\n");
+				//Undo the subdivision
+				vert->right = new_vert->right;
+				(new_vert->right)->left = vert;
+				
+				cl_navgen_free_vert(new_vert);
+			}
+			
 			return;
 		}
 		
@@ -472,14 +554,18 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 			//Subdivide left edge
 			//=========================
 			vector edge_center = (vert->pos + (vert->left)->pos)/2;
-			//FIXME: THIS CAN GO HORRIBLY WRONG
-			//TODO: walk along edge until we get to the center point
-			//Drop to floor
-			//FIXME: for now, just drop to floor (assuming edge midpoint is a step height above the floor (and head is not in ceiling)
-			cl_navgen_gen_walk(edge_center,[0,0,0]);
-			edge_center = trace_endpos;
 			
-			navgen_vertex* new_vert = cl_navgen_new_vert(edge_center);
+			if(cl_navgen_gen_walk_to_point(vert->pos,edge_center) == edge_center)
+			{
+				//This should always run
+				edge_center = trace_endpos;
+			}
+			else
+			{
+				print("Warning: could not walk to vertex midpoint.\n");
+			}
+			
+			new_vert = cl_navgen_new_vert(edge_center);
 			new_vert->left = vert->left;
 			(vert->left)->right = new_vert;
 			new_vert->right = vert;
@@ -489,12 +575,16 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 			//Subdivide right edge
 			//=========================
 			edge_center = (vert->pos + (vert->right)->pos)/2;
-			//FIXME: THIS CAN GO HORRIBLY WRONG
-			//TODO: walk along edge until we get to the center point
-			//Drop to floor
-			//FIXME: for now, just drop to floor (assuming edge midpoint is a step height above the floor (and head is not in ceiling)
-			cl_navgen_gen_walk(edge_center,[0,0,0]);
-			edge_center = trace_endpos;
+			
+			if(cl_navgen_gen_walk_to_point(vert->pos,edge_center) == edge_center)
+			{
+				//This should always run
+				edge_center = trace_endpos;
+			}
+			else
+			{
+				print("Warning: could not walk to vertex midpoint.\n");
+			}
 			
 			new_vert = cl_navgen_new_vert(edge_center);
 			new_vert->right = vert->right;
@@ -534,7 +624,7 @@ void cl_navmesh_gen_navmesh()
 	cl_navgen_gen_walk(player_pos,[0,0,0]);
 	player_pos = trace_endpos;
 	
-	float initial_tri_size = 10;
+	float initial_tri_size = 40;//10
 	
 	//TODO: tracebox down from above player pos to get actual floor position
 	navgen_vertex* v1 = cl_navgen_new_vert(player_pos + [0,initial_tri_size,0]);

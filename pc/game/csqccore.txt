@@ -8,37 +8,25 @@ progs 0 {
 }
 stacktrace {
 //0 csprogs.dat
-	"0:cl_navgen_gen_walk" //client/navmesh_gen.qc
-	{
-		"start"	"'815.151 280.257 -223.969'"
-		"ofs"	"'0.000244141 0 0'"
-		"max_step_size"	"18"
-		"goal_org"	"'815.151 280.257 -223.969'"
-		"delta_org"	"'0 0 0'"
-		"success[0]"	"2"
-		"success[1]"	"0"
-		"i"	"2"
-		"above_goal"	"'815.151 280.257 -205.969'"
-		"below_goal"	"'815.151 280.257 -241.969'"
-		ofs22280 0 // 0.000000
-	}
 	"0:cl_navgen_gen_walk_to_point" //client/navmesh_gen.qc
 	{
-		"start"	"'0 0 0'"
-		"point"	"'0 0 0'"
-		"dist"	"0"
-		"cur"	"'0 0 0'"
-		"dir"	"'0 0 0'"
-		"cur_ofs"	"'0 0 0'"
-		"move"	"0"
-		"iters"	"0"
-		ofs22299 0 // 0.000000
-		ofs22300 0 // 0.000000
+		"start"	"'144.006 48.1274 -135.969'"
+		"point"	"'143.996 48.0224 -147.969'"
+		"dist"	"3"
+		"cur"	"'144.073 48.0224 -135.969'"
+		"dir"	"'-0.0926367 -0.9957 0'"
+		"cur_ofs"	"'-0.00393677 0 0'"
+		"move"	"2"
 	}
-	"0:cl_navgen_obstructed" //client/navmesh_gen.qc
+	"0:cl_navgen_find_min" //client/navmesh_gen.qc
 	{
 		"pos1"	"'0 0 0'"
 		"pos2"	"'0 0 0'"
+		"other"	"'0 0 0'"
+		"min"	"'0 0 0'"
+		"max"	"'0 0 0'"
+		"mid"	"'0 0 0'"
+		"delta"	"0"
 	}
 	"0:cl_navgen_gen_floodfill" //client/navmesh_gen.qc
 	{
@@ -48,8 +36,9 @@ stacktrace {
 		"tangent"	"'0 0 0'"
 		"did_move"	"0"
 		"move"	"0"
-		"edge_center"	"'0 0 0'"
+		"last_vert_pos"	"'0 0 0'"
 		"new_vert"	"0"
+		"edge_center"	"'0 0 0'"
 	}
 	"0:cl_navmesh_gen_navmesh" //client/navmesh_gen.qc
 	{
@@ -72,26 +61,27 @@ stacktrace {
 	}
 }
 globals 0 {
-"time" "111.788002"
-"cltime" "116.489006"
-"frametime" "0.016000"
+"time" "6.553000"
+"cltime" "15.526001"
+"frametime" "0.004000"
 "player_localentnum" "1"
 "maxclients" "8"
-"clientcommandframe" "4615"
-"servercommandframe" "4613"
+"clientcommandframe" "516"
+"servercommandframe" "515"
 "mapname" "navtest"
-"view_angles" "19.28 81.48 0"
+"view_angles" "4.4 98.56 0"
 "trace_fraction" "0.500000"
-"trace_endpos" "815.151 280.257 -223.969"
+"trace_endpos" "144.069 48.0224 -135.969"
 "trace_plane_normal" "0 0 1"
-"trace_plane_dist" "-220"
+"trace_plane_dist" "-132"
 "trace_inopen" "1"
-"input_angles" "19.2755 81.4746 0"
+"input_timelength" "0.012000"
+"input_angles" "4.39453 98.5583 0"
 "physics_mode" "2"
-"cursor_pos" "448.5 240.234 0"
-"g_width" "897"
+"cursor_pos" "335.025 251.523 0"
+"g_width" "674"
 "g_height" "480"
-"time_in_menu" "1.086000"
+"time_in_menu" "1.935997"
 "player" "1"
 "vmodel" "2"
 "v2model" "3"
@@ -99,10 +89,12 @@ globals 0 {
 "dummy" "1"
 "weapon" "1"
 "v2model_currentpos" "0 0 -24"
+"vmodel_velocity" "0 0 0"
+"vmodel_avelocity" "0 0 0"
 "vmodel_muzzleoffset" "12 0 1"
 "v2model_muzzleoffset" "12 0 1"
 "mappath" "maps/navtest"
-"HUD_Change_time" "10.041000"
+"HUD_Change_time" "10.461000"
 "rounds" "1"
 "rounds_change" "2"
 "cl_navmesh_mode" "1"
@@ -157,7 +149,7 @@ globals 0 {
 "buttons[8].pos" "0.475 0.5 0"
 "buttons[8].scale" "0.25 0.05 0"
 "buttons[8].text" "Join"
-"buttons[8].active" "0.935000"
+"buttons[8].active" "0.970000"
 "buttons[8].__function" "0:game_join"
 "buttons[8].group" "32"
 "buttons[9].pos" "0.475 0.575 0"
@@ -230,15 +222,12 @@ globals 0 {
 "selected_verts[1]" "-1"
 "selected_verts[2]" "-1"
 "selected_verts[3]" "-1"
-"debug_hulls[0]" "815.128 279.102 -223.969"
-"debug_hulls[1]" "815.129 279.102 -223.969"
-"debug_hull_count" "2"
 }
 entity 0{
 "modelindex" "1"
 "absmin" "-513 -833 -321"
 "absmax" "1025 449 353"
-"lastruntime" "111.774002"
+"lastruntime" "6.536000"
 "solid" "4"
 "model" "maps/navtest.bsp"
 "mins" "-513 -833 -321"
@@ -249,16 +238,16 @@ entity 0{
 "dimension_hit" "255"
 }
 entity 1{
-"lastruntime" "111.774002"
+"lastruntime" "6.536000"
 "dimension_solid" "255"
 "dimension_hit" "255"
 }
 entity 2{
 "modelindex" "13"
-"absmin" "-30.0244 -21.0078 -52.7288"
-"absmax" "55.944 34.8584 8.50607"
-"lastruntime" "111.774002"
-"origin" "0.485548 -0.153259 -0.567221"
+"absmin" "-6.19307 -33.1204 -71.0621"
+"absmax" "79.7753 22.7459 -9.82724"
+"lastruntime" "6.536000"
+"origin" "0.599972 -0.367685 0.692585"
 "model" "models/weapons/m1911/v_colt.mdl"
 "mins" "-29.304 -19.78 -52.0147"
 "maxs" "54.6644 34.0863 7.22012"
@@ -270,19 +259,19 @@ entity 2{
 entity 3{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "111.774002"
-"origin" "0.485548 -0.153259 -0.567221"
+"lastruntime" "6.536000"
+"origin" "0.599972 -0.367685 0.692585"
 "model" ""
 "dimension_solid" "255"
 "dimension_hit" "255"
 "renderflags" "1"
 }
 entity 4{
-"lastruntime" "111.774002"
-"origin" "12.4855 -0.153259 0.432779"
+"lastruntime" "6.536000"
+"origin" "12.6 -0.367685 1.69258"
 "dimension_solid" "255"
 "dimension_hit" "255"
-"scale" "1.043431"
+"scale" "1.034723"
 "alpha" "0.010000"
 "renderflags" "1"
 }

@@ -90,6 +90,8 @@ void() cl_navmesh_editor_draw;
 void() cl_navmesh_gen_navmesh;
 void() cl_navmesh_render_gen;
 
+void() cl_navgen_free_all_verts;
+
 
 #define 	P_JUG		1
 #define 	P_DOUBLE	2

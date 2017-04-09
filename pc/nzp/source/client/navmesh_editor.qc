@@ -2426,6 +2426,9 @@ void cl_toggle_navmesh_editor()
 	{
 		print("cl_navmesh editor: 0\n");
 		cl_navmesh_mode = FALSE;
+		
+		//TEST NAVMESH CLEARING
+		cl_navgen_free_all_verts();
 	}
 	else
 	{
