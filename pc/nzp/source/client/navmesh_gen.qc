@@ -57,6 +57,10 @@ navgen_vertex* cl_navgen_new_vert(vector pos)
 	return new_vert;
 }
 
+//FOR DEBUG
+vector debug_hulls[200];
+float debug_hull_count;
+
 //Removes and frees a vertex from the global vertex linked list
 //This does not handle updating left/right vertex references, that depends on how / why we are deleting this vertex
 void cl_navgen_free_vert(navgen_vertex* vert)
@@ -85,6 +89,8 @@ void cl_navgen_free_all_verts()
 	{
 		cl_navgen_free_vert(navgen_verts_root);
 	}
+	
+	debug_hull_count = 0;
 }
 
 
@@ -98,9 +104,6 @@ void cl_navmesh_render_edge(navgen_vertex* from, navgen_vertex* to)
 	cl_navmesh_draw_edge(from->pos, to->pos);
 }
 
-//FOR DEBUG
-vector debug_hulls[200];
-float debug_hull_count;
 
 
 //A TEMP DEBUG METHOD THAT RENDERS INTERMEDIATE NAVMESH GENERATION RESULTS
@@ -370,6 +373,9 @@ vector cl_navgen_find_min(vector pos1, vector pos2, vector other)
 	
 	float delta = 0.01;//how close does the min and max have to be for us to accept min as the desired point?
 	
+	debug_hulls[debug_hull_count++] = pos1;
+	debug_hulls[debug_hull_count++] = pos2;
+	
 	while(1)
 	{
 		if(vlen([max_x,max_y,0]-[min_x,min_y,0]) < delta)
@@ -381,12 +387,16 @@ vector cl_navgen_find_min(vector pos1, vector pos2, vector other)
 		{
 			//This should always run
 			mid = trace_endpos;
+			debug_hulls[debug_hull_count++] = mid;
 		}
 		else
 		{
 			print("!!!!!!!!!!!!!!!! Warning: could not walk to mid from min.\n");
 			//FIXME: this sometimes executes
 			//I guess we can't just rely on jumping back and forth across large gaps
+			
+			debug_hulls[debug_hull_count++] = min;
+			debug_hulls[debug_hull_count++] = mid;
 		}
 		
 		//debug_hulls[debug_hull_count++] = min;
