@@ -13,6 +13,14 @@ float cl_navmesh_poly_count;
 
 */
 
+//Vector assignment function, because fteqcc seems to have a broken vec1 = vec2; implementation (works only sometimes)
+//Functionally equivalent to saying (*a)=b;
+void vec_eq(vector* a, vector b)
+{
+	(*a) = b;
+}
+
+
 //==========================================================================================
 //			Temporary Structs Used for Navmesh Generation
 //==========================================================================================
@@ -41,9 +49,7 @@ navgen_vertex* cl_navgen_new_vert(vector pos)
 {
 	navgen_vertex* new_vert = memalloc(sizeof(navgen_vertex));
 	
-	new_vert->pos[0] = pos[0];
-	new_vert->pos[1] = pos[1];
-	new_vert->pos[2] = pos[2];
+	vec_eq(&(new_vert->pos),pos);
 	
 	new_vert->left = 0;
 	new_vert->right = 0;
@@ -157,6 +163,8 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 		print("Trace fraction: ",ftos(trace_fraction),"\n");
 		print("start solid: ",ftos(trace_startsolid)," all solid: ",ftos(trace_allsolid),"\n");
 		print("We are not on ground to begin, returning 0\n");
+		
+		vec_eq(&(trace_endpos),start);
 		return 0;
 	}
 	
@@ -169,7 +177,8 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 	
 	//float max_slope = 10.4;//18/tan(60) = 10.4, the length of the triangle formed by the max walkable slope of 60 degrees, and the max step height
 	
-	vector cur = start;
+	vector cur;
+	vec_eq(&(cur),start);
 	
 	vector goal_org;
 	
@@ -186,12 +195,14 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 		
 		delta_org[i] = ofs[i];
 		
-		goal_org = cur + delta_org;
+		vec_eq(&(goal_org),cur+delta_org);
 	
 		//Push down from a step above goal org to find result position
 		
-		vector above_goal = goal_org + [0,0,max_step_size];
-		vector below_goal = goal_org - [0,0,max_step_size];
+		vector above_goal;
+		vec_eq(&above_goal,goal_org + [0,0,max_step_size]);
+		vector below_goal;
+		vec_eq(&below_goal, goal_org - [0,0,max_step_size]);
 		
 		tracebox(above_goal,VEC_HULL_MIN,VEC_HULL_MAX,below_goal,MOVE_NOMONSTERS,self);
 		
@@ -210,7 +221,8 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 				{
 					//We still moved on this move
 					success[i] = 2;
-					cur = trace_endpos;
+					vec_eq(&(cur),trace_endpos);
+
 				}
 				
 				continue;
@@ -224,12 +236,12 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 			//Try straight tracebox back to the ledge from the lowered goal position
 			tracebox(below_goal,VEC_HULL_MIN,VEC_HULL_MAX,below_goal-delta_org,MOVE_NOMONSTERS,self);
 			
-			cur_x = trace_endpos_x;
-			cur_y = trace_endpos_y;
-			cur_z = trace_endpos_z + max_step_size;//don't lower the cur_z
+			vec_eq(&(cur),trace_endpos);
+			cur_z += max_step_size;//don't lower the cur_z
 			
 			//cur should now be right up against the ledge, push back a tiny bit from the ledge so that we cannot fall
-			cur = cur - 0.1*normalize(delta_org);
+			vec_eq(&(cur),cur - 0.1*normalize(delta_org));
+
 			
 			//If we moved back to start, we were already on ledge, so we did not move on this axis
 			if(vlen(cur - start) < 0.01)
@@ -252,17 +264,15 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 			success[i] = -1;
 		}
 		
-		cur_x = trace_endpos_x;
-		cur_y = trace_endpos_y;
-		cur_z = trace_endpos_z;
+		vec_eq(&(cur),trace_endpos);
+
 		//We are on the ground
 	}
 
 	//Assign trace end pos as where we ended up
-	trace_endpos_x = cur_x;
-	trace_endpos_y = cur_y;
-	trace_endpos_z = cur_z;
-	trace_endpos = cur;
+	vec_eq(&(trace_endpos),cur);
+
+	print("Walk from: ",vtos(start), " to: ",vtos(start+ofs)," got to: ",vtos(cur),"\n");
 
 	//If either move was a zero move, the success of the move depends on the other
 	if(success[0] == -1)
@@ -283,26 +293,57 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 {
 	float dist = 3;
 	
-	vector cur = start;
+	vector cur;
+	vec_eq(&(cur),start);
 	
+	vector dir;
+	vec_eq(&(dir),normalize([point_x,point_y,0] - [start_x,start_y,0]));
 	
-	vector dir = (point - start);
-	dir_z = 0;
-	dir = normalize(dir);
-	vector cur_ofs = dir * dist;
+	vector cur_ofs;
+	vec_eq(&(cur_ofs), dir * dist);
+	
 	float move;
+	
+//	float iters = 0;
+//	vector last_pos;
+//	vec_eq(&(last_pos),cur);	
+//	float updated_x = 0;
 	
 	while(1)
 	{	
+		if(iters++ >= 9999)
+		{
+			print("\n\nWarning: iterations exceeded 9998\n");
+			print("Trying to walk from ",vtos(start)," to ",vtos(point),"\n");
+			
+			print("Info: cur_ofs:",vtos(cur_ofs)," cur:", vtos(cur)," last pos:",vtos(last_pos),"\n");
+			
+			debug_hulls[debug_hull_count++] = start;
+			debug_hulls[debug_hull_count++] = point;
+			debug_hulls[debug_hull_count++] = cur;
+			debug_hulls[debug_hull_count++] = last_pos;
+			
+			
+			print("cur ofs x: ",ftos(cur_ofs_x),", delta x: ",ftos(point_x-cur_x),"\n");
+			print("cur ofs y: ",ftos(cur_ofs_y),", delta y: ",ftos(point_y-cur_y),"\n");
+			
+			return start;
+		}
 		//Don't walk past endpoint
 		if((cur_ofs_x > 0 && cur_ofs_x > (point_x - cur_x)) || (cur_ofs_x < 0 && cur_ofs_x < (point_x - cur_x)))
 		{
 			//print("x walk dist exceeds actual dist, decreasing walk dist.\n");
 			
 			//print("cur_ofs_x ",ftos(cur_ofs_x)," -> ",ftos(point_x - cur_x),"\n");
-			
+			print("\n cur_ofs_x is set to ",ftos(point_x-cur_x),"\n");
 			cur_ofs_x = point_x - cur_x;
+			
+			print("\n cur_x+cur_ofs_x: ",ftos(cur_x+cur_ofs_x),"  point_x: ",ftos(point_x),"\n");
+			updated_x = 1;
 		}
+		else
+			updated_x = 0;
+			
 		if((cur_ofs_y > 0 && cur_ofs_y > (point_y - cur_y)) || (cur_ofs_y < 0 && cur_ofs_y < (point_y - cur_y)))
 		{
 			//print("y walk dist exceeds actual dist, decreasing walk dist.\n");
@@ -316,10 +357,11 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 		//If we are at the endpoint
 		if(cur_ofs_x == 0 && cur_ofs_y == 0)
 		{
-			print("ofs is 0, walk_to_point succeeded, point = ",vtos(point),"\n");
-			trace_endpos = cur;
+//			print("ofs is 0, walk_to_point succeeded, point = ",vtos(point),"\n");
+			vec_eq(&(trace_endpos),cur);
 			return point;
 		}
+		
 		
 		move = cl_navgen_gen_walk(cur,cur_ofs);
 		
@@ -327,11 +369,16 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 		{
 			//debug_hulls[debug_hull_count++] = cur;
 			//debug_hulls[debug_hull_count++] = cur + cur_ofs;
-			print("hit something along the way, walk_to_point failed\n");
+//			print("hit something along the way, walk_to_point failed\n");
 			//print("cur: ",vtos(cur)," cur_ofs: ",vtos(cur_ofs),"\n");
 			return start;
 		}
-		cur = trace_endpos;
+		
+//		vec_eq(&(last_pos),cur);
+		vec_eq(&(cur),trace_endpos);
+		
+//		if(updated_x == 1)
+//			print(" got to pos x: ",ftos(cur_x),"\n");
 	}
 	return start;
 }
@@ -348,14 +395,13 @@ float cl_navgen_obstructed(vector pos1, vector pos2)
 	
 	if(cl_navgen_gen_walk_to_point(pos1,pos2) != pos2)
 	{
-		print("Result was not: ",vtos(pos2),"\n");
-		print("could not walk from pos1 to pos2\n");
+		//print("could not walk from pos1 to pos2 (Result was not: ",vtos(pos2),")\n");
 		return 1;
 	}
 	//Try walk from pos2 to pos1
 	if(cl_navgen_gen_walk_to_point(pos2,pos1) != pos1)
 	{
-		print("could not walk from pos2 to pos1\n");
+		//print("could not walk from pos2 to pos1\n");
 		return 1;
 	}
 		
@@ -367,27 +413,61 @@ float cl_navgen_obstructed(vector pos1, vector pos2)
 //Returns furthest point from pos1 (on line from pos1 to pos2) that can still walk to other
 vector cl_navgen_find_min(vector pos1, vector pos2, vector other)
 {
-	vector min = pos1;
-	vector max = pos2;
+	vector min;
+	vec_eq(&(min),pos1);
+	vector max;
+	vec_eq(&(max),pos2);
 	vector mid;
+	
 	
 	float delta = 0.01;//how close does the min and max have to be for us to accept min as the desired point?
 	
-	debug_hulls[debug_hull_count++] = pos1;
-	debug_hulls[debug_hull_count++] = pos2;
+	//debug_hulls[debug_hull_count++] = pos1;
+	//debug_hulls[debug_hull_count++] = pos2;
 	
+	//====== temp =======
+	
+//	print("Find min: ",vtos(pos1),"->",vtos(pos2)," : ",vtos(other),", [");
+	
+	vector pos2xy = [pos2_x,pos2_y,0];
+	vector pos1xy = [pos1_x,pos1_y,0];
+	
+	float xylen = vlen([pos2_x - pos1_x,pos2_y - pos1_y,0]);
+	float iters = 0;
+	//===================
+		
 	while(1)
 	{
-		if(vlen([max_x,max_y,0]-[min_x,min_y,0]) < delta)
-			return min;
+		//This should not happen
+		if(iters++ > 1000)
+		{
+			print("\n\nWarning: iterations > 1000 encountered.\n");
 			
-		mid = (min+max)/2;
+			//debug_hulls[debug_hull_count++] = pos1;
+			//debug_hulls[debug_hull_count++] = pos2;
+			//debug_hulls[debug_hull_count++] = mid;
+			print("Find min: ",vtos(pos1),"->",vtos(pos2)," : ",vtos(other),", \n");
+			print("Fraction: (",ftos(vlen([min_x,min_y,0]-pos1xy)/xylen),",",ftos(vlen([max_x,max_y,0]-pos1xy)/xylen),")\n");
+			
+			return min;
+		}
+		//===temp===
+//		print(" (",ftos(vlen([min_x,min_y,0]-pos1xy)/xylen),",",ftos(vlen([max_x,max_y,0]-pos1xy)/xylen),"),");
+		//==========
+
+		if(vlen([max_x,max_y,0]-[min_x,min_y,0]) < delta)
+		{
+//			print("]\n");
+			return min;
+		}
+			
+		vec_eq(&(mid),(min+max)/2);
 		
 		if(cl_navgen_gen_walk_to_point(min,mid) == mid)
 		{
 			//This should always run
-			mid = trace_endpos;
-			debug_hulls[debug_hull_count++] = mid;
+			vec_eq(&(mid),trace_endpos);
+			//debug_hulls[debug_hull_count++] = mid;
 		}
 		else
 		{
@@ -395,17 +475,17 @@ vector cl_navgen_find_min(vector pos1, vector pos2, vector other)
 			//FIXME: this sometimes executes
 			//I guess we can't just rely on jumping back and forth across large gaps
 			
-			debug_hulls[debug_hull_count++] = min;
-			debug_hulls[debug_hull_count++] = mid;
+			//debug_hulls[debug_hull_count++] = min;
+			//debug_hulls[debug_hull_count++] = mid;
 		}
 		
 		//debug_hulls[debug_hull_count++] = min;
 		//debug_hulls[debug_hull_count++] = max;
 		
 		if(cl_navgen_obstructed(mid,other))
-			max = mid;
+			vec_eq(&(max),mid);
 		else
-			min = mid;
+			vec_eq(&(min),mid);
 	}
 }
 
@@ -424,10 +504,13 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 	
 	//Calculating walk_dir
 	//===========================
-	vector tangent = ((vert->right)->pos - (vert->left)->pos);
+	vector tangent;
+	vec_eq(&(tangent),((vert->right)->pos - (vert->left)->pos));
+	
 	//Don't care about z-difference
 	tangent_z = 0;
-	tangent = normalize(tangent);
+	vec_eq(&(tangent),normalize(tangent));
+	
 	
 	//Getting edge normal
 	walk_dir[0] = -tangent[1];
@@ -465,11 +548,11 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 	while(1)
 	{
 		//Try walking a small amount forward
-		last_vert_pos = vert->pos;
+		vec_eq(&(last_vert_pos),vert->pos);
 		
 		move = cl_navgen_gen_walk(vert->pos,walk_dir);
 		
-		vert->pos = trace_endpos;
+		vec_eq(&(vert->pos),trace_endpos);
 		
 		print("Move result: ",ftos(move),"\n");
 		if(!move && !did_move)
@@ -495,12 +578,19 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 			new_vert->right = vert;
 			vert->left = new_vert;
 			
-			//Get new_vert as close as possible to our vert such that we can still walk to our left vert
-			new_vert->pos = cl_navgen_find_min(new_vert->pos,vert->pos,(new_vert->left)->pos);
-			//Get new_vert as close as possible to our left vert such that we can still walk to our vert
-			new_vert->pos = cl_navgen_find_min(new_vert->pos,(new_vert->left)->pos,vert->pos);
 			
-			vert->pos = last_vert_pos;
+			//Get new_vert as close as possible to our vert such that we can still walk to our left vert
+//			print("Before: ",vtos(new_vert->pos));
+			
+			vec_eq(&(new_vert->pos), cl_navgen_find_min(new_vert->pos,vert->pos,(new_vert->left)->pos));
+//			print("After: ",vtos(new_vert->pos));
+			
+			
+			//Get new_vert as close as possible to our left vert such that we can still walk to our vert
+			vec_eq(&(new_vert->pos), cl_navgen_find_min(new_vert->pos,(new_vert->left)->pos,vert->pos));
+			
+			vec_eq(&(vert->pos), last_vert_pos);
+			
 			
 			//Check if the new vertex didn't move
 			if(vert->pos == new_vert->pos)
@@ -532,11 +622,11 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 			vert->right = new_vert;
 			
 			//Get new_vert as close as possible to our vert such that we can still walk to our right vert
-			new_vert->pos = cl_navgen_find_min(new_vert->pos,vert->pos,(new_vert->right)->pos);
+			vec_eq(&(new_vert->pos), cl_navgen_find_min(new_vert->pos,vert->pos,(new_vert->right)->pos) );
 			//Get new_vert as close as possible to our right vert such that we can still walk to our vert
-			new_vert->pos = cl_navgen_find_min(new_vert->pos,(new_vert->right)->pos,vert->pos);
+			vec_eq(&(new_vert->pos), cl_navgen_find_min(new_vert->pos,(new_vert->right)->pos,vert->pos) );
 			
-			vert->pos = last_vert_pos;
+			vec_eq(&(vert->pos), last_vert_pos);
 			
 			//Check if the new vertex didn't move
 			if(vert->pos == new_vert->pos)
@@ -563,12 +653,14 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 			//=========================
 			//Subdivide left edge
 			//=========================
-			vector edge_center = (vert->pos + (vert->left)->pos)/2;
+			vector edge_center;
+			vec_eq(&(edge_center), (vert->pos + (vert->left)->pos)/2 );
 			
 			if(cl_navgen_gen_walk_to_point(vert->pos,edge_center) == edge_center)
 			{
 				//This should always run
-				edge_center = trace_endpos;
+				vec_eq(&(edge_center), trace_endpos);
+				
 			}
 			else
 			{
@@ -584,12 +676,12 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 			//=========================
 			//Subdivide right edge
 			//=========================
-			edge_center = (vert->pos + (vert->right)->pos)/2;
+			vec_eq(&(edge_center), (vert->pos + (vert->right)->pos)/2 );
 			
 			if(cl_navgen_gen_walk_to_point(vert->pos,edge_center) == edge_center)
 			{
 				//This should always run
-				edge_center = trace_endpos;
+				vec_eq(&(edge_center), trace_endpos );
 			}
 			else
 			{
@@ -628,11 +720,15 @@ void cl_navmesh_gen_navmesh()
 	
 	//navgen_verts_root = 0;
 	
-	vector player_pos = getentity(player_localentnum, GE_ORIGIN);
+	//vector player_pos = getentity(player_localentnum, GE_ORIGIN);
+	vector player_pos;
+	
+	vec_eq(&player_pos,getentity(player_localentnum, GE_ORIGIN));
 	
 	//Find floor at pos
 	cl_navgen_gen_walk(player_pos,[0,0,0]);
-	player_pos = trace_endpos;
+	//player_pos = trace_endpos;
+	vec_eq(&player_pos,trace_endpos);
 	
 	float initial_tri_size = 40;//10
 	
