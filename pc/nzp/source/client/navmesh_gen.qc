@@ -65,7 +65,19 @@ navgen_vertex* cl_navgen_new_vert(vector pos)
 
 //FOR DEBUG
 vector debug_hulls[200];
+vector debug_hull_scales[200];
+vector debug_hull_colors[200];
+float debug_hull_alphas[200];
+
 float debug_hull_count;
+
+void add_debug_hull(vector pos, vector scale, vector color, float alpha)
+{
+	debug_hulls[debug_hull_count] = pos;
+	debug_hull_scales[debug_hull_count] = scale;
+	debug_hull_colors[debug_hull_count] = color;
+	debug_hull_alphas[debug_hull_count++] = alpha;
+}
 
 //Removes and frees a vertex from the global vertex linked list
 //This does not handle updating left/right vertex references, that depends on how / why we are deleting this vertex
@@ -133,7 +145,7 @@ void cl_navmesh_render_gen()
 	//Drawing debug collision hulls
 	for(float i = 0; i < debug_hull_count; i++)
 	{
-		cl_navmesh_draw_test_ent(debug_hulls[i],0);
+		cl_navmesh_draw_test_ent(debug_hulls[i],debug_hull_scales[i],debug_hull_colors[i],debug_hull_alphas[i]);
 	}
 }
 
@@ -272,7 +284,8 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 	//Assign trace end pos as where we ended up
 	vec_eq(&(trace_endpos),cur);
 
-	print("Walk from: ",vtos(start), " to: ",vtos(start+ofs)," got to: ",vtos(cur),"\n");
+	if(success[0] == 0 || success[0] == 0)
+		print("Walk from: ",vtos(start), " to: ",vtos(start+ofs)," got to: ",vtos(cur),"\n");
 
 	//If either move was a zero move, the success of the move depends on the other
 	if(success[0] == -1)
@@ -304,10 +317,11 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 	
 	float move;
 	
-//	float iters = 0;
-//	vector last_pos;
-//	vec_eq(&(last_pos),cur);	
-//	float updated_x = 0;
+	
+	float iters = 0;
+	vector last_pos;
+	vec_eq(&(last_pos),cur);	
+	float updated_x = 0;
 	
 	while(1)
 	{	
@@ -317,6 +331,21 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 			print("Trying to walk from ",vtos(start)," to ",vtos(point),"\n");
 			
 			print("Info: cur_ofs:",vtos(cur_ofs)," cur:", vtos(cur)," last pos:",vtos(last_pos),"\n");
+			
+			
+			
+			add_debug_hull(start,[1,1,1],[0,1,0],0.1);
+			add_debug_hull(start,[0.01,0.01,0.01],[0,1,0],0.2);
+			
+			add_debug_hull(point,[1,1,1],[1,0,0],0.1);
+			add_debug_hull(point,[0.01,0.01,0.01],[0,1,0],0.2);
+			
+			add_debug_hull(cur,[1,1,1],[1,1,1],0.1);
+			add_debug_hull(cur,[0.01,0.01,0.01],[1,1,1],0.2);
+			
+			add_debug_hull(last_pos,[1,1,1],[0.5,0.5,0.5],0.1);
+			add_debug_hull(last_pos,[0.01,0.01,0.01],[0.5,0.5,0.5],0.2);
+			
 			
 			debug_hulls[debug_hull_count++] = start;
 			debug_hulls[debug_hull_count++] = point;
@@ -357,7 +386,7 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 		//If we are at the endpoint
 		if(cur_ofs_x == 0 && cur_ofs_y == 0)
 		{
-//			print("ofs is 0, walk_to_point succeeded, point = ",vtos(point),"\n");
+			print("ofs is 0, walk_to_point succeeded, point = ",vtos(point),"\n");
 			vec_eq(&(trace_endpos),cur);
 			return point;
 		}
@@ -369,16 +398,16 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 		{
 			//debug_hulls[debug_hull_count++] = cur;
 			//debug_hulls[debug_hull_count++] = cur + cur_ofs;
-//			print("hit something along the way, walk_to_point failed\n");
+			print("hit something along the way, walk_to_point failed\n");
 			//print("cur: ",vtos(cur)," cur_ofs: ",vtos(cur_ofs),"\n");
 			return start;
 		}
 		
-//		vec_eq(&(last_pos),cur);
+		vec_eq(&(last_pos),cur);
 		vec_eq(&(cur),trace_endpos);
 		
-//		if(updated_x == 1)
-//			print(" got to pos x: ",ftos(cur_x),"\n");
+		if(updated_x == 1)
+			print(" got to pos x: ",ftos(cur_x),"\n");
 	}
 	return start;
 }
@@ -492,9 +521,13 @@ vector cl_navgen_find_min(vector pos1, vector pos2, vector other)
 //TODO: method that resolves a corner on a bsp hull, we essentially walk back and forth with one vert until:
 //	moving back and forth a tiny tiny amount is the difference between an obstructed edge and an unobstructed edge
 
+//For temporarily not continuing the recursion
+float recursive_depth;
 
 void cl_navgen_gen_floodfill(navgen_vertex* vert)
 {	
+	if(recursive_depth > 3)
+		return;
 	//Incrementally move vertex away from it's edges until stop or our edges are obstructed
 	//calculate direction from edges
 	
@@ -602,6 +635,12 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 				
 				cl_navgen_free_vert(new_vert);
 			}
+			else
+			{
+				recursive_depth++;
+				cl_navgen_gen_floodfill(vert);
+				recursive_depth--;
+			}
 			
 			return;
 		}
@@ -637,6 +676,12 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 				(new_vert->right)->left = vert;
 				
 				cl_navgen_free_vert(new_vert);
+			}
+			else
+			{
+				recursive_depth++;
+				cl_navgen_gen_floodfill(vert);
+				recursive_depth--;
 			}
 			
 			return;
@@ -701,9 +746,15 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 	if(!did_move)
 		return;
 		
+	//FIXME: it should be safe to call these because of the temp recursive_depth safety net
+	//however, we cannot call these without recursive_depth until we handle navmesh intersecting itself
 	//Call cl_navgen_gen_floodfill on left and right verts
-	//cl_navgen_gen_floodfill(vert->left);
-	//cl_navgen_gen_floodfill(vert->right);
+	/*recursive_depth++;
+	cl_navgen_gen_floodfill(vert->left);
+	recursive_depth--;
+	recursive_depth++;
+	cl_navgen_gen_floodfill(vert->right);
+	recursive_depth--;*/
 	
 	
 	//if left / right edge was obstructed

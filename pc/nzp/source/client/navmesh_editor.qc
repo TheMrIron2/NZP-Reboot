@@ -19,7 +19,7 @@ float cl_navmesh_place_corner_state;
 #define NAVMESH_PLACE_CORNER_CONFIRM 2
 
 //Pre-defs
-void(vector pos, float is_goal) cl_navmesh_draw_test_ent;
+void(vector pos, vector scale, vector color, float alpha) cl_navmesh_draw_test_ent;
 void() cl_navmesh_delete_verts;
 void(float poly_index) cl_navmesh_delete_poly_at_index;
 float(vector pos) cl_navmesh_get_containing_poly;
@@ -180,8 +180,8 @@ void cl_navmesh_editor_draw()
 		cl_navmesh_draw_poly(i);
 	}
 	
-	cl_navmesh_draw_test_ent(startent_pos,0);
-	cl_navmesh_draw_test_ent(goalent_pos,1);
+	cl_navmesh_draw_test_ent(startent_pos, [1,1,1], [0,1,0], 0.4);
+	cl_navmesh_draw_test_ent(goalent_pos, [1,1,1], [1,0,0], 0.4);
 	
 	cl_navmesh_pathfind_draw_result_node_path();
 	cl_navmesh_pathfind_draw_result_portals();
@@ -1378,7 +1378,7 @@ void cl_navmesh_editor_load_navmesh()
 
 float(float start, float goal, vector start_pos, vector end_pos) cl_navmesh_pathfind_start;
 
-void cl_navmesh_draw_test_ent(vector pos, float is_goal)
+void cl_navmesh_draw_test_ent(vector pos, vector scale, vector color, float alpha)
 {
 	//Assigning the shader as something else so that fte doesn't batch the calls (leading to colors not changing between draw calls)
 	R_BeginPolygon("debug/wireframe",0);
@@ -1386,26 +1386,15 @@ void cl_navmesh_draw_test_ent(vector pos, float is_goal)
 	
 	//vector	VEC_HULL_MIN = '-16 -16 -32';
 	//vector	VEC_HULL_MAX = '16 16 40';
-	float min_x = -16;
-	float min_y = -16;
-	float min_z = -32;
-	float max_x = 16;
-	float max_y = 16;
-	float max_z = 40;
 	
-	vector color;
+	float min_x = -16 * scale_x;
+	float min_y = -16 * scale_y;
+	float min_z = -32 * scale_z;
+	float max_x = 16 * scale_x;
+	float max_y = 16 * scale_y;
+	float max_z = 40 * scale_z;
 	
 	
-	if(is_goal)
-	{
-		color = [1,0,0];
-	}
-	else
-	{
-		color = [0,1,0];
-	}
-	
-	float alpha = 0.4;
 	
 	//bottom face
 	R_PolygonVertex(pos + [min_x,max_y,min_z], [0,0,0], color,alpha);
