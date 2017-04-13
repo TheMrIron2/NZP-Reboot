@@ -300,6 +300,13 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 	return 1;
 }
 
+
+
+//For temporarily not continuing the recursion
+float recursive_depth;
+
+
+
 //Walks to x & y coordinate of point, returns vector of how far we got
 //We walk in dist increments, and assume we are unobstructed
 vector cl_navgen_gen_walk_to_point(vector start, vector point)
@@ -334,16 +341,16 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 			
 			
 			
-			add_debug_hull(start,[1,1,1],[0,1,0],0.1);
+			add_debug_hull(start,[1,1,1],[0,1,0],0.05);
 			add_debug_hull(start,[0.01,0.01,0.01],[0,1,0],0.2);
 			
-			add_debug_hull(point,[1,1,1],[1,0,0],0.1);
+			add_debug_hull(point,[1,1,1],[1,0,0],0.05);
 			add_debug_hull(point,[0.01,0.01,0.01],[0,1,0],0.2);
 			
-			add_debug_hull(cur,[1,1,1],[1,1,1],0.1);
+			add_debug_hull(cur,[1,1,1],[1,1,1],0.05);
 			add_debug_hull(cur,[0.01,0.01,0.01],[1,1,1],0.2);
 			
-			add_debug_hull(last_pos,[1,1,1],[0.5,0.5,0.5],0.1);
+			add_debug_hull(last_pos,[1,1,1],[0.5,0.5,0.5],0.05);
 			add_debug_hull(last_pos,[0.01,0.01,0.01],[0.5,0.5,0.5],0.2);
 			
 			
@@ -355,6 +362,10 @@ vector cl_navgen_gen_walk_to_point(vector start, vector point)
 			
 			print("cur ofs x: ",ftos(cur_ofs_x),", delta x: ",ftos(point_x-cur_x),"\n");
 			print("cur ofs y: ",ftos(cur_ofs_y),", delta y: ",ftos(point_y-cur_y),"\n");
+			
+			
+			//Stop recursion so we can follow the printed debug traces
+			recursive_depth = 100;
 			
 			return start;
 		}
@@ -521,8 +532,6 @@ vector cl_navgen_find_min(vector pos1, vector pos2, vector other)
 //TODO: method that resolves a corner on a bsp hull, we essentially walk back and forth with one vert until:
 //	moving back and forth a tiny tiny amount is the difference between an obstructed edge and an unobstructed edge
 
-//For temporarily not continuing the recursion
-float recursive_depth;
 
 void cl_navgen_gen_floodfill(navgen_vertex* vert)
 {	
@@ -797,7 +806,7 @@ void cl_navmesh_gen_navmesh()
 	v3->left = v1;
 	v3->right = v2;
 	
-	
+	recursive_depth = 0;
 	cl_navgen_gen_floodfill(v1);
 }
 /*	
