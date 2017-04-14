@@ -8,61 +8,26 @@ progs 0 {
 }
 stacktrace {
 //0 csprogs.dat
-	"0:cl_navgen_gen_walk" //client/navmesh_gen.qc
+	"0:vec_eq" //client/navmesh_gen.qc
 	{
-		"start"	"'369.711 288.092 -15.9688'"
-		"ofs"	"'0 -0.0319214 0'"
-		"max_step_size"	"18"
-		"cur"	"'369.711 288.092 -15.9688'"
-		"goal_org"	"'0 0 0'"
-		"delta_org"	"'0 0 0'"
-		"success[0]"	"0"
-		"success[1]"	"0"
-		"i"	"0"
-		"above_goal"	"'0 0 0'"
-		"below_goal"	"'0 0 0'"
-		ofs22292 781384 // 0.000000
-		ofs22293 0 // 0.000000
-	}
-	"0:cl_navgen_gen_walk_to_point" //client/navmesh_gen.qc
-	{
-		"start"	"'0 0 0'"
-		"point"	"'0 0 0'"
-		"dist"	"0"
-		"cur"	"'0 0 0'"
-		"dir"	"'0 0 0'"
-		"cur_ofs"	"'0 0 0'"
-		"move"	"0"
-		ofs22311 0 // 0.000000
+		"a"	"0xc3f9c"
+		"b"	"'0 0 0'"
 	}
 	"0:cl_navgen_find_min" //client/navmesh_gen.qc
 	{
 		"pos1"	"'0 0 0'"
 		"pos2"	"'0 0 0'"
-		"other"	"'0 0 0'"
+		"pos3"	"'0 0 0'"
+		"pos1_minimized"	"0"
+		"pos3_minimized"	"0"
 		"min"	"'0 0 0'"
-		"max"	"'0 0 0'"
-		"mid"	"'0 0 0'"
+		"mid1"	"'0 0 0'"
+		"mid3"	"'0 0 0'"
 		"delta"	"0"
-		"pos2xy"	"'0 0 0'"
-		"pos1xy"	"'0 0 0'"
-		"xylen"	"0"
 		"iters"	"0"
-		ofs22345 0 // 0.000000
-		ofs22346 0 // 0.000000
-	}
-	"0:cl_navgen_gen_floodfill" //client/navmesh_gen.qc
-	{
-		"vert"	"0xbfd0c"
-		"walk_dir"	"'0 3 0'"
-		"walk_dist"	"3"
-		"tangent"	"'1 0 0'"
-		"did_move"	"1"
-		"move"	"2"
-		"last_vert_pos"	"'152.932 127.254 -103.969'"
-		"new_vert"	"0xbfdd8"
-		"edge_center"	"'0 0 0'"
-		ofs22364 0 // 0.000000
+		"temp"	"'0 0 0'"
+		"iters2"	"0"
+		ofs23850 0 // 0.000000
 	}
 	"0:cl_navgen_gen_floodfill" //client/navmesh_gen.qc
 	{
@@ -75,7 +40,7 @@ stacktrace {
 		"last_vert_pos"	"'0 0 0'"
 		"new_vert"	"0"
 		"edge_center"	"'0 0 0'"
-		ofs22364 0 // 0.000000
+		ofs23897 0 // 0.000000
 	}
 	"0:cl_navmesh_gen_navmesh" //client/navmesh_gen.qc
 	{
@@ -84,7 +49,7 @@ stacktrace {
 		"v1"	"0"
 		"v2"	"0"
 		"v3"	"0"
-		ofs22372 0 // 0.000000
+		ofs23905 0 // 0.000000
 	}
 	"0:cl_toggle_navmesh_editor" //client/navmesh_editor.qc
 	{
@@ -99,26 +64,27 @@ stacktrace {
 	}
 }
 globals 0 {
-"time" "7.242006"
-"cltime" "142.254013"
-"frametime" "0.006000"
+"time" "8.820001"
+"cltime" "14.190001"
+"frametime" "0.004000"
 "player_localentnum" "1"
 "maxclients" "8"
-"clientcommandframe" "9800"
-"servercommandframe" "9799"
+"clientcommandframe" "691"
+"servercommandframe" "690"
 "mapname" "navtest"
-"view_angles" "17.6 88 0"
-"trace_endpos" "369.711 288.092 -15.9688"
+"view_angles" "23.32 87.56 0"
+"trace_fraction" "0.500000"
+"trace_endpos" "593.564 -521.317 -223.969"
 "trace_plane_normal" "0 0 1"
-"trace_plane_dist" "-12"
+"trace_plane_dist" "-220"
 "trace_inopen" "1"
-"input_timelength" "0.012000"
-"input_angles" "17.5946 87.995 0"
+"input_timelength" "0.004000"
+"input_angles" "23.3185 87.5555 0"
 "physics_mode" "2"
-"cursor_pos" "439.704 253.091 0"
-"g_width" "917"
+"cursor_pos" "357.404 241.646 0"
+"g_width" "674"
 "g_height" "480"
-"time_in_menu" "3.911989"
+"time_in_menu" "0.802000"
 "player" "1"
 "vmodel" "2"
 "v2model" "3"
@@ -126,12 +92,10 @@ globals 0 {
 "dummy" "1"
 "weapon" "1"
 "v2model_currentpos" "0 0 -24"
-"vmodel_velocity" "0 0 0"
-"vmodel_avelocity" "0 0 0"
 "vmodel_muzzleoffset" "12 0 1"
 "v2model_muzzleoffset" "12 0 1"
 "mappath" "maps/navtest"
-"HUD_Change_time" "11.203000"
+"HUD_Change_time" "9.912001"
 "rounds" "1"
 "rounds_change" "2"
 "cl_navmesh_mode" "1"
@@ -186,7 +150,7 @@ globals 0 {
 "buttons[8].pos" "0.475 0.5 0"
 "buttons[8].scale" "0.25 0.05 0"
 "buttons[8].text" "Join"
-"buttons[8].active" "0.960000"
+"buttons[8].active" "0.980000"
 "buttons[8].__function" "0:game_join"
 "buttons[8].group" "32"
 "buttons[9].pos" "0.475 0.575 0"
@@ -259,12 +223,14 @@ globals 0 {
 "selected_verts[1]" "-1"
 "selected_verts[2]" "-1"
 "selected_verts[3]" "-1"
+"debug_moreinfo" "1"
+"disable_print" "1"
 }
 entity 0{
 "modelindex" "1"
 "absmin" "-513 -833 -321"
 "absmax" "1025 449 353"
-"lastruntime" "7.228000"
+"lastruntime" "8.805000"
 "solid" "4"
 "model" "maps/navtest.bsp"
 "mins" "-513 -833 -321"
@@ -275,16 +241,16 @@ entity 0{
 "dimension_hit" "255"
 }
 entity 1{
-"lastruntime" "7.228000"
+"lastruntime" "8.805000"
 "dimension_solid" "255"
 "dimension_hit" "255"
 }
 entity 2{
 "modelindex" "13"
-"absmin" "-30.8676 -20.3804 -53.6514"
-"absmax" "55.1008 35.4859 7.58341"
-"lastruntime" "7.228000"
-"origin" "0.402072 -0.0528711 0.57286"
+"absmin" "-30.8548 -20.3827 -53.6352"
+"absmax" "55.1136 35.4835 7.59965"
+"lastruntime" "8.805000"
+"origin" "-0.549896 0.315104 -0.490912"
 "model" "models/weapons/m1911/v_colt.mdl"
 "mins" "-29.304 -19.78 -52.0147"
 "maxs" "54.6644 34.0863 7.22012"
@@ -296,19 +262,19 @@ entity 2{
 entity 3{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "7.228000"
-"origin" "0.402072 -0.0528711 0.57286"
+"lastruntime" "8.805000"
+"origin" "-0.549896 0.315104 -0.490912"
 "model" ""
 "dimension_solid" "255"
 "dimension_hit" "255"
 "renderflags" "1"
 }
 entity 4{
-"lastruntime" "7.228000"
-"origin" "12.4021 -0.0528711 1.57286"
+"lastruntime" "8.805000"
+"origin" "11.4501 0.315104 0.509088"
 "dimension_solid" "255"
 "dimension_hit" "255"
-"scale" "1.025043"
+"scale" "1.009278"
 "alpha" "0.010000"
 "renderflags" "1"
 }
