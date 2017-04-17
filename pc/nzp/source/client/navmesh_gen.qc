@@ -676,7 +676,7 @@ float cl_navgen_calc_midpoint(vector a, vector b)
 //Given pos1 pos2 and pos3, alternates moving pos2 towards pos1 and pos3 a tiny amount until we cannot walk to the one we are not moving towards
 //Assigns trace_endpos as resulting minimum
 //Returns 0 if we encountered an error / issue, 1 if we successfully found the minimum (I'm not yet sure if this error handling is useful in any way)
-float cl_navgen_find_min(vector pos1, vector pos2, vector pos3)
+float backup_cl_navgen_find_min(vector pos1, vector pos2, vector pos3)
 {
 	float pos1_minimized = 0;
 	float pos3_minimized = 0;
@@ -938,7 +938,8 @@ float cl_navgen_find_min(vector pos1, vector pos2, vector pos3)
 
 //Given pos1 that can walk to other, and pos2 that cannot walk to other
 //Returns furthest point from pos1 (on line from pos1 to pos2) that can still walk to other
-vector cl_old_navgen_find_min(vector pos1, vector pos2, vector other)
+//Assigns value of min to trace_endpos
+float cl_navgen_find_min(vector pos1, vector pos2, vector other)
 {
 	vector min;
 	vec_eq(&(min),pos1);
@@ -997,7 +998,8 @@ vector cl_old_navgen_find_min(vector pos1, vector pos2, vector other)
 			print("=======================================================\n");
 			print("=======================================================\n");
 			
-			return min;
+			vec_eq(&trace_endpos,min);
+			return 0;
 		}
 		//===temp===
 //		print(" (",ftos(vlen([min_x,min_y,0]-pos1xy)/xylen),",",ftos(vlen([max_x,max_y,0]-pos1xy)/xylen),"),");
@@ -1013,8 +1015,8 @@ vector cl_old_navgen_find_min(vector pos1, vector pos2, vector other)
 			print("=======================================================\n");
 			print("=======================================================\n");	
 
-			return min;
-			
+			vec_eq(&trace_endpos,min);
+			return 0;
 		}
 			
 		vec_eq(&(mid),(min+max)/2);
@@ -1045,7 +1047,8 @@ vector cl_old_navgen_find_min(vector pos1, vector pos2, vector other)
 			print("=======================================================\n");
 			print("=======================================================\n");
 			
-			return min;
+			vec_eq(&trace_endpos,min);
+			return 0;
 			//FIXME: this sometimes executes
 			//I guess we can't just rely on jumping back and forth across large gaps
 			
@@ -1162,8 +1165,8 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 			
 			
 			//Getting the vertex as close to the corner as possible
-			cl_navgen_find_min(vert->pos,new_vert->pos,(new_vert->left)->pos);
-			vec_eq(&(new_vert->pos), trace_endpos);
+			//cl_navgen_find_min(vert->pos,new_vert->pos,(new_vert->left)->pos);
+			//vec_eq(&(new_vert->pos), trace_endpos);
 			
 			
 			
@@ -1172,13 +1175,16 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 			
 			
 			
-			
 			//vec_eq(&(new_vert->pos), cl_navgen_find_min(new_vert->pos,vert->pos,(new_vert->left)->pos));
+			cl_navgen_find_min(new_vert->pos,vert->pos,(new_vert->left)->pos);
+			vec_eq(&(new_vert->pos), trace_endpos);
 //			print("After: ",vtos(new_vert->pos));
 			
 			
 			//Get new_vert as close as possible to our left vert such that we can still walk to our vert
 			//vec_eq(&(new_vert->pos), cl_navgen_find_min(new_vert->pos,(new_vert->left)->pos,vert->pos));
+			cl_navgen_find_min(new_vert->pos,(new_vert->left)->pos,vert->pos);
+			vec_eq(&(new_vert->pos), trace_endpos);
 			
 			vec_eq(&(vert->pos), last_vert_pos);
 			
