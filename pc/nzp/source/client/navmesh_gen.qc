@@ -651,9 +651,47 @@ float cl_navgen_calc_midpoint(vector a, vector b)
 	{
 		if(debug_moreinfo == 1)
 			print("\tmidpoint failure\n");
+			
 		for(float i = 0; i < 40; i++)print("=");print("\n");
 		print("Warning: could not walk to mid from min.\n");
 		for(float i = 0; i < 40; i++)print("=");print("\n\n");
+		
+		//Print some more debug info
+		if(debug_moreinfo)
+		{
+			//Can we even walk from a to b?
+			if(cl_navgen_obstructed(a,b))
+			{
+				print("\tCannot walk from a to b\n");
+			}
+			else
+				print("\tCan walk from a to b\n");
+			//DEBUG remove this, make sure mid can walk to a and b
+			if(cl_navgen_obstructed(mid,a))
+			{
+				print(" Warning, cannot walk from mid to a\n");
+			}
+			else
+				print("Can walk from mid to a\n");
+			//If min and mid3 are obstructed, print an error
+			if(cl_navgen_obstructed(mid,b))
+			{
+				print(" Warning, cannot walk from mid to b\n");
+			}
+			else
+				print("Can walk from mid to b\n");
+			
+			if(cl_navgen_gen_walk_to_point(a,mid))
+			{
+				print("\tCan actually walk from a to mid\n");
+			}
+			else
+				print("\tCannot walk from a to mid\n");
+			
+			
+			
+			
+		}
 		
 		//Run this method once so we can follow the prints
 		float temp_noprint = disable_print;
@@ -676,7 +714,7 @@ float cl_navgen_calc_midpoint(vector a, vector b)
 //Given pos1 pos2 and pos3, alternates moving pos2 towards pos1 and pos3 a tiny amount until we cannot walk to the one we are not moving towards
 //Assigns trace_endpos as resulting minimum
 //Returns 0 if we encountered an error / issue, 1 if we successfully found the minimum (I'm not yet sure if this error handling is useful in any way)
-float backup_cl_navgen_find_min(vector pos1, vector pos2, vector pos3)
+float cl_navgen_find_min(vector pos1, vector pos2, vector pos3)
 {
 	float pos1_minimized = 0;
 	float pos3_minimized = 0;
@@ -939,7 +977,7 @@ float backup_cl_navgen_find_min(vector pos1, vector pos2, vector pos3)
 //Given pos1 that can walk to other, and pos2 that cannot walk to other
 //Returns furthest point from pos1 (on line from pos1 to pos2) that can still walk to other
 //Assigns value of min to trace_endpos
-float cl_navgen_find_min(vector pos1, vector pos2, vector other)
+float cl_old_navgen_find_min(vector pos1, vector pos2, vector other)
 {
 	vector min;
 	vec_eq(&(min),pos1);
@@ -1165,8 +1203,8 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 			
 			
 			//Getting the vertex as close to the corner as possible
-			//cl_navgen_find_min(vert->pos,new_vert->pos,(new_vert->left)->pos);
-			//vec_eq(&(new_vert->pos), trace_endpos);
+			cl_navgen_find_min(vert->pos,new_vert->pos,(new_vert->left)->pos);
+			vec_eq(&(new_vert->pos), trace_endpos);
 			
 			
 			
@@ -1176,15 +1214,15 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 			
 			
 			//vec_eq(&(new_vert->pos), cl_navgen_find_min(new_vert->pos,vert->pos,(new_vert->left)->pos));
-			cl_navgen_find_min(new_vert->pos,vert->pos,(new_vert->left)->pos);
-			vec_eq(&(new_vert->pos), trace_endpos);
+			//cl_navgen_find_min(new_vert->pos,vert->pos,(new_vert->left)->pos);
+			//vec_eq(&(new_vert->pos), trace_endpos);
 //			print("After: ",vtos(new_vert->pos));
 			
 			
 			//Get new_vert as close as possible to our left vert such that we can still walk to our vert
 			//vec_eq(&(new_vert->pos), cl_navgen_find_min(new_vert->pos,(new_vert->left)->pos,vert->pos));
-			cl_navgen_find_min(new_vert->pos,(new_vert->left)->pos,vert->pos);
-			vec_eq(&(new_vert->pos), trace_endpos);
+			//cl_navgen_find_min(new_vert->pos,(new_vert->left)->pos,vert->pos);
+			//vec_eq(&(new_vert->pos), trace_endpos);
 			
 			vec_eq(&(vert->pos), last_vert_pos);
 			
