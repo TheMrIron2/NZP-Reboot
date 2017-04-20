@@ -8,38 +8,24 @@ progs 0 {
 }
 stacktrace {
 //0 csprogs.dat
-	"0:cl_navgen_gen_direct_walk" //client/navmesh_gen.qc
+	"0:cl_navgen_gen_walk_to_point" //client/navmesh_gen.qc
 	{
-		"start"	"'599.953 -499.347 -223.969'"
-		"ofs"	"'-0.0288811 -0.0957386 0'"
-		"max_step_size"	"18"
-		"cur"	"'599.953 -499.347 -223.969'"
-		"goal_org"	"'599.924 -499.442 -223.969'"
-		"above_goal"	"'0 0 0'"
-		"below_goal"	"'0 0 0'"
-		ofs23811 802836 // 0.000000
-	}
-	"0:cl_navgen_gen_walk_to_midpoint" //client/navmesh_gen.qc
-	{
-		"start"	"'0 0 0'"
-		"point"	"'0 0 0'"
-		"dist"	"0"
-		"cur"	"'0 0 0'"
-		"cur_ofs"	"'0 0 0'"
-		"move"	"0"
-		"iters"	"0"
-		"last_pos"	"'0 0 0'"
+		"start"	"'561.766 -653.625 -223.969'"
+		"point"	"'597.322 -505.181 -223.969'"
+		"dist"	"3"
+		"cur"	"'585.525 -554.431 -223.969'"
+		"cur_ofs"	"'0.698796 2.91748 0'"
+		"move"	"2"
+		"iters"	"35"
+		"last_pos"	"'584.826 -557.349 -223.969'"
 		"updated"	"0"
-		"xy_midpoint"	"'0 0 0'"
-		ofs23858 0 // 0.000000
-		ofs23859 0 // 0.000000
+		ofs23865 0 // 0.000000
+		ofs23866 0 // 0.000000
 	}
-	"0:cl_navgen_calc_midpoint" //client/navmesh_gen.qc
+	"0:cl_navgen_obstructed" //client/navmesh_gen.qc
 	{
-		"a"	"'0 0 0'"
-		"b"	"'0 0 0'"
-		"i"	"0"
-		"i"	"0"
+		"pos1"	"'0 0 0'"
+		"pos2"	"'0 0 0'"
 	}
 	"0:cl_navgen_find_min" //client/navmesh_gen.qc
 	{
@@ -66,7 +52,7 @@ stacktrace {
 		"last_vert_pos"	"'0 0 0'"
 		"new_vert"	"0"
 		"edge_center"	"'0 0 0'"
-		ofs23943 0 // 0.000000
+		ofs24002 0 // 0.000000
 	}
 	"0:cl_navmesh_gen_navmesh" //client/navmesh_gen.qc
 	{
@@ -75,7 +61,7 @@ stacktrace {
 		"v1"	"0"
 		"v2"	"0"
 		"v3"	"0"
-		ofs23951 0 // 0.000000
+		ofs24010 0 // 0.000000
 	}
 	"0:cl_toggle_navmesh_editor" //client/navmesh_editor.qc
 	{
@@ -90,25 +76,27 @@ stacktrace {
 	}
 }
 globals 0 {
-"time" "14.491000"
-"cltime" "19.262001"
-"frametime" "0.010000"
+"time" "9.301000"
+"cltime" "135.509003"
+"frametime" "0.005000"
 "player_localentnum" "1"
 "maxclients" "8"
-"clientcommandframe" "934"
-"servercommandframe" "932"
+"clientcommandframe" "7588"
+"servercommandframe" "7587"
 "mapname" "navtest"
-"view_angles" "22.44 91.08 0"
-"trace_endpos" "599.953 -499.347 -223.969"
+"view_angles" "28.6 -271.04 0"
+"trace_fraction" "0.500000"
+"trace_endpos" "585.525 -554.431 -223.969"
 "trace_plane_normal" "0 0 1"
 "trace_plane_dist" "-220"
 "trace_inopen" "1"
-"input_angles" "22.4396 91.0767 0"
+"input_timelength" "0.013000"
+"input_angles" "28.5974 88.9618 0"
 "physics_mode" "2"
-"cursor_pos" "458.5 239.664 0"
-"g_width" "917"
+"cursor_pos" "344.24 246.914 0"
+"g_width" "674"
 "g_height" "480"
-"time_in_menu" "1.708000"
+"time_in_menu" "2.696003"
 "player" "1"
 "vmodel" "2"
 "v2model" "3"
@@ -121,7 +109,7 @@ globals 0 {
 "vmodel_muzzleoffset" "12 0 1"
 "v2model_muzzleoffset" "12 0 1"
 "mappath" "maps/navtest"
-"HUD_Change_time" "10.508000"
+"HUD_Change_time" "10.855000"
 "rounds" "1"
 "rounds_change" "2"
 "cl_navmesh_mode" "1"
@@ -176,33 +164,36 @@ globals 0 {
 "buttons[8].pos" "0.475 0.5 0"
 "buttons[8].scale" "0.25 0.05 0"
 "buttons[8].text" "Join"
-"buttons[8].active" "-1"
+"buttons[8].active" "0.975000"
 "buttons[8].__function" "0:game_join"
 "buttons[8].group" "32"
 "buttons[9].pos" "0.475 0.575 0"
 "buttons[9].scale" "0.25 0.05 0"
 "buttons[9].text" "Spectate"
-"buttons[9].active" "-1"
 "buttons[9].__function" "0:game_spec"
 "buttons[9].group" "32"
 "buttons[10].pos" "0.025 0.5 0"
 "buttons[10].scale" "0.25 0.05 0"
 "buttons[10].text" "Resume"
+"buttons[10].active" "-1"
 "buttons[10].__function" "0:menu_resume"
 "buttons[10].group" "64"
 "buttons[11].pos" "0.025 0.575 0"
 "buttons[11].scale" "0.25 0.05 0"
 "buttons[11].text" "Restart"
+"buttons[11].active" "-1"
 "buttons[11].__function" "0:menu_restart"
 "buttons[11].group" "64"
 "buttons[12].pos" "0.025 0.65 0"
 "buttons[12].scale" "0.25 0.05 0"
 "buttons[12].text" "Settings"
+"buttons[12].active" "-1"
 "buttons[12].__function" "0:menu_settings2"
 "buttons[12].group" "64"
 "buttons[13].pos" "0.025 0.725 0"
 "buttons[13].scale" "0.25 0.05 0"
 "buttons[13].text" "Main Menu"
+"buttons[13].active" "-1"
 "buttons[13].__function" "0:menu_main"
 "buttons[13].group" "64"
 "buttons[14].pos" "0.025 0.925 0"
@@ -246,13 +237,46 @@ globals 0 {
 "selected_verts[1]" "-1"
 "selected_verts[2]" "-1"
 "selected_verts[3]" "-1"
+"debug_hulls[0]" "592.564 -525.069 -223.969"
+"debug_hulls[1]" "592.564 -525.069 -223.969"
+"debug_hulls[2]" "561.766 -653.625 -223.969"
+"debug_hulls[3]" "561.766 -653.625 -223.969"
+"debug_hulls[4]" "592.564 -525.069 -223.969"
+"debug_hulls[5]" "592.564 -525.069 -223.969"
+"debug_hulls[6]" "561.766 -653.625 -223.969"
+"debug_hulls[7]" "561.766 -653.625 -223.969"
+"debug_hull_scales[0]" "1 1 1"
+"debug_hull_scales[1]" "0.1 0.1 1"
+"debug_hull_scales[2]" "1 1 1"
+"debug_hull_scales[3]" "0.1 0.1 1"
+"debug_hull_scales[4]" "1 1 1"
+"debug_hull_scales[5]" "0.1 0.1 1"
+"debug_hull_scales[6]" "1 1 1"
+"debug_hull_scales[7]" "0.1 0.1 1"
+"debug_hull_colors[0]" "0 0 1"
+"debug_hull_colors[1]" "0 0 1"
+"debug_hull_colors[2]" "0 0 1"
+"debug_hull_colors[3]" "0 0 1"
+"debug_hull_colors[4]" "0 0 1"
+"debug_hull_colors[5]" "0 0 1"
+"debug_hull_colors[6]" "0 0 1"
+"debug_hull_colors[7]" "0 0 1"
+"debug_hull_alphas[0]" "0.050000"
+"debug_hull_alphas[1]" "0.050000"
+"debug_hull_alphas[2]" "0.050000"
+"debug_hull_alphas[3]" "0.050000"
+"debug_hull_alphas[4]" "0.050000"
+"debug_hull_alphas[5]" "0.050000"
+"debug_hull_alphas[6]" "0.050000"
+"debug_hull_alphas[7]" "0.050000"
+"debug_hull_count" "8"
 "disable_print" "1"
 }
 entity 0{
 "modelindex" "1"
 "absmin" "-513 -833 -321"
 "absmax" "1025 449 353"
-"lastruntime" "14.478000"
+"lastruntime" "9.282003"
 "solid" "4"
 "model" "maps/navtest.bsp"
 "mins" "-513 -833 -321"
@@ -263,16 +287,16 @@ entity 0{
 "dimension_hit" "255"
 }
 entity 1{
-"lastruntime" "14.478000"
+"lastruntime" "9.282003"
 "dimension_solid" "255"
 "dimension_hit" "255"
 }
 entity 2{
 "modelindex" "13"
-"absmin" "-30.725 -20.3869 -53.3049"
-"absmax" "55.2434 35.4793 7.92995"
-"lastruntime" "14.478000"
-"origin" "-0.596345 -0.387101 -0.467923"
+"absmin" "-29.9188 -20.8144 -52.4559"
+"absmax" "56.0496 35.0519 8.77894"
+"lastruntime" "9.282003"
+"origin" "-0.591789 0.0738408 -0.675661"
 "model" "models/weapons/m1911/v_colt.mdl"
 "mins" "-29.304 -19.78 -52.0147"
 "maxs" "54.6644 34.0863 7.22012"
@@ -284,19 +308,19 @@ entity 2{
 entity 3{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "14.478000"
-"origin" "-0.596345 -0.387101 -0.467923"
+"lastruntime" "9.282003"
+"origin" "-0.591789 0.0738408 -0.675661"
 "model" ""
 "dimension_solid" "255"
 "dimension_hit" "255"
 "renderflags" "1"
 }
 entity 4{
-"lastruntime" "14.478000"
-"origin" "11.4037 -0.387101 0.532077"
+"lastruntime" "9.282003"
+"origin" "11.4082 0.0738408 0.324339"
 "dimension_solid" "255"
 "dimension_hit" "255"
-"scale" "1.057482"
+"scale" "1.003052"
 "alpha" "0.010000"
 "renderflags" "1"
 }
