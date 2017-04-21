@@ -31,28 +31,11 @@ float goalent_set;
 vector startent_pos;
 float startent_set;
 
-void cl_navmesh_draw_vert(vector pos,float selected)
+void cl_navmesh_draw_vert(vector pos,vector color, float alpha)
 {
 	//Assigning the shader as something else so that fte doesn't batch the calls (leading to colors not changing between draw calls)
 	R_BeginPolygon("debug/wireframe",0);
 	R_BeginPolygon("debug/solid_nocull",0);
-	
-	vector color;
-	
-	if(selected == 1)
-		color = [1,1,0];
-	else if(selected == 0)
-		color = [0,0,1];
-	else if(selected == 2)
-		color = [0.5,0.5,1.0];
-	else if(selected == 3)
-		color = [0.5,1.0,0.5];
-	else if(selected == 4)
-		color = [1.0,0.0,0.0];
-	else
-		color = [0,0,0];
-	
-	float alpha = 0.4;
 	
 	//bottom face
 	R_PolygonVertex(pos + [-5,5,-5], [0,0,0], color,alpha);
@@ -92,19 +75,21 @@ void cl_navmesh_draw_vert(vector pos,float selected)
 	R_EndPolygon();
 }
 
-void cl_navmesh_draw_edge(vector start, vector end)
+void cl_navmesh_draw_line(vector start, vector end, float edge_width, vector color, float alpha)
 {
 	R_BeginPolygon("debug/wireframe",0);
 	R_BeginPolygon("debug/solid_nocull",0);
-	vector color = [0.5,0.5,0.5];
-	float edge_width = 2;
-	float edge_alpha = 0.2;
 	
-	R_PolygonVertex(end + [0,0,-edge_width], [0,0,0], color, edge_alpha);
-	R_PolygonVertex(end + [0,0,edge_width], [0,0,0], color, edge_alpha);
-	R_PolygonVertex(start + [0,0,edge_width], [0,0,0], color, edge_alpha);
-	R_PolygonVertex(start + [0,0,-edge_width], [0,0,0], color, edge_alpha);
+	R_PolygonVertex(end + [0,0,-edge_width], [0,0,0], color, alpha);
+	R_PolygonVertex(end + [0,0,edge_width], [0,0,0], color, alpha);
+	R_PolygonVertex(start + [0,0,edge_width], [0,0,0], color, alpha);
+	R_PolygonVertex(start + [0,0,-edge_width], [0,0,0], color, alpha);
 	R_EndPolygon();
+}
+
+void cl_navmesh_draw_edge(vector start, vector end)
+{
+	cl_navmesh_draw_line(start,end,2,[0.5,0.5,0.5],0.2);
 }
 
 void cl_navmesh_draw_poly(float poly_index)
@@ -172,7 +157,11 @@ void cl_navmesh_editor_draw()
 	
 	for(float i = 0; i < cl_navmesh_vert_count; i++)
 	{
-		cl_navmesh_draw_vert(cl_navmesh_verts[i].pos, cl_navmesh_is_vert_selected(i) );
+		vector color = [0,0,1];
+		if(cl_navmesh_is_vert_selected(i))
+			color = [1,1,0];
+			
+		cl_navmesh_draw_vert(cl_navmesh_verts[i].pos,color,0.4 );
 	}
 	
 	for(float i = 0; i < cl_navmesh_poly_count; i++)
@@ -248,10 +237,10 @@ void cl_navmesh_editor_draw()
 		
 		vector hit_right2 = wall_hit_right2 + (([0,0,-1] * 2000) * trace_fraction);
 		
-		cl_navmesh_draw_vert(hit_left1, 0 );
-		cl_navmesh_draw_vert(hit_left2, 0 );
-		cl_navmesh_draw_vert(hit_right1, 0 );
-		cl_navmesh_draw_vert(hit_right2, 0 );
+		cl_navmesh_draw_vert(hit_left1, [0,0,1],0.4 );
+		cl_navmesh_draw_vert(hit_left2, [0,0,1],0.4 );
+		cl_navmesh_draw_vert(hit_right1, [0,0,1],0.4 );
+		cl_navmesh_draw_vert(hit_right2, [0,0,1],0.4 );
 		
 		//TODO: draw walls that we have hit (2 flat planes on the walls we hit)
 		
@@ -418,7 +407,7 @@ void cl_navmesh_editor_draw()
 		//================================================================================
 		
 		//Render the resolved vertex pos
-		cl_navmesh_draw_vert(vert_loc, 1 );
+		cl_navmesh_draw_vert(vert_loc, [1,1,0],0.4 );
 			
 		if(cl_navmesh_place_corner_state == NAVMESH_PLACE_CORNER_CONFIRM)
 		{	
@@ -449,12 +438,12 @@ void cl_navmesh_editor_draw()
 	
 	//Tracebox down from there
 	vector vpos1 = vorg+(v_forward*2000)*trace_fraction;
-	cl_navmesh_draw_vert(vpos1, 0 );
+	cl_navmesh_draw_vert(vpos1, [0,0,1],0.4 );
 	
 	tracebox(vpos1,[-8,-8,-32],[8,8,30],vpos1+([0,0,-1] * 2000),1,self);
 	vector vpos2 = vpos1+(([0,0,-1] * 2000) * trace_fraction);
 	
-	cl_navmesh_draw_vert(vpos2, 1 );*/
+	cl_navmesh_draw_vert(vpos2, [1,1,0],0.4 );*/
 	
 	//Tracebox down from there	
 }
@@ -645,7 +634,7 @@ void cl_navmesh_deselect_all()
 	selected_vert_count = 0;
 	
 	
-	print("All vertices deselected.\n");
+	//print("All vertices deselected.\n");
 }
 
 //=============================================================================================================
@@ -2351,8 +2340,8 @@ void cl_navmesh_pathfind_draw_result_portals()
 	
 	for(float i = 0; i < cl_test_pathfind_result.portals_length; i++)
 	{
-		cl_navmesh_draw_vert(cl_navmesh_verts[cl_test_pathfind_result.portals_left_vert[i]].pos + [0,0,-10],2);
-		cl_navmesh_draw_vert(cl_navmesh_verts[cl_test_pathfind_result.portals_right_vert[i]].pos + [0,0,-8],3);
+		cl_navmesh_draw_vert(cl_navmesh_verts[cl_test_pathfind_result.portals_left_vert[i]].pos + [0,0,-10],[0.5,0.5,1],0.4);
+		cl_navmesh_draw_vert(cl_navmesh_verts[cl_test_pathfind_result.portals_right_vert[i]].pos + [0,0,-8],[0.5,1,0.5],0.4);
 		
 		R_BeginPolygon("debug/wireframe",0);
 		R_BeginPolygon("debug/solid_nocull",0);
@@ -2377,7 +2366,7 @@ void cl_navmesh_pathfind_draw_result_path()
 	float edge_alpha = 0.2;//0.3
 	
 	//Drawing the a line connecting the start and first path node
-	cl_navmesh_draw_vert(startent_pos + [0,0,10],4);
+	cl_navmesh_draw_vert(startent_pos + [0,0,10],[1,0,0],0.4);
 	R_BeginPolygon("debug/wireframe",0);
 	R_BeginPolygon("debug/solid_nocull",0);
 	
@@ -2391,7 +2380,7 @@ void cl_navmesh_pathfind_draw_result_path()
 	
 	for(float i = 0; i < cl_test_pathfind_result.result_length; i++)
 	{
-		cl_navmesh_draw_vert(cl_test_pathfind_result.result_path[i] + [0,0,10],4);
+		cl_navmesh_draw_vert(cl_test_pathfind_result.result_path[i] + [0,0,10],[1,0,0],0.4);
 		
 		if(i > 0)
 		{
@@ -2456,6 +2445,10 @@ void() cl_register_navmesh_commands =
 
 float cl_confirm_clear_navmesh;
 
+//FIXME FIXME FIXME FIXME this is for find min navmesh debugging
+void() temp_continue_find_min;
+//FIXME FIXME FIXME FIXME this is for find min navmesh debugging
+
 float(string cmd) cl_navmesh_console_commands = 
 {
 	tokenize(cmd);
@@ -2495,6 +2488,16 @@ float(string cmd) cl_navmesh_console_commands =
 			break;
 	}
 	
+	//TEMP TEMP TEMP TEMP
+	if(!strncmp(argv(0),"nav_place_vert"))
+	{
+		temp_continue_find_min();
+		return TRUE;
+	}
+	else return FALSE;
+	//TEMP TEMP TEMP TEMP
+	
+	
 	if(!cl_navmesh_mode)
 		return FALSE;
 	switch(argv(0))
@@ -2513,6 +2516,7 @@ float(string cmd) cl_navmesh_console_commands =
 			return TRUE;
 		case "nav_deselect_all":
 			cl_navmesh_deselect_all();
+			print("All vertices deselected.\n");
 			return TRUE;
 		case "nav_make_poly":
 			cl_navmesh_make_poly();
