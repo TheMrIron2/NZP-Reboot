@@ -427,6 +427,7 @@ float debug_walk_to_point;
 //returns 2 if walk is success
 //returns 1 if walk was partial
 //returns 0 if walk failed completely
+//Assigns trace_endpos as the point along start -> start+ofs that we got to
 float cl_navgen_gen_direct_walk(vector start,vector ofs)
 {
 	float max_step_size = 18;//max stair step pulled straight from engine defs
@@ -458,21 +459,181 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 	//Try tracebox forward
 	tracebox(start,VEC_HULL_MIN,VEC_HULL_MAX,start+ofs,MOVE_NOMONSTERS,self);
 	
-	float forward_trace = trace_fraction;
-	vector forward_endpos;
-	vec_eq(&forward_endpos,trace_endpos);
+	float walk_trace_fraction = trace_fraction;
 	
-	//Try tracebox up
-	tracebox(start,VEC_HULL_MIN,VEC_HULL_MAX,start+[0,max_step_size,0],MOVE_NOMONSTERS,self);
+	vector cur;
+	vec_eq(&cur, trace_endpos);
+	vector goal;
+	vec_eq(&goal,start+ofs);
+	
+	
+	
+	//Check if we fell at result position
+	tracebox(cur,VEC_HULL_MIN,VEC_HULL_MAX,cur-[0,0,2*max_step_size],MOVE_NOMONSTERS,self);
+	
+	//If we moved at all
 	if(trace_fraction > 0)
 	{
-		//Tracebox down from where we got to
+		//Checking if we stepped down
+		//If the angle between the move is greater than 60, we fell, otherwise we stepped down
+		if(vlen(trace_endpos/cur)/vlen(cur - start) <= tan_60)
+		{
+			//We stepped down
+			vec_eq(&cur,trace_endpos);
+			//technically we should still try a tracebox forward from here.
+		}
+		//We fell down
+		else
+		{
+			//TODO: getting back onto the ground, nevermind we actually don't care
+			return 0; //or return 1 if we get back onto the ground
+		}
 	}
-		//if successful, tracebox down from there
-	//Try tracebox up
-		//try tracebox forward
-		//if successful, tracebox down from there
-		//make sure tracebox forward / tracebox up does not exceed 60 degrees
+	else
+	{
+		//The move failed completely
+		return 0;
+	}
+	
+	//If we didn't make it all the way to start + ofs
+	if(walk_trace_fraction < 1)
+	{
+		//Try step up
+		//tracebox up to see if we can move up.
+		tracebox(cur,VEC_HULL_MIN,VEC_HULL_MAX,cur+[0,0,max_step_size],MOVE_NOMONSTERS,self);
+		if(trace_fraction > 0)
+		{
+			//Try a trace forward from that position
+			tracebox(trace_endpos, VEC_HULL_MIN, VEC_HULL_MAX, [start_x + ofs_x, start_y + ofs_y, ]
+		}
+		return 1;
+	}
+	else
+	{
+		//walk_trace_fraction is 1, move was succesful
+		return 2;
+	}
+	
+	
+	
+	
+	//nevermind, lets restructure the algorithm above.
+	//some sort of a loop that chisels away at the distance to be walked
+	
+	//we first try a straight walk
+	//check if we fell here
+	//if we didn't fall, try to step up and walk
+	
+	//repeat this until we walk the full distance or hit a dead stop
+	
+	
+	
+	float iters = 0;
+	
+	float step_up = 0;
+	
+	vector temp;
+	vector cur;
+	vector last_cur;
+	vec_eq(&cur,start);
+	vec_eq(&last_cur,start);
+	
+	float last_failed = 0;
+	float cur_failed = 0;
+	
+	//Whether or not we moved at least a small amount (1 or 0)
+	float moved_some_amount = 0;
+	
+	//Alternate walking and stepping until we reach goal or hit a failure condition
+	while(1)
+	{
+		if(iters++ > 9990)
+		{
+			print("Warning: runaway loop in navgen_direct_walk.\n");
+		}
+		
+		
+		if(!step_up)
+		{
+			//Try walking straight to goal
+			tracebox(cur,VEC_HULL_MIN,VEC_HULL_MAX,goal,MOVE_NOMONSTERS,self);
+			vec_eq(&temp,trace_endpos);
+			
+			//Try a move with a step up next time
+			step_up  = 1;
+		}
+		else
+		{
+			//Try walking to goal with a step up
+			//tracebox up to see if we can move up
+			tracebox(cur,VEC_HULL_MIN,VEC_HULL_MAX,cur+[0,0,max_step_size],MOVE_NOMONSTERS,self);
+			if(trace_fraction > 0)
+			{
+				//Try a trace forward from that position
+				tracebox(trace_endpos, VEC_HULL_MIN, VEC_HULL_MAX, [goal_x, goal_y, trace_endpos_z], MOVE_NOMONSTERS,self);
+				vec_eq(&temp,trace_endpos);
+			}
+			//Try a move without a step up next time
+			step_up = 0;
+		}
+		
+		//if we moved at least some amount:
+		if(trace_fraction > 0)
+		{
+			cur_failed = 0;
+			vec_eq(&last_cur,cur);
+			vec_eq(&cur,temp);
+			moved_some_amount = 1;
+			
+			//Check if we fell at cur result position
+			tracebox(cur,VEC_HULL_MIN,VEC_HULL_MAX,cur-[0,0,2*max_step_size],MOVE_NOMONSTERS,self);
+			
+			//If we moved at all
+			if(trace_fraction > 0)
+			{
+				//Checking if we stepped down
+				//If the angle between the move is greater than 60, we fell, otherwise we stepped down
+				if(vlen(trace_endpos - cur)/vlen(cur - last_cur) <= tan_60)
+				{
+					//We stepped down
+					vec_eq(&cur,trace_endpos);
+				}
+				//We fell down
+				else
+				{
+					//getting back onto the ground
+					//undo the last move from a lowered position
+					tracebox(trace_endpos,VEC_HULL_MIN,VEC_HULL_MAX,[last_cur_x,last_cur_y,trace_endpos_z],MOVE_NOMONSTERS,self);
+					//then offset the position a tiny bit more and reset the z position back to normal
+					vec_eq(&cur,trace_endpos - normalize(goal-start)*0.01);
+					cur_z = last_cur_z;
+					
+					//if we are now on ground, return 1, else return 0
+					return 1;
+				}
+			}
+		}
+		
+		//Check if we failed on this iteration and the last iteration
+		if(last_failed && cur_failed)
+		{
+			return moved_some_amount;
+		}
+		
+		//Check if we reached goal
+		if(cur_x == goal_x && cur_y == goal_y)
+		{
+			vec_eq(&trace_endpos, cur);
+			return 2;
+		}
+		
+		
+		last_failed = cur_failed;
+		cur_failed = 1;
+	}
+	
+	
+	
 	 
 	//if we got to the end ofs, return 2
 	//if we got some of the way to ofs, return 1
@@ -489,7 +650,7 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 //returns 2 if walk is success
 //returns 1 if walk was partial
 //returns 0 if walk failed completely
-float cl_navgen_gen_direct_walk(vector start,vector ofs)
+float cl_old_navgen_gen_direct_walk(vector start,vector ofs)
 {
 	float max_step_size = 18;//max stair step size pulled straight from engine defs
 	
