@@ -461,72 +461,8 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 	
 	float walk_trace_fraction = trace_fraction;
 	
-	vector cur;
-	vec_eq(&cur, trace_endpos);
 	vector goal;
 	vec_eq(&goal,start+ofs);
-	
-	
-	
-	//Check if we fell at result position
-	tracebox(cur,VEC_HULL_MIN,VEC_HULL_MAX,cur-[0,0,2*max_step_size],MOVE_NOMONSTERS,self);
-	
-	//If we moved at all
-	if(trace_fraction > 0)
-	{
-		//Checking if we stepped down
-		//If the angle between the move is greater than 60, we fell, otherwise we stepped down
-		if(vlen(trace_endpos/cur)/vlen(cur - start) <= tan_60)
-		{
-			//We stepped down
-			vec_eq(&cur,trace_endpos);
-			//technically we should still try a tracebox forward from here.
-		}
-		//We fell down
-		else
-		{
-			//TODO: getting back onto the ground, nevermind we actually don't care
-			return 0; //or return 1 if we get back onto the ground
-		}
-	}
-	else
-	{
-		//The move failed completely
-		return 0;
-	}
-	
-	//If we didn't make it all the way to start + ofs
-	if(walk_trace_fraction < 1)
-	{
-		//Try step up
-		//tracebox up to see if we can move up.
-		tracebox(cur,VEC_HULL_MIN,VEC_HULL_MAX,cur+[0,0,max_step_size],MOVE_NOMONSTERS,self);
-		if(trace_fraction > 0)
-		{
-			//Try a trace forward from that position
-			tracebox(trace_endpos, VEC_HULL_MIN, VEC_HULL_MAX, [start_x + ofs_x, start_y + ofs_y, ]
-		}
-		return 1;
-	}
-	else
-	{
-		//walk_trace_fraction is 1, move was succesful
-		return 2;
-	}
-	
-	
-	
-	
-	//nevermind, lets restructure the algorithm above.
-	//some sort of a loop that chisels away at the distance to be walked
-	
-	//we first try a straight walk
-	//check if we fell here
-	//if we didn't fall, try to step up and walk
-	
-	//repeat this until we walk the full distance or hit a dead stop
-	
-	
 	
 	float iters = 0;
 	
@@ -631,16 +567,6 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 		last_failed = cur_failed;
 		cur_failed = 1;
 	}
-	
-	
-	
-	 
-	//if we got to the end ofs, return 2
-	//if we got some of the way to ofs, return 1
-	//if we got none of the way, return 0
-	
-	
-	
 	
 }
 
