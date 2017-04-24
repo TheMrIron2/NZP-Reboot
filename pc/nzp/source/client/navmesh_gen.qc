@@ -193,6 +193,9 @@ void add_debug_hull_line(vector p1, vector p2, vector color)
 }
 
 
+//FIXME: remove these
+float(vector start,vector ofs) cl_navgen_gen_walk;
+float(vector start,vector ofs) cl_navgen_gen_direct_walk;
 //FIXME FIXME FIXME FIXME
 
 
@@ -254,6 +257,28 @@ void cl_navmesh_render_gen()
 	for(float j = 0; j < debug_lines_count; j++)
 	{
 		cl_navmesh_draw_line(debug_lines_pos1[j],debug_lines_pos2[j],2,debug_lines_color[j],0.2);
+	}
+	
+	//Drawing test direct walk method
+	
+	vector player_pos;
+	vec_eq(&player_pos,getentity(player_localentnum, GE_ORIGIN));
+	//Find floor at pos
+	cl_navgen_gen_walk(player_pos,[0,0,0]);
+	vec_eq(&player_pos,trace_endpos);
+	
+	float result = cl_navgen_gen_direct_walk(player_pos,[0,50,0]);
+	if(result == 2)
+	{
+		cl_navmesh_draw_line(player_pos,player_pos+[0,50,0],2,[0,1,0],0.2);
+	}
+	else if (result == 1)
+	{
+		cl_navmesh_draw_line(player_pos,player_pos+[0,50,0],2,[1,1,0],0.2);
+	}
+	else
+	{
+		cl_navmesh_draw_line(player_pos,player_pos+[0,50,0],2,[1,0,0],0.2);
 	}
 }
 
