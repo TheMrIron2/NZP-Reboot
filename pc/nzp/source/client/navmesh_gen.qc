@@ -271,14 +271,17 @@ void cl_navmesh_render_gen()
 	if(result == 2)
 	{
 		cl_navmesh_draw_line(player_pos,player_pos+[0,50,0],2,[0,1,0],0.2);
+		cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,1,0],0.2);
 	}
 	else if (result == 1)
 	{
 		cl_navmesh_draw_line(player_pos,player_pos+[0,50,0],2,[1,1,0],0.2);
+		cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[1,1,0],0.2);
 	}
 	else
 	{
 		cl_navmesh_draw_line(player_pos,player_pos+[0,50,0],2,[1,0,0],0.2);
+		cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[1,0,0],0.2);
 	}
 }
 
@@ -453,6 +456,9 @@ float debug_walk_to_point;
 //returns 1 if walk was partial
 //returns 0 if walk failed completely
 //Assigns trace_endpos as the point along start -> start+ofs that we got to
+
+//FIXME: direct walk does not fail when we walk off of a ledge
+
 float cl_navgen_gen_direct_walk(vector start,vector ofs)
 {
 	float max_step_size = 18;//max stair step pulled straight from engine defs
@@ -462,6 +468,7 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 	//========================================================================================
 	//for now, consider not on ground as a dead stop
 	//tracebox(start - [0,0,1],VEC_HULL_MIN,VEC_HULL_MAX,start-[0,0,max_step_size],MOVE_NOMONSTERS,self);
+	//FIXME: this fails when we are right under a low ceiling (causes bbox to extend below floor)
 	tracebox(start,VEC_HULL_MIN,VEC_HULL_MAX,start-[0,0,2*max_step_size],MOVE_NOMONSTERS,self);
 	if((!trace_allsolid && !trace_startsolid) && trace_fraction > 0.5)
 	{
@@ -568,6 +575,8 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 					//then offset the position a tiny bit more and reset the z position back to normal
 					vec_eq(&cur,trace_endpos - normalize(goal-start)*0.01);
 					cur_z = last_cur_z;
+					
+					vec_eq(&trace_endpos, cur);
 					
 					//if we are now on ground, return 1, else return 0
 					return 1;
