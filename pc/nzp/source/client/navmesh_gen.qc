@@ -572,6 +572,7 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 					//getting back onto the ground
 					//undo the last move from a lowered position
 					tracebox(trace_endpos,VEC_HULL_MIN,VEC_HULL_MAX,[last_cur_x,last_cur_y,trace_endpos_z],MOVE_NOMONSTERS,self);
+					add_debug_hull(trace_endpos,[1,1,1],[1,0,0],0.2);
 					//then offset the position a tiny bit more and reset the z position back to normal
 					vec_eq(&cur,trace_endpos - normalize(goal-start)*0.01);
 					cur_z = last_cur_z;
