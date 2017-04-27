@@ -2494,7 +2494,6 @@ float(string cmd) cl_navmesh_console_commands =
 		temp_continue_find_min();
 		return TRUE;
 	}
-	else return FALSE;
 	//TEMP TEMP TEMP TEMP
 	
 	

@@ -78,12 +78,12 @@ float debug_hull_count;
 
 void add_debug_hull(vector pos, vector scale, vector color, float alpha)
 {
-	if(debug_hull_count >= MAX_DEBUG_HULL_COUNT)
-		return;
-	debug_hulls[debug_hull_count] = pos;
-	debug_hull_scales[debug_hull_count] = scale;
-	debug_hull_colors[debug_hull_count] = color;
-	debug_hull_alphas[debug_hull_count++] = alpha;
+	//if(debug_hull_count >= MAX_DEBUG_HULL_COUNT)
+	//	return;
+	debug_hulls[debug_hull_count % MAX_DEBUG_HULL_COUNT] = pos;
+	debug_hull_scales[debug_hull_count % MAX_DEBUG_HULL_COUNT] = scale;
+	debug_hull_colors[debug_hull_count % MAX_DEBUG_HULL_COUNT] = color;
+	debug_hull_alphas[debug_hull_count++ % MAX_DEBUG_HULL_COUNT] = alpha;
 }
 
 void clear_debug_hulls()
@@ -218,7 +218,7 @@ void cl_navmesh_render_gen()
 	}
 	
 	//Drawing debug collision hulls
-	for(float i = 0; i < debug_hull_count; i++)
+	for(float i = 0; i < ((debug_hull_count < MAX_DEBUG_HULL_COUNT) ? debug_hull_count : MAX_DEBUG_HULL_COUNT); i++)
 	{
 		cl_navmesh_draw_test_ent(debug_hulls[i],debug_hull_scales[i],debug_hull_colors[i],debug_hull_alphas[i]);
 	}
@@ -261,7 +261,7 @@ void cl_navmesh_render_gen()
 	
 	//Drawing test direct walk method
 	
-	vector player_pos;
+	/*8vector player_pos;
 	vec_eq(&player_pos,getentity(player_localentnum, GE_ORIGIN));
 	//Find floor at pos
 	cl_navgen_gen_walk(player_pos,[0,0,0]);
@@ -282,7 +282,7 @@ void cl_navmesh_render_gen()
 	{
 		cl_navmesh_draw_line(player_pos,player_pos+[0,50,0],2,[1,0,0],0.2);
 		cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[1,0,0],0.2);
-	}
+	}*/
 }
 
 //Given starting position and edge tangent, walk along the edge until we hit some form of a corner
@@ -486,13 +486,6 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 	//has been pushed off of a ledge
 	//so, we must check for falling off of a ledge, but also 
 	//========================================================================================
-	
-	
-	//Try tracebox forward
-	tracebox(start,VEC_HULL_MIN,VEC_HULL_MAX,start+ofs,MOVE_NOMONSTERS,self);
-	
-	float walk_trace_fraction = trace_fraction;
-	
 	vector goal;
 	vec_eq(&goal,start+ofs);
 	
@@ -505,6 +498,8 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 	vector last_cur;
 	vec_eq(&cur,start);
 	vec_eq(&last_cur,start);
+	
+	vector last_ofs;
 	
 	float last_failed = 0;
 	float cur_failed = 0;
@@ -529,6 +524,9 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 			
 			//Try a move with a step up next time
 			step_up  = 1;
+			
+			//Get the vactor of the last move we did
+			vec_eq(&last_ofs, trace_endpos - cur);
 		}
 		else
 		{
@@ -538,8 +536,15 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 			if(trace_fraction > 0)
 			{
 				//Try a trace forward from that position
+				
+				//Copy the start tracebox position (will use it to get the vector of the move we did)
+				vec_eq(&last_ofs, trace_endpos);
+				
 				tracebox(trace_endpos, VEC_HULL_MIN, VEC_HULL_MAX, [goal_x, goal_y, trace_endpos_z], MOVE_NOMONSTERS,self);
 				vec_eq(&temp,trace_endpos);
+				
+				//Get the vector of the last move we did
+				vec_eq(&last_ofs, [goal_x, goal_y, trace_endpos_z] - last_ofs);
 			}
 			//Try a move without a step up next time
 			step_up = 0;
@@ -553,15 +558,24 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 			vec_eq(&cur,temp);
 			moved_some_amount = 1;
 			
+			//Height before we consider having fallen
+			float fall_height = vlen(last_ofs) * tan_60;
+			
+			//Don't let fall height be less than the max step size
+			if(fall_height < max_step_size)
+				fall_height = max_step_size;
+			
+			
 			//Check if we fell at cur result position
-			tracebox(cur,VEC_HULL_MIN,VEC_HULL_MAX,cur-[0,0,2*max_step_size],MOVE_NOMONSTERS,self);
+			tracebox(cur,VEC_HULL_MIN,VEC_HULL_MAX,cur- [0,0,2*fall_height] ,MOVE_NOMONSTERS,self);
 			
 			//If we moved at all
 			if(trace_fraction > 0)
 			{
 				//Checking if we stepped down
 				//If the angle between the move is greater than 60, we fell, otherwise we stepped down
-				if(vlen(trace_endpos - cur)/vlen(cur - last_cur) <= tan_60)
+				//if(vlen(trace_endpos - cur)/vlen(last_ofs) <= tan_60)
+				if(trace_fraction <= 0.5)
 				{
 					//We stepped down
 					vec_eq(&cur,trace_endpos);
@@ -572,7 +586,9 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 					//getting back onto the ground
 					//undo the last move from a lowered position
 					tracebox(trace_endpos,VEC_HULL_MIN,VEC_HULL_MAX,[last_cur_x,last_cur_y,trace_endpos_z],MOVE_NOMONSTERS,self);
-					add_debug_hull(trace_endpos,[1,1,1],[1,0,0],0.2);
+					
+					//FIXME: okay so we enter this block of code when on the stairs
+					//add_debug_hull(trace_endpos,[1,1,1],[1,0,0],0.2);
 					//then offset the position a tiny bit more and reset the z position back to normal
 					vec_eq(&cur,trace_endpos - normalize(goal-start)*0.01);
 					cur_z = last_cur_z;
@@ -2190,6 +2206,13 @@ float mid3_minimized;
 
 void temp_continue_find_min()
 {
+	
+	if(find_min_state == 3)
+	{
+		print("Algorithm already finished.\n");
+		return;
+	}
+	
 	float delta = 0.01;
 	//subdivide from min to 1 once
 	//once we find a min to 1 subdivision that can walk to 3, state = 2;
@@ -2290,6 +2313,7 @@ void temp_continue_find_min()
 	if(mid1_minimized == 1 && mid3_minimized == 1)
 	{
 		print("Both edges minimized, algorithm finished.\n");
+		find_min_state = 3;
 	}
 }
 
