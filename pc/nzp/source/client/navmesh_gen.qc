@@ -196,6 +196,10 @@ void add_debug_hull_line(vector p1, vector p2, vector color)
 //FIXME: remove these
 float(vector start,vector ofs) cl_navgen_gen_walk;
 float(vector start,vector ofs) cl_navgen_gen_direct_walk;
+void(vector pos) cl_navgen_gen_drop_to_floor;
+
+float debug_direct_walk;
+
 //FIXME FIXME FIXME FIXME
 
 
@@ -261,28 +265,39 @@ void cl_navmesh_render_gen()
 	
 	//Drawing test direct walk method
 	
-	/*8vector player_pos;
+	vector player_pos;
 	vec_eq(&player_pos,getentity(player_localentnum, GE_ORIGIN));
 	//Find floor at pos
-	cl_navgen_gen_walk(player_pos,[0,0,0]);
+	cl_navgen_gen_drop_to_floor(player_pos);
 	vec_eq(&player_pos,trace_endpos);
 	
-	float result = cl_navgen_gen_direct_walk(player_pos,[0,50,0]);
+	//Drawing the ground position of the player	
+	cl_navmesh_draw_test_ent(player_pos,[1,1,1],[1,1,1],0.2);
+	
+	//debug_direct_walk = 1;
+	
+	float dist = 30;
+	
+	vector ofs = [dist * cos(time), dist * sin(time), 0];
+	
+	float result = cl_navgen_gen_direct_walk(player_pos,ofs);
+	//debug_direct_walk = 0;
+	
 	if(result == 2)
 	{
-		cl_navmesh_draw_line(player_pos,player_pos+[0,50,0],2,[0,1,0],0.2);
+		cl_navmesh_draw_line(player_pos,player_pos+ofs,2,[0,1,0],0.2);
 		cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,1,0],0.2);
 	}
 	else if (result == 1)
 	{
-		cl_navmesh_draw_line(player_pos,player_pos+[0,50,0],2,[1,1,0],0.2);
+		cl_navmesh_draw_line(player_pos,player_pos+ofs,2,[1,1,0],0.2);
 		cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[1,1,0],0.2);
 	}
 	else
 	{
-		cl_navmesh_draw_line(player_pos,player_pos+[0,50,0],2,[1,0,0],0.2);
+		cl_navmesh_draw_line(player_pos,player_pos+ofs,2,[1,0,0],0.2);
 		cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[1,0,0],0.2);
-	}*/
+	}
 }
 
 //Given starting position and edge tangent, walk along the edge until we hit some form of a corner
@@ -297,6 +312,51 @@ float cl_navgen_gen_walkalongedge(vector start, vector edge_tan)
 //For temporarily not continuing the recursion
 float recursive_depth;
 float disable_print;
+
+
+//Assumes that the position given is very close to the floor, but might be too low or might be a bit too high
+//(this is used for getting the player position, because player position from engine appears to be ofset by some tiny amount)
+//Assigns trace_endpos as the position on the floor 
+void cl_navgen_gen_drop_to_floor(vector pos)
+{
+	float max_step_height = 18;
+	
+	float iters = 0;
+	
+	float height = max_step_height;
+	
+	trace_startsolid = 1;
+	
+	while(trace_startsolid || trace_allsolid)
+	{
+		if(iters++ > 9998)
+		{
+			print("Warning: navgen drop to floor iters exceeded 9998\n");
+			
+			vec_eq(&trace_endpos, pos);
+			return;
+		}
+		
+		//If this is true, we are underneath a very low hanging ceiling (practically touching top of bbox), there is something wrong with this.
+		if(height < 0.01)
+		{
+			vec_eq(&trace_endpos, pos);
+			return;
+		}
+		
+		//Try tracebox from +height to -max_step_height
+		
+		tracebox(pos + [0,0,height], VEC_HULL_MIN, VEC_HULL_MAX, pos - [0,0,max_step_height],MOVE_NOMONSTERS,self);
+		
+		if(trace_fraction > 0)
+		{
+			//trace_endpos is already the result
+			return;
+		}
+		
+		height = height * 0.5;
+	}
+}
 
 //Method that checks if pos + ofs is okay to walk
 //returns 2 if walk is success
@@ -375,7 +435,7 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 				if(trace_fraction > 0)
 				{
 					//We still moved on this move
-					success[i] = 2;
+					success[i] = 1;
 					vec_eq(&(cur),trace_endpos);
 
 				}
@@ -457,7 +517,7 @@ float debug_walk_to_point;
 //returns 0 if walk failed completely
 //Assigns trace_endpos as the point along start -> start+ofs that we got to
 
-//FIXME: direct walk does not fail when we walk off of a ledge
+//FIXME: direct walk steps down on some semi shallow ledges
 
 float cl_navgen_gen_direct_walk(vector start,vector ofs)
 {
@@ -468,7 +528,6 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 	//========================================================================================
 	//for now, consider not on ground as a dead stop
 	//tracebox(start - [0,0,1],VEC_HULL_MIN,VEC_HULL_MAX,start-[0,0,max_step_size],MOVE_NOMONSTERS,self);
-	//FIXME: this fails when we are right under a low ceiling (causes bbox to extend below floor)
 	tracebox(start,VEC_HULL_MIN,VEC_HULL_MAX,start-[0,0,2*max_step_size],MOVE_NOMONSTERS,self);
 	if((!trace_allsolid && !trace_startsolid) && trace_fraction > 0.5)
 	{
@@ -478,9 +537,13 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 		
 		add_debug_hull(start,[1,1,1],[1,0,1],0.05);
 		
+		if(debug_direct_walk)
+			cl_navmesh_draw_test_ent(start,[1,1,1],[1,0,0],0.2);
+		
 		vec_eq(&(trace_endpos),start);
 		return 0;
 	}
+	
 	
 	//This is a problem for when we are checking left / right edges, because while walking the edge, we can never get to the vertex that
 	//has been pushed off of a ledge
@@ -513,6 +576,7 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 		if(iters++ > 9990)
 		{
 			print("Warning: runaway loop in navgen_direct_walk.\n");
+			return;
 		}
 		
 		
@@ -561,6 +625,8 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 			//Height before we consider having fallen
 			float fall_height = vlen(last_ofs) * tan_60;
 			
+			//FIXME, this doesn't ensure that the step down is gradual, just that it's less than 60 derees
+			
 			//Don't let fall height be less than the max step size
 			if(fall_height < max_step_size)
 				fall_height = max_step_size;
@@ -572,6 +638,9 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 			//If we moved at all
 			if(trace_fraction > 0)
 			{
+				
+				print("Height: ",ftos(fall_height), "  fraction: ",ftos(trace_fraction),"\n");
+				
 				//Checking if we stepped down
 				//If the angle between the move is greater than 60, we fell, otherwise we stepped down
 				//if(vlen(trace_endpos - cur)/vlen(last_ofs) <= tan_60)
@@ -610,9 +679,16 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 		//Check if we reached goal
 		if(cur_x == goal_x && cur_y == goal_y)
 		{
+			if(debug_direct_walk)
+				cl_navmesh_draw_test_ent(start,[1,1,1],[0,1,0],0.2);
+		
 			vec_eq(&trace_endpos, cur);
 			return 2;
 		}
+		
+		
+		if(debug_direct_walk)
+			cl_navmesh_draw_test_ent(cur,[1,1,1],[1,1,0],0.2);
 		
 		
 		last_failed = cur_failed;
@@ -1084,7 +1160,7 @@ float cl_navgen_gen_walk_to_midpoint(vector start, vector point)
 		{
 			if(debug_walk_to_point)
 			{
-				/*add_debug_hull(cur,[1,1,1],[1,0,0],0.05);
+				add_debug_hull(cur,[1,1,1],[1,0,0],0.05);
 				add_debug_hull(cur,[0.1,0.1,1],[1,0,0],0.05);
 				add_debug_hull([xy_midpoint_x,xy_midpoint_y,cur_z],[1,1,1],[0,1,0],0.05);
 				add_debug_hull([xy_midpoint_x,xy_midpoint_y,cur_z],[0.1,0.1,1],[0,1,0],0.05);
@@ -1093,19 +1169,15 @@ float cl_navgen_gen_walk_to_midpoint(vector start, vector point)
 				add_debug_hull(cur+cur_ofs,[1,1,1],[1,1,0],0.05);
 				
 				add_debug_hull(start,[0.1,0.1,1],[0,0,1],0.1);
-				add_debug_hull(point,[0.1,0.1,1],[0,0,0.5],0.1);*/
+				add_debug_hull(point,[0.1,0.1,1],[0,0,0.5],0.1);
+				print("Walk to midpoint hit something along the way.\n");
 			}
-			//debug_hulls[debug_hull_count++] = cur;
-			//debug_hulls[debug_hull_count++] = cur + cur_ofs;
 			if(!disable_print)
 				print("hit something along the way, walk_to_point failed\n");
 			//print("cur: ",vtos(cur)," cur_ofs: ",vtos(cur_ofs),"\n");
 			vec_eq(&trace_endpos,start);
 			return 0;
 		}
-		
-		//dist_walked += xy_vlen(trace_endpos - cur);
-		
 		
 		vec_eq(&(last_pos),cur);
 		vec_eq(&(cur),trace_endpos);
@@ -1307,10 +1379,6 @@ float cl_navgen_calc_midpoint(vector a, vector b)
 	if(cl_navgen_gen_walk_to_midpoint(a,b))
 	{
 		print("\tmidpoint Success: ",vtos(trace_endpos),"\n");
-		
-		print("a->b nor: ",vtos(normalize(b-a)),"\n");
-		print("a->mid nor: ",vtos(normalize(trace_endpos-a)),"\n");
-		print("mid->b nor: ",vtos(normalize(b-trace_endpos)),"\n");
 		vec_eq(&backup_trace_endpos,trace_endpos);
 		
 		//TEMP DEBUG STUFF
@@ -2356,7 +2424,7 @@ void temp_call_find_min()
 		vec_eq(&player_pos,getentity(player_localentnum, GE_ORIGIN));
 		
 		//Find floor at pos
-		cl_navgen_gen_walk(player_pos,[0,0,0]);
+		cl_navgen_gen_drop_to_floor(player_pos);
 		//player_pos = trace_endpos;
 		vec_eq(&player_pos,trace_endpos);
 		
@@ -2437,7 +2505,7 @@ void cl_navmesh_gen_navmesh()
 	vec_eq(&player_pos,getentity(player_localentnum, GE_ORIGIN));
 	
 	//Find floor at pos
-	cl_navgen_gen_walk(player_pos,[0,0,0]);
+	cl_navgen_gen_drop_to_floor(player_pos);
 	//player_pos = trace_endpos;
 	vec_eq(&player_pos,trace_endpos);
 	
