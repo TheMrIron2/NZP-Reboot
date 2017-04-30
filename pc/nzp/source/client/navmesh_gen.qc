@@ -10,7 +10,6 @@ float cl_navmesh_vert_count;
 navmesh_poly cl_navmesh_polies[NAV_MAX_POLIES];
 float cl_navmesh_poly_count;
 
-
 */
 
 float debug_moreinfo;
@@ -570,13 +569,21 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 	//Whether or not we moved at least a small amount (1 or 0)
 	float moved_some_amount = 0;
 	
+	//for debugging
+	float test_fraction = 0;
+	
 	//Alternate walking and stepping until we reach goal or hit a failure condition
 	while(1)
 	{
+		if(iters == 9900)
+		{
+			//do nothing
+			print("9900 iters\n");
+		}
 		if(iters++ > 9990)
 		{
 			print("Warning: runaway loop in navgen_direct_walk.\n");
-			return;
+			return 0;
 		}
 		
 		
@@ -584,6 +591,7 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 		{
 			//Try walking straight to goal
 			tracebox(cur,VEC_HULL_MIN,VEC_HULL_MAX,goal,MOVE_NOMONSTERS,self);
+	test_fraction = trace_fraction;
 			vec_eq(&temp,trace_endpos);
 			
 			//Try a move with a step up next time
@@ -597,7 +605,8 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 			//Try walking to goal with a step up
 			//tracebox up to see if we can move up
 			tracebox(cur,VEC_HULL_MIN,VEC_HULL_MAX,cur+[0,0,max_step_size],MOVE_NOMONSTERS,self);
-			if(trace_fraction > 0)
+	test_fraction = trace_fraction;
+			if(trace_fraction > 0.0001)
 			{
 				//Try a trace forward from that position
 				
@@ -605,6 +614,7 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 				vec_eq(&last_ofs, trace_endpos);
 				
 				tracebox(trace_endpos, VEC_HULL_MIN, VEC_HULL_MAX, [goal_x, goal_y, trace_endpos_z], MOVE_NOMONSTERS,self);
+	test_fraction = trace_fraction;
 				vec_eq(&temp,trace_endpos);
 				
 				//Get the vector of the last move we did
@@ -615,7 +625,7 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 		}
 		
 		//if we moved at least some amount:
-		if(trace_fraction > 0)
+		if(!trace_allsolid && !trace_startsolid && trace_fraction > 0.0001)
 		{
 			cur_failed = 0;
 			vec_eq(&last_cur,cur);
@@ -634,9 +644,10 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 			
 			//Check if we fell at cur result position
 			tracebox(cur,VEC_HULL_MIN,VEC_HULL_MAX,cur- [0,0,2*fall_height] ,MOVE_NOMONSTERS,self);
+	test_fraction = trace_fraction;
 			
 			//If we moved at all
-			if(trace_fraction > 0)
+			if(!trace_allsolid && !trace_startsolid && trace_fraction > 0.0001)
 			{
 				
 				print("Height: ",ftos(fall_height), "  fraction: ",ftos(trace_fraction),"\n");
@@ -655,6 +666,7 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 					//getting back onto the ground
 					//undo the last move from a lowered position
 					tracebox(trace_endpos,VEC_HULL_MIN,VEC_HULL_MAX,[last_cur_x,last_cur_y,trace_endpos_z],MOVE_NOMONSTERS,self);
+	test_fraction = trace_fraction;
 					
 					//FIXME: okay so we enter this block of code when on the stairs
 					//add_debug_hull(trace_endpos,[1,1,1],[1,0,0],0.2);
