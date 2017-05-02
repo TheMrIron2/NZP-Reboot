@@ -260,43 +260,7 @@ void cl_navmesh_render_gen()
 	for(float j = 0; j < debug_lines_count; j++)
 	{
 		cl_navmesh_draw_line(debug_lines_pos1[j],debug_lines_pos2[j],2,debug_lines_color[j],0.2);
-	}
-	
-	//Drawing test direct walk method
-	
-	vector player_pos;
-	vec_eq(&player_pos,getentity(player_localentnum, GE_ORIGIN));
-	//Find floor at pos
-	cl_navgen_gen_drop_to_floor(player_pos);
-	vec_eq(&player_pos,trace_endpos);
-	
-	//Drawing the ground position of the player	
-	cl_navmesh_draw_test_ent(player_pos,[1,1,1],[1,1,1],0.2);
-	
-	//debug_direct_walk = 1;
-	
-	float dist = 30;
-	
-	vector ofs = [dist * cos(time), dist * sin(time), 0];
-	
-	float result = cl_navgen_gen_direct_walk(player_pos,ofs);
-	//debug_direct_walk = 0;
-	
-	if(result == 2)
-	{
-		cl_navmesh_draw_line(player_pos,player_pos+ofs,2,[0,1,0],0.2);
-		cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,1,0],0.2);
-	}
-	else if (result == 1)
-	{
-		cl_navmesh_draw_line(player_pos,player_pos+ofs,2,[1,1,0],0.2);
-		cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[1,1,0],0.2);
-	}
-	else
-	{
-		cl_navmesh_draw_line(player_pos,player_pos+ofs,2,[1,0,0],0.2);
-		cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[1,0,0],0.2);
-	}
+	}	
 }
 
 //Given starting position and edge tangent, walk along the edge until we hit some form of a corner
@@ -648,10 +612,7 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 			
 			//If we moved at all
 			if(!trace_allsolid && !trace_startsolid && trace_fraction > 0.0001)
-			{
-				
-				print("Height: ",ftos(fall_height), "  fraction: ",ftos(trace_fraction),"\n");
-				
+			{		
 				//Checking if we stepped down
 				//If the angle between the move is greater than 60, we fell, otherwise we stepped down
 				//if(vlen(trace_endpos - cur)/vlen(last_ofs) <= tan_60)

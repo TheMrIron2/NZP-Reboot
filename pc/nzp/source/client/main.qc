@@ -165,7 +165,8 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 	addentities(MASK_ENGINE);
 
 	//do viewmodel manipulation, purely cosmetic stuff
-	if(vmodel)
+	//FIXME: disabled vmodel
+	if(vmodel && 0)
 	{
 		Update_Vmodel();
 		local vector vorg;
@@ -276,7 +277,8 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 		//in menu.qc
 		Draw_Menu();
 	}
-	else
+	//FIXME: disabled hud drawing
+	else if(0)
 	{
 		HUD_Draw(g_width, g_height);
 	}
