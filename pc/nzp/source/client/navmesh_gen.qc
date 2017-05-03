@@ -2403,10 +2403,12 @@ void temp_call_find_min()
 		
 		float initial_tri_size = 100;//10
 		
+		//Rotate the triangle
+		
 		//TODO: tracebox down from above player pos to get actual floor position
-		vec_eq(&(vert1->pos),player_pos + [-initial_tri_size,0,0]);
+		vec_eq(&(vert1->pos),player_pos + [cos(time + 3.14),sin(time + 3.14),0]*initial_tri_size);
 		vec_eq(&(vert2->pos),player_pos);
-		vec_eq(&(vert3->pos),player_pos + [0,initial_tri_size,0]);
+		vec_eq(&(vert3->pos),player_pos + [cos(time + 1.57),sin(time + 1.57),0]*initial_tri_size);
 
 		vert1->left = 0;
 		vert1->right = vert2;
