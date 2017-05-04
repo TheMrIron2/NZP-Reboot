@@ -2405,10 +2405,17 @@ void temp_call_find_min()
 		
 		//Rotate the triangle
 		
+		float angle = time;
+		
 		//TODO: tracebox down from above player pos to get actual floor position
-		vec_eq(&(vert1->pos),player_pos + [cos(time + 3.14),sin(time + 3.14),0]*initial_tri_size);
 		vec_eq(&(vert2->pos),player_pos);
-		vec_eq(&(vert3->pos),player_pos + [cos(time + 1.57),sin(time + 1.57),0]*initial_tri_size);
+		
+		cl_navgen_gen_direct_walk(player_pos, [cos(angle + 3.14),sin(angle + 3.14),0]*initial_tri_size);
+		vec_eq(&(vert1->pos),trace_endpos);
+		cl_navgen_gen_direct_walk(player_pos, [cos(angle + 1.57),sin(angle + 1.57),0]*initial_tri_size);
+		vec_eq(&(vert3->pos),trace_endpos);
+		
+		
 
 		vert1->left = 0;
 		vert1->right = vert2;
