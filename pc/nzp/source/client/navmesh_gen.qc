@@ -1517,6 +1517,161 @@ float cl_navgen_find_min(vector pos1, vector pos2, vector pos3)
 	vector mid1;
 	vector mid3;
 	
+	float delta = 0.01;//how close does the min and max have to be for us to accept min as the desired point?
+	
+	float iters = 0;
+	
+	print("\nFind min Start\n\n");
+	print("pos1: ",vtos(pos1),"\nmin: ",vtos(min),"\n pos3:",vtos(pos3),"\n");
+	
+	while(1)
+	{
+		if(iters++ >= 9999)
+		{
+			print("Warning: iters exceeded 9998\n");
+			vec_eq(&trace_endpos,min);
+			return 0;
+		}
+				
+		iters2 = 0;
+		
+		
+		pos1_minimized = 0;
+		
+		//Subdivide min to pos1 until we can walk to pos3 from mid1
+		while(1)
+		{
+			if(iters2++ >= 9999)
+			{
+				print("Warning iters2 exceeded 9998 on 1\n");
+				return 0;
+			}
+		}
+		
+		//TODO: use the code below to finish implementing the fixed version of find_min
+		
+		if(pos1_minimized && pos3_minimized)
+		{
+			vec_eq(&trace_endpos,min);
+			return 1;
+		}
+	}
+}
+
+
+/*	
+	float delta = 0.01;
+	//subdivide from min to 1 once
+	//once we find a min to 1 subdivision that can walk to 3, state = 2;
+	if(find_min_state == 1)
+	{
+		//Just for breaking out of the loop
+		do
+		{
+			//Check if mid1 and min are so close that we have minimized this edge
+			if(xy_vlen(mid1->pos - vert2->pos) < delta)
+			{
+				mid1_minimized = 1;
+				find_min_state = 2;
+				vec_eq(&(mid3->pos),vert3->pos);
+				print("Minimized edge 1:(",ftos(xy_vlen(mid1->pos - vert2->pos)),")\n");
+				break;
+			}
+			
+			//if we can walk from mid1 to vert3, stop and anounce that.
+			if(!cl_navgen_obstructed(mid1->pos,vert3->pos))
+			{
+				print("Can walk from mid1 to pos3\n");
+				find_min_state = 2;
+				vec_eq(&(mid3->pos),vert3->pos);
+				vec_eq(&(vert2->pos),mid1->pos);
+				
+				add_debug_hull_line(mid1->pos,vert3->pos,[0,1,0]);
+				
+				break;
+			}
+					
+			add_debug_hull_line(mid1->pos,vert3->pos,[1,0,0]);
+			
+			//Subdivide
+			print("Cannot walk from mid1 to pos3, subdividing mid1.\n");
+				
+			cl_navgen_calc_midpoint(vert2->pos,mid1->pos);
+			
+			vec_eq(&(mid1->pos),trace_endpos);
+				
+		}
+		while(0);
+	}
+	
+	//subdivide from min to 3 once
+	//once we find a min to 3 subdivision that can walk to 3, state = 2;
+	else if(find_min_state == 2)
+	{
+		//Just for breaking out of the loop
+		do
+		{
+			//Check if mid3 and min are so close that we have minimized this edge
+			if(xy_vlen(mid3->pos - vert2->pos) < delta)
+			{
+				mid3_minimized = 1;
+				find_min_state = 1;
+				vec_eq(&(mid1->pos),vert1->pos);
+				print("Minimized edge 3:(",ftos(xy_vlen(mid3->pos - vert2->pos)),")\n");
+				break;
+			}
+			
+			//if we can walk from mid3 to vert1, stop and anounce that.
+			if(!cl_navgen_obstructed(mid3->pos,vert1->pos))
+			{
+				print("Can walk from mid3 to pos1\n");
+				find_min_state = 1;
+				vec_eq(&(vert2->pos),mid3->pos);
+				vec_eq(&(mid1->pos),vert1->pos);
+				add_debug_hull_line(mid3->pos,vert1->pos,[0,1,0]);
+				
+				break;
+			}
+					
+			add_debug_hull_line(mid3->pos,vert1->pos,[1,0,0]);
+			
+			//Subdivide
+			print("Cannot walk from mid3 to pos1, subdividing mid3.\n");
+				
+			cl_navgen_calc_midpoint(vert2->pos,mid3->pos);
+			
+			vec_eq(&(mid3->pos),trace_endpos);
+				
+		}
+		while(0);
+	}
+	
+	//Check if the algorithm is finished.
+	if(mid1_minimized == 1 && mid3_minimized == 1)
+	{
+		print("Both edges minimized, algorithm finished.\n");
+		find_min_state = 3;
+	}
+}
+*/
+//=======================================================================================================================
+//=======================================================================================================================
+//=======================================================================================================================
+//=======================================================================================================================
+//=======================================================================================================================
+//=======================================================================================================================
+
+float cl_old_old_navgen_find_min(vector pos1, vector pos2, vector pos3)
+{
+	float pos1_minimized = 0;
+	float pos3_minimized = 0;
+	
+	vector min;
+	vec_eq(&min,pos2);
+	
+	vector mid1;
+	vector mid3;
+	
 	float delta = 0.1;//how close does the min and max have to be for us to accept min as the desired point?
 	
 	float iters = 0;
@@ -1535,7 +1690,7 @@ float cl_navgen_find_min(vector pos1, vector pos2, vector pos3)
 		pos1_minimized = 0;
 		pos3_minimized = 0;
 				
-		//These for for debug
+		//These are for debug
 		//===================
 		vector temp_mid1;
 		vector temp_mid3;
@@ -2247,7 +2402,6 @@ float mid3_minimized;
 
 void temp_continue_find_min()
 {
-	
 	if(find_min_state == 3)
 	{
 		print("Algorithm already finished.\n");
@@ -2471,13 +2625,12 @@ void temp_call_find_min()
 void cl_navmesh_gen_navmesh()
 {
 	disable_print = 1;
-	temp_call_find_min();
-	//TODO: create 3 vertices in a triangle at player position, call floodfill on all 3
+	//temp_call_find_min();
 	
 	//navgen_verts_root = 0;
 	
 	//vector player_pos = getentity(player_localentnum, GE_ORIGIN);
-	/*vector player_pos;
+	vector player_pos;
 	
 	if(disable_print)
 		disable_print = 0;
@@ -2508,7 +2661,7 @@ void cl_navmesh_gen_navmesh()
 	v3->right = v2;
 	
 	recursive_depth = 0;
-	cl_navgen_gen_floodfill(v1);*/
+	cl_navgen_gen_floodfill(v1);
 }
 /*	
 	//vector vorg = getviewprop(VF_ORIGIN);
