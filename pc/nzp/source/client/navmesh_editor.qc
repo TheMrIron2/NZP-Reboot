@@ -2445,10 +2445,6 @@ void() cl_register_navmesh_commands =
 
 float cl_confirm_clear_navmesh;
 
-//FIXME FIXME FIXME FIXME this is for find min navmesh debugging
-void() temp_continue_find_min;
-//FIXME FIXME FIXME FIXME this is for find min navmesh debugging
-
 float(string cmd) cl_navmesh_console_commands = 
 {
 	tokenize(cmd);
@@ -2486,16 +2482,7 @@ float(string cmd) cl_navmesh_console_commands =
 		default:
 			cl_confirm_clear_navmesh = 0;
 			break;
-	}
-	
-	//TEMP TEMP TEMP TEMP
-	if(!strncmp(argv(0),"nav_place_vert"))
-	{
-		temp_continue_find_min();
-		return TRUE;
-	}
-	//TEMP TEMP TEMP TEMP
-	
+	}	
 	
 	if(!cl_navmesh_mode)
 		return FALSE;

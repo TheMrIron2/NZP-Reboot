@@ -140,15 +140,6 @@ void cl_navmesh_render_edge(navgen_vertex* from, navgen_vertex* to)
 }
 
 
-//TEMP TEMP TEMP TEMP FIXME FIXME FIXME FIXME
-
-//These defs are for testing the navmesh find min algorithm
-navgen_vertex* vert1;
-navgen_vertex* vert3;
-navgen_vertex* vert2;
-navgen_vertex* mid1;
-navgen_vertex* mid3;
-
 
 vector debug_lines_pos1[200];
 vector debug_lines_pos2[200];
@@ -225,37 +216,6 @@ void cl_navmesh_render_gen()
 	{
 		cl_navmesh_draw_test_ent(debug_hulls[i],debug_hull_scales[i],debug_hull_colors[i],debug_hull_alphas[i]);
 	}
-	
-	//FIXME FIXME FIXME FIXME
-	//For drawing the find min test algorithm
-	if(vert1)
-	{
-		cl_navmesh_render_vert(vert1);
-		if(vert1->left)
-			cl_navmesh_render_edge(vert1,vert1->left);
-		if(vert1->right)
-			cl_navmesh_render_edge(vert1,vert1->right);
-	}
-	if(vert3)
-	{
-		cl_navmesh_render_vert(vert3);
-		if(vert3->left)
-			cl_navmesh_render_edge(vert3,vert3->left);
-		if(vert3->right)
-			cl_navmesh_render_edge(vert3,vert3->right);
-	}
-	if(vert2)
-	{
-		cl_navmesh_render_vert(vert2);
-		if(vert2->left)
-			cl_navmesh_render_edge(vert2,vert2->left);
-		if(vert2->right)
-			cl_navmesh_render_edge(vert2,vert2->right);
-	}
-	if(mid1)
-		cl_navmesh_render_point(mid1->pos,[1,1,0],0.4);
-	if(mid3)
-		cl_navmesh_render_point(mid3->pos,[1,0,1],0.4);
 		
 	for(float j = 0; j < debug_lines_count; j++)
 	{
@@ -1508,8 +1468,8 @@ float cl_navgen_calc_midpoint(vector a, vector b)
 //Returns 0 if we encountered an error / issue, 1 if we successfully found the minimum (I'm not yet sure if this error handling is useful in any way)
 float cl_navgen_find_min(vector pos1, vector pos2, vector pos3)
 {
-	float pos1_minimized = 0;
-	float pos3_minimized = 0;
+	float mid1_minimized = 0;
+	float mid3_minimized = 0;
 	
 	vector min;
 	vec_eq(&min,pos2);
@@ -1520,9 +1480,13 @@ float cl_navgen_find_min(vector pos1, vector pos2, vector pos3)
 	float delta = 0.01;//how close does the min and max have to be for us to accept min as the desired point?
 	
 	float iters = 0;
+	float iters2 = 0;
 	
 	print("\nFind min Start\n\n");
 	print("pos1: ",vtos(pos1),"\nmin: ",vtos(min),"\n pos3:",vtos(pos3),"\n");
+	
+	vec_eq(&mid1,pos1);
+	vec_eq(&mid3,pos3);
 	
 	while(1)
 	{
@@ -1534,9 +1498,7 @@ float cl_navgen_find_min(vector pos1, vector pos2, vector pos3)
 		}
 				
 		iters2 = 0;
-		
-		
-		pos1_minimized = 0;
+		mid1_minimized = 0;
 		
 		//Subdivide min to pos1 until we can walk to pos3 from mid1
 		while(1)
@@ -1546,11 +1508,70 @@ float cl_navgen_find_min(vector pos1, vector pos2, vector pos3)
 				print("Warning iters2 exceeded 9998 on 1\n");
 				return 0;
 			}
+			
+			//Check if mid1 and min are so close that we have minimized this edge
+			if(xy_vlen(mid1 - min) < delta)
+			{
+				mid1_minimized = 1;
+				vec_eq(&(mid3),pos3);
+				break;
+			}
+			
+			//if we can walk from mid1 to pos3, stop minimizing
+			if(!cl_navgen_obstructed(mid1,pos3))
+			{
+				vec_eq(&(mid3),pos3);
+				vec_eq(&(min),mid1);
+				break;
+			}
+					
+			//Subdivide
+			cl_navgen_calc_midpoint(min,mid1);
+			vec_eq(&(mid1),trace_endpos);
 		}
 		
-		//TODO: use the code below to finish implementing the fixed version of find_min
+		//Check if we are done
+		if(mid1_minimized && mid3_minimized)
+		{
+			vec_eq(&trace_endpos,min);
+			return 1;
+		}
 		
-		if(pos1_minimized && pos3_minimized)
+		iters2 = 0;
+		mid3_minimized = 0;
+		
+		//Subdivide min to pos3 until we can walk to pos1 from mid3
+		while(1)
+		{
+			if(iters2++ >= 9999)
+			{
+				print("Warning iters2 exceeded 9998 on 3\n");
+				return 0;
+			}
+			
+			//Check if mid3 and min are so close that we have minimized this edge
+			if(xy_vlen(mid3 - min) < delta)
+			{
+				mid3_minimized = 1;
+				vec_eq(&(mid1),pos1);
+				break;
+			}
+			
+			//if we can walk from mid3 to pos1, stop minimizing
+			if(!cl_navgen_obstructed(mid3,pos1))
+			{
+				vec_eq(&(mid1),pos1);
+				vec_eq(&(min),mid3);
+				break;
+			}
+					
+			//Subdivide
+			cl_navgen_calc_midpoint(min,mid3);
+			vec_eq(&(mid3),trace_endpos);
+		}
+		
+		//Check if we are done
+		if(mid1_minimized && mid3_minimized)
 		{
 			vec_eq(&trace_endpos,min);
 			return 1;
@@ -2383,253 +2404,9 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 }
 
 
-//===============================================================================================================================
-//===============================================================================================================================
-//========================================== Test section for debugging find_min algorithm ======================================
-//===============================================================================================================================
-//===============================================================================================================================
-
-//vert defs are above (so render can use them)
-//navgen_vertex* vert1;
-//navgen_vertex* vert3;
-//navgen_vertex* vert2;
-
-
-float find_min_state;
-
-float mid1_minimized;
-float mid3_minimized;
-
-void temp_continue_find_min()
-{
-	if(find_min_state == 3)
-	{
-		print("Algorithm already finished.\n");
-		return;
-	}
-	
-	float delta = 0.01;
-	//subdivide from min to 1 once
-	//once we find a min to 1 subdivision that can walk to 3, state = 2;
-	if(find_min_state == 1)
-	{
-		//Just for breaking out of the loop
-		do
-		{
-			clear_debug_hulls();
-			clear_debug_lines();
-		
-			mid1_minimized = 0;
-			
-			//Check if mid1 and min are so close that we have minimized this edge
-			if(xy_vlen(mid1->pos - vert2->pos) < delta)
-			{
-				mid1_minimized = 1;
-				find_min_state = 2;
-				vec_eq(&(mid3->pos),vert3->pos);
-				print("Minimized edge 1:(",ftos(xy_vlen(mid1->pos - vert2->pos)),")\n");
-				break;
-			}
-			
-			//if we can walk from mid1 to vert3, stop and anounce that.
-			if(!cl_navgen_obstructed(mid1->pos,vert3->pos))
-			{
-				print("Can walk from mid1 to pos3\n");
-				find_min_state = 2;
-				vec_eq(&(mid3->pos),vert3->pos);
-				vec_eq(&(vert2->pos),mid1->pos);
-				
-				add_debug_hull_line(mid1->pos,vert3->pos,[0,1,0]);
-				
-				break;
-			}
-					
-			add_debug_hull_line(mid1->pos,vert3->pos,[1,0,0]);
-			
-			//Subdivide
-			print("Cannot walk from mid1 to pos3, subdividing mid1.\n");
-				
-			cl_navgen_calc_midpoint(vert2->pos,mid1->pos);
-			
-			vec_eq(&(mid1->pos),trace_endpos);
-				
-		}
-		while(0);
-	}
-	
-	//subdivide from min to 3 once
-	//once we find a min to 3 subdivision that can walk to 3, state = 2;
-	else if(find_min_state == 2)
-	{
-		//Just for breaking out of the loop
-		do
-		{
-			clear_debug_hulls();
-			clear_debug_lines();
-		
-			mid3_minimized = 0;
-			
-			//Check if mid3 and min are so close that we have minimized this edge
-			if(xy_vlen(mid3->pos - vert2->pos) < delta)
-			{
-				mid3_minimized = 1;
-				find_min_state = 1;
-				vec_eq(&(mid1->pos),vert1->pos);
-				print("Minimized edge 3:(",ftos(xy_vlen(mid3->pos - vert2->pos)),")\n");
-				break;
-			}
-			
-			//if we can walk from mid3 to vert1, stop and anounce that.
-			if(!cl_navgen_obstructed(mid3->pos,vert1->pos))
-			{
-				print("Can walk from mid3 to pos1\n");
-				find_min_state = 1;
-				vec_eq(&(vert2->pos),mid3->pos);
-				vec_eq(&(mid1->pos),vert1->pos);
-				add_debug_hull_line(mid3->pos,vert1->pos,[0,1,0]);
-				
-				break;
-			}
-					
-			add_debug_hull_line(mid3->pos,vert1->pos,[1,0,0]);
-			
-			//Subdivide
-			print("Cannot walk from mid3 to pos1, subdividing mid3.\n");
-				
-			cl_navgen_calc_midpoint(vert2->pos,mid3->pos);
-			
-			vec_eq(&(mid3->pos),trace_endpos);
-				
-		}
-		while(0);
-	}
-	
-	//Check if the algorithm is finished.
-	if(mid1_minimized == 1 && mid3_minimized == 1)
-	{
-		print("Both edges minimized, algorithm finished.\n");
-		find_min_state = 3;
-	}
-}
-
-
-void temp_call_find_min()
-{
-	//Restarts the algorithm and begins it
-	clear_debug_hulls();
-	clear_debug_lines();
-	
-	find_min_state = 0;
-	//clear the navmesh verts
-	if(vert1)
-		memfree(vert1);
-	if(vert2)
-		memfree(vert2);
-	if(vert3)
-		memfree(vert3);
-	if(mid1)
-		memfree(mid1);
-	if(mid3)
-		memfree(mid3);
-	vert1 = 0;
-	vert2 = 0;
-	vert3 = 0;
-	mid1 = 0;
-	mid3 = 0;
-	
-	
-	//If we haven't started the algorithm
-	//Set everything up and start it
-	if(find_min_state == 0)
-	{
-		vert1 = memalloc(sizeof(navgen_vertex));
-		vert3 = memalloc(sizeof(navgen_vertex));
-		vert2 = memalloc(sizeof(navgen_vertex));
-		
-		vector player_pos;
-	
-		vec_eq(&player_pos,getentity(player_localentnum, GE_ORIGIN));
-		
-		//Find floor at pos
-		cl_navgen_gen_drop_to_floor(player_pos);
-		//player_pos = trace_endpos;
-		vec_eq(&player_pos,trace_endpos);
-		
-		float initial_tri_size = 100;//10
-		
-		//Rotate the triangle
-		
-		float angle = time;
-		
-		//TODO: tracebox down from above player pos to get actual floor position
-		vec_eq(&(vert2->pos),player_pos);
-		
-		cl_navgen_gen_direct_walk(player_pos, [cos(angle + 3.14),sin(angle + 3.14),0]*initial_tri_size);
-		vec_eq(&(vert1->pos),trace_endpos);
-		cl_navgen_gen_direct_walk(player_pos, [cos(angle + 1.57),sin(angle + 1.57),0]*initial_tri_size);
-		vec_eq(&(vert3->pos),trace_endpos);
-		
-		
-
-		vert1->left = 0;
-		vert1->right = vert2;
-		vert2->left = vert1;
-		vert2->right = vert3;
-		vert3->left = vert2;
-		vert3->right = 0;
-		
-		//Check if corners are not obstructed
-		if(!cl_navgen_obstructed(vert1->pos,vert3->pos))
-		{
-			print("findmin: forward and left are not obstructed, nothing to do.\n");
-			find_min_state = 3;//finished state
-			add_debug_hull_line(vert1->pos,vert3->pos,[0,1,0]);
-			return;
-		}
-		
-		//Make sure we can walk from 1 to min and min to 3
-		if(cl_navgen_obstructed(vert1->pos,vert2->pos))
-		{
-			print("Warning: findmin: cannot walk from v1 to min.\n");
-			find_min_state = 3;
-			return;
-		}
-		if(cl_navgen_obstructed(vert2->pos,vert3->pos))
-		{
-			print("Warning: findmin: cannot walk from v3 to min.\n");
-			find_min_state = 3;
-			return;
-		}
-		
-		mid1 = memalloc(sizeof(navgen_vertex));
-		vec_eq(&(mid1->pos),vert1->pos);
-		mid3 = memalloc(sizeof(navgen_vertex));
-		vec_eq(&(mid3->pos),vert3->pos);
-		
-		add_debug_hull_line(vert1->pos,vert3->pos,[1,0,0]);
-		
-		
-		find_min_state = 1;
-		return;
-	}
-}
-
-
-//===============================================================================================================================
-//===============================================================================================================================
-//========================================== End Test section for debugging find_min algorithm ======================================
-//===============================================================================================================================
-//===============================================================================================================================
-
 
 void cl_navmesh_gen_navmesh()
 {
-	disable_print = 1;
-	//temp_call_find_min();
-	
-	//navgen_verts_root = 0;
-	
-	//vector player_pos = getentity(player_localentnum, GE_ORIGIN);
 	vector player_pos;
 	
 	if(disable_print)
@@ -2639,14 +2416,13 @@ void cl_navmesh_gen_navmesh()
 	
 	vec_eq(&player_pos,getentity(player_localentnum, GE_ORIGIN));
 	
-	//Find floor at pos
+	//Find floor pos at pos
 	cl_navgen_gen_drop_to_floor(player_pos);
 	//player_pos = trace_endpos;
 	vec_eq(&player_pos,trace_endpos);
 	
 	float initial_tri_size = 40;//10
 	
-	//TODO: tracebox down from above player pos to get actual floor position
 	navgen_vertex* v1 = cl_navgen_new_vert(player_pos + [0,initial_tri_size,0]);
 	navgen_vertex* v2 = cl_navgen_new_vert(player_pos + [-initial_tri_size,-initial_tri_size,0]);
 	navgen_vertex* v3 = cl_navgen_new_vert(player_pos + [initial_tri_size,-initial_tri_size,0]);
@@ -2662,68 +2438,6 @@ void cl_navmesh_gen_navmesh()
 	
 	recursive_depth = 0;
 	cl_navgen_gen_floodfill(v1);
-}
-/*	
-	//vector vorg = getviewprop(VF_ORIGIN);
-	//vector vorg = getentity(player_localentnum, GE_ORIGIN);
-	
-	//recursive_flood_fill(vorg + [0,0,10],32);
-	
-		
-		
-		/*vector vorg = getviewprop(VF_ORIGIN);
-		vector vang = getviewprop(VF_ANGLES);
-	
-		vector vang_left1 = vang + [0,6,0];//Two degrees to the left
-		vector vang_left2 = vang + [0,5,0];//Three degrees to the left
-		vector vang_right1 = vang + [0,-6,0];//Two degrees to the right
-		vector vang_right2 = vang + [0,-5,0];//Three degrees to the right
-		
-		makevectors(vang);
-		vector vang_fwd = v_forward;
-		
-		
-		
-		tracebox(vert_loc,VEC_HULL_MIN,VEC_HULL_MAX,vert_loc+([0,0,-1] * 2000),1,self);
-		vert_loc.z = vert_loc.z + (-2000 * trace_fraction);
-		
-		
-		//================================================================================
-		
-		//Render the resolved vertex pos
-		cl_navmesh_draw_vert(vert_loc, 1 );
-			
-		if(cl_navmesh_place_corner_state == NAVMESH_PLACE_CORNER_CONFIRM)
-		{	
-			cl_navmesh_verts[cl_navmesh_vert_count].pos.x = vert_loc.x;
-			cl_navmesh_verts[cl_navmesh_vert_count].pos.y = vert_loc.y;
-			cl_navmesh_verts[cl_navmesh_vert_count].pos.z = vert_loc.z;
-			
-			cl_navmesh_vert_count++;
-			
-			cl_navmesh_place_corner_state = 0;
-		}
-		*/
-		//======================================================================*/
-
-//==========================================================================================================================
-//returns 0 if a vertex exists within dist of pos
-float vert_exists(vector pos,float dist)
-{
-	for(float i = 0; i < cl_navmesh_vert_count; i++)
-	{
-		for(float j = 0; j < 3; j++)
-		{
-			if(fabs(cl_navmesh_verts[i].pos[j] - pos[j]) >= dist)
-			{
-				break;
-			}
-			
-			if(j >= 2)
-				return 1;
-		}
-	}
-	return 0;
 }
 
 //====================================================================================================================================
@@ -2888,74 +2602,4 @@ void() ai_physics_movement =
 	self.flags |= FL_ONGROUND;
 	//=======================================================================================================================================
 };
-
-//====================================================================================================================================
-//============================================== End navmesh generation test =========================================================
-//====================================================================================================================================
-
-float trace_move(vector start, vector mins, vector maxs, vector end)
-{
-	
-}
-
-void recursive_flood_fill(vector where, float dist)
-{
-	if(cl_navmesh_vert_count >= 512)
-	{
-		print("Warning: ran out of vertices");
-		return;
-	}
-	cl_navmesh_verts[cl_navmesh_vert_count++].pos = where;
-	//dist is how far in the 4 directions we flood fill (sort of like resolution)
-	
-	//Try forward
-	vector delta = [0,dist,0];
-	
-	tracebox(where,VEC_HULL_MIN,VEC_HULL_MAX,where + delta,MOVE_NOMONSTERS,self);
-	if(trace_fraction >= 1 && !trace_allsolid && !trace_startsolid)
-	{
-		if(vert_exists(where + delta, dist) == 0)
-		{
-			recursive_flood_fill(where+delta,dist);
-		}
-	}
-	
-	//Try back
-	delta = [0,-dist,0];
-	
-	tracebox(where,VEC_HULL_MIN,VEC_HULL_MAX,where + delta,MOVE_NOMONSTERS,self);
-	if(trace_fraction >= 1 && !trace_allsolid && !trace_startsolid)
-	{
-		if(vert_exists(where + delta, dist) == 0)
-		{
-			
-			recursive_flood_fill(where+delta,dist);
-		}
-	}
-	
-	//Try left
-	delta = [-dist,0,0];
-	
-	tracebox(where,VEC_HULL_MIN,VEC_HULL_MAX,where + delta,MOVE_NOMONSTERS,self);
-	if(trace_fraction >= 1 && !trace_allsolid && !trace_startsolid)
-	{
-		if(vert_exists(where + delta, dist) == 0)
-		{
-			
-			recursive_flood_fill(where+delta,dist);
-		}
-	}
-	
-	//Try right
-	delta = [dist,0,0];
-	
-	tracebox(where,VEC_HULL_MIN,VEC_HULL_MAX,where + delta,MOVE_NOMONSTERS,self);
-	if(trace_fraction >= 1 && !trace_allsolid && !trace_startsolid)
-	{
-		if(vert_exists(where + delta, dist) == 0)
-		{
-			
-			recursive_flood_fill(where+delta,dist);
-		}
-	}
-}*/
+*/
