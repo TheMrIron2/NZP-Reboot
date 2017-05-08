@@ -952,8 +952,6 @@ float cl_navgen_gen_walk_to_point(vector start, vector point)
 		if(debug_walk_to_point)
 		{
 			print("Walk to point: ",walk_percent(start,cur,point),",\t,",vtos(cur),"\n");
-			add_debug_hull(cur,[1,1,1],[0,0,1],0.05);
-			add_debug_hull(cur,[0.1,0.1,1],[0,0,1],0.05);
 		}
 	}
 }
