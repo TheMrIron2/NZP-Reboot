@@ -266,6 +266,7 @@ void() info_player_start =
 	
 };
 
+
 void(string com) SV_ParseClientCommand =
 {
 	if(com == "joingame")
@@ -291,6 +292,12 @@ void(string com) SV_ParseClientCommand =
 			
 			PlayerSpawn();
 		}
+	}
+	else if(com == "pause")
+	{
+		static float paused;
+		paused = !paused;
+		setpause(paused);
 	}
 	else
 	{

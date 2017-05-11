@@ -2,6 +2,7 @@ void() ToggleMenu =
 {
 	if(serverkey("constate") != "disconnected")
 	{
+		localcmd("cmd pause\n");
 		if(in_menu == MENU_NONE)
 		{
 			in_menu = MENU_PAUSE;
