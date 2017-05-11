@@ -296,7 +296,7 @@ void end_sys_globals;
 .vector oldorigin;	/* This is often used on players to reset the player back to where they were last frame if they somehow got stuck inside something due to fpu precision. Never change a player's oldorigin field to inside a solid, because that might cause them to become pemanently stuck. */
 .vector velocity;	/* The direction and speed that the entity is moving in world space. */
 .vector angles;	/* The eular angles the entity is facing in, in pitch, yaw, roll order. Due to a legacy bug, mdl/iqm/etc formats use +x=UP, bsp/spr/etc formats use +x=DOWN. */
-.vector avelocity;	/* The amount the entity's angles change by each frame. Note that this is direct eular angles, and thus the angular change is non-linear and often just looks buggy. */
+.vector avelocity;	/* The amount the entity's angles change by per second. Note that this is direct eular angles, and thus the angular change is non-linear and often just looks buggy if you're changing more than one angle at a time. */
 .string classname;	/* Identifies the class/type of the entity. Useful for debugging, also used for loading, but its value is not otherwise significant to the engine, this leaves the mod free to set it to whatever it wants and randomly test strings for values in whatever inefficient way it chooses fit. */
 .string model;	/* The model name that was set via setmodel, in theory. Often, this is cleared to null to prevent the engine from being seen by clients while not changing modelindex. This behaviour allows inline models to remain solid yet be invisible. */
 .float frame;	/* The current frame the entity is meant to be displayed in. In CSQC, note the lerpfrac and frame2 fields as well. if it specifies a framegroup, the framegroup will autoanimate in ssqc, but not in csqc. */
@@ -410,6 +410,8 @@ int serverid;	/* The unique id of this server within the server cluster. */
 .float bouncestop;
 .float idealpitch;
 .float pitch_speed;
+.float drawflags;	/* Various flags that affect lighting values and scaling. Typically set to 96 in quake for proper compatibility with DP_QC_SCALE. */
+.float abslight;	/* Allows overriding light levels. Use drawflags to state that this field should actually be used. */
 .vector color;	/* This affects the colour of realtime lights that were enabled via the pflags field. */
 .float light_lev;	/* This is the radius of an entity's light. This is not normally used by the engine, but is used for realtime lights (ones that are enabled with the pflags field). */
 .float style;	/* Used by the light util to decide how an entity's light should animate. On an entity with pflags set, this also affects realtime lights. */
@@ -437,8 +439,6 @@ int serverid;	/* The unique id of this server within the server cluster. */
 .float dimension_seen;	/* This is the dimension mask (bitfield) that the client is visible within. Clients that cannot see this dimension mask will not see this entity. */
 .float dimension_ghost;	/* If this entity is visible only within these dimensions, it will become transparent, as if a ghost. */
 .float dimension_ghost_alpha;	/* If this entity is subject to dimension_ghost, this is the scaler for its alpha value. If 0, 0.5 will be used instead. */
-.float drawflags;	/* Various flags that affect lighting values and scaling. Typically set to 96 in quake for proper compatibility with DP_QC_SCALE. */
-.float abslight;	/* Allows overriding light levels. Use drawflags to state that this field should actually be used. */
 .float(entity playerent, float changedflags) SendEntity;	/* Called by the engine whenever an entity needs to be (re)sent to a client's csprogs, either because SendFlags was set or because data was lost. Must write its data to the MSG_ENTITY buffer. Will be called at the engine's leasure. */
 .float SendFlags;	/* Indicates that something in the entity has been changed, and that it needs to be updated to all players that can see it. The engine will clear it at some point, with the cleared bits appearing in the 'changedflags' argument of the SendEntity method. */
 .float Version;	/* Obsolete, set a SendFlags bit instead. */
@@ -917,6 +917,12 @@ float(string) stof = #81; /* Part of FRIK_FILE, FTE_STRINGS, QW_ENGINE, ZQ_QC_ST
 void(vector where, float set) multicast = #82; /*
 		Once the MSG_MULTICAST network message buffer has been filled with data, this builtin is used to dispatch it to the given target, filtering by pvs for reduced network bandwidth. */
 
+string(float style, optional __out vector rgb) getlightstyle = #0:getlightstyle; /*
+		Obtains the light style string for the given style. */
+
+vector(float style) getlightstylergb = #0:getlightstylergb; /*
+		Obtains the current rgb value of the specified light style. In csqc, this is correct with regard to the current frame, while ssqc gives no guarentees about time and ignores client cvars. Note: use getlight if you want the actual light value at a point. */
+
 void(float style, float val, optional vector rgb) lightstylestatic = #5; /*
 		Sets the lightstyle to an explicit numerical level. From Hexen2. */
 
@@ -1210,6 +1216,16 @@ float(float modidx, string framename) frameforname = #276; /* Part of FTE_CSQC_S
 
 float(float modidx, float framenum) frameduration = #277; /* Part of FTE_CSQC_SKELETONOBJECTS
 		Retrieves the duration (in seconds) of the specified framegroup. */
+
+void(float modidx, float framenum, __inout float basetime, float targettime, void(float timestamp, int code, string data) callback) processmodelevents = #0:processmodelevents; /*
+		Calls a callback for each event that has been reached. Basetime is set to targettime. */
+
+float(float modidx, float framenum, __inout float basetime, float targettime, __out int code, __out string data) getnextmodelevent = #0:getnextmodelevent; /*
+		Reports the next event within a model's animation. Returns a boolean if an event was found between basetime and targettime. Writes to basetime,code,data arguments (if an event was found, basetime is set to the event's time, otherwise to targettime).
+		WARNING: this builtin cannot deal with multiple events with the same timestamp (only the first will be reported). */
+
+float(float modidx, float framenum, int eventidx, __out float timestamp, __out int code, __out string data) getmodeleventidx = #0:getmodeleventidx; /*
+		Reports an indexed event within a model's animation. Writes to timestamp,code,data arguments on success. Returns false if the animation/event/model was out of range/invalid. Does not consider looping animations (retry from index 0 if it fails and you know that its a looping animation). This builtin is more annoying to use than getnextmodelevent, but can be made to deal with multiple events with the exact same timestamp. */
 
 #define dotproduct(v1,v2) ((vector)(v1)*(vector)(v2))
 vector(vector v1, vector v2) crossproduct = #0:crossproduct; /* Part of FTE_QC_CROSSPRODUCT
@@ -1552,6 +1568,9 @@ float(string filename, strbuf bufhandle) buf_loadfile = #535; /*
 float(filestream filehandle, strbuf bufhandle, optional float startpos, optional float numstrings) buf_writefile = #536; /*
 		Writes the contents of a string buffer onto the end of the supplied filehandle (you must have already used fopen). Additional optional arguments permit you to constrain the writes to a subsection of the stringbuffer. */
 
+float(optional float force) physics_supported = #0:physics_supported; /*
+		Queries whether rigid body physics is enabled or not. CSQC and SSQC may report different values. If the force argument is used then the engine will try to activate or release physics (returning the new state, which may fail if plugins or dlls are missing). Note that restarting the physics engine is likely to result in hitches when collision trees get generated. The state may change if a plugin is disabled mid-map. */
+
 void(entity e, float physics_enabled) physics_enable = #540; /*
 		Enable or disable the physics attached to a MOVETYPE_PHYSICS entity. Entities which have been disabled in this way will stop taking so much cpu time. */
 
@@ -1581,7 +1600,40 @@ string(string fmt, ...) sprintf = #627;
 float(entity e, float s) getsurfacenumtriangles = #628;
 vector(entity e, float s, float n) getsurfacetriangle = #629;
 string(string digest, string data, ...) digest_hex = #639;
+#ifdef _ACCESSORS
+accessor strbuf : float
+{
+	inline get float asfloat[float idx] = {return stof(bufstr_get(this, idx));};
+	inline set float asfloat[float idx] = {bufstr_set(this, idx, ftos(value));};
+	get string[float] = bufstr_get;
+	set string[float] = bufstr_set;
+	get float length = buf_getsize;
+};
+accessor searchhandle : float
+{
+	get string[float] = search_getfilename;
+	get float length = search_getsize;
+};
+accessor hashtable : float
+{
+	inline get vector v[string key] = {return hash_get(this, key, '0 0 0', EV_VECTOR);};
+	inline set vector v[string key] = {hash_add(this, key, value, HASH_REPLACE|EV_VECTOR);};
+	inline get string s[string key] = {return hash_get(this, key, "", EV_STRING);};
+	inline set string s[string key] = {hash_add(this, key, value, HASH_REPLACE|EV_STRING);};
+	inline get float f[string key] = {return hash_get(this, key, 0.0, EV_FLOAT);};
+	inline set float f[string key] = {hash_add(this, key, value, HASH_REPLACE|EV_FLOAT);};
+	inline get __variant[string key] = {return hash_get(this, key, __NULL__);};
+	inline set __variant[string key] = {hash_add(this, key, value, HASH_REPLACE);};
+};
+accessor infostring : string
+{
+	get string[string] = infoget;
+	inline set* string[string fld] = {(*this) = infoadd(*this, fld, value);};
+};
+accessor filestream : float
+{
+	get string = fgets;
+	inline set string = {fputs(this,value);};
+};
+#endif
 #pragma noref 0
-
-float x2_icon;
-float insta_icon;

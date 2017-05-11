@@ -285,7 +285,7 @@ void end_sys_globals;
 .vector oldorigin;	/* This is often used on players to reset the player back to where they were last frame if they somehow got stuck inside something due to fpu precision. Never change a player's oldorigin field to inside a solid, because that might cause them to become pemanently stuck. */
 .vector velocity;	/* The direction and speed that the entity is moving in world space. */
 .vector angles;	/* The eular angles the entity is facing in, in pitch, yaw, roll order. Due to a legacy bug, mdl/iqm/etc formats use +x=UP, bsp/spr/etc formats use +x=DOWN. */
-.vector avelocity;	/* The amount the entity's angles change by each frame. Note that this is direct eular angles, and thus the angular change is non-linear and often just looks buggy. */
+.vector avelocity;	/* The amount the entity's angles change by per second. Note that this is direct eular angles, and thus the angular change is non-linear and often just looks buggy if you're changing more than one angle at a time. */
 .float pmove_flags;
 .string classname;	/* Identifies the class/type of the entity. Useful for debugging, also used for loading, but its value is not otherwise significant to the engine, this leaves the mod free to set it to whatever it wants and randomly test strings for values in whatever inefficient way it chooses fit. */
 .float renderflags;
@@ -355,6 +355,8 @@ int serverid;	/* The unique id of this server within the server cluster. */
 .float bouncestop;
 .float idealpitch;
 .float pitch_speed;
+.float drawflags;	/* Various flags that affect lighting values and scaling. Typically set to 96 in quake for proper compatibility with DP_QC_SCALE. */
+.float abslight;	/* Allows overriding light levels. Use drawflags to state that this field should actually be used. */
 .vector color;	/* This affects the colour of realtime lights that were enabled via the pflags field. */
 .float light_lev;	/* This is the radius of an entity's light. This is not normally used by the engine, but is used for realtime lights (ones that are enabled with the pflags field). */
 .float style;	/* Used by the light util to decide how an entity's light should animate. On an entity with pflags set, this also affects realtime lights. */
@@ -761,7 +763,6 @@ const float TEREDIT_MESH_KILL = 16;
 const float TEREDIT_TINT = 17;
 const float TEREDIT_RESET_SECT = 20;
 const float TEREDIT_RELOAD_SECT = 21;
-const float TEREDIT_ENTS_WIPE = 22;
 const float TEREDIT_ENT_GET = 26;
 const float TEREDIT_ENT_SET = 27;
 const float TEREDIT_ENT_ADD = 28;
@@ -955,6 +956,12 @@ string(entity e, string key) infokey = #80; /* Part of QW_ENGINE
 		If e is world, returns the field 'key' from either the serverinfo or the localinfo. If e is a player, returns the value of 'key' from the player's userinfo string. There are a few special exceptions, like 'ip' which is not technically part of the userinfo. */
 
 float(string) stof = #81; /* Part of FRIK_FILE, FTE_STRINGS, QW_ENGINE, ZQ_QC_STRINGS*/
+string(float style, optional __out vector rgb) getlightstyle = #0:getlightstyle; /*
+		Obtains the light style string for the given style. */
+
+vector(float style) getlightstylergb = #0:getlightstylergb; /*
+		Obtains the current rgb value of the specified light style. In csqc, this is correct with regard to the current frame, while ssqc gives no guarentees about time and ignores client cvars. Note: use getlight if you want the actual light value at a point. */
+
 void(vector start, vector mins, vector maxs, vector end, float nomonsters, entity ent) tracebox = #90; /* Part of DP_QC_TRACEBOX
 		Exactly like traceline, but a box instead of a uselessly thin point. Acceptable sizes are limited by bsp format, q1bsp has strict acceptable size values. */
 
@@ -1199,6 +1206,16 @@ float(float modidx, string framename) frameforname = #276; /* Part of FTE_CSQC_S
 float(float modidx, float framenum) frameduration = #277; /* Part of FTE_CSQC_SKELETONOBJECTS
 		Retrieves the duration (in seconds) of the specified framegroup. */
 
+void(float modidx, float framenum, __inout float basetime, float targettime, void(float timestamp, int code, string data) callback) processmodelevents = #0:processmodelevents; /*
+		Calls a callback for each event that has been reached. Basetime is set to targettime. */
+
+float(float modidx, float framenum, __inout float basetime, float targettime, __out int code, __out string data) getnextmodelevent = #0:getnextmodelevent; /*
+		Reports the next event within a model's animation. Returns a boolean if an event was found between basetime and targettime. Writes to basetime,code,data arguments (if an event was found, basetime is set to the event's time, otherwise to targettime).
+		WARNING: this builtin cannot deal with multiple events with the same timestamp (only the first will be reported). */
+
+float(float modidx, float framenum, int eventidx, __out float timestamp, __out int code, __out string data) getmodeleventidx = #0:getmodeleventidx; /*
+		Reports an indexed event within a model's animation. Writes to timestamp,code,data arguments on success. Returns false if the animation/event/model was out of range/invalid. Does not consider looping animations (retry from index 0 if it fails and you know that its a looping animation). This builtin is more annoying to use than getnextmodelevent, but can be made to deal with multiple events with the exact same timestamp. */
+
 #define dotproduct(v1,v2) ((vector)(v1)*(vector)(v2))
 vector(vector v1, vector v2) crossproduct = #0:crossproduct; /* Part of FTE_QC_CROSSPRODUCT
 		Small helper function to calculate the crossproduct of two vectors. */
@@ -1305,7 +1322,11 @@ void(float mask) addentities = #301; /*
 void(entity ent) addentity = #302; /*
 		Copies the entity fields into a new rentity for later rendering via addscene. */
 
-void(string texturename, float flags, void *verts, int *indexes, int numindexes) addtrisoup_1 = #0:addtrisoup_1; /*
+typedef float vec2[2];
+typedef float vec3[3];
+typedef float vec4[4];
+typedef struct trisoup_simple_vert_s {vec3 xyz;vec2 st;vec4 rgba;} trisoup_simple_vert_t;
+void(string texturename, int flags, struct trisoup_simple_vert_s *verts, int *indexes, int numindexes) addtrisoup_simple = #0:addtrisoup_simple; /*
 		Adds the specified trisoup into the scene as additional geometry. This permits caching geometry to reduce builtin spam. Indexes are a triangle list (so eg quads will need 6 indicies to form two triangles). NOTE: this is not going to be a speedup over polygons if you're still generating lots of new data every frame. */
 
 #define setviewprop setproperty
@@ -1409,12 +1430,13 @@ void(vector pivot, vector mins, vector maxs, string pic, vector rgb, float alpha
 void(vector pivot, vector mins, vector maxs, string pic, vector txmin, vector txsize, vector rgb, vector alphaandangles) drawrotsubpic = #0:drawrotsubpic; /*
 		Overcomplicated draw function for over complicated people. Positions follow drawrotpic, while texture coords follow drawsubpic. Due to argument count limitations in builtins, the alpha value and angles are combined into separate fields of a vector (tip: use fteqcc's [alpha, angle] feature. */
 
-float(float stnum) getstati = #330; /*
+#define getstati_punf(stnum) (float)(__variant)getstati(stnum)
+int(float stnum) getstati = #330; /*
 		Retrieves the numerical value of the given EV_INTEGER or EV_ENTITY stat (converted to a float). */
 
 #define getstatbits getstatf
 float(float stnum, optional float firstbit, optional float bitcount) getstatf = #331; /*
-		Retrieves the numerical value of the given EV_FLOAT stat. If firstbit and bitcount are specified, retrieves the upper bits of the STAT_ITEMS stat. */
+		Retrieves the numerical value of the given EV_FLOAT stat. If firstbit and bitcount are specified, retrieves the upper bits of the STAT_ITEMS stat (converted into a float, so there are no VM dependancies). */
 
 string(float stnum) getstats = #332; /*
 		Retrieves the value of the given EV_STRING stat, as a tempstring.
@@ -2006,5 +2028,41 @@ string(string digest, string data, ...) digest_hex = #639;
 #define K_TILDE	126
 #define K_BACKQUOTE	96
 #define K_BACKSLASH	92
+#endif
+#ifdef _ACCESSORS
+accessor strbuf : float
+{
+	inline get float asfloat[float idx] = {return stof(bufstr_get(this, idx));};
+	inline set float asfloat[float idx] = {bufstr_set(this, idx, ftos(value));};
+	get string[float] = bufstr_get;
+	set string[float] = bufstr_set;
+	get float length = buf_getsize;
+};
+accessor searchhandle : float
+{
+	get string[float] = search_getfilename;
+	get float length = search_getsize;
+};
+accessor hashtable : float
+{
+	inline get vector v[string key] = {return hash_get(this, key, '0 0 0', EV_VECTOR);};
+	inline set vector v[string key] = {hash_add(this, key, value, HASH_REPLACE|EV_VECTOR);};
+	inline get string s[string key] = {return hash_get(this, key, "", EV_STRING);};
+	inline set string s[string key] = {hash_add(this, key, value, HASH_REPLACE|EV_STRING);};
+	inline get float f[string key] = {return hash_get(this, key, 0.0, EV_FLOAT);};
+	inline set float f[string key] = {hash_add(this, key, value, HASH_REPLACE|EV_FLOAT);};
+	inline get __variant[string key] = {return hash_get(this, key, __NULL__);};
+	inline set __variant[string key] = {hash_add(this, key, value, HASH_REPLACE);};
+};
+accessor infostring : string
+{
+	get string[string] = infoget;
+	inline set* string[string fld] = {(*this) = infoadd(*this, fld, value);};
+};
+accessor filestream : float
+{
+	get string = fgets;
+	inline set string = {fputs(this,value);};
+};
 #endif
 #pragma noref 0

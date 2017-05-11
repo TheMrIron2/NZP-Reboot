@@ -244,6 +244,8 @@ float isPowerOn;
 .float papState;
 
 //powerups
+float x2_icon;
+float insta_icon;
 float instakill_finished;
 //float insta_blink;
 float x2_finished;
