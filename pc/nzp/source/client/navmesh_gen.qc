@@ -2147,9 +2147,9 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 {	
 	if(recursive_depth > 3)
 		return;
-	//Incrementally move vertex away from it's edges until stop or our edges are obstructed
+	//Incrementally walk vertex away from it's edges until it stops or our edges are obstructed
+
 	//calculate direction from edges
-	
 	vector walk_dir = [0,0,0]; //take line tangent to line normalize(vert->right->pos - vert->left->pos)
 	
 	float walk_dist = 3;//how many qu to walk at each step
@@ -2274,12 +2274,12 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 				
 				cl_navgen_free_vert(new_vert);
 			}
-			else*/
+			else
 			{
 				//recursive_depth++;
 				//cl_navgen_gen_floodfill(vert);
 				//recursive_depth--;
-			}
+			}*/
 			
 			return;
 		}
@@ -2306,7 +2306,7 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 			vec_eq(&(vert->pos), last_vert_pos);
 			
 			//Check if the new vertex didn't move
-			if(vert->pos == new_vert->pos)
+			/*if(vert->pos == new_vert->pos)
 			{
 				print("Subdivided vertex did not move, subdivision undone\n");
 				//Undo the subdivision
@@ -2320,7 +2320,7 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 				//recursive_depth++;
 				//cl_navgen_gen_floodfill(vert);
 				//recursive_depth--;
-			}
+			}*/
 			
 			return;
 		}
