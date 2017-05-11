@@ -237,8 +237,11 @@ void() SpectatorSpawn =
 //called when a client loads a map
 void() PutClientInServer =
 {
-	stuffcmd(self, "promptjoin\n");
-	SpectatorSpawn();
+	bprint(PRINT_HIGH, self.netname);
+	bprint(PRINT_HIGH, " has joined the game.\n");
+	PlayerSpawn();
+	/*stuffcmd(self, "promptjoin\n");
+	SpectatorSpawn();*/
 };
 
 //called when client disconnects from the server
