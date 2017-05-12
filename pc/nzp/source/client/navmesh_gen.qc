@@ -17,7 +17,7 @@ float debug_moreinfo;
 //Vector assignment function, because fteqcc seems to have a broken vec1 = vec2; implementation (works only sometimes)
 //Functionally equivalent to saying (*a)=b;
 void vec_eq(vector* a, vector b)
-{	
+{
 	a[0][0]=b[0];
 	a[0][1]=b[1];
 	a[0][2]=b[2];
@@ -2402,9 +2402,432 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 }
 
 
+//========================================= Navgen Task Division Code ===========================================
+
+//Temp structs for work scheduling
+//Types of work tasks to do
+//===== FLOAT VALUES FOR TASK TYPES =====
+float navgen_task_type_walk_vertex = 1;
+float navgen_task_type_cont_walk_vertex = 2;
+float navgen_task_type_resolve_corner = 3;
+float navgen_task_type_cont_resolve_corner_A = 3;
+float navgen_task_type_cont_resolve_corner_B = 3;
+//===== STRUCTS FOR TASK TYPES =====
+struct navgen_task_data_walk_vertex
+{
+	navgen_vertex* vert;
+};
+
+struct navgen_task_data_resolve_corner
+{
+	vector v1;
+	vector v2;
+	vector v3;
+	vector mid1;
+	vector mid3;
+	float state;
+	float minimized_mid1;
+	float minimized_mid3;
+};
+
+
+//Generic struct
+struct navgen_task_data
+{
+	//just a placeholder
+	float nodata;
+};
+
+struct navgen_task
+{
+	float type;
+	navgen_task_data* data;
+	
+	//Structs for the stack of tasks
+	navgen_task* next;
+};
+
+navgen_task* navgen_tasks_root;
+
+//Allocates a new task and inserts it into the stack at the root
+navgen_task* cl_navgen_push_task(float task_type, navgen_task_data* task_data)
+{
+	navgen_task* new_task = memalloc(sizeof(navgen_task));
+	
+	new_task->type = task_type;
+	new_task->data = task_data;
+	
+	new_task->next = navgen_tasks_root;
+	navgen_tasks_root = new_task;
+	
+	return new_task;
+}
+
+navgen_task* cl_navgen_peek_task()
+{
+	return navgen_tasks_root;
+}
+
+
+//Pops the navgen task from the stack
+//Removes the task from the stack, returns pointer to task
+//DOES NOT ACTUALLY FREE THE TASK MEMORY
+navgen_task* cl_navgen_pop_task()
+{
+	if(navgen_tasks_root == 0)
+		return 0;
+	
+	navgen_task* task = navgen_tasks_root;
+	navgen_tasks_root = task->next;
+	task->next = 0;
+	return task;
+}
+
+//TODO: need a function for deleting every task from the stack
+void cl_navgen_clear_task_stack()
+{
+	//TODO: delete all tasks
+}
+
+
+
+//Removes the next task from the stack and delegates it to function depending on type
+void cl_navgen_do_next_task()
+{
+	navgen_task* task = cl_navgen_pop_task();
+	
+	if(task == 0)
+	{
+		print("NavGen: Nothing to do.\n");
+		return;
+	}
+	
+	float type = task->type;
+	
+	switch(type)
+	{
+		case navgen_task_type_walk_vertex:
+		{
+			//TODO: cast task->type to walk vertex type
+			//call the walk vertex with data
+			break;
+		}
+		case navgen_task_type_cont_walk_vertex:
+		{
+			//TODO
+			break;
+		}
+		case navgen_task_type_resolve_corner:
+		{
+			//TODO
+			break;
+		}
+		case navgen_task_type_cont_resolve_corner_A:
+		{
+			//TODO
+			break;
+		}
+		case navgen_task_type_cont_resolve_corner_B:
+		{
+			//TODO
+			break;
+		}
+		default:
+			print("NavGen: unkown task type: ",ftos(type),"\n");
+			break;
+	}
+	
+	memfree(task->data);
+	memfree(task);
+	
+}
+
+
+
+//Functions for scheduling walk vert
+void cl_navgen_task_walk_vert(navgen_vertex* vert)
+{
+	navgen_task_data_walk_vertex* data = memalloc(sizeof(navgen_task_data_walk_vertex));
+	data->vert = vert;
+	
+	cl_navgen_push_task(navgen_task_type_walk_vertex, (navgen_task_data*) data);
+}
+
+//=====================================================================================================================
+
+//Navgen task functions
+
+//Incrementally walk vertex away from it's edges until it stops or our edges are obstructed
+void cl_navgen_do_task_walk_vert(navgen_task_data_walk_vertex* data)
+{
+	navgen_vertex* vert = data->vert;
+	
+	//calculate direction from edges
+	vector walk_dir = [0,0,0]; //take line tangent to line normalize(vert->right->pos - vert->left->pos)
+	
+	float walk_dist = 3;//how many qu to walk at each step
+	
+	//Calculating walk_dir
+	//===========================
+	vector tangent;
+	vec_eq(&(tangent),((vert->right)->pos - (vert->left)->pos));
+	
+	//Don't care about z-difference
+	tangent_z = 0;
+	vec_eq(&(tangent),normalize(tangent));
+	
+	
+	//Getting edge normal
+	walk_dir[0] = -tangent[1];
+	walk_dir[1] = tangent[0];
+	walk_dir *= walk_dist;
+	
+	//if walk_dir is zero vector, something is horribly wrong
+	if(walk_dir == [0,0,0])
+	{
+		print("Navmesh generation Error: walk_dir is zero vector for vert at pos: ",vtos(vert->pos)," with edges ");
+		if(vert->left) 
+			print("L: ",vtos((vert->left)->pos));
+		else
+			print("L: null");
+		if(vert->right)
+			print(" R: ",vtos((vert->right)->pos));
+		else
+			print(" R: null");
+		print("\n");
+		return;
+	}
+	//===========================
+	
+	float did_move = 0;
+	
+	float move;
+	
+	print("Walk dir: ",vtos(walk_dir),"\n");
+	
+	vector last_vert_pos;
+	
+	navgen_vertex* new_vert;
+	
+	
+	float iters = 0;
+	
+	//walk the vertex in the direction a small amount
+	while(1)
+	{
+		if(iters++ > 9998)
+		{
+			print("Warning: walk vert runaway loop\n");
+			return;
+		}
+		//Try walking a small amount forward
+		vec_eq(&(last_vert_pos),vert->pos);
+		
+		move = cl_navgen_gen_walk(vert->pos,walk_dir);
+		
+		vec_eq(&(vert->pos),trace_endpos);
+		if(!disable_print)
+			print("Move result: ",ftos(move),"\n");
+		if(!move && !did_move)
+		{
+			break;
+		}
+		did_move = 1;
+		
+		
+		
+		//check if left edge was obstructed
+		//print("Checking left to vert edge\n");
+		if(cl_navgen_obstructed((vert->left)->pos,vert->pos))
+		{
+			print("Left edge obstructed.\n");
+			
+			//TODO: add resolve corner task
+			
+			//Subdivide the left edge
+			//Insert the new vertex at our last vertex position
+		/*new_vert = cl_navgen_new_vert(last_vert_pos);
+		
+		new_vert->left = vert->left;
+		(vert->left)->right = new_vert;
+		new_vert->right = vert;
+		vert->left = new_vert;
+		
+		
+		//Getting the vertex as close to the corner as possible
+		cl_navgen_find_min(vert->pos,new_vert->pos,(new_vert->left)->pos);
+		vec_eq(&(new_vert->pos), trace_endpos);*/
+			
+			
+			
+			//Get new_vert as close as possible to our vert such that we can still walk to our left vert
+//			print("Before: ",vtos(new_vert->pos));
+			
+			
+			
+			//vec_eq(&(new_vert->pos), cl_navgen_find_min(new_vert->pos,vert->pos,(new_vert->left)->pos));
+			//cl_navgen_find_min(new_vert->pos,vert->pos,(new_vert->left)->pos);
+			//vec_eq(&(new_vert->pos), trace_endpos);
+//			print("After: ",vtos(new_vert->pos));
+			
+			
+			//Get new_vert as close as possible to our left vert such that we can still walk to our vert
+			//vec_eq(&(new_vert->pos), cl_navgen_find_min(new_vert->pos,(new_vert->left)->pos,vert->pos));
+			//cl_navgen_find_min(new_vert->pos,(new_vert->left)->pos,vert->pos);
+			//vec_eq(&(new_vert->pos), trace_endpos);
+			
+		//vec_eq(&(vert->pos), last_vert_pos);
+			
+			
+			//Check if the new vertex didn't move
+			//if(vert->pos == new_vert->pos)
+			/*{
+				print("Subdivided vertex did not move, subdivision undone\n");
+				//Undo the subdivision
+				vert->left = new_vert->left;
+				(new_vert->left)->right = vert;
+				
+				cl_navgen_free_vert(new_vert);
+			}
+			else
+			{
+				//recursive_depth++;
+				//cl_navgen_gen_floodfill(vert);
+				//recursive_depth--;
+			}*/
+			
+			return;
+		}
+	
+		//check if right edge was obstructed
+		//print("Checking vert to right edge\n");
+		if(cl_navgen_obstructed(vert->pos,(vert->right)->pos))
+		{
+			print("Right edge obstructed.\n");
+			
+			//Subdivide the right edge
+			//Insert the new vertex at our last vertex position
+		/*new_vert = cl_navgen_new_vert(last_vert_pos);
+		
+		new_vert->right = vert->right;
+		(vert->right)->left = new_vert;
+		new_vert->left = vert;
+		vert->right = new_vert;
+		
+		//Getting the vertex as close to the corner as possible
+		cl_navgen_find_min(new_vert->pos,vert->pos,(new_vert->right)->pos);
+		vec_eq(&(new_vert->pos), trace_endpos );
+		
+		vec_eq(&(vert->pos), last_vert_pos);*/
+			
+			//Check if the new vertex didn't move
+			/*if(vert->pos == new_vert->pos)
+			{
+				print("Subdivided vertex did not move, subdivision undone\n");
+				//Undo the subdivision
+				vert->right = new_vert->right;
+				(new_vert->right)->left = vert;
+				
+				cl_navgen_free_vert(new_vert);
+			}
+			else
+			{
+				//recursive_depth++;
+				//cl_navgen_gen_floodfill(vert);
+				//recursive_depth--;
+			}*/
+			
+			return;
+		}
+		
+		
+		//check if we intersected with any other vertex edge
+			//walk along the edge and see if we hit one of the verts
+		//check if we hit any other vertex
+		
+		//Check if we moved but hit a dead end without obstruction
+		if(!move)
+		{
+			//=========================
+			//Subdivide left edge
+			//=========================
+			//TODO: subdivide left edge and add walk vert task
+			/*vector edge_center;
+			vec_eq(&(edge_center), (vert->pos + (vert->left)->pos)/2 );
+			
+			if(cl_navgen_gen_walk_to_point(vert->pos,edge_center))
+			{
+				//This should always run
+				vec_eq(&(edge_center), trace_endpos);
+				
+			}
+			else
+			{
+				print("Warning: could not walk to vertex midpoint.\n");
+			}
+			
+			new_vert = cl_navgen_new_vert(edge_center);
+			new_vert->left = vert->left;
+			(vert->left)->right = new_vert;
+			new_vert->right = vert;
+			vert->left = new_vert;*/
+			
+			//=========================
+			//Subdivide right edge
+			//=========================
+			//TODO: subdivide right edge and add walk vert task
+			/*vec_eq(&(edge_center), (vert->pos + (vert->right)->pos)/2 );
+			
+			if(cl_navgen_gen_walk_to_point(vert->pos,edge_center))
+			{
+				//This should always run
+				vec_eq(&(edge_center), trace_endpos );
+			}
+			else
+			{
+				print("Warning: could not walk to vertex midpoint.\n");
+			}
+			
+			new_vert = cl_navgen_new_vert(edge_center);
+			new_vert->right = vert->right;
+			(vert->right)->left = new_vert;
+			new_vert->left = vert;
+			vert->right = new_vert;*/
+			
+			break;
+		}
+	}
+	
+	if(!did_move)
+		return;
+		
+	//FIXME: it should be safe to call these because of the temp recursive_depth safety net
+	//however, we cannot call these without recursive_depth until we handle navmesh intersecting itself
+	//Call cl_navgen_gen_floodfill on left and right verts
+	/*recursive_depth++;
+	cl_navgen_gen_floodfill(vert->left);
+	recursive_depth--;
+	recursive_depth++;
+	cl_navgen_gen_floodfill(vert->right);
+	recursive_depth--;*/
+	
+	
+	//if left / right edge was obstructed
+		//regress to last unobstructed position
+		//hone in on corner position,
+		//etc...
+}
+
+//=====================================================================================================================
+
 
 void cl_navmesh_gen_navmesh()
-{
+{	
+
+	//TODO: add tasks to walk the three vertices
+	
+	
+	
 	vector player_pos;
 	
 	if(disable_print)
