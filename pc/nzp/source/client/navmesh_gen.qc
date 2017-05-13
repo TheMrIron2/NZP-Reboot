@@ -2404,6 +2404,7 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 
 //========================================= Navgen Task Division Code ===========================================
 
+
 //Temp structs for work scheduling
 //Types of work tasks to do
 //===== FLOAT VALUES FOR TASK TYPES =====
@@ -2446,6 +2447,13 @@ struct navgen_task
 	//Structs for the stack of tasks
 	navgen_task* next;
 };
+
+
+//=================================
+//Task forward declarations
+void(navgen_task_data_walk_vertex* data) cl_navgen_do_task_walk_vert;
+
+//=================================
 
 navgen_task* navgen_tasks_root;
 
@@ -2510,6 +2518,7 @@ void cl_navgen_do_next_task()
 		{
 			//TODO: cast task->type to walk vertex type
 			//call the walk vertex with data
+			cl_navgen_do_task_walk_vert((navgen_task_data_walk_vertex*) task->data);
 			break;
 		}
 		case navgen_task_type_cont_walk_vertex:
@@ -2857,8 +2866,10 @@ void cl_navmesh_gen_navmesh()
 	v3->left = v1;
 	v3->right = v2;
 	
-	recursive_depth = 0;
-	cl_navgen_gen_floodfill(v1);
+	cl_navgen_task_walk_vert(v1);
+	cl_navgen_do_next_task();
+	//recursive_depth = 0;
+	//cl_navgen_gen_floodfill(v1);
 }
 
 //====================================================================================================================================
