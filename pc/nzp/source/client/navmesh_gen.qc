@@ -2407,6 +2407,9 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 
 //Temp structs for work scheduling
 //Types of work tasks to do
+
+//===== Float values for whether or not to break up tasks =====
+float navgen_segment_task_type_walk_vertex = 1;
 //===== FLOAT VALUES FOR TASK TYPES =====
 float navgen_task_type_walk_vertex = 1;
 float navgen_task_type_cont_walk_vertex = 2;
@@ -2417,6 +2420,13 @@ float navgen_task_type_cont_resolve_corner_B = 3;
 struct navgen_task_data_walk_vertex
 {
 	navgen_vertex* vert;
+};
+
+struct navgen_task_data_cont_walk_vertex
+{
+	navgen_vertex* vert;
+	vector walk_dir;
+	float did_move;
 };
 
 struct navgen_task_data_resolve_corner
@@ -2452,7 +2462,7 @@ struct navgen_task
 //=================================
 //Task forward declarations
 void(navgen_task_data_walk_vertex* data) cl_navgen_do_task_walk_vert;
-
+void(navgen_task_data_cont_walk_vertex* data) cl_navgen_continue_task_walk_vert;
 //=================================
 
 navgen_task* navgen_tasks_root;
@@ -2516,14 +2526,12 @@ void cl_navgen_do_next_task()
 	{
 		case navgen_task_type_walk_vertex:
 		{
-			//TODO: cast task->type to walk vertex type
-			//call the walk vertex with data
 			cl_navgen_do_task_walk_vert((navgen_task_data_walk_vertex*) task->data);
 			break;
 		}
 		case navgen_task_type_cont_walk_vertex:
 		{
-			//TODO
+			cl_navgen_continue_task_walk_vert((navgen_task_data_cont_walk_vertex*) task->data);
 			break;
 		}
 		case navgen_task_type_resolve_corner:
@@ -2548,7 +2556,6 @@ void cl_navgen_do_next_task()
 	
 	memfree(task->data);
 	memfree(task);
-	
 }
 
 
@@ -2562,9 +2569,115 @@ void cl_navgen_task_walk_vert(navgen_vertex* vert)
 	cl_navgen_push_task(navgen_task_type_walk_vertex, (navgen_task_data*) data);
 }
 
+//Function for scheduling a continue walk vert
+void cl_navgen_task_cont_walk_vert(navgen_vertex* vert, vector dir, float did_move)
+{
+	navgen_task_data_cont_walk_vertex* data = memalloc(sizeof(navgen_task_data_cont_walk_vertex));
+	data->vert = vert;
+	vec_eq(&(data->walk_dir),dir);
+	data->did_move = did_move;
+	
+	cl_navgen_push_task(navgen_task_type_cont_walk_vertex, (navgen_task_data*) data);
+}
+
 //=====================================================================================================================
 
 //Navgen task functions
+
+//Continue walking vertex away from it's edges until it stops or our edges are obstructed
+void cl_navgen_continue_task_walk_vert(navgen_task_data_cont_walk_vertex* data)
+{
+	navgen_vertex* vert = data->vert;
+	
+	//calculate direction from edges
+	vector walk_dir = [0,0,0]; //take line tangent to line normalize(vert->right->pos - vert->left->pos)
+	float walk_dist = 3;//how many qu to walk at each step
+	
+	//Calculating walk_dir
+	//===========================
+	vec_eq(&walk_dir, data->walk_dir);
+	//===========================
+	float has_moved = data->did_move;
+	
+	float move;
+	
+	print("Walk dir: ",vtos(walk_dir),"\n");
+	
+	vector last_vert_pos;
+	
+	navgen_vertex* new_vert;
+	
+	//walk the vertex in the direction a small amount
+	//Try walking a small amount forward
+	vec_eq(&(last_vert_pos),vert->pos);
+	
+	move = cl_navgen_gen_walk(vert->pos,walk_dir);
+	
+	vec_eq(&(vert->pos),trace_endpos);
+	
+	if(!move && !has_moved)
+	{
+		//WAS BREAK
+		//TODO: call walk on this vertex's left / right edges
+	}
+	else
+	{
+		has_moved = 1;
+		
+		//check if left edge was obstructed
+		//print("Checking left to vert edge\n");
+		if(cl_navgen_obstructed((vert->left)->pos,vert->pos))
+		{
+			//TODO: add resolve right edge corner task
+			
+			return;
+		}
+
+		//check if right edge was obstructed
+		//print("Checking vert to right edge\n");
+		if(cl_navgen_obstructed(vert->pos,(vert->right)->pos))
+		{
+			//TODO: add resolve right edge corner task
+			
+			return;
+		}
+		
+		
+		//check if we intersected with any other vertex edge
+			//walk along the edge and see if we hit one of the verts
+		//check if we hit any other vertex
+		
+		//Check if we moved but hit a dead end without obstruction
+		if(!move)
+		{
+			//=========================
+			//Subdivide left edge
+			//=========================
+			//TODO: subdivide left edge and add walk vert task
+			
+			//=========================
+			//Subdivide right edge
+			//=========================
+			//TODO: subdivide right edge and add walk vert task
+			
+			//TODO: call walk vertex on left / right edges
+			//WAS BREAK,
+			return;
+		}
+		
+		//If the vertex did move, add another continue walk vertex task to the stack
+		if(move)
+		{
+			cl_navgen_task_cont_walk_vert(vert,walk_dir,has_moved);
+		}
+	}
+	
+	//If the vertex never moved, don't subdivide
+	if(!has_moved)
+		return;
+		
+	//TODO: call walk vertex on left / right edges
+}
 
 //Incrementally walk vertex away from it's edges until it stops or our edges are obstructed
 void cl_navgen_do_task_walk_vert(navgen_task_data_walk_vertex* data)
@@ -2804,7 +2917,17 @@ void cl_navgen_do_task_walk_vert(navgen_task_data_walk_vertex* data)
 			vert->right = new_vert;*/
 			
 			break;
+			
 		}
+
+		//If we are segmenting walk vertex task, only do a small walk per task
+		if(navgen_segment_task_type_walk_vertex)
+		{
+			//Add a task to continue walking the vertex
+			cl_navgen_task_cont_walk_vert(vert,walk_dir,did_move);
+			return;
+		}
+
 	}
 	
 	if(!did_move)
