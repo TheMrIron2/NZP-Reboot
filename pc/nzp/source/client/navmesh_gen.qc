@@ -2501,10 +2501,16 @@ navgen_task* cl_navgen_pop_task()
 	return task;
 }
 
-//TODO: need a function for deleting every task from the stack
+
+//This function deletes everything from the stack and all of the data associated with it
 void cl_navgen_clear_task_stack()
 {
-	//TODO: delete all tasks
+	while(navgen_tasks_root != 0)
+	{
+		navgen_task* task = cl_navgen_pop_task();
+		memfree(task->data);
+		memfree(task);
+	}
 }
 
 
