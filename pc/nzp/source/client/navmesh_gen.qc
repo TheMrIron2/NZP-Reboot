@@ -1,16 +1,7 @@
 
-/*
-#define NAV_MAX_SELECTED_VERTS 4
-float selected_verts[NAV_MAX_SELECTED_VERTS];
-float selected_vert_count;
+//============================================================================================================
 
-navmesh_vertex cl_navmesh_verts[NAV_MAX_VERTS];
-float cl_navmesh_vert_count;
 
-navmesh_poly cl_navmesh_polies[NAV_MAX_POLIES];
-float cl_navmesh_poly_count;
-
-*/
 
 float debug_moreinfo;
 
@@ -192,6 +183,68 @@ float debug_direct_walk;
 
 //FIXME FIXME FIXME FIXME
 
+//========================================= Navgen Task Division Code ===========================================
+
+
+//Temp structs for work scheduling
+//Types of work tasks to do
+
+//===== Float values for whether or not to break up tasks =====
+float navgen_segment_task_type_walk_vertex = 1;
+//===== FLOAT VALUES FOR TASK TYPES =====
+float navgen_task_type_walk_vertex = 1;
+float navgen_task_type_cont_walk_vertex = 2;
+float navgen_task_type_resolve_corner = 3;
+float navgen_task_type_cont_resolve_corner_A = 3;
+float navgen_task_type_cont_resolve_corner_B = 3;
+//===== STRUCTS FOR TASK TYPES =====
+struct navgen_task_data_walk_vertex
+{
+	navgen_vertex* vert;
+};
+
+struct navgen_task_data_cont_walk_vertex
+{
+	navgen_vertex* vert;
+	vector walk_dir;
+	float did_move;
+};
+
+struct navgen_task_data_resolve_corner
+{
+	vector v1;
+	vector v2;
+	vector v3;
+	vector mid1;
+	vector mid3;
+	float state;
+	float minimized_mid1;
+	float minimized_mid3;
+};
+
+
+//Generic struct
+struct navgen_task_data
+{
+	//just a placeholder
+	float nodata;
+};
+
+struct navgen_task
+{
+	float type;
+	navgen_task_data* data;
+	
+	//Structs for the stack of tasks
+	navgen_task* next;
+};
+
+void() cl_navgen_do_next_task;
+navgen_task*() cl_navgen_peek_task;
+
+//============================================================================================================
+
+
 
 //A TEMP DEBUG METHOD THAT RENDERS INTERMEDIATE NAVMESH GENERATION RESULTS
 void cl_navmesh_render_gen()
@@ -221,6 +274,13 @@ void cl_navmesh_render_gen()
 	{
 		cl_navmesh_draw_line(debug_lines_pos1[j],debug_lines_pos2[j],2,debug_lines_color[j],0.2);
 	}	
+	
+		
+	if(cl_navgen_peek_task() != 0)
+	{
+		cl_navgen_do_next_task();
+	}
+
 }
 
 //Given starting position and edge tangent, walk along the edge until we hit some form of a corner
@@ -2402,62 +2462,6 @@ void cl_navgen_gen_floodfill(navgen_vertex* vert)
 }
 
 
-//========================================= Navgen Task Division Code ===========================================
-
-
-//Temp structs for work scheduling
-//Types of work tasks to do
-
-//===== Float values for whether or not to break up tasks =====
-float navgen_segment_task_type_walk_vertex = 1;
-//===== FLOAT VALUES FOR TASK TYPES =====
-float navgen_task_type_walk_vertex = 1;
-float navgen_task_type_cont_walk_vertex = 2;
-float navgen_task_type_resolve_corner = 3;
-float navgen_task_type_cont_resolve_corner_A = 3;
-float navgen_task_type_cont_resolve_corner_B = 3;
-//===== STRUCTS FOR TASK TYPES =====
-struct navgen_task_data_walk_vertex
-{
-	navgen_vertex* vert;
-};
-
-struct navgen_task_data_cont_walk_vertex
-{
-	navgen_vertex* vert;
-	vector walk_dir;
-	float did_move;
-};
-
-struct navgen_task_data_resolve_corner
-{
-	vector v1;
-	vector v2;
-	vector v3;
-	vector mid1;
-	vector mid3;
-	float state;
-	float minimized_mid1;
-	float minimized_mid3;
-};
-
-
-//Generic struct
-struct navgen_task_data
-{
-	//just a placeholder
-	float nodata;
-};
-
-struct navgen_task
-{
-	float type;
-	navgen_task_data* data;
-	
-	//Structs for the stack of tasks
-	navgen_task* next;
-};
-
 
 //=================================
 //Task forward declarations
@@ -2532,11 +2536,13 @@ void cl_navgen_do_next_task()
 	{
 		case navgen_task_type_walk_vertex:
 		{
+			print("dispatched start walk to vertex\n");
 			cl_navgen_do_task_walk_vert((navgen_task_data_walk_vertex*) task->data);
 			break;
 		}
 		case navgen_task_type_cont_walk_vertex:
 		{
+			print("dispatched continue walk to vertex\n");
 			cl_navgen_continue_task_walk_vert((navgen_task_data_cont_walk_vertex*) task->data);
 			break;
 		}
@@ -2964,7 +2970,7 @@ void cl_navmesh_gen_navmesh()
 
 	//TODO: add tasks to walk the three vertices
 	
-	
+	print("Task list empty, starting navgen.\n");
 	
 	vector player_pos;
 	

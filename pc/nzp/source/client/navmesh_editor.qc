@@ -734,6 +734,9 @@ void cl_navmesh_make_poly()
 	
 	float vert_angle[NAV_MAX_SELECTED_VERTS];
 	
+	//For suppressing uninitialised vert_angle compiler warning
+	vert_angle[0] = 0;
+	
 	//Calculating vertex angles:
 	for(float j = 0; j < selected_vert_count; j++)
 	{
