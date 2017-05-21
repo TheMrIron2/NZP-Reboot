@@ -817,9 +817,9 @@ float cl_navgen_gen_walk_to_point(vector start, vector point)
 		print("Walk to point started: ",walk_percent(start,cur,point),",\t,",vtos(cur),"\n");
 		
 		add_debug_hull(start,[1,1,1],[0,0,1],0.05);
-		add_debug_hull(start,[0.1,0.1,1],[0,0,1],0.05);
+		add_debug_hull(start,[0.01,0.01,0.8],[0,0,1],0.3);
 		add_debug_hull(point,[1,1,1],[0,0,1],0.05);
-		add_debug_hull(point,[0.1,0.1,1],[0,0,1],0.05);
+		add_debug_hull(point,[0.01,0.01,0.8],[0,0,1],0.3);
 	}
 	
 	while(1)
@@ -1887,7 +1887,7 @@ void cl_navgen_do_task_walk_vert(navgen_task_data_walk_vertex* data)
 		if(!move)
 		{
 			//FIXME: this is so we don't keep subdividing the navmesh
-			return;
+			//return;
 			//=========================
 			//Subdivide left edge
 			//=========================
@@ -1899,10 +1899,6 @@ void cl_navgen_do_task_walk_vert(navgen_task_data_walk_vertex* data)
 			(vert->left)->right = new_left_vert;
 			new_left_vert->right = vert;
 			vert->left = new_left_vert;
-			
-			//Add task to walk this vertex out
-			cl_navgen_task_walk_vert(new_left_vert);
-			
 			
 			//=========================
 			//Subdivide right edge
@@ -1916,7 +1912,10 @@ void cl_navgen_do_task_walk_vert(navgen_task_data_walk_vertex* data)
 			new_right_vert->left = vert;
 			vert->right = new_right_vert;
 			
-			//Add task to walk this vertex out
+			
+			//Add task to walk right vertex out
+			cl_navgen_task_walk_vert(new_right_vert);
+			//Add task to walk left vertex out
 			cl_navgen_task_walk_vert(new_left_vert);
 			
 			break;
@@ -2109,7 +2108,7 @@ void cl_navmesh_gen_navmesh()
 	//player_pos = trace_endpos;
 	vec_eq(&player_pos,trace_endpos);
 	
-	float initial_tri_size = 40;//10
+	float initial_tri_size = 10;//40 for test
 	
 	navgen_vertex* v1 = cl_navgen_new_vert(player_pos + [0,initial_tri_size,0]);
 	navgen_vertex* v2 = cl_navgen_new_vert(player_pos + [-initial_tri_size,-initial_tri_size,0]);
