@@ -2444,6 +2444,8 @@ void() cl_register_navmesh_commands =
 	registercommand("nav_save_navmesh");
 	registercommand("nav_clear_navmesh");
 	registercommand("nav_load_navmesh");
+	
+	cl_navgen_register_commands();
 }
 
 float cl_confirm_clear_navmesh;
@@ -2544,6 +2546,7 @@ float(string cmd) cl_navmesh_console_commands =
 			cl_navmesh_editor_load_navmesh();
 			return TRUE;
 		default:
-			return FALSE;
+			break;
 	}
+	return cl_navgen_console_commands(cmd);
 }

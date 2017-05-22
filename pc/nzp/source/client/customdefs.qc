@@ -93,6 +93,10 @@ void() cl_navmesh_render_gen;
 void() cl_navgen_free_all_verts;
 
 
+void() cl_navgen_register_commands;
+float(string cmd) cl_navgen_console_commands;
+
+
 #define 	P_JUG		1
 #define 	P_DOUBLE	2
 #define 	P_SPEED		4
