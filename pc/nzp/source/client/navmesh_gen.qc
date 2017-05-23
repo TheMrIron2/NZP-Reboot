@@ -66,6 +66,8 @@ float debug_hull_count;
 
 void add_debug_hull(vector pos, vector scale, vector color, float alpha)
 {
+	//FIXME: disabling debug hulls for less cluttered testing
+	return;
 	//if(debug_hull_count >= MAX_DEBUG_HULL_COUNT)
 	//	return;
 	debug_hulls[debug_hull_count % MAX_DEBUG_HULL_COUNT] = pos;
@@ -277,7 +279,129 @@ float debug_direct_walk;
 //returns 2 if walk is success
 //returns 1 if walk was partial
 //returns 0 if walk failed completely
-//Assigns trace_endpos as the point along start -> start+ofs that we got to
+//Assigns trace_endpos as the point as start if fail, or where we got to if success
+
+//This function should only be called for sufficiently small vlen(ofs)
+
+float cl_temp_navgen_gen_direct_walk(vector start,vector ofs)
+{
+	float max_step_size = 18;//max stair step pulled straight from engine defs
+	float tan_60 = 1.73205080757;//tangent of 60 degrees (max walkable slope) (used to make sure we don't walk up a higher slope)
+	
+	//========================================================================================
+	//for now, consider not on ground as a dead stop
+	tracebox(start,VEC_HULL_MIN,VEC_HULL_MAX,start-[0,0,2*max_step_size],MOVE_NOMONSTERS,self);
+	if((!trace_allsolid && !trace_startsolid) && trace_fraction > 0.5)
+	{
+		print("We are not on ground to begin, returning 0\n");
+		print("\tTrace fraction: ",ftos(trace_fraction),"\n");
+		print("\tstart solid: ",ftos(trace_startsolid)," all solid: ",ftos(trace_allsolid),"\n");
+		add_debug_hull(start,[1,1,1],[1,0,1],0.05);
+		vec_eq(&(trace_endpos),start);
+		return 0;
+	}
+	//========================================================================================
+	
+	//TODO: using tracebox, come up with a CONTINUOUS method of checking if we can go from start to start+ofs with or without stepping up / down
+	
+	
+}
+
+
+//FIXME: remove this simplified version (this version is discrete and may skip over small corners)
+float cl_discrete_navgen_gen_direct_walk(vector start,vector ofs)
+{
+	float max_step_size = 18;//max stair step pulled straight from engine defs
+	float tan_60 = 1.73205080757;//tangent of 60 degrees (max walkable slope) (used to make sure we don't walk up a higher slope)
+	
+	//========================================================================================
+	//for now, consider not on ground as a dead stop
+	tracebox(start,VEC_HULL_MIN,VEC_HULL_MAX,start-[0,0,2*max_step_size],MOVE_NOMONSTERS,self);
+	if((!trace_allsolid && !trace_startsolid) && trace_fraction > 0.5)
+	{
+		print("We are not on ground to begin, returning 0\n");
+		print("\tTrace fraction: ",ftos(trace_fraction),"\n");
+		print("\tstart solid: ",ftos(trace_startsolid)," all solid: ",ftos(trace_allsolid),"\n");
+		add_debug_hull(start,[1,1,1],[1,0,1],0.05);
+		vec_eq(&(trace_endpos),start);
+		return 0;
+	}
+	//========================================================================================
+	
+	float max_slope = 10.4;//18/tan(60) = 10.4, the length of the triangle formed by the max walkable slope of 60 degrees, and the max step height
+	
+	vector goal_org;
+	
+	vector org = [start_x, start_y, start_z];
+	
+	float onground = 1;
+	
+	/*if(!(self.flags & FL_ONGROUND))
+	{
+		self.velocity_z  -= self.gravity * sv_gravity * frametime;
+		
+		//Clamping to server terminal velocity (-sv_maxspeed -> sv_maxspeed)
+		self.velocity_z = max(min(self.velocity_z, sv_maxspeed), -sv_maxspeed);
+		
+		goal_org = org + [0,0,self.velocity.z] * frametime;
+		
+		tracebox(org,self.mins,self.maxs,goal_org,MOVE_NOMONSTERS,self);
+		
+		//If falling and hit something
+		if(self.velocity.z < 0 && trace_fraction < 1)
+		{	
+			self.flags |= FL_ONGROUND;
+		}
+		
+		self.true_org_z = trace_endpos_z;
+		setorigin(self, trace_endpos);
+		return;
+	}*/
+		
+	vec_eq(&goal_org, org + ofs);
+	
+	//Push down from a step above goal org to find result position
+	vector above_goal;
+	vec_eq(&above_goal, goal_org + [0,0,max_step_size]);
+	vector below_goal;
+	vec_eq(&below_goal, goal_org - [0,0,max_step_size]);
+	
+	tracebox(above_goal,VEC_HULL_MIN,VEC_HULL_MAX,below_goal,MOVE_NOMONSTERS,self);
+	
+	if(trace_allsolid)
+	{
+		//Do not slide along walls
+		vec_eq(&trace_endpos,start);
+		return 0;
+	}
+		
+	if(trace_startsolid)
+	{
+		tracebox(goal_org,VEC_HULL_MIN,VEC_HULL_MAX,below_goal,MOVE_NOMONSTERS,self);
+		if(trace_allsolid || trace_startsolid)
+		{
+			//Do not slide along walls
+			vec_eq(&trace_endpos,start);
+			return 0;
+		}
+	}
+	
+	if(trace_fraction >= 1)
+	{
+		//We walked off of a ledge
+		vec_eq(&trace_endpos,start);
+		return 0;
+	}
+	
+	return 2;
+}
+//====================================================================================================================================================================================
+
+
+
+//debug
+float render_walk_to_point;
+
 
 float cl_navgen_gen_direct_walk(vector start,vector ofs)
 {
@@ -303,13 +427,9 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 		return 0;
 	}
 	
-	
-	//This is a problem for when we are checking left / right edges, because while walking the edge, we can never get to the vertex that
-	//has been pushed off of a ledge
-	//so, we must check for falling off of a ledge, but also 
 	//========================================================================================
 	
-	
+
 	if(debug_direct_walk)
 	{
 		print("Direct walk: start = ",vtos(start), ", ofs = ", vtos(ofs),"\n");
@@ -323,7 +443,7 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 	
 	float step_up = 0;
 	
-	vector temp;
+	vector cur_trace_end;
 	vector cur;
 	vector last_cur;
 	vec_eq(&cur,start);
@@ -332,7 +452,7 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 	vector last_ofs;
 	
 	float last_failed = 0;
-	float cur_failed = 0;
+	float cur_failed = 1;
 	
 	//Whether or not we moved at least a small amount (1 or 0)
 	float moved_some_amount = 0;
@@ -369,13 +489,13 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 				print("fraction: ",ftos(trace_fraction),", cur: ",vtos(cur),", goal: ",vtos(goal),"\n");
 			
 	test_fraction = trace_fraction;
-			vec_eq(&temp,trace_endpos);
+			vec_eq(&cur_trace_end,trace_endpos);
 			
 			//Try a move with a step up next time
 			step_up  = 1;
 			
 			//Get the vector of the last move we did
-			vec_eq(&last_ofs, trace_endpos - cur);
+			vec_eq(&last_ofs, cur_trace_end - cur);
 		}
 		else
 		{
@@ -385,19 +505,19 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 			//tracebox up to see if we can move up
 			tracebox(cur,VEC_HULL_MIN,VEC_HULL_MAX,cur+[0,0,max_step_size],MOVE_NOMONSTERS,self);
 	test_fraction = trace_fraction;
-			if(trace_fraction > 0.0001)
+			if(trace_fraction > 0)
 			{
 				//Try a trace forward from that position
 				
-				//Copy the start tracebox position (will use it to get the vector of the move we did)
-				vec_eq(&last_ofs, trace_endpos);
+				vector trace_start;
+				vec_eq(&trace_start, trace_endpos);
 				
-				tracebox(trace_endpos, VEC_HULL_MIN, VEC_HULL_MAX, [goal_x, goal_y, trace_endpos_z], MOVE_NOMONSTERS,self);
+				tracebox(trace_start, VEC_HULL_MIN, VEC_HULL_MAX, [goal_x, goal_y, trace_start_z], MOVE_NOMONSTERS,self);
 	test_fraction = trace_fraction;
-				vec_eq(&temp,trace_endpos);
+				vec_eq(&cur_trace_end,trace_endpos);
 				
 				//Get the vector of the last move we did
-				vec_eq(&last_ofs, trace_endpos - last_ofs);
+				vec_eq(&last_ofs, cur_trace_end - trace_start);
 			}
 			//Try a move without a step up next time
 			step_up = 0;
@@ -407,19 +527,34 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 			print("trace_fraction: ",ftos(trace_fraction)," allsolid: ",ftos(trace_allsolid)," startsolid: ",ftos(trace_startsolid),"\n");
 		
 		//if we moved at least some amount:
-		if(!trace_allsolid && !trace_startsolid && trace_fraction > 0.0001)
+		if(!trace_allsolid && !trace_startsolid && trace_fraction > 0)
 		{
+			if(render_walk_to_point == 1)
+			{
+				//cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,0,1],0.02);
+				//cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[0,0,1],0.2);
+				float width = 12;
+				vector color;
+				
+				//blue = walk
+				//purple = step
+				
+				if(step_up == 0)
+					color = [1,0,1];
+				else
+					color = [0,0,1];
+				cl_navmesh_draw_line(cur-[0,0,32] + [0,0,width],trace_endpos-[0,0,32] + [0,0,width],width,color,0.2);
+			}
+		
 			if(debug_direct_walk)
 				print("\t moved some amount (trace_fraction = ",ftos(trace_fraction),")\n");
 			cur_failed = 0;
 			vec_eq(&last_cur,cur);
-			vec_eq(&cur,temp);
+			vec_eq(&cur,cur_trace_end);
 			moved_some_amount = 1;
 			
 			//Height before we consider having fallen
 			float fall_height = vlen(last_ofs) * tan_60;
-			
-			//FIXME, this doesn't ensure that the step down is gradual, just that it's less than 60 derees
 			
 			//Don't let fall height be less than the max step size
 			if(fall_height < max_step_size)
@@ -431,7 +566,7 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 	test_fraction = trace_fraction;
 			
 			//If we moved at all
-			if(!trace_allsolid && !trace_startsolid && trace_fraction > 0.0001)
+			if(!trace_allsolid && !trace_startsolid && trace_fraction > 0)
 			{
 				if(debug_direct_walk)
 					print("\t\tbut we may have fallen off of a ledge\n");
@@ -445,9 +580,11 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 					//We stepped down
 					vec_eq(&cur,trace_endpos);
 				}
-				//We fell down
+				//We may have fallen down
 				else
 				{
+					
+					
 					//getting back onto the ground
 					//undo the last move from a lowered position
 					tracebox(trace_endpos,VEC_HULL_MIN,VEC_HULL_MAX,[last_cur_x,last_cur_y,trace_endpos_z],MOVE_NOMONSTERS,self);
@@ -485,6 +622,7 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 		//Check if we failed on this iteration and the last iteration
 		if(last_failed && cur_failed)
 		{
+			vec_eq(&trace_endpos,cur);
 			return moved_some_amount;
 		}
 		
@@ -671,123 +809,6 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 
 
 
-
-//Method that checks if pos + ofs is okay to walk
-//returns 2 if walk is success
-//returns 1 if walk was partial
-//returns 0 if walk failed completely
-float cl_old_navgen_gen_direct_walk(vector start,vector ofs)
-{
-	float max_step_size = 18;//max stair step size pulled straight from engine defs
-	
-	//FIXME: fix this when we handle sliding along ledges
-	//========================================================================================
-	//for now, consider not on ground as a dead stop
-	//tracebox(start - [0,0,1],VEC_HULL_MIN,VEC_HULL_MAX,start-[0,0,max_step_size],MOVE_NOMONSTERS,self);
-	tracebox(start,VEC_HULL_MIN,VEC_HULL_MAX,start-[0,0,2*max_step_size],MOVE_NOMONSTERS,self);
-	if((!trace_allsolid && !trace_startsolid) && trace_fraction > 0.5)
-	{
-		print("We are not on ground to begin, returning 0\n");
-		print("\tTrace fraction: ",ftos(trace_fraction),"\n");
-		print("\tstart solid: ",ftos(trace_startsolid)," all solid: ",ftos(trace_allsolid),"\n");
-		
-		add_debug_hull(start,[1,1,1],[1,0,1],0.05);
-		
-		vec_eq(&(trace_endpos),start);
-		return 0;
-	}
-	
-	//This is a problem for when we are checking left / right edges, because while walking the edge, we can never get to the vertex that
-	//has been pushed off of a ledge
-	//so, we must check for falling off of a ledge, but also 
-	//========================================================================================
-	
-	//Assuming we are on the ground
-	
-	//float max_slope = 10.4;//18/tan(60) = 10.4, the length of the triangle formed by the max walkable slope of 60 degrees, and the max step height
-	
-	vector cur;
-	vec_eq(&(cur),start);
-	
-	vector goal_org;
-
-	//Perform both x and y axis moves in one go
-	vec_eq(&(goal_org),cur+ofs);
-	
-	//Push down from a step above goal org to find result position
-		
-	vector above_goal;
-	vec_eq(&above_goal, goal_org + [0,0,max_step_size]);
-	vector below_goal;
-	vec_eq(&below_goal, goal_org - [0,0,max_step_size]);
-	
-	tracebox(above_goal,VEC_HULL_MIN,VEC_HULL_MAX,below_goal,MOVE_NOMONSTERS,self);
-	
-	if(trace_allsolid || trace_startsolid)
-	{
-		
-		vec_eq(&trace_endpos,start);
-		return 0;
-		//Direct walk should not try traceboxing directly to the wall
-		//We either walked to start + ofs, or we did not.
-		
-		/*tracebox(goal_org,VEC_HULL_MIN,VEC_HULL_MAX,below_goal,MOVE_NOMONSTERS,self);
-		if(trace_allsolid || trace_startsolid)
-		{
-			//Hit a wall
-				
-			//Try straight tracebox to wall
-			tracebox(cur,VEC_HULL_MIN,VEC_HULL_MAX,goal_org,MOVE_NOMONSTERS,self);
-			
-			if(trace_fraction > 0)
-			{
-				//We still moved on this move
-				//trace_endpos already holds the result value
-				if(debug_walk_to_point)
-					print("  [hit but traced to wall]  \n");
-				return 2;
-			}
-			
-			
-			vec_eq(&trace_endpos,start);
-			return 0;
-		}*/
-	}
-	if(trace_fraction >= 1)
-	{
-		//We walked off of a ledge
-		
-		//Try straight tracebox back to the ledge from the lowered goal position
-		tracebox(below_goal,VEC_HULL_MIN,VEC_HULL_MAX,below_goal-ofs,MOVE_NOMONSTERS,self);
-		
-		
-		trace_endpos_z += max_step_size;//don't lower the cur_z
-		
-		//cur should now be right up against the ledge, push back a tiny bit from the ledge so that we cannot fall
-		vec_eq(&(trace_endpos),trace_endpos - 0.1*normalize(ofs));
-		
-		
-		//If we moved back to start, we were already on ledge, so we did not move
-		if(vlen(cur - start) < 0.01)
-		{
-			return 0;//treat this as hitting a dead end
-		}
-		
-		return 2;			
-
-		//TODO: slide along the ledge until we hit a ledge corner		
-		//We are now just barely on a ledge
-	}
-	
-	if(debug_walk_to_point)
-		print("  [walked straight to point]  \n");
-	
-	//trace_endpos already holds result position
-	return 2;
-}
-
-
-
 //Returns the length of the x & y components of this vector
 float xy_vlen(vector v)
 {
@@ -805,27 +826,17 @@ string walk_percent(vector start, vector cur, vector goal)
 //We walk in dist increments, and assume we are unobstructed
 //Returns 1 if successful, 0 otherwise
 //Assigns the trace_endpos as the actual point we got to (as z-coordinate may be different)
+
+
 float cl_navgen_gen_walk_to_point(vector start, vector point)
 {
 	float dist = 1;
 	
-	//dilemma, if dist is too small, we can introduce errors
-	//I need a new form of calculating things.
-	//maybe my old method of walking horizontally, 
-		//then traceboxing down from there to check for descent.
-	//else try the move with a step up
-	
-	//because this method might skip over very small corners, but I don't want to make this algorithm take forever to execute
-	
 	vector cur;
 	vec_eq(&(cur),start);
 	
-	//vector dir;
-	//vec_eq(&(dir),normalize([point_x,point_y,0] - [start_x,start_y,0]));
-	
 	vector cur_ofs;
 	vec_eq(&cur_ofs, dist * normalize([point_x,point_y,0] - [start_x,start_y,0]));
-	//vec_eq(&(cur_ofs), dir * dist);
 	
 	float move;
 	
@@ -845,6 +856,12 @@ float cl_navgen_gen_walk_to_point(vector start, vector point)
 		add_debug_hull(point,[1,1,1],[0,0,1],0.05);
 		add_debug_hull(point,[0.01,0.01,0.8],[0,0,1],0.3);
 	}
+	
+	if(render_walk_to_point == 1)
+	{
+		cl_navmesh_draw_test_ent(start,[1,1,1],[0,1,0],0.02);
+		cl_navmesh_draw_test_ent(start,[0.01,0.01,1],[0,1,0],0.2);
+	}		
 	
 	while(1)
 	{
@@ -880,31 +897,19 @@ float cl_navgen_gen_walk_to_point(vector start, vector point)
 		
 		if(xy_vlen(cur_ofs) > xy_vlen(point - cur))
 		{		
-			vec_eq(&cur_ofs, point - cur);	
+			vec_eq(&cur_ofs, [point_x,point_y,0] - [cur_x,cur_y,0]);	
 		}
-		
-//		if((cur_ofs_x > 0 && cur_ofs_x > (point_x - cur_x)) || (cur_ofs_x < 0 && cur_ofs_x < (point_x - cur_x)))
-//		{
-			//print("x walk dist exceeds actual dist, decreasing walk dist.\n");
-			
-			//print("cur_ofs_x ",ftos(cur_ofs_x)," -> ",ftos(point_x - cur_x),"\n");
-//			cur_ofs_x = point_x - cur_x;
-//			
-//		}
-			
-//		if((cur_ofs_y > 0 && cur_ofs_y > (point_y - cur_y)) || (cur_ofs_y < 0 && cur_ofs_y < (point_y - cur_y)))
-//		{
-			//print("y walk dist exceeds actual dist, decreasing walk dist.\n");
-			
-			//print("cur_ofs_y ",ftos(cur_ofs_y)," -> ",ftos(point_y - cur_y),"\n");
-			
-//			cur_ofs_y = point_y - cur_y;
-//		}
 		
 		//If we are at the endpoint
 		if(cur_ofs_x == 0 && cur_ofs_y == 0)
 		{
 			vec_eq(&(trace_endpos),cur);
+			
+			if(render_walk_to_point == 1)
+			{
+				cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,1,0],0.02);
+				cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[0,1,0],0.2);
+			}
 			return 1;
 		}
 		
@@ -915,15 +920,22 @@ float cl_navgen_gen_walk_to_point(vector start, vector point)
 		//Check if we made it
 		if(trace_endpos_x == point_x && trace_endpos_y == point_y)
 		{
+			if(render_walk_to_point == 1)
+			{
+				cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,1,0],0.02);
+				cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[0,1,0],0.2);
+			}
 			//trace_endpos already holds result pos
 			return 1;
 		}
 		
-		if(move == 0 || move == 1)//We do not allow sliding or partial moves in this algorithm
+		if(move == 0 || move ==  1)
 		{
 			//debug_hulls[debug_hull_count++] = cur;
 			//debug_hulls[debug_hull_count++] = cur + cur_ofs;
 			//print("cur: ",vtos(cur)," cur_ofs: ",vtos(cur_ofs),"\n");
+			//Just doing a temp call to follow the stack trace
+			//move = cl_navgen_gen_direct_walk(cur,cur_ofs);
 			
 			if(debug_walk_to_point)
 			{
@@ -938,12 +950,25 @@ float cl_navgen_gen_walk_to_point(vector start, vector point)
 				debug_direct_walk = 0;
 			}
 			
+			if(render_walk_to_point == 1)
+			{
+				cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[1,0,0],0.02);
+				cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[1,0,0],0.2);
+			}
+			
 			vec_eq(&trace_endpos,start);
+			
 			return 0;
 		}
 		
 		vec_eq(&(last_pos),cur);
 		vec_eq(&(cur),trace_endpos);
+		
+		if(render_walk_to_point == 1)
+		{
+			//cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,0,1],0.02);
+			//cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[0,0,1],0.2);
+		}
 		
 		if(debug_walk_to_point)
 		{
@@ -1042,7 +1067,7 @@ float cl_navgen_gen_walk_to_midpoint(vector start, vector point)
 		
 		
 		move = cl_navgen_gen_direct_walk(cur,cur_ofs);
-				
+		
 		//Check if we have reached the midpoint
 		if(trace_endpos_x == xy_midpoint_x && trace_endpos_y == xy_midpoint_y)
 		{
@@ -1113,12 +1138,15 @@ float cl_navgen_obstructed(vector pos1, vector pos2)
 
 //Returns 1 if successful, 0 otherwise
 //Assigns the midpoint to trace_endpos
+//The issue is that the assumption that we make for this function is that two vertices should NOT be obstructed from each other, ergo: there should be no issue here, but at some point in time before this call 
+//we are invalidating this assumed invariant
 float cl_navgen_calc_midpoint(vector a, vector b)
 {
 	vector mid;
 	vector backup_trace_endpos;
 
-	if(cl_navgen_obstructed(a,b))//this is sometimes triggered (most likely due to floating point error)
+	//This debug code checks if two vertices  are obstructed, but we should not be calling calc_midpoint when two are obstructed, ergo an invariant is being violated
+	/*if(cl_navgen_obstructed(a,b))//this is sometimes triggered (most likely due to floating point error)
 	{
 		print("Warning: a and b are obstructed, abort midpoint calculation\n");
 		vec_eq(&trace_endpos,a);
@@ -1136,7 +1164,7 @@ float cl_navgen_calc_midpoint(vector a, vector b)
 		print("\n\tDone calling obstructed check with debug enabled.\n");
 		
 		return 0;
-	}
+	}*/
 
 	if(cl_navgen_gen_walk_to_midpoint(a,b))
 	{
@@ -1212,10 +1240,13 @@ float cl_navgen_calc_midpoint(vector a, vector b)
 //Variables for test walk state data
 float cl_navgen_render_test_walk_function;
 float cl_navgen_render_test_walk_radius;
+vector cl_navgen_render_test_walk_goal;
+vector cl_navgen_render_test_walk_start;
+float cl_navgen_render_test_walk_start_placed;
 
 void cl_navgen_render_test_walk()
 {
-	return;
+	//return;
 	//Walk functions:
 	//0	float cl_navgen_gen_walk(vector start,vector ofs);			//0 for fail, 1 partial, 2 success
 	//1	float cl_navgen_gen_direct_walk(vector start,vector ofs);		//0 for fail, 1 partial, 2 success
@@ -1231,12 +1262,19 @@ void cl_navgen_render_test_walk()
 	cl_navgen_gen_drop_to_floor(player_pos);
 	vec_eq(&player_pos,trace_endpos);
 	
+	
+	//If start ent has been placed:
+	if(cl_navgen_render_test_walk_start_placed)
+	{
+		vec_eq(&player_pos, cl_navgen_render_test_walk_start);
+	}
+	
 	//Drawing the ground position of the player	
 	//cl_navmesh_draw_test_ent(player_pos,[1,1,1],[1,1,1],0.2);
 	
 	//debug_direct_walk = 1;
 	
-	float dist = cl_navgen_render_test_walk_radius;
+	/*float dist = cl_navgen_render_test_walk_radius;
 	
 	vector ofs;
 	vec_eq(&ofs,[dist * cos(time), dist * sin(time), 0]);
@@ -1247,7 +1285,16 @@ void cl_navgen_render_test_walk()
 	//For those walk functions that require a second vector, walk to ofs to get trace_endpos
 	vector point;
 	cl_navgen_gen_direct_walk(player_pos,ofs);
-	vec_eq(&point, trace_endpos);
+	vec_eq(&point, trace_endpos);*/
+	
+	
+	//========================
+	//The following code is for testing to a placed vector
+	vector point;
+	vector ofs;
+	vec_eq(&point, cl_navgen_render_test_walk_goal);
+	vec_eq(&ofs, point - player_pos);
+	//========================
 	
 	float result = 0;
 	vector color = [0,0,0];
@@ -1261,18 +1308,15 @@ void cl_navgen_render_test_walk()
 			result = cl_navgen_gen_direct_walk(player_pos,ofs);
 			break;
 		case 2:
-			result = cl_old_navgen_gen_direct_walk(player_pos,point);
-			break;
-		case 3:
 			result = cl_navgen_gen_walk_to_point(player_pos,point);
 			break;
-		case 4:
+		case 3:
 			result = cl_navgen_obstructed(player_pos, point);
 			break;
-		case 5:
+		case 4:
 			result = cl_navgen_calc_midpoint(player_pos, point);
 			break;
-		case 6:
+		case 5:
 			result = cl_navgen_gen_walk_to_midpoint(player_pos, point);
 			break;
 		default:
@@ -1283,21 +1327,20 @@ void cl_navgen_render_test_walk()
 	{
 		case 0:
 		case 1:
-		case 2:
 			if(result != 2)
 				color[0] = 1;
 			if(result != 0)
 				color[1] = 1;
 			break;
-		case 4:
+		case 3:
 			if(result == 0)
 				color[1] = 1;
 			else
 				color[0] = 1;
 			break;
-		case 3:
+		case 2:
+		case 4:
 		case 5:
-		case 6:
 			if(result == 1)
 				color[1] = 1;
 			else
@@ -1307,11 +1350,35 @@ void cl_navgen_render_test_walk()
 			return;
 	}
 	
+	//If we failed on walk to point, render some stuff
+	if(cl_navgen_render_test_walk_function == 2)
+	{
+		if(cl_navgen_render_test_walk_start_placed == 1)
+		{
+			cl_navmesh_draw_line(player_pos,point,2,color,0.2);
+			cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],color,0.02);
+			cl_navmesh_draw_test_ent(player_pos,[1,1,1],[0,1,0],0.02);
+			cl_navmesh_draw_test_ent(point,[1,1,1],[1,0,0],0.02);
+			
+			render_walk_to_point = 1;
+			debug_direct_walk = 1;
+			cl_navgen_gen_walk_to_point(player_pos,point);
+			debug_direct_walk = 0;
+			render_walk_to_point = 0;
+			
+			
+			return;
+		}
+	}
+	
 	cl_navmesh_draw_line(player_pos,player_pos+ofs,2,color,0.2);
 	cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],color,0.2);
 	
+	if(trace_endpos != point)
+		cl_navmesh_draw_test_ent(point,[1,1,1],[0,0,1],0.2);
+	
 	//Case 5 and 6's trace_endpos is a midpoint, make sure we still draw the calculated point
-	if(cl_navgen_render_test_walk_function == 5 || cl_navgen_render_test_walk_function == 6)
+	if(cl_navgen_render_test_walk_function == 4 || cl_navgen_render_test_walk_function == 5)
 	{
 		cl_navmesh_draw_test_ent(point,[1,1,1],color,0.2);
 	}
@@ -1978,54 +2045,50 @@ void cl_navgen_do_task_walk_vert(navgen_task_data_walk_vertex* data)
 		}
 		has_moved = 1;
 		
-		
+		float left_obstructed = cl_navgen_obstructed((vert->left)->pos,vert->pos);
+		float right_obstructed = cl_navgen_obstructed(vert->pos,(vert->right)->pos);
 		
 		//check if left edge was obstructed
-		if(cl_navgen_obstructed((vert->left)->pos,vert->pos))
+		if(left_obstructed)
 		{
 			print("Left edge obstructed.\n");
-			//Double check, inconsistent?
-			if(cl_navgen_obstructed((vert->left)->pos,vert->pos))
-			{
-			
-				
-			
-				//Subdivide the left edge
-				//Insert the new vertex at our last vertex position
-				new_vert = cl_navgen_new_vert(last_vert_pos);
-				new_vert->left = vert->left;
-				(vert->left)->right = new_vert;
-				new_vert->right = vert;
-				vert->left = new_vert;
-			
-				//Getting the vertex as close to the corner as possible
-				cl_navgen_task_resolve_corner(new_vert);
-				return;
-			}
-			print("...NEVERMIND==========================\n");
+		
+			//Subdivide the left edge
+			//Insert the new vertex at our last vertex position
+			new_vert = cl_navgen_new_vert(last_vert_pos);
+			new_vert->left = vert->left;
+			(vert->left)->right = new_vert;
+			new_vert->right = vert;
+			vert->left = new_vert;
+		
+			//Getting the vertex as close to the corner as possible
+			cl_navgen_task_resolve_corner(new_vert);
+			//TODO: make sure resolve corner walks vertex vert
 		}
 	
 		//check if right edge was obstructed
-		if(cl_navgen_obstructed(vert->pos,(vert->right)->pos))
+		if(right_obstructed)
 		{
 			print("Right edge obstructed.\n");
-			if(cl_navgen_obstructed(vert->pos,(vert->right)->pos))
-			{
-				//Subdivide the right edge
-				//Insert the new vertex at our last vertex position
-				new_vert = cl_navgen_new_vert(last_vert_pos);
-				
-				new_vert->right = vert->right;
-				(vert->right)->left = new_vert;
-				new_vert->left = vert;
-				vert->right = new_vert;
-				
-				//Getting the vertex as close to the corner as possible
-				cl_navgen_task_resolve_corner(new_vert);
-				return;
-			}
-			print("...NEVERMIND==========================\n");
+		
+			//Subdivide the right edge
+			//Insert the new vertex at our last vertex position
+			new_vert = cl_navgen_new_vert(last_vert_pos);
+			
+			new_vert->right = vert->right;
+			(vert->right)->left = new_vert;
+			new_vert->left = vert;
+			vert->right = new_vert;
+			
+			//Getting the vertex as close to the corner as possible
+			cl_navgen_task_resolve_corner(new_vert);
+			//TODO: make sure resolve corner walks vertex vert
 		}
+		
+		if(left_obstructed || right_obstructed)
+			return;
+		
+		
 		
 		
 		//check if we intersected with any other vertex edge
@@ -2135,7 +2198,7 @@ void cl_navgen_do_task_resolve_corner(navgen_task_data_resolve_corner* data)
 	}
 	
 	
-	float delta = 0.01;//how close does the min and max have to be for us to accept min as the desired point?
+	float delta = 0.1;//how close does the min and max have to be for us to accept min as the desired point?
 	
 	float iters = 0;
 	float iters2 = 0;
@@ -2457,32 +2520,21 @@ void cl_navgen_print_testwalk_func()
 			print("cl_navgen_gen_direct_walk");
 			break;
 		case 2:
-			print("cl_old_navgen_gen_direct_walk");
-			break;
-		case 3:
 			print("cl_navgen_gen_walk_to_point");
 			break;
-		case 4:
+		case 3:
 			print("cl_navgen_obstructed");
 			break;
-		case 5:
+		case 4:
 			print("cl_navgen_calc_midpoint");
 			break;
-		case 6:
+		case 5:
 			print("cl_navgen_gen_walk_to_midpoint");
 			break;
 		default:
 			return;
 	}
 	print("\n");
-	//Walk functions:
-	//0	float cl_navgen_gen_walk(vector start,vector ofs);			//0 for fail, 1 partial, 2 success
-	//1	float cl_navgen_gen_direct_walk(vector start,vector ofs);		//0 for fail, 1 partial, 2 success
-	//2	float cl_old_navgen_gen_direct_walk(vector start,vector ofs);		//0 for fail, 1 partial, 2 success
-	//3	float cl_navgen_gen_walk_to_point(vector start, vector point);		//0 fail, 1 success
-	//4	float cl_navgen_obstructed(vector pos1, vector pos2);			//0 unobstruced, 1 if either direction is obstructed
-	//5	float cl_navgen_calc_midpoint(vector a, vector b);			//0 fail, 1 success
-	//6	float cl_navgen_gen_walk_to_midpoint(vector start, vector point);	//0 fail, 1 success
 }
 
 /*
@@ -2507,6 +2559,8 @@ void cl_navgen_register_commands()
 	registercommand("navgen_tw_prev");
 	registercommand("navgen_tw_grow");
 	registercommand("navgen_tw_shrink");
+	registercommand("navgen_tw_place_ent");
+	registercommand("navgen_tw_place_start");
 }
 float cl_navgen_console_commands(string cmd) = 
 {
@@ -2514,13 +2568,13 @@ float cl_navgen_console_commands(string cmd) =
 	switch(argv(0))
 	{
 		case "navgen_tw_next":
-			cl_navgen_render_test_walk_function = ( cl_navgen_render_test_walk_function + 1 ) % 7;
+			cl_navgen_render_test_walk_function = ( cl_navgen_render_test_walk_function + 1 ) % 6;
 			cl_navgen_print_testwalk_func();
 			return TRUE;
 		case "navgen_tw_prev":
-			cl_navgen_render_test_walk_function = ( cl_navgen_render_test_walk_function - 1 ) % 7;
+			cl_navgen_render_test_walk_function = ( cl_navgen_render_test_walk_function - 1 ) % 6;
 			if(cl_navgen_render_test_walk_function < 0)//negative modulus doesn't work????
-				cl_navgen_render_test_walk_function += 7;
+				cl_navgen_render_test_walk_function += 6;
 			cl_navgen_print_testwalk_func();
 			return TRUE;
 		case "navgen_tw_grow":
@@ -2532,6 +2586,27 @@ float cl_navgen_console_commands(string cmd) =
 				cl_navgen_render_test_walk_radius -= 5;
 			print("Testwalk radius: ",ftos(cl_navgen_render_test_walk_radius),"\n");
 			return TRUE;
+		case "navgen_tw_place_ent":
+			{
+				//Set cl_navgen_render_test_walk_goal to player pos
+				vector player_pos;
+				vec_eq(&player_pos, getentity(player_localentnum, GE_ORIGIN));
+				//Find floor at pos
+				cl_navgen_gen_drop_to_floor(player_pos);
+				vec_eq(&cl_navgen_render_test_walk_goal,trace_endpos);
+				return TRUE;
+			}
+		case "navgen_tw_place_start":
+			{
+				//Set cl_navgen_render_test_walk_goal to player pos
+				vector player_pos2;
+				vec_eq(&player_pos2, getentity(player_localentnum, GE_ORIGIN));
+				//Find floor at pos
+				cl_navgen_gen_drop_to_floor(player_pos2);
+				vec_eq(&cl_navgen_render_test_walk_start,trace_endpos);
+				cl_navgen_render_test_walk_start_placed = 1;
+				return TRUE;
+			}
 		default:
 			break;
 	}

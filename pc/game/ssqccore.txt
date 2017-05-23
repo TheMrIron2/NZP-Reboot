@@ -14,12 +14,12 @@ stacktrace {
 }
 globals 0 {
 "self" "1"
-"time" "24.003000"
-"frametime" "0.005000"
+"time" "79.394005"
+"frametime" "0.012000"
 "mapname" "navtest"
 "msg_entity" "1"
 "physics_mode" "2"
-"framecount" "3015"
+"framecount" "9737"
 "mappath" "maps/navtest"
 "sv_gravity" "800"
 "sv_maxspeed" "320"
@@ -29,7 +29,7 @@ globals 0 {
 "roundtype" "1"
 "Total_Zombies" "6"
 "Remaining_Zombies" "6"
-"spawn_time" "8.919001"
+"spawn_time" "10.680000"
 "delay_at_round" "2"
 "maxreward" "50"
 "rounds" "1"
@@ -37,7 +37,7 @@ globals 0 {
 }
 entity 0{
 "modelindex" "1"
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "movetype" "7"
 "solid" "4"
 "classname" "worldspawn"
@@ -55,14 +55,13 @@ entity 0{
 }
 entity 1{
 "modelindex" "2"
-"absmin" "-109.549 -611.428 -256.969"
-"absmax" "-75.5493 -577.428 -198.969"
+"absmin" "693.572 -273.393 -256.969"
+"absmax" "727.572 -239.393 -198.969"
 "movetype" "3"
 "solid" "3"
-"origin" "-92.5493 -594.428 -231.969"
-"oldorigin" "-92.5469 -594.429 -231.969"
-"velocity" "-0.171606 0.0378861 0"
-"angles" "-4.98596 87.204 -0.227777"
+"origin" "710.572 -256.393 -231.969"
+"oldorigin" "710.572 -256.393 -231.969"
+"angles" "-1.71936 -146.069 0"
 "classname" "player"
 "model" "models/player.mdl"
 "mins" "-16 -16 -24"
@@ -73,7 +72,7 @@ entity 1{
 "weaponmodel" "models/weapons/m1911/v_colt.mdl"
 "currentammo" "32"
 "view_ofs" "0 0 32"
-"v_angle" "14.9579 87.204 0"
+"v_angle" "5.15808 -146.069 0"
 "netname" "Player"
 "flags" "4608"
 "colormap" "1"
@@ -87,16 +86,16 @@ entity 1{
 "dimension_see" "255"
 "dimension_seen" "255"
 "Version" "1"
+"viewzoom" "1"
 "uniquespawnid" "1"
-"oldvelocity" "-0.171606 0.0378861 0"
-"lastsound_time" "3.301000"
+"lastsound_time" "43.482002"
 "points" "500"
 "stamina" "3"
 "currentmag" "8"
 "grenades" "1"
 "primary_grenades" "2"
-"anim_weapon_time" "23.997002"
-"anim_weapon2_time" "23.997002"
+"anim_weapon_time" "79.380005"
+"anim_weapon2_time" "79.380005"
 "animend" "0:SUB_Null"
 "animend2" "0:SUB_Null"
 }
@@ -164,7 +163,7 @@ entity 8{
 "uniquespawnid" "1"
 }
 entity 9{
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "origin" "-41 -191 -152"
 "classname" "info_player_start"
 "dimension_solid" "255"
@@ -176,7 +175,7 @@ entity 9{
 "uniquespawnid" "1"
 }
 entity 10{
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "origin" "192 -192 191"
 "classname" "light"
 "dimension_solid" "255"
@@ -192,7 +191,7 @@ entity 10{
 entity 11{
 "absmin" "247 -193 -160.969"
 "absmax" "249 -191 -158.969"
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "origin" "248 -192 -159.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -209,7 +208,7 @@ entity 11{
 "uniquespawnid" "1"
 }
 entity 12{
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -224,7 +223,7 @@ entity 12{
 }
 entity 13{
 "modelindex" "22"
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "waypoint_target"
 "model" "models/way/normal_way.spr"
 "dimension_solid" "255"
@@ -236,7 +235,7 @@ entity 13{
 "uniquespawnid" "1"
 }
 entity 14{
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -252,7 +251,7 @@ entity 14{
 }
 entity 15{
 "modelindex" "22"
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "waypoint_target"
 "model" "models/way/normal_way.spr"
 "dimension_solid" "255"
@@ -264,7 +263,7 @@ entity 15{
 "uniquespawnid" "1"
 }
 entity 16{
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -280,7 +279,7 @@ entity 16{
 }
 entity 17{
 "modelindex" "22"
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "waypoint_target"
 "model" "models/way/normal_way.spr"
 "dimension_solid" "255"
@@ -292,7 +291,7 @@ entity 17{
 "uniquespawnid" "1"
 }
 entity 18{
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -308,7 +307,7 @@ entity 18{
 }
 entity 19{
 "modelindex" "22"
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "waypoint_target"
 "model" "models/way/normal_way.spr"
 "dimension_solid" "255"
@@ -320,7 +319,7 @@ entity 19{
 "uniquespawnid" "1"
 }
 entity 20{
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -336,7 +335,7 @@ entity 20{
 }
 entity 21{
 "modelindex" "22"
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "waypoint_target"
 "model" "models/way/normal_way.spr"
 "dimension_solid" "255"
@@ -348,7 +347,7 @@ entity 21{
 "uniquespawnid" "1"
 }
 entity 22{
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -364,7 +363,7 @@ entity 22{
 }
 entity 23{
 "modelindex" "22"
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "waypoint_target"
 "model" "models/way/normal_way.spr"
 "dimension_solid" "255"
@@ -376,7 +375,7 @@ entity 23{
 "uniquespawnid" "1"
 }
 entity 24{
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -392,7 +391,7 @@ entity 24{
 }
 entity 25{
 "modelindex" "22"
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "waypoint_target"
 "model" "models/way/normal_way.spr"
 "dimension_solid" "255"
@@ -404,7 +403,7 @@ entity 25{
 "uniquespawnid" "1"
 }
 entity 26{
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -420,7 +419,7 @@ entity 26{
 }
 entity 27{
 "modelindex" "22"
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "waypoint_target"
 "model" "models/way/normal_way.spr"
 "dimension_solid" "255"
@@ -432,7 +431,7 @@ entity 27{
 "uniquespawnid" "1"
 }
 entity 28{
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -448,7 +447,7 @@ entity 28{
 }
 entity 29{
 "modelindex" "22"
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "waypoint_target"
 "model" "models/way/normal_way.spr"
 "dimension_solid" "255"
@@ -460,7 +459,7 @@ entity 29{
 "uniquespawnid" "1"
 }
 entity 30{
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -476,7 +475,7 @@ entity 30{
 }
 entity 31{
 "modelindex" "22"
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "waypoint_target"
 "model" "models/way/normal_way.spr"
 "dimension_solid" "255"
@@ -488,7 +487,7 @@ entity 31{
 "uniquespawnid" "1"
 }
 entity 32{
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -504,7 +503,7 @@ entity 32{
 }
 entity 33{
 "modelindex" "22"
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "waypoint_target"
 "model" "models/way/normal_way.spr"
 "dimension_solid" "255"
@@ -516,7 +515,7 @@ entity 33{
 "uniquespawnid" "1"
 }
 entity 34{
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -532,7 +531,7 @@ entity 34{
 }
 entity 35{
 "modelindex" "22"
-"lastruntime" "24.003000"
+"lastruntime" "79.394005"
 "classname" "waypoint_target"
 "model" "models/way/normal_way.spr"
 "dimension_solid" "255"
