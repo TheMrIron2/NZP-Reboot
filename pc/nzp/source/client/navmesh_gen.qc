@@ -212,7 +212,7 @@ void cl_navmesh_render_gen()
 		
 	cl_navgen_try_next_task();
 	
-	cl_navgen_render_test_walk();
+	//cl_navgen_render_test_walk();
 }
 
 //Given starting position and edge tangent, walk along the edge until we hit some form of a corner
@@ -583,7 +583,38 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 				//We may have fallen down
 				else
 				{
-					
+					//If we hit something
+					if(trace_fraction < 1)
+					{
+						vector backup_trace_endpos;
+						vec_eq(&backup_trace_endpos, trace_endpos);
+						
+						//If we can direct walk from trace_endpos to last_cur
+						render_walk_to_point = 0;
+						if(cl_navgen_gen_direct_walk(trace_endpos, last_cur - trace_endpos) == 2)
+						{
+							
+							if(render_walk_to_point == 1)
+							{
+								//cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,0,1],0.02);
+								//cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[0,0,1],0.2);
+								cl_navmesh_draw_line(backup_trace_endpos-[0,0,32] + [0,0,6],last_cur-[0,0,32] + [0,0,6],6,[0,1,0],0.2);
+							}
+							vec_eq(&cur,backup_trace_endpos);
+							continue;
+						}
+						else
+						{
+							if(render_walk_to_point == 1)
+							{
+								//cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,0,1],0.02);
+								//cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[0,0,1],0.2);
+								cl_navmesh_draw_line(backup_trace_endpos-[0,0,32] + [0,0,6],last_cur-[0,0,32] + [0,0,6],6,[1,0,0],0.2);
+							}
+						}
+						
+						vec_eq(&trace_endpos, backup_trace_endpos);
+					}
 					
 					//getting back onto the ground
 					//undo the last move from a lowered position
