@@ -66,8 +66,6 @@ float debug_hull_count;
 
 void add_debug_hull(vector pos, vector scale, vector color, float alpha)
 {
-	//FIXME: disabling debug hulls for less cluttered testing
-	return;
 	//if(debug_hull_count >= MAX_DEBUG_HULL_COUNT)
 	//	return;
 	debug_hulls[debug_hull_count % MAX_DEBUG_HULL_COUNT] = pos;
@@ -2194,6 +2192,9 @@ void cl_navgen_do_task_walk_vert(navgen_task_data_walk_vertex* data)
 //Assigns data->vert's position to the resolved corner
 void cl_navgen_do_task_resolve_corner(navgen_task_data_resolve_corner* data)
 {
+	//FIXME: sometimes resolve_corner is called on verts who obstructed retunrs true for, but shouldn't
+	//this leads to an infinite loop where min is moved back and forth
+	
 	vector pos1, pos2, pos3;
 	float mid1_minimized;
 	float mid3_minimized;
@@ -2300,13 +2301,23 @@ void cl_navgen_do_task_resolve_corner(navgen_task_data_resolve_corner* data)
 				
 			//Subdivide
 			float debug_result = cl_navgen_calc_midpoint(min,*mid_a);
-			vec_eq(mid_a,trace_endpos);
 			if(debug_result == 0)
 			{
-				print("Warning: calc_midpoint failed in resolve corner.\n");
+				print("Warning: Resolve Corner error: calc_midpoint failed.\n");
 				//TODO: debug the call to calc_midpoint
+				
+				add_debug_hull(min,[1,1,1],[0,1,0],0.2);
+				add_debug_hull(*mid_a,[1,1,1],[1,0,0],0.2);
+				add_debug_hull(trace_endpos,[1,1,0.5],[0,0,1],0.2);
+				
+				//Purging the task stack so we stop here
+				cl_navgen_clear_task_stack();
+				
+				
+				//TODO: do a more in-depth debug to figure out why calc_midpoint is failing in this case.
 				return;
 			}
+			vec_eq(mid_a,trace_endpos);
 			
 			
 			//If we are segmenting the inner loop, tell this to stop and resume from here
