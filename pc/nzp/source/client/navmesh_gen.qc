@@ -2304,11 +2304,17 @@ void cl_navgen_do_task_resolve_corner(navgen_task_data_resolve_corner* data)
 			if(debug_result == 0)
 			{
 				print("Warning: Resolve Corner error: calc_midpoint failed.\n");
-				//TODO: debug the call to calc_midpoint
 				
-				add_debug_hull(min,[1,1,1],[0,1,0],0.2);
-				add_debug_hull(*mid_a,[1,1,1],[1,0,0],0.2);
-				add_debug_hull(trace_endpos,[1,1,0.5],[0,0,1],0.2);
+				debug_walk_to_point = 1;
+				debug_direct_walk = 1;
+				cl_navgen_calc_midpoint(min,*mid_a);
+				debug_walk_to_point = 0;
+				debug_direct_walk = 0;
+				
+				
+				//add_debug_hull(min,[1,1,1],[0,1,0],0.2);
+				//add_debug_hull(*mid_a,[1,1,1],[1,0,0],0.2);
+				//add_debug_hull(trace_endpos,[1,1,0.5],[0,0,1],0.2);
 				
 				//Purging the task stack so we stop here
 				cl_navgen_clear_task_stack();
