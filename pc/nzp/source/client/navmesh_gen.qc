@@ -1888,6 +1888,55 @@ void cl_navgen_clear_task_stack()
 }
 
 
+//Checks to make sure we have not validated the navmesh generation invariant (that we can walk from a vertex to it's left & right neighbors)
+//Returns 1 if true, 0 if false
+float debug_check_invariants()
+{
+	navgen_vertex* vert = navgen_verts_root;
+	
+	float invariant_violated = 0;
+	
+	while(vert)
+	{
+		//Check if we can walk from vert to vert->left
+		if(!cl_navgen_gen_walk_to_point(vert->pos,(vert->left)->pos))
+		{
+			//Add debug hulls
+			add_debug_hull(vert->pos,[1,1,1],[0,1,0],0.02);
+			add_debug_hull(vert->pos,[0.01,0.01,1],[0,1,0],0.3);
+			add_debug_hull((vert->left)->pos,[1,1,1],[1,0,0],0.02);
+			add_debug_hull((vert->left)->pos,[0.01,0.01,1],[1,0,0],0.3);
+			
+			add_debug_line(vert->pos,(vert->left)->pos,[1,0,0]);
+			
+			//return 0; don't stop, check all verts
+			invariant_violated = 1;
+		}
+		//Check if we can walk from vert to vert->right
+		if(!cl_navgen_gen_walk_to_point(vert->pos,(vert->right)->pos))
+		{
+			//Add debug hulls
+			add_debug_hull(vert->pos,[1,1,1],[0,1,0],0.02);
+			add_debug_hull(vert->pos,[0.01,0.01,1],[0,1,0],0.3);
+			add_debug_hull((vert->right)->pos,[1,1,1],[1,0,0],0.02);
+			add_debug_hull((vert->right)->pos,[0.01,0.01,1],[1,0,0],0.3);
+			
+			add_debug_line(vert->pos,(vert->right)->pos,[1,0,0]);
+			
+			//return 0; don't stop, check all verts
+			invariant_violated = 1;
+		}
+		
+		vert = vert->next;
+	}
+	
+	if(invariant_violated)
+		return 0;
+	return 1;
+}
+
+
+
 //Removes the next task from the stack and delegates it to function depending on type
 void cl_navgen_do_next_task()
 {
@@ -1900,6 +1949,9 @@ void cl_navgen_do_next_task()
 	}
 	
 	float type = task->type;
+	
+	//TODO: if post invariant check yields no results, add a pre invariant check to catch exactly what violates the invariant
+	
 	
 	switch(type)
 	{
@@ -1919,6 +1971,15 @@ void cl_navgen_do_next_task()
 			print("NavGen: unkown task type: ",ftos(type),"\n");
 			break;
 	}
+	
+	//TEMP DEBUG
+	//at the end of each task performed, we shall check each vertex and make sure it's not obstructed from it's neighbor vertices
+	if(debug_check_invariants() == 0)
+	{
+		cl_navgen_clear_task_stack();
+		print("Error: invariant validated on task type ",ftos(type),"\n");
+	}
+	//TEMP DEBUG
 	
 	memfree(task->data);
 	memfree(task);
