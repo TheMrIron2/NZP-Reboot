@@ -1888,7 +1888,7 @@ void cl_navgen_clear_task_stack()
 }
 
 
-//Checks to make sure we have not validated the navmesh generation invariant (that we can walk from a vertex to it's left & right neighbors)
+//Checks to make sure we have not violated the navmesh generation invariant (that we can walk from a vertex to it's left & right neighbors)
 //Returns 1 if true, 0 if false
 float debug_check_invariants()
 {
@@ -1976,8 +1976,10 @@ void cl_navgen_do_next_task()
 	//at the end of each task performed, we shall check each vertex and make sure it's not obstructed from it's neighbor vertices
 	if(debug_check_invariants() == 0)
 	{
-		cl_navgen_clear_task_stack();
-		print("Error: invariant validated on task type ",ftos(type),"\n");
+		//cl_navgen_clear_task_stack();
+		//FIXME: if task_walk_vert detects left or right edge is obstructed,
+		//we need to be very careful with the logic to ensure that subdivision is handled properly
+		print("Error: invariant violated on task type ",ftos(type),"\n");
 	}
 	//TEMP DEBUG
 	
