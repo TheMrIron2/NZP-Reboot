@@ -709,8 +709,6 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 	
 	//Assuming we are on the ground
 	
-	//float max_slope = 10.4;//18/tan(60) = 10.4, the length of the triangle formed by the max walkable slope of 60 degrees, and the max step height
-	
 	vector cur;
 	vec_eq(&(cur),start);
 	
@@ -720,6 +718,8 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 	
 	//0 means did not walk at all, 1 means we slid, 2 means we completed the move in x & y axis
 	float success[2] = {0,0};
+	
+	//TODO: if move with move order of x,y fails, try a move with move order of y,x
 	
 	//Iterate over x-axis then y-axis
 	for(float i = 0; i < 2; i++)
@@ -778,11 +778,6 @@ float cl_navgen_gen_walk(vector start,vector ofs)
 			vec_eq(&ledge_hit, cur);
 			vec_eq(&(cur),cur - 0.1*normalize(delta_org));
 			
-			//FIXME: if push off of ledge, and we come back to a position less than ofs, -> infinite loop
-			//what do we define as dead end vs still walked?
-			//probably when the amount we set back onto the ground is greater than the ofs, (but wait, ofs doesn't care about when we fell off of the ground)
-			//distance between new pos, hit wall pos, and start pos.
-
 			//If we moved back to start, we were already on ledge, so we did not move on this axis
 			//If distance to pushed onto ledge pos is greater than distance to start, we hit dead end
 			if(fabs(cur[i] - ledge_hit[i]) >= fabs(start[i] - ledge_hit[i]))
@@ -1795,15 +1790,21 @@ struct navgen_task_data_walk_vertex
 {
 	navgen_vertex* vert;
 	
+	float dir_specified;
+	vector walk_dir;
+	
 	//data for continuing walk_vertex
 	float is_cont;
-	vector walk_dir;
 	float did_move;
 };
 
 struct navgen_task_data_resolve_corner
 {
 	navgen_vertex* vert;
+	
+	//Data for task to call after finishing
+	navgen_vertex* vert_to_walk;
+	vector vert_walk_dir;
 	
 	//data for continuing resolve_corner
 	float is_cont;
@@ -1950,9 +1951,6 @@ void cl_navgen_do_next_task()
 	
 	float type = task->type;
 	
-	//TODO: if post invariant check yields no results, add a pre invariant check to catch exactly what violates the invariant
-	
-	
 	switch(type)
 	{
 		case navgen_task_type_walk_vertex:
@@ -1973,12 +1971,10 @@ void cl_navgen_do_next_task()
 	}
 	
 	//TEMP DEBUG
-	//at the end of each task performed, we shall check each vertex and make sure it's not obstructed from it's neighbor vertices
+	//at the end of each task performed, we shall check each vertex and make sure it's not obstructed with its neighbor vertices
 	if(debug_check_invariants() == 0)
 	{
-		//cl_navgen_clear_task_stack();
-		//FIXME: if task_walk_vert detects left or right edge is obstructed,
-		//we need to be very careful with the logic to ensure that subdivision is handled properly
+		cl_navgen_clear_task_stack();
 		print("Error: invariant violated on task type ",ftos(type),"\n");
 	}
 	//TEMP DEBUG
@@ -2003,16 +1999,32 @@ void cl_navgen_task_walk_vert(navgen_vertex* vert)
 {
 	navgen_task_data_walk_vertex* data = memalloc(sizeof(navgen_task_data_walk_vertex));
 	data->vert = vert;
+	data->dir_specified = 0;
 	data->is_cont = 0;
 	
 	cl_navgen_push_task(navgen_task_type_walk_vertex, (navgen_task_data*) data);
 }
+
+//Functions for scheduling walk vert in a specified direction
+void cl_navgen_task_walk_vert_in_dir(navgen_vertex* vert, vector dir)
+{
+	navgen_task_data_walk_vertex* data = memalloc(sizeof(navgen_task_data_walk_vertex));
+	data->vert = vert;
+	data->dir_specified = 1;
+	vec_eq(&(data->walk_dir),dir);
+	
+	data->is_cont = 0;
+	
+	cl_navgen_push_task(navgen_task_type_walk_vertex, (navgen_task_data*) data);
+}
+
 
 //Function for scheduling a continue walk vert
 void cl_navgen_task_cont_walk_vert(navgen_vertex* vert, vector dir, float did_move)
 {
 	navgen_task_data_walk_vertex* data = memalloc(sizeof(navgen_task_data_walk_vertex));
 	data->vert = vert;
+	data->dir_specified = 1;
 	vec_eq(&(data->walk_dir),dir);
 	data->did_move = did_move;
 	data->is_cont = 1;
@@ -2021,10 +2033,13 @@ void cl_navgen_task_cont_walk_vert(navgen_vertex* vert, vector dir, float did_mo
 }
 
 //Function for scheduling resolve corner
-void cl_navgen_task_resolve_corner(navgen_vertex* vert)
+void cl_navgen_task_resolve_corner(navgen_vertex* vert, navgen_vertex* vert_to_walk, vector vert_walk_dir)
 {
 	navgen_task_data_resolve_corner* data = memalloc(sizeof(navgen_task_data_resolve_corner));
 	data->vert = vert;
+	
+	data->vert_to_walk = vert_to_walk;
+	vec_eq(&(data->vert_walk_dir), vert_walk_dir);
 
 	data->is_cont = 0;
 	
@@ -2032,11 +2047,15 @@ void cl_navgen_task_resolve_corner(navgen_vertex* vert)
 }
 
 //Function for scheduling a continue resolve corner
-void cl_navgen_task_cont_resolve_corner(navgen_vertex* vert, float task_state, vector min, vector mid1, vector mid3, float minimized_mid1, float minimized_mid3)
+void cl_navgen_task_cont_resolve_corner(navgen_vertex* vert, float task_state, vector min, vector mid1, vector mid3, float minimized_mid1, float minimized_mid3, navgen_vertex* vert_to_walk, vector vert_walk_dir)
 {
 	navgen_task_data_resolve_corner* data = memalloc(sizeof(navgen_task_data_resolve_corner));
 	
 	data->vert = vert;
+	
+	data->vert_to_walk = vert_to_walk;
+	vec_eq(&(data->vert_walk_dir), vert_walk_dir);
+
 	data->is_cont = 1;
 	
 	data->task_state = task_state;
@@ -2069,6 +2088,10 @@ void cl_navgen_do_task_walk_vert(navgen_task_data_walk_vertex* data)
 	if(data->is_cont)
 	{
 		has_moved = data->did_move;
+	}
+	//If walk direction is specified, use it, otherwise calculate it
+	if(data->dir_specified)
+	{
 		vec_eq(&walk_dir, (data->walk_dir));
 	}
 	else
@@ -2113,6 +2136,7 @@ void cl_navgen_do_task_walk_vert(navgen_task_data_walk_vertex* data)
 	
 	navgen_vertex* new_vert;
 	
+	vector tentative_vert_pos;
 	
 	float iters = 0;
 	
@@ -2129,7 +2153,21 @@ void cl_navgen_do_task_walk_vert(navgen_task_data_walk_vertex* data)
 		
 		move = cl_navgen_gen_walk(vert->pos,walk_dir);
 		
-		vec_eq(&(vert->pos),trace_endpos);
+		vec_eq(&tentative_vert_pos, trace_endpos);
+		
+		//(This check fixes issues with convex corners, i.e. we can walk to next vert pos, but cannot direct walk to it)
+		//If we cannot direct walk to trace_endpos from vert->pos, we consider that the vert did not move
+		//FIXME (1/2): this seems to have fixed concave corners, but we need to fix some other errors before verifying that this 
+		//FIXME (2/2): functions properly and handles wrapping around and corner-resolving those concave corners that we now avoid
+		if(cl_navgen_obstructed(vert->pos, tentative_vert_pos))
+		{
+			//Don't move the vertex
+			vec_eq(&tentative_vert_pos, vert->pos);
+			move = 0;
+			print("Warning: about to walk past a concave corner\n");
+		}
+		
+		vec_eq(&(vert->pos),tentative_vert_pos);
 
 		if(!move && !has_moved)
 		{
@@ -2154,8 +2192,7 @@ void cl_navgen_do_task_walk_vert(navgen_task_data_walk_vertex* data)
 			vert->left = new_vert;
 		
 			//Getting the vertex as close to the corner as possible
-			cl_navgen_task_resolve_corner(new_vert);
-			//TODO: make sure resolve corner walks vertex vert
+			cl_navgen_task_resolve_corner(new_vert,vert,walk_dir);
 		}
 	
 		//check if right edge was obstructed
@@ -2173,15 +2210,11 @@ void cl_navgen_do_task_walk_vert(navgen_task_data_walk_vertex* data)
 			vert->right = new_vert;
 			
 			//Getting the vertex as close to the corner as possible
-			cl_navgen_task_resolve_corner(new_vert);
-			//TODO: make sure resolve corner walks vertex vert
+			cl_navgen_task_resolve_corner(new_vert,vert,walk_dir);
 		}
 		
 		if(left_obstructed || right_obstructed)
 			return;
-		
-		
-		
 		
 		//check if we intersected with any other vertex edge
 			//walk along the edge and see if we hit one of the verts
@@ -2394,7 +2427,7 @@ void cl_navgen_do_task_resolve_corner(navgen_task_data_resolve_corner* data)
 			{
 				//Make sure we continue this same loop (revert find_min_state)
 				find_min_state = (find_min_state == 0) ? 1 : 0;
-				cl_navgen_task_cont_resolve_corner(vert,find_min_state,min,mid1,mid3,mid1_minimized,mid3_minimized);
+				cl_navgen_task_cont_resolve_corner(vert,find_min_state,min,mid1,mid3,mid1_minimized,mid3_minimized,data->vert_to_walk,data->vert_walk_dir);
 				return;
 			}
 		}
@@ -2404,15 +2437,14 @@ void cl_navgen_do_task_resolve_corner(navgen_task_data_resolve_corner* data)
 		{
 			vec_eq(&(vert->pos),min);
 			//TODO: make sure we don't already walk the left / right vert (not in stack)
-			cl_navgen_task_walk_vert((data->vert)->right);
-			cl_navgen_task_walk_vert((data->vert)->left);
+			cl_navgen_task_walk_vert_in_dir(data->vert_to_walk,data->vert_walk_dir);
 			return;//success
 		}
 		
 		//Segment outer loop
 		if(navgen_segment_task_type_resolve_corner1)
 		{
-			cl_navgen_task_cont_resolve_corner(vert,find_min_state,min,mid1,mid3,mid1_minimized,mid3_minimized);
+			cl_navgen_task_cont_resolve_corner(vert,find_min_state,min,mid1,mid3,mid1_minimized,mid3_minimized,data->vert_to_walk,data->vert_walk_dir);
 			return;
 		}
 	}
