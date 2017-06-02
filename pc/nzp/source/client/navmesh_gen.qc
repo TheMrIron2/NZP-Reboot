@@ -31,7 +31,12 @@ struct navgen_vertex
 	navgen_vertex* left;
 	//Vertex's right edge
 	navgen_vertex* right;
+	
+	//Temp debug field
+	float id;
 };
+
+float verts_ids;
 
 //Root node in linked list, where all insertions occur at
 navgen_vertex* navgen_verts_root;
@@ -52,6 +57,9 @@ navgen_vertex* cl_navgen_new_vert(vector pos)
 	}
 	new_vert->prev = 0;
 	navgen_verts_root = new_vert;
+	
+	//fixme: for debug
+	new_vert->id = verts_ids++;
 	return new_vert;
 }
 
@@ -98,14 +106,18 @@ void cl_navgen_free_vert(navgen_vertex* vert)
 	if(navgen_verts_root == vert)
 		navgen_verts_root = vert->next;
 	
-	memfree(vert);
+	memfree((navgen_vertex*) vert);
 }
 
 void cl_navgen_free_all_verts()
 {
-	while(navgen_verts_root)
+	navgen_vertex* vert = navgen_verts_root;
+	print("Allocated verts: ",ftos(verts_ids),"\n");
+	while(vert)
 	{
-		cl_navgen_free_vert(navgen_verts_root);
+		print("\tfreeing vert: ",ftos(vert->id),"\n");
+		cl_navgen_free_vert(vert);
+		vert = navgen_verts_root;
 	}
 	
 	debug_hull_count = 0;
@@ -177,6 +189,8 @@ void() cl_navgen_try_next_task;
 //============================================================================================================
 
 void() cl_navgen_render_test_walk;
+void cl_navgen_gen_drop_to_floor(vector pos);
+float cl_navgen_auto_task;
 
 //A TEMP DEBUG METHOD THAT RENDERS INTERMEDIATE NAVMESH GENERATION RESULTS
 void cl_navmesh_render_gen()
@@ -207,8 +221,8 @@ void cl_navmesh_render_gen()
 		cl_navmesh_draw_line(debug_lines_pos1[j],debug_lines_pos2[j],2,debug_lines_color[j],0.2);
 	}	
 	
-		
-	cl_navgen_try_next_task();
+	if(cl_navgen_auto_task)
+		cl_navgen_try_next_task();
 	
 	//cl_navgen_render_test_walk();
 }
@@ -279,128 +293,8 @@ float debug_direct_walk;
 //returns 0 if walk failed completely
 //Assigns trace_endpos as the point as start if fail, or where we got to if success
 
-//This function should only be called for sufficiently small vlen(ofs)
-
-float cl_temp_navgen_gen_direct_walk(vector start,vector ofs)
-{
-	float max_step_size = 18;//max stair step pulled straight from engine defs
-	float tan_60 = 1.73205080757;//tangent of 60 degrees (max walkable slope) (used to make sure we don't walk up a higher slope)
-	
-	//========================================================================================
-	//for now, consider not on ground as a dead stop
-	tracebox(start,VEC_HULL_MIN,VEC_HULL_MAX,start-[0,0,2*max_step_size],MOVE_NOMONSTERS,self);
-	if((!trace_allsolid && !trace_startsolid) && trace_fraction > 0.5)
-	{
-		print("We are not on ground to begin, returning 0\n");
-		print("\tTrace fraction: ",ftos(trace_fraction),"\n");
-		print("\tstart solid: ",ftos(trace_startsolid)," all solid: ",ftos(trace_allsolid),"\n");
-		add_debug_hull(start,[1,1,1],[1,0,1],0.05);
-		vec_eq(&(trace_endpos),start);
-		return 0;
-	}
-	//========================================================================================
-	
-	//TODO: using tracebox, come up with a CONTINUOUS method of checking if we can go from start to start+ofs with or without stepping up / down
-	
-	
-}
-
-
-//FIXME: remove this simplified version (this version is discrete and may skip over small corners)
-float cl_discrete_navgen_gen_direct_walk(vector start,vector ofs)
-{
-	float max_step_size = 18;//max stair step pulled straight from engine defs
-	float tan_60 = 1.73205080757;//tangent of 60 degrees (max walkable slope) (used to make sure we don't walk up a higher slope)
-	
-	//========================================================================================
-	//for now, consider not on ground as a dead stop
-	tracebox(start,VEC_HULL_MIN,VEC_HULL_MAX,start-[0,0,2*max_step_size],MOVE_NOMONSTERS,self);
-	if((!trace_allsolid && !trace_startsolid) && trace_fraction > 0.5)
-	{
-		print("We are not on ground to begin, returning 0\n");
-		print("\tTrace fraction: ",ftos(trace_fraction),"\n");
-		print("\tstart solid: ",ftos(trace_startsolid)," all solid: ",ftos(trace_allsolid),"\n");
-		add_debug_hull(start,[1,1,1],[1,0,1],0.05);
-		vec_eq(&(trace_endpos),start);
-		return 0;
-	}
-	//========================================================================================
-	
-	float max_slope = 10.4;//18/tan(60) = 10.4, the length of the triangle formed by the max walkable slope of 60 degrees, and the max step height
-	
-	vector goal_org;
-	
-	vector org = [start_x, start_y, start_z];
-	
-	float onground = 1;
-	
-	/*if(!(self.flags & FL_ONGROUND))
-	{
-		self.velocity_z  -= self.gravity * sv_gravity * frametime;
-		
-		//Clamping to server terminal velocity (-sv_maxspeed -> sv_maxspeed)
-		self.velocity_z = max(min(self.velocity_z, sv_maxspeed), -sv_maxspeed);
-		
-		goal_org = org + [0,0,self.velocity.z] * frametime;
-		
-		tracebox(org,self.mins,self.maxs,goal_org,MOVE_NOMONSTERS,self);
-		
-		//If falling and hit something
-		if(self.velocity.z < 0 && trace_fraction < 1)
-		{	
-			self.flags |= FL_ONGROUND;
-		}
-		
-		self.true_org_z = trace_endpos_z;
-		setorigin(self, trace_endpos);
-		return;
-	}*/
-		
-	vec_eq(&goal_org, org + ofs);
-	
-	//Push down from a step above goal org to find result position
-	vector above_goal;
-	vec_eq(&above_goal, goal_org + [0,0,max_step_size]);
-	vector below_goal;
-	vec_eq(&below_goal, goal_org - [0,0,max_step_size]);
-	
-	tracebox(above_goal,VEC_HULL_MIN,VEC_HULL_MAX,below_goal,MOVE_NOMONSTERS,self);
-	
-	if(trace_allsolid)
-	{
-		//Do not slide along walls
-		vec_eq(&trace_endpos,start);
-		return 0;
-	}
-		
-	if(trace_startsolid)
-	{
-		tracebox(goal_org,VEC_HULL_MIN,VEC_HULL_MAX,below_goal,MOVE_NOMONSTERS,self);
-		if(trace_allsolid || trace_startsolid)
-		{
-			//Do not slide along walls
-			vec_eq(&trace_endpos,start);
-			return 0;
-		}
-	}
-	
-	if(trace_fraction >= 1)
-	{
-		//We walked off of a ledge
-		vec_eq(&trace_endpos,start);
-		return 0;
-	}
-	
-	return 2;
-}
-//====================================================================================================================================================================================
-
-
-
 //debug
 float render_walk_to_point;
-
-
 float cl_navgen_gen_direct_walk(vector start,vector ofs)
 {
 	float max_step_size = 18;//max stair step pulled straight from engine defs
@@ -527,7 +421,7 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 		//if we moved at least some amount:
 		if(!trace_allsolid && !trace_startsolid && trace_fraction > 0)
 		{
-			if(render_walk_to_point == 1)
+			if(!cl_navgen_auto_task)
 			{
 				//cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,0,1],0.02);
 				//cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[0,0,1],0.2);
@@ -541,7 +435,9 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 					color = [1,0,1];
 				else
 					color = [0,0,1];
-				cl_navmesh_draw_line(cur-[0,0,32] + [0,0,width],trace_endpos-[0,0,32] + [0,0,width],width,color,0.2);
+				
+				//add_debug_line(cur-[0,0,32] + [0,0,width],trace_endpos-[0,0,32] + [0,0,width],width,color,0.2);
+				add_debug_line(cur-[0,0,32] + [0,0,width],trace_endpos-[0,0,32] + [0,0,width],color);
 			}
 		
 			if(debug_direct_walk)
@@ -549,6 +445,25 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 			cur_failed = 0;
 			vec_eq(&last_cur,cur);
 			vec_eq(&cur,cur_trace_end);
+			
+			
+			//Check to make sure the ground was solid for the entire walk
+			//We're going to do a trace along the height of last_cur
+			tracebox([cur_x,cur_y,last_cur_z - max_step_size],VEC_HULL_MIN,VEC_HULL_MAX,last_cur - [0,0,max_step_size] ,MOVE_NOMONSTERS,self);
+			if(!trace_allsolid)
+			{
+				if(!cl_navgen_auto_task)
+				{
+					add_debug_hull_line([cur_x,cur_y,last_cur_z - max_step_size - 32], last_cur - [0,0,max_step_size + 32], [1,1,0]); 
+				}
+				//We encountered a hole along the way!
+				//Report last_cur as the position we got to
+				if(debug_direct_walk)
+					print("\t trace below last move was not allsolid, returning: ",ftos(moved_some_amount),"\n");
+				vec_eq(&trace_endpos, last_cur);
+				return moved_some_amount;
+			}
+			
 			moved_some_amount = 1;
 			
 			//Height before we consider having fallen
@@ -588,26 +503,28 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 						vec_eq(&backup_trace_endpos, trace_endpos);
 						
 						//If we can direct walk from trace_endpos to last_cur
-						render_walk_to_point = 0;
+						//render_walk_to_point = 0;
 						if(cl_navgen_gen_direct_walk(trace_endpos, last_cur - trace_endpos) == 2)
 						{
 							
-							if(render_walk_to_point == 1)
+							if(!cl_navgen_auto_task)
 							{
 								//cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,0,1],0.02);
 								//cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[0,0,1],0.2);
-								cl_navmesh_draw_line(backup_trace_endpos-[0,0,32] + [0,0,6],last_cur-[0,0,32] + [0,0,6],6,[0,1,0],0.2);
+								//add_debug_line(backup_trace_endpos-[0,0,32] + [0,0,6],last_cur-[0,0,32] + [0,0,6],6,[0,1,0],0.2);
+								add_debug_line(backup_trace_endpos-[0,0,32] + [0,0,6],last_cur-[0,0,32] + [0,0,6],[0,1,0]);
 							}
 							vec_eq(&cur,backup_trace_endpos);
 							continue;
 						}
 						else
 						{
-							if(render_walk_to_point == 1)
+							if(!cl_navgen_auto_task)
 							{
 								//cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,0,1],0.02);
 								//cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[0,0,1],0.2);
-								cl_navmesh_draw_line(backup_trace_endpos-[0,0,32] + [0,0,6],last_cur-[0,0,32] + [0,0,6],6,[1,0,0],0.2);
+								//add_debug_line(backup_trace_endpos-[0,0,32] + [0,0,6],last_cur-[0,0,32] + [0,0,6],6,[1,0,0],0.2);
+								add_debug_line(backup_trace_endpos-[0,0,32] + [0,0,6],last_cur-[0,0,32] + [0,0,6],[1,0,0]);
 							}
 						}
 						
@@ -852,6 +769,10 @@ string walk_percent(vector start, vector cur, vector goal)
 //Assigns the trace_endpos as the actual point we got to (as z-coordinate may be different)
 
 
+//Issue: these dist increments of 1 are too discrete
+//This will fail on some edge cases
+//I need to come up with a alternative continuous method for direct walk to point.
+
 float cl_navgen_gen_walk_to_point(vector start, vector point)
 {
 	float dist = 1;
@@ -881,10 +802,10 @@ float cl_navgen_gen_walk_to_point(vector start, vector point)
 		add_debug_hull(point,[0.01,0.01,0.8],[0,0,1],0.3);
 	}
 	
-	if(render_walk_to_point == 1)
+	if(!cl_navgen_auto_task)
 	{
-		cl_navmesh_draw_test_ent(start,[1,1,1],[0,1,0],0.02);
-		cl_navmesh_draw_test_ent(start,[0.01,0.01,1],[0,1,0],0.2);
+		add_debug_hull(start,[1,1,1],[0,1,0],0.02);
+		add_debug_hull(start,[0.01,0.01,1],[0,1,0],0.2);
 	}		
 	
 	while(1)
@@ -929,10 +850,10 @@ float cl_navgen_gen_walk_to_point(vector start, vector point)
 		{
 			vec_eq(&(trace_endpos),cur);
 			
-			if(render_walk_to_point == 1)
+			if(!cl_navgen_auto_task)
 			{
-				cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,1,0],0.02);
-				cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[0,1,0],0.2);
+				add_debug_hull(trace_endpos,[1,1,1],[0,1,0],0.02);
+				add_debug_hull(trace_endpos,[0.01,0.01,1],[0,1,0],0.2);
 			}
 			return 1;
 		}
@@ -944,10 +865,10 @@ float cl_navgen_gen_walk_to_point(vector start, vector point)
 		//Check if we made it
 		if(trace_endpos_x == point_x && trace_endpos_y == point_y)
 		{
-			if(render_walk_to_point == 1)
+			if(!cl_navgen_auto_task)
 			{
-				cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,1,0],0.02);
-				cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[0,1,0],0.2);
+				add_debug_hull(trace_endpos,[1,1,1],[0,1,0],0.02);
+				add_debug_hull(trace_endpos,[0.01,0.01,1],[0,1,0],0.2);
 			}
 			//trace_endpos already holds result pos
 			return 1;
@@ -974,10 +895,10 @@ float cl_navgen_gen_walk_to_point(vector start, vector point)
 				debug_direct_walk = 0;
 			}
 			
-			if(render_walk_to_point == 1)
+			if(!cl_navgen_auto_task)
 			{
-				cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[1,0,0],0.02);
-				cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[1,0,0],0.2);
+				add_debug_hull(trace_endpos,[1,1,1],[1,0,0],0.02);
+				add_debug_hull(trace_endpos,[0.01,0.01,1],[1,0,0],0.2);
 			}
 			
 			vec_eq(&trace_endpos,start);
@@ -988,10 +909,10 @@ float cl_navgen_gen_walk_to_point(vector start, vector point)
 		vec_eq(&(last_pos),cur);
 		vec_eq(&(cur),trace_endpos);
 		
-		if(render_walk_to_point == 1)
+		if(!cl_navgen_auto_task)
 		{
-			//cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,0,1],0.02);
-			//cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[0,0,1],0.2);
+			//add_debug_hull(trace_endpos,[1,1,1],[0,0,1],0.02);
+			//add_debug_hull(trace_endpos,[0.01,0.01,1],[0,0,1],0.2);
 		}
 		
 		if(debug_walk_to_point)
@@ -1061,7 +982,7 @@ float cl_navgen_gen_walk_to_midpoint(vector start, vector point)
 			add_debug_hull(start,[1,1,1],[0,1,0],0.05);
 			add_debug_hull(start,[0.01,0.01,0.01],[0,1,0],0.2);
 			
-			add_debug_hull(point,[1,1,1],[1,0,0],0.05);
+			add_debug_hull(point,[1,1,1],[0,1,0],0.05);
 			add_debug_hull(point,[0.01,0.01,0.01],[0,1,0],0.2);
 			
 			add_debug_hull(cur,[1,1,1],[1,1,1],0.05);
@@ -1104,16 +1025,20 @@ float cl_navgen_gen_walk_to_midpoint(vector start, vector point)
 		{
 			if(debug_walk_to_point)
 			{
-				add_debug_hull(cur,[1,1,1],[1,0,0],0.05);
-				add_debug_hull(cur,[0.1,0.1,1],[1,0,0],0.05);
-				add_debug_hull([xy_midpoint_x,xy_midpoint_y,cur_z],[1,1,1],[0,1,0],0.05);
-				add_debug_hull([xy_midpoint_x,xy_midpoint_y,cur_z],[0.1,0.1,1],[0,1,0],0.05);
-				
-				add_debug_hull(cur+cur_ofs,[0.1,0.1,1],[1,1,0],0.05);
-				add_debug_hull(cur+cur_ofs,[1,1,1],[1,1,0],0.05);
-				
-				add_debug_hull(start,[0.1,0.1,1],[0,0,1],0.1);
-				add_debug_hull(point,[0.1,0.1,1],[0,0,0.5],0.1);
+				//Red
+				add_debug_hull(cur,[1,1,1],[1,0,0],0.02);
+				add_debug_hull(cur,[0.01,0.01,1],[1,0,0],0.2);
+				//Green
+				add_debug_hull([xy_midpoint_x,xy_midpoint_y,cur_z],[1,1,1],[0,1,0],0.02);
+				add_debug_hull([xy_midpoint_x,xy_midpoint_y,cur_z],[0.01,0.01,1],[0,1,0],0.2);
+				//Yellow
+				add_debug_hull(cur+cur_ofs,[0.01,0.01,1],[1,1,0],0.2);
+				add_debug_hull(cur+cur_ofs,[1,1,1],[1,1,0],0.02);
+				//Blue
+				add_debug_hull(start,[1,1,1],[0,0,1],0.02);
+				add_debug_hull(start,[0.01,0.01,1],[0,0,1],0.2);
+				add_debug_hull(point,[1,1,1],[0,0,0.5],0.02);
+				add_debug_hull(point,[0.01,0.01,1],[0,0,0.5],0.2);
 				print("Walk to midpoint hit something along the way.\n");
 			}
 			vec_eq(&trace_endpos,start);
@@ -1876,6 +1801,28 @@ navgen_task* cl_navgen_pop_task()
 	return task;
 }
 
+void cl_navgen_free_task(navgen_task* task)
+{
+	switch(task->type)
+	{
+		case navgen_task_type_walk_vertex:
+		{
+			memfree((navgen_task_data_walk_vertex*) task->data);
+			break;
+		}
+		case navgen_task_type_resolve_corner:
+		{
+			memfree((navgen_task_data_resolve_corner*) task->data);
+			break;
+		}
+		default:
+			print("NavGen ERROR: attempted to clear task with unkown task type: ",ftos(task->type),"\n");
+			break;
+	}
+	memfree(task);
+	
+}
+
 
 //This function deletes everything from the stack and all of the data associated with it
 void cl_navgen_clear_task_stack()
@@ -1883,8 +1830,7 @@ void cl_navgen_clear_task_stack()
 	while(navgen_tasks_root != 0)
 	{
 		navgen_task* task = cl_navgen_pop_task();
-		memfree(task->data);
-		memfree(task);
+		cl_navgen_free_task(task);
 	}
 }
 
@@ -1894,6 +1840,10 @@ void cl_navgen_clear_task_stack()
 float debug_check_invariants()
 {
 	navgen_vertex* vert = navgen_verts_root;
+	
+	//Don't render the invariant checks
+	float backup_auto_task = cl_navgen_auto_task;
+	cl_navgen_auto_task = 1;
 	
 	float invariant_violated = 0;
 	
@@ -1930,6 +1880,8 @@ float debug_check_invariants()
 		
 		vert = vert->next;
 	}
+	
+	cl_navgen_auto_task = backup_auto_task;
 	
 	if(invariant_violated)
 		return 0;
@@ -1974,13 +1926,14 @@ void cl_navgen_do_next_task()
 	//at the end of each task performed, we shall check each vertex and make sure it's not obstructed with its neighbor vertices
 	if(debug_check_invariants() == 0)
 	{
+		print("pre secondary task clear\n");
 		cl_navgen_clear_task_stack();
+		print("post secondary task clear\n");
 		print("Error: invariant violated on task type ",ftos(type),"\n");
 	}
 	//TEMP DEBUG
 	
-	memfree(task->data);
-	memfree(task);
+	cl_navgen_free_task(task);
 }
 
 
@@ -2288,9 +2241,6 @@ void cl_navgen_do_task_walk_vert(navgen_task_data_walk_vertex* data)
 //Assigns data->vert's position to the resolved corner
 void cl_navgen_do_task_resolve_corner(navgen_task_data_resolve_corner* data)
 {
-	//FIXME: sometimes resolve_corner is called on verts who obstructed retunrs true for, but shouldn't
-	//this leads to an infinite loop where min is moved back and forth
-	
 	vector pos1, pos2, pos3;
 	float mid1_minimized;
 	float mid3_minimized;
@@ -2347,7 +2297,7 @@ void cl_navgen_do_task_resolve_corner(navgen_task_data_resolve_corner* data)
 		}
 				
 		//mid1, pos3
-		//Subdivide min to pos1 until we can walk to pos3 from mid1
+		//Subdivide min to mid_a until we can walk to mid_a from edge
 		if(find_min_state == 0)
 		{
 			edge = &pos3;
@@ -2383,6 +2333,15 @@ void cl_navgen_do_task_resolve_corner(navgen_task_data_resolve_corner* data)
 				*minimized = 1;
 				vec_eq(mid_b,*edge);
 				print("\tMinimized: ",ftos(1+(find_min_state*2)),"\n");
+				
+				if(!cl_navgen_auto_task)
+				{
+					add_debug_hull(*mid_a,[1,1,1],[0,1,0],0.02);
+					add_debug_hull(*mid_a,[0.01,0.01,1],[0,1,0],0.2);
+					add_debug_hull(min,[1,1,1],[0,0,1],0.02);
+					add_debug_hull(min,[0.01,0.01,1],[0,0,1],0.2);
+				}
+				
 				break;
 			}
 			
@@ -2392,6 +2351,12 @@ void cl_navgen_do_task_resolve_corner(navgen_task_data_resolve_corner* data)
 				vec_eq(mid_b,*edge);
 				vec_eq(&(min),*mid_a);
 				vec_eq(&(vert->pos),min);
+				
+				if(!cl_navgen_auto_task)
+				{
+					add_debug_hull_line(*mid_a,*edge,[1,1,0]);
+				}
+				
 				break;
 			}
 				
@@ -2413,7 +2378,9 @@ void cl_navgen_do_task_resolve_corner(navgen_task_data_resolve_corner* data)
 				//add_debug_hull(trace_endpos,[1,1,0.5],[0,0,1],0.2);
 				
 				//Purging the task stack so we stop here
+				print("pre preliminary task clear\n");
 				cl_navgen_clear_task_stack();
+				print("post preliminary task clear\n");
 				
 				
 				//TODO: do a more in-depth debug to figure out why calc_midpoint is failing in this case.
@@ -2435,8 +2402,16 @@ void cl_navgen_do_task_resolve_corner(navgen_task_data_resolve_corner* data)
 		//Check if we are done
 		if(mid1_minimized && mid3_minimized)
 		{
+			if(!cl_navgen_auto_task)
+			{
+				add_debug_hull(pos1,[1,1,1],[1,0,0],0.02);
+				add_debug_hull(pos1,[0.01,0.01,1],[1,0,0],0.2);
+				add_debug_hull(min,[1,1,1],[0,1,0],0.02);
+				add_debug_hull(min,[0.01,0.01,1],[0,1,0],0.2);
+				add_debug_hull(pos3,[1,1,1],[0,0,1],0.02);
+				add_debug_hull(pos3,[0.01,0.01,1],[0,0,1],0.2);
+			}
 			vec_eq(&(vert->pos),min);
-			//TODO: make sure we don't already walk the left / right vert (not in stack)
 			cl_navgen_task_walk_vert_in_dir(data->vert_to_walk,data->vert_walk_dir);
 			return;//success
 		}
@@ -2455,7 +2430,10 @@ void cl_navgen_do_task_resolve_corner(navgen_task_data_resolve_corner* data)
 
 void cl_navmesh_gen_navmesh()
 {
+	cl_navgen_auto_task = 1;
+	print("Pre start task clear\n");
 	cl_navgen_clear_task_stack();
+	print("Post start task clear\n");
 	
 	vector player_pos;
 	
@@ -2467,6 +2445,11 @@ void cl_navmesh_gen_navmesh()
 	vec_eq(&player_pos,trace_endpos);
 	
 	float initial_tri_size = 10;//40 for test
+	
+	print("Navgen started at position: ",vtos(player_pos),"\n");
+	player_pos_x = 130.861374;
+	player_pos_y = -250.209213;
+	player_pos_z = -159.968750;
 	
 	navgen_vertex* v1 = cl_navgen_new_vert(player_pos + [0,initial_tri_size,0]);
 	navgen_vertex* v2 = cl_navgen_new_vert(player_pos + [-initial_tri_size,-initial_tri_size,0]);
@@ -2704,12 +2687,23 @@ void cl_navgen_register_commands()
 	registercommand("navgen_tw_shrink");
 	registercommand("navgen_tw_place_ent");
 	registercommand("navgen_tw_place_start");
+	registercommand("navgen_toggle_auto_task");
+	registercommand("navgen_next_task");
+	
 }
 float cl_navgen_console_commands(string cmd) = 
 {
 	tokenize(cmd);
 	switch(argv(0))
 	{
+		case "navgen_toggle_auto_task":
+			cl_navgen_auto_task = (cl_navgen_auto_task == 1) ? 0 : 1;
+			break;
+		case "navgen_next_task":
+			clear_debug_hulls();
+			clear_debug_lines();
+			cl_navgen_try_next_task();
+			break;
 		case "navgen_tw_next":
 			cl_navgen_render_test_walk_function = ( cl_navgen_render_test_walk_function + 1 ) % 6;
 			cl_navgen_print_testwalk_func();
