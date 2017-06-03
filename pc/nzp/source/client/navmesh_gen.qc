@@ -1763,7 +1763,12 @@ struct navgen_task
 	
 	//Structs for the stack of tasks
 	navgen_task* next;
+	
+	//temp for debug memory
+	float id;
 };
+
+float navgen_task_ids;
 
 navgen_task* navgen_tasks_root;
 
@@ -1771,6 +1776,8 @@ navgen_task* navgen_tasks_root;
 navgen_task* cl_navgen_push_task(float task_type, navgen_task_data* task_data)
 {
 	navgen_task* new_task = memalloc(sizeof(navgen_task));
+	
+	new_task->id = navgen_task_ids++;
 	
 	new_task->type = task_type;
 	new_task->data = task_data;
@@ -1830,6 +1837,7 @@ void cl_navgen_clear_task_stack()
 	while(navgen_tasks_root != 0)
 	{
 		navgen_task* task = cl_navgen_pop_task();
+		print("Removed task w/ id: ",ftos(task->id),"\n");
 		cl_navgen_free_task(task);
 	}
 }
