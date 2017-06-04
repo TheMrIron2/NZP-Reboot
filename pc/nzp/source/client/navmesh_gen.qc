@@ -1826,6 +1826,7 @@ void cl_navgen_free_task(navgen_task* task)
 			print("NavGen ERROR: attempted to clear task with unkown task type: ",ftos(task->type),"\n");
 			break;
 	}
+	print("Removed task w/ id: ",ftos(task->id),"\n");
 	memfree(task);
 	
 }
@@ -1834,12 +1835,13 @@ void cl_navgen_free_task(navgen_task* task)
 //This function deletes everything from the stack and all of the data associated with it
 void cl_navgen_clear_task_stack()
 {
+	print("Pre clear task stack.\n");
 	while(navgen_tasks_root != 0)
 	{
 		navgen_task* task = cl_navgen_pop_task();
-		print("Removed task w/ id: ",ftos(task->id),"\n");
 		cl_navgen_free_task(task);
 	}
+	print("Post clear task stack.\n");
 }
 
 
