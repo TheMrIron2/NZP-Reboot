@@ -459,7 +459,16 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 				//We encountered a hole along the way!
 				//Report last_cur as the position we got to
 				if(debug_direct_walk)
+				{
 					print("\t trace below last move was not allsolid, returning: ",ftos(moved_some_amount),"\n");
+					vector a = [cur_x,cur_y,last_cur_z - max_step_size];
+					vector b = last_cur - [0,0,max_step_size];
+					
+					add_debug_hull(a, [1,1,1], [0,1,0], 0.02);
+					add_debug_hull(a, [0.01,0.01,1], [0,1,0], 0.3);
+					add_debug_hull(b, [1,1,1], [1,0,0], 0.02);
+					add_debug_hull(b, [0.01,0.01,1], [1,0,0], 0.3);	
+				}
 				vec_eq(&trace_endpos, last_cur);
 				return moved_some_amount;
 			}
@@ -1026,7 +1035,7 @@ float cl_navgen_gen_walk_to_midpoint(vector start, vector point)
 			if(debug_walk_to_point)
 			{
 				//Red
-				add_debug_hull(cur,[1,1,1],[1,0,0],0.02);
+				/*add_debug_hull(cur,[1,1,1],[1,0,0],0.02);
 				add_debug_hull(cur,[0.01,0.01,1],[1,0,0],0.2);
 				//Green
 				add_debug_hull([xy_midpoint_x,xy_midpoint_y,cur_z],[1,1,1],[0,1,0],0.02);
@@ -1038,7 +1047,7 @@ float cl_navgen_gen_walk_to_midpoint(vector start, vector point)
 				add_debug_hull(start,[1,1,1],[0,0,1],0.02);
 				add_debug_hull(start,[0.01,0.01,1],[0,0,1],0.2);
 				add_debug_hull(point,[1,1,1],[0,0,0.5],0.02);
-				add_debug_hull(point,[0.01,0.01,1],[0,0,0.5],0.2);
+				add_debug_hull(point,[0.01,0.01,1],[0,0,0.5],0.2);*/
 				print("Walk to midpoint hit something along the way.\n");
 			}
 			vec_eq(&trace_endpos,start);
@@ -1826,7 +1835,6 @@ void cl_navgen_free_task(navgen_task* task)
 			print("NavGen ERROR: attempted to clear task with unkown task type: ",ftos(task->type),"\n");
 			break;
 	}
-	print("Removed task w/ id: ",ftos(task->id),"\n");
 	memfree(task);
 	
 }
