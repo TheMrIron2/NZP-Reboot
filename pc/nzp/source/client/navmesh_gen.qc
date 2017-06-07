@@ -1860,8 +1860,8 @@ float debug_check_invariants()
 	navgen_vertex* vert = navgen_verts_root;
 	
 	//Don't render the invariant checks
-	float backup_auto_task = cl_navgen_auto_task;
-	cl_navgen_auto_task = 1;
+	//float backup_auto_task = cl_navgen_auto_task;
+	//cl_navgen_auto_task = 1;
 	
 	float invariant_violated = 0;
 	
@@ -1899,7 +1899,7 @@ float debug_check_invariants()
 		vert = vert->next;
 	}
 	
-	cl_navgen_auto_task = backup_auto_task;
+	//cl_navgen_auto_task = backup_auto_task;
 	
 	if(invariant_violated)
 		return 0;
