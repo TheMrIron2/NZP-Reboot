@@ -192,6 +192,16 @@ void() cl_navgen_render_test_walk;
 void cl_navgen_gen_drop_to_floor(vector pos);
 float cl_navgen_auto_task;
 
+
+//temp debug
+float cl_navgen_calc_midpoint(vector a, vector b);
+float cl_navgen_gen_direct_walk(vector start,vector ofs);
+float cl_navgen_gen_walk_to_point(vector start, vector point);
+//FIXME this is for debug
+float debug_walk_to_point;
+float debug_direct_walk;
+
+
 //A TEMP DEBUG METHOD THAT RENDERS INTERMEDIATE NAVMESH GENERATION RESULTS
 void cl_navmesh_render_gen()
 {
@@ -221,10 +231,39 @@ void cl_navmesh_render_gen()
 		cl_navmesh_draw_line(debug_lines_pos1[j],debug_lines_pos2[j],2,debug_lines_color[j],0.2);
 	}	
 	
-	if(cl_navgen_auto_task)
-		cl_navgen_try_next_task();
+	//if(cl_navgen_auto_task)
+	//	cl_navgen_try_next_task();
 	
 	//cl_navgen_render_test_walk();
+	
+	//Debug rendering of midpoint
+	vector a = [592.165405, -271.912720, -167.968750];
+	vector b = [589.914429, -273.100342, -159.968750];
+	
+	cl_navmesh_draw_test_ent(a, [1,1,1], [0,1,0], 0.02);
+	cl_navmesh_draw_test_ent(b, [1,1,1], [1,0,0], 0.02);
+	
+	debug_walk_to_point = 1;
+	debug_direct_walk = 1;
+	
+	//float result = cl_navgen_calc_midpoint(a,b);
+	//float result = cl_navgen_gen_direct_walk(a,b-a);
+	//float result = cl_navgen_gen_direct_walk(b,a-b);
+	float result = cl_navgen_gen_walk_to_point(a,b);
+
+	if(result == 0)
+	{
+		cl_navmesh_draw_line(a,b,2,[1,0,0],0.2);
+	}
+	else if(result == 1)
+	{
+		cl_navmesh_draw_line(a,b,2,[0,0,1],0.2);
+	}
+	else
+		cl_navmesh_draw_line(a,b,2,[0,1,0],0.2);
+	
+	debug_walk_to_point = 0;
+	debug_direct_walk = 0;
 }
 
 //Given starting position and edge tangent, walk along the edge until we hit some form of a corner
@@ -283,9 +322,6 @@ void cl_navgen_gen_drop_to_floor(vector pos)
 
 
 
-//FIXME this is for debug
-float debug_walk_to_point;
-float debug_direct_walk;
 
 //Method that checks if pos + ofs is okay to walk
 //returns 2 if walk is success
@@ -446,34 +482,13 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 			vec_eq(&last_cur,cur);
 			vec_eq(&cur,cur_trace_end);
 			
+			cl_navmesh_draw_test_ent(cur, [0.01,0.01,1], [0,1,0], 0.35);
 			
-			//Check to make sure the ground was solid for the entire walk
-			//We're going to do a trace along the height of last_cur
-			tracebox([cur_x,cur_y,last_cur_z - max_step_size],VEC_HULL_MIN,VEC_HULL_MAX,last_cur - [0,0,max_step_size] ,MOVE_NOMONSTERS,self);
-			if(!trace_allsolid)
-			{
-				if(!cl_navgen_auto_task)
-				{
-					add_debug_hull_line([cur_x,cur_y,last_cur_z - max_step_size - 32], last_cur - [0,0,max_step_size + 32], [1,1,0]); 
-				}
-				//We encountered a hole along the way!
-				//Report last_cur as the position we got to
-				if(debug_direct_walk)
-				{
-					print("\t trace below last move was not allsolid, returning: ",ftos(moved_some_amount),"\n");
-					vector a = [cur_x,cur_y,last_cur_z - max_step_size];
-					vector b = last_cur - [0,0,max_step_size];
-					
-					add_debug_hull(a, [1,1,1], [0,1,0], 0.02);
-					add_debug_hull(a, [0.01,0.01,1], [0,1,0], 0.3);
-					add_debug_hull(b, [1,1,1], [1,0,0], 0.02);
-					add_debug_hull(b, [0.01,0.01,1], [1,0,0], 0.3);	
-				}
-				vec_eq(&trace_endpos, last_cur);
-				return moved_some_amount;
-			}
 			
-			moved_some_amount = 1;
+			//=============================================== stuff went here
+			
+			
+			//Check if we fell at cur result position
 			
 			//Height before we consider having fallen
 			float fall_height = vlen(last_ofs) * tan_60;
@@ -482,8 +497,6 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 			if(fall_height < max_step_size)
 				fall_height = max_step_size;
 			
-			
-			//Check if we fell at cur result position
 			tracebox(cur,VEC_HULL_MIN,VEC_HULL_MAX,cur- [0,0,2*fall_height] ,MOVE_NOMONSTERS,self);
 	test_fraction = trace_fraction;
 			
@@ -491,10 +504,18 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 			if(!trace_allsolid && !trace_startsolid && trace_fraction > 0)
 			{
 				if(debug_direct_walk)
+				{
 					print("\t\tbut we may have fallen off of a ledge\n");
+					//cl_navmesh_draw_line(cur, cur-[0,0,2*fall_height * trace_fraction], 2, [0,0,1],0.2);
+					cl_navmesh_draw_test_ent(cur - [0,0,32], [1,1,0.01], [0,1,0], 0.35);
+					cl_navmesh_draw_test_ent(cur-[0,0,2*fall_height * trace_fraction] - [0,0,32], [1,1,0.01], [0,0,1], 0.35);
+					cl_navmesh_draw_test_ent(cur - [0,0,fall_height] - [0,0,32], [1,1,0.01], [1,0,0], 0.35);
+				}
 				//Checking if we stepped down
 				//If the angle between the move is greater than 60, we fell, otherwise we stepped down
 				//if(vlen(trace_endpos - cur)/vlen(last_ofs) <= tan_60)
+								
+				
 				if(trace_fraction <= 0.5)
 				{
 					if(debug_direct_walk)
@@ -505,74 +526,119 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 				//We may have fallen down
 				else
 				{
-					//If we hit something
+					//If we hit something and
+					//If we can direct walk from trace_endpos to last_cur, then we did not fall
+					float did_fall = 1;
+				
 					if(trace_fraction < 1)
 					{
 						vector backup_trace_endpos;
 						vec_eq(&backup_trace_endpos, trace_endpos);
 						
-						//If we can direct walk from trace_endpos to last_cur
-						//render_walk_to_point = 0;
 						if(cl_navgen_gen_direct_walk(trace_endpos, last_cur - trace_endpos) == 2)
 						{
-							
-							if(!cl_navgen_auto_task)
-							{
-								//cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,0,1],0.02);
-								//cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[0,0,1],0.2);
-								//add_debug_line(backup_trace_endpos-[0,0,32] + [0,0,6],last_cur-[0,0,32] + [0,0,6],6,[0,1,0],0.2);
-								add_debug_line(backup_trace_endpos-[0,0,32] + [0,0,6],last_cur-[0,0,32] + [0,0,6],[0,1,0]);
-							}
-							vec_eq(&cur,backup_trace_endpos);
-							continue;
+							did_fall = 0;
 						}
-						else
+						
+						if(!cl_navgen_auto_task)
 						{
-							if(!cl_navgen_auto_task)
-							{
-								//cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,0,1],0.02);
-								//cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[0,0,1],0.2);
-								//add_debug_line(backup_trace_endpos-[0,0,32] + [0,0,6],last_cur-[0,0,32] + [0,0,6],6,[1,0,0],0.2);
-								add_debug_line(backup_trace_endpos-[0,0,32] + [0,0,6],last_cur-[0,0,32] + [0,0,6],[1,0,0]);
-							}
+							//cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,0,1],0.02);
+							//cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[0,0,1],0.2);
+							//add_debug_line(backup_trace_endpos-[0,0,32] + [0,0,6],last_cur-[0,0,32] + [0,0,6],6,[0,1,0],0.2);
+							add_debug_line(trace_endpos-[0,0,32] + [0,0,6],last_cur-[0,0,32] + [0,0,6],[0,1,0]);
 						}
 						
 						vec_eq(&trace_endpos, backup_trace_endpos);
+						vec_eq(&cur,backup_trace_endpos);
 					}
+				
 					
-					//getting back onto the ground
-					//undo the last move from a lowered position
-					tracebox(trace_endpos,VEC_HULL_MIN,VEC_HULL_MAX,[last_cur_x,last_cur_y,trace_endpos_z],MOVE_NOMONSTERS,self);
-					
-					//then offset the position a tiny bit more and reset the z position back to normal
-					vec_eq(&cur, trace_endpos);
-					cur_z = last_cur_z;
-					
-					vector ledge_hit;
-					vec_eq(&ledge_hit, cur);
-					vec_eq(&cur,cur - 0.1*normalize(goal-start));
-					
-					vec_eq(&trace_endpos, cur);
-					
-					if(debug_direct_walk)
+					if(did_fall == 1)
 					{
-						print("\t We fell ",ftos(test_fraction * 2),"x fall height, returning 1\n");
-						print(" (fall height = ",ftos(fall_height),")\n");
-						if(step_up == 0)
-							print("... after stepping up\n");
-						else
-							print("did not step up\n");
+						if(!cl_navgen_auto_task)
+						{
+							//cl_navmesh_draw_test_ent(trace_endpos,[1,1,1],[0,0,1],0.02);
+							//cl_navmesh_draw_test_ent(trace_endpos,[0.01,0.01,1],[0,0,1],0.2);
+							//add_debug_line(backup_trace_endpos-[0,0,32] + [0,0,6],last_cur-[0,0,32] + [0,0,6],6,[1,0,0],0.2);
+							add_debug_line(trace_endpos-[0,0,32] + [0,0,6],last_cur-[0,0,32] + [0,0,6],[1,0,0]);
+						}
+						
+						//getting back onto the ground
+						//undo the last move from a lowered position
+						tracebox(trace_endpos,VEC_HULL_MIN,VEC_HULL_MAX,[last_cur_x,last_cur_y,trace_endpos_z],MOVE_NOMONSTERS,self);
+						
+						//then offset the position a tiny bit more and reset the z position back to normal
+						vec_eq(&cur, trace_endpos);
+						cur_z = last_cur_z;
+						
+						vector ledge_hit;
+						vec_eq(&ledge_hit, cur);
+						vec_eq(&cur,cur - 0.1*normalize(goal-start));
+						
+						vec_eq(&trace_endpos, cur);
+						
+						if(debug_direct_walk)
+						{
+							print("\t We fell ",ftos(test_fraction * 2),"x fall height, returning 1\n");
+							print(" (fall height = ",ftos(fall_height),")\n");
+							if(step_up == 0)
+								print("... after stepping up\n");
+							else
+								print("did not step up\n");
+						}
+						
+						//If we moved back to start, we were already on ledge, so we did not move on this axis
+						//If distance to pushed onto ledge pos is greater than distance to start, we hit dead end
+						if(vlen(cur - ledge_hit) >= vlen(start - ledge_hit))
+							return 0;//treat this as hitting a dead end
+						
+						return 1;
 					}
-					
-					//If we moved back to start, we were already on ledge, so we did not move on this axis
-					//If distance to pushed onto ledge pos is greater than distance to start, we hit dead end
-					if(vlen(cur - ledge_hit) >= vlen(start - ledge_hit))
-						return 0;//treat this as hitting a dead end
-					
-					return 1;
 				}
 			}
+			
+			
+			//Check to make sure the ground was solid for the entire walk
+			//We're going to do a trace along the height of cur_z or last_cur_z (whichever is lower)
+			float lowest_height = cur_z < last_cur_z ? cur_z : last_cur_z;
+			//Check a step below lowest height
+			lowest_height -= max_step_size;
+			
+			tracebox([cur_x,cur_y,lowest_height],VEC_HULL_MIN,VEC_HULL_MAX,[last_cur_x,last_cur_y,lowest_height] ,MOVE_NOMONSTERS,self);
+			if(!trace_allsolid)
+			{
+				if(!cl_navgen_auto_task)
+				{
+					add_debug_hull_line([cur_x,cur_y,lowest_height - 32], [last_cur_x,last_cur_y,lowest_height - 32], [1,1,0]); 
+				}
+				//We encountered a hole along the way!
+				//Report last_cur as the position we got to
+				if(debug_direct_walk)
+				{
+					print("\t trace below last move was not allsolid, returning: ",ftos(moved_some_amount),"\n");
+					vector a = [cur_x,cur_y,lowest_height];
+					vector b = [last_cur_x,last_cur_y,lowest_height];
+					
+					cl_navmesh_draw_test_ent(a - [0,0,32], [1,1,0.01], [1,0,1], 0.35);
+					cl_navmesh_draw_test_ent(b - [0,0,32], [1,1,0.01], [1,1,0], 0.35);
+					cl_navmesh_draw_test_ent(trace_endpos - [0,0,32], [1,1,0.01], [0,1,1], 0.35);
+	
+					
+					if(!cl_navgen_auto_task)
+					{
+						add_debug_hull(a, [1,1,1], [0,1,0], 0.02);
+						add_debug_hull(a, [0.01,0.01,1], [0,1,0], 0.3);
+						add_debug_hull(b, [1,1,1], [1,0,0], 0.02);
+						add_debug_hull(b, [0.01,0.01,1], [1,0,0], 0.3);	
+					}
+				}
+				vec_eq(&trace_endpos, last_cur);
+				return moved_some_amount;
+			}	
+			moved_some_amount = 1;
 		}
+		
+			
 		
 		//Check if we failed on this iteration and the last iteration
 		if(last_failed && cur_failed)
@@ -594,7 +660,6 @@ float cl_navgen_gen_direct_walk(vector start,vector ofs)
 		
 		//for debug
 		//cl_navmesh_draw_test_ent(cur,[1,1,1],[1,1,0],0.2);
-		
 		
 		last_failed = cur_failed;
 		cur_failed = 1;
@@ -805,10 +870,13 @@ float cl_navgen_gen_walk_to_point(vector start, vector point)
 		print("End: ",vtos(point),"\n");
 		print("Walk to point started: ",walk_percent(start,cur,point),",\t,",vtos(cur),"\n");
 		
-		add_debug_hull(start,[1,1,1],[0,0,1],0.05);
-		add_debug_hull(start,[0.01,0.01,0.8],[0,0,1],0.3);
-		add_debug_hull(point,[1,1,1],[0,0,1],0.05);
-		add_debug_hull(point,[0.01,0.01,0.8],[0,0,1],0.3);
+		if(!cl_navgen_auto_task)
+		{
+			add_debug_hull(start,[1,1,1],[0,0,1],0.05);
+			add_debug_hull(start,[0.01,0.01,0.8],[0,0,1],0.3);
+			add_debug_hull(point,[1,1,1],[0,0,1],0.05);
+			add_debug_hull(point,[0.01,0.01,0.8],[0,0,1],0.3);
+		}
 	}
 	
 	if(!cl_navgen_auto_task)
@@ -895,8 +963,11 @@ float cl_navgen_gen_walk_to_point(vector start, vector point)
 			{
 				print("Moved is: ",ftos(move));
 				//TODO: do a cl_navgen_direct_walk debug call
-				add_debug_hull(cur,[1,1,1],[1,0,0],0.05);
-				add_debug_hull(cur,[0.01,0.01,1],[1,0,0],0.3);
+				if(!cl_navgen_auto_task)
+				{
+					add_debug_hull(cur,[1,1,1],[1,0,0],0.05);
+					add_debug_hull(cur,[0.01,0.01,1],[1,0,0],0.3);
+				}
 				
 				print("Debug calling direct walk\n");
 				debug_direct_walk = 1;
