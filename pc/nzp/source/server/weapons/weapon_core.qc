@@ -540,7 +540,16 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 			self.th_die();
 			self = oldself;
 			return;
+		} else if (hit_ent.classname == "explosive_barrel") {
+			hit_ent.enemy = self;
+			oldself  = self;
+			self = hit_ent;
+			self.health = self.health - damage;
+			barrel_hit ();
+			self = oldself;
+			return;
 		}
+		
 
 		f_damage = damage;
 
