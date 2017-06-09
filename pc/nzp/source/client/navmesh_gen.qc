@@ -266,15 +266,6 @@ void cl_navmesh_render_gen()
 	debug_direct_walk = 0;
 }
 
-//Given starting position and edge tangent, walk along the edge until we hit some form of a corner
-float cl_navgen_gen_walkalongedge(vector start, vector edge_tan)
-{
-	//FIXME: implement this
-	return 0;
-}
-
-
-
 
 //Assumes that the position given is very close to the floor, but might be too low or might be a bit too high
 //(this is used for getting the player position, because player position from engine appears to be ofset by some tiny amount)
