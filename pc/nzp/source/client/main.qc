@@ -80,7 +80,7 @@ void() Update_Vmodel =
 	local vector offset, adsoffset;
 	local vector dir;
     local float ads;
-	
+		
 	offset_x = 0.6 * sin(time * 1.2);
 	offset_y = 0.4 * cos(time * 1.5);
 	offset_z = 0.7 * sin(1.1*time + 0.5);

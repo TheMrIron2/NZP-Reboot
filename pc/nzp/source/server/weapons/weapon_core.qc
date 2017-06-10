@@ -978,14 +978,14 @@ void() W_ThrowGrenade =
 
 		makevectors (self.v_angle);
 
-		nade.velocity = v_forward*800;
+		nade.velocity = v_forward*500;
 
 		nade.avelocity = '400 -400 400';
 
 		//nade.angles = vectoangles(nade.velocity);
 		//nade.angles_z += (nade.angles_z + 180 < 360)? 180 : -180;
 		nade.angles = vectoangles(v_forward);
-		nade.angles_z -= 35;
+		nade.angles_z -= 15;
 		// set nade duration
 		nade.nextthink = nade.grenade_delay;
 		nade.think = GrenadeExplode;
