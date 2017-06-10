@@ -175,8 +175,8 @@ void() func_button =
 	self.pos2 = self.pos1 + self.movedir*(fabs(self.movedir*self.size) - self.lip);
 };
 
-void() flame_update = {
-	particle (self.origin, v_up*8, 111, 0);
+void() flame_update = {		
+	particle (self.origin, v_up, 111, 0);
 	self.think = flame_update;
 	self.nextthink = time + random()+0.1;
 }
@@ -188,9 +188,7 @@ void() place_fire =
 };
 
 void() place_model =
-{
-  //beta_removal();
-  
+{  
   precache_model (self.model);
   setmodel (self, self.model);
   
