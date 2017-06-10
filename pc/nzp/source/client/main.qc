@@ -36,7 +36,7 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	registercommand("stopwalk");
 	registercommand("promptjoin");
 		
-	print("CSQC Started\n");
+	//print("CSQC Started\n");
 	dummy = spawn();
 	if(serverkey("constate") == "disconnected")
 		ToggleMenu();
