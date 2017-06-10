@@ -410,7 +410,7 @@ void () CheckReload =
 	if (!self.currentmag2 && IsDualWeapon(self.weapon)) {
 		W_Reload(S_LEFT);
 	}
-	if (!self.currentmag) {
+	if (!self.currentmag && self.currentammo) {
 		W_Reload(S_RIGHT);
 	}
 }
@@ -643,7 +643,7 @@ void(float side) W_Fire =
 	if (side == S_RIGHT &&
 		(time < self.fire_delay ||
 		self.new_anim_stop ||
-		self.reload_delay > time)) {
+		self.reload_delay > time || (!self.currentammo && !self.currentmag))) {
 		return;
 	}
 
