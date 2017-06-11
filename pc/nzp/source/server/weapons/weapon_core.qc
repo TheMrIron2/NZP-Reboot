@@ -888,21 +888,8 @@ void () W_Knife =
 
 void() switch_nade = 
 { 
-	if (self.downed) {
-		return;
-	}
-
-    if (self.isBuying)
-		return;
-      
-    if (!(self.grenades & 2))
-		return;
-      
-    if (self.semiswitch)
+	if (self.downed || self.isBuying || !(self.grenades & 2) || self.semiswitch)
       return;
-/*		tempf = self.primary_grenades;
-		self.primary_grenades = self.secondary_grenades;
-		self.secondary_grenades = tempf;*/
 
 	if (self.pri_grenade_state == 0)
 	{
@@ -914,8 +901,8 @@ void() switch_nade =
 		centerprint (self, "Frag Grenades Selected");
 		self.bk_nade = 0;
     }  	
-		
-		self.pri_grenade_state = self.bk_nade;
+	
+	self.pri_grenade_state = self.bk_nade;
 
 };
 
@@ -1141,6 +1128,9 @@ void () Impulse_Functions =
 			break;
 		case 24:
 			W_SprintStop();
+			break;
+		case 25:
+			switch_nade();
 			break;
 	}
 	
