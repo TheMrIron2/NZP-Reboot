@@ -56,6 +56,8 @@ void() W_SprintStop =
 	float startframe = GetFrame(self.weapon,SPRINT_OUT_START);
 	float endframe = GetFrame(self.weapon,SPRINT_OUT_END);
 	string modelname = GetWeaponModel(self.weapon, 0);
+	
+	self.viewzoom = 1;
 
 	Set_W_Frame (startframe, endframe, 0, 0, SPRINT, SUB_Null, modelname, false, S_BOTH);
 	self.sprinting = 0;
@@ -77,6 +79,7 @@ void W_SprintStart () {
 	float endframe = GetFrame(self.weapon,SPRINT_IN_END);
 	string modelname = GetWeaponModel(self.weapon, 0);
 
+	self.viewzoom = 0.9;
 	
 	if (startframe || endframe) {
 		Set_W_Frame (startframe, endframe, 0, 0, SPRINT, ContinueRun, modelname, false, S_BOTH);
@@ -410,7 +413,7 @@ void () CheckReload =
 	if (!self.currentmag2 && IsDualWeapon(self.weapon)) {
 		W_Reload(S_LEFT);
 	}
-	if (!self.currentmag) {
+	if (!self.currentmag && self.currentammo) {
 		W_Reload(S_RIGHT);
 	}
 }
@@ -540,7 +543,16 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 			self.th_die();
 			self = oldself;
 			return;
+		} else if (hit_ent.classname == "explosive_barrel") {
+			hit_ent.enemy = self;
+			oldself  = self;
+			self = hit_ent;
+			self.health = self.health - damage;
+			barrel_hit ();
+			self = oldself;
+			return;
 		}
+		
 
 		f_damage = damage;
 
@@ -634,7 +646,7 @@ void(float side) W_Fire =
 	if (side == S_RIGHT &&
 		(time < self.fire_delay ||
 		self.new_anim_stop ||
-		self.reload_delay > time)) {
+		self.reload_delay > time || (!self.currentammo && !self.currentmag))) {
 		return;
 	}
 
@@ -770,16 +782,9 @@ void(float side) W_Fire =
 
 void () W_Knife =
 {
-	if (time < self.knife_delay || self.new_anim_stop)
-		return;
-	
-	if (self.zoom == 2 || self.zoom == 3)//dolphin dive here when its time has come
-		return; // naievil -- there are better times to activate this
-
-	if (self.downed)
-		return;
-		
-	if (!(self.flags & FL_ONGROUND))
+	if (time < self.knife_delay || self.new_anim_stop ||
+	  self.zoom == 2 || self.zoom == 3 || self.downed 
+      || (!(self.flags & FL_ONGROUND)))
 		return;
 
 	sound (self, CHAN_WEAPON, "sounds/weapons/knife/knife.wav", 1, ATTN_NORM);
@@ -804,7 +809,6 @@ void () W_Knife =
 
 	if (trace_ent.takedamage)
 	{
-
 		if (trace_ent.classname == "ai_zombie_head")
 			hit_ent = trace_ent.owner;
 		else if (trace_ent.classname == "ai_zombie_larm")
@@ -825,7 +829,6 @@ void () W_Knife =
 
 	if (r > 40 && hit)//lunge
 	{
-
 		if (self.weapon == W_BK)
 		{
 			Set_W_Frame (14, 24, 1.4, 0, KNIFE, SUB_Null, "progs/VModels/v_bk.mdl", false, S_RIGHT);
@@ -845,6 +848,9 @@ void () W_Knife =
 			self.knife_delay = time + 1;
 		}
 		self.velocity = v_forward * 200;
+		
+		// damage handler
+		LungeKnifeHit();
 	}
 	else
 	{
@@ -969,14 +975,14 @@ void() W_ThrowGrenade =
 
 		makevectors (self.v_angle);
 
-		nade.velocity = v_forward*800;
+		nade.velocity = v_forward*500;
 
 		nade.avelocity = '400 -400 400';
 
 		//nade.angles = vectoangles(nade.velocity);
 		//nade.angles_z += (nade.angles_z + 180 < 360)? 180 : -180;
 		nade.angles = vectoangles(v_forward);
-		nade.angles_z -= 35;
+		nade.angles_z -= 15;
 		// set nade duration
 		nade.nextthink = nade.grenade_delay;
 		nade.think = GrenadeExplode;
@@ -1147,6 +1153,31 @@ void() CheckImpulses =
 	self.impulse = 0;
 }
 
+void() CheckPlayer = 
+{
+	local entity ent; 
+	ent = findradius(self.origin, 50);
+		
+	while(ent)
+	{
+		if(ent.classname == "player" && ent != self && !ent.downed) // small player push 
+		{
+			vector push;
+			push = ent.origin - self.origin;
+			push_z = 0;
+			push = normalize(push) * 5;
+			
+			ent.velocity += push;
+		}
+		if(ent.classname == "player" && ent != self && ent.downed)
+		{
+			centerprint(self, "Press USE to revive");
+			// naievil -- actual revive here
+		}
+		ent = ent.chain;
+	}
+}
+
 void () Weapon_Logic =
 {
 	W_Frame_Update ();
@@ -1217,4 +1248,5 @@ void () Weapon_Logic =
 		self.semiknife = false;
 	
 	CheckImpulses();
+	CheckPlayer();
 }

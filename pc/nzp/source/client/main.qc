@@ -36,7 +36,7 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	registercommand("stopwalk");
 	registercommand("promptjoin");
 		
-	print("CSQC Started\n");
+	//print("CSQC Started\n");
 	dummy = spawn();
 	if(serverkey("constate") == "disconnected")
 		ToggleMenu();
@@ -80,7 +80,7 @@ void() Update_Vmodel =
 	local vector offset, adsoffset;
 	local vector dir;
     local float ads;
-	
+		
 	offset_x = 0.6 * sin(time * 1.2);
 	offset_y = 0.4 * cos(time * 1.5);
 	offset_z = 0.7 * sin(1.1*time + 0.5);

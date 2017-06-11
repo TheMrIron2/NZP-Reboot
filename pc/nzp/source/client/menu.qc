@@ -119,28 +119,28 @@ var struct
 	float group; //a bit field, button will be usable/visible when these bits are active
 } buttons[] =
 {
-	{[0.025, 0.175, 0], [0.10, 0.04, 0], " Solo", -1, menu_single, MENU_MAIN},
-	{[0.025, 0.230, 0], [0.21, 0.04, 0], " Cooperative", -1, menu_multi, MENU_MAIN},
-	{[0.025, 0.300, 0], [0.16, 0.04, 0], " Settings", -1, menu_settings, MENU_MAIN},
-	{[0.025, 0.370, 0], [0.22, 0.04, 0], " Achievements", -1, menu_main, MENU_MAIN},
-	{[0.025, 0.440, 0], [0.15, 0.04, 0], " Credits", -1, menu_about, MENU_MAIN},
-	{[0.025, 0.510, 0], [0.10, 0.04, 0], " Quit", -1, menu_quit, MENU_MAIN},
-	{[0.025, 0.925, 0], [0.25, 0.05, 0], "Back", -1, menu_back, MENU_SINGLE + MENU_MULTI + MENU_SETTINGS + MENU_ABOUT},
-	{[0.025, 0.175, 0], [0.30, 0.04, 0], "Nacht Der Untoten", -1, menu_loadndu, MENU_SINGLE},
-	{[0.025, 0.575, 0], [0.25, 0.05, 0], "Warehouse", -1, menu_loadwh, MENU_SINGLE},
-	{[0.475, 0.500, 0], [0.25, 0.05, 0], "Join", -1, game_join, MENU_JOIN},
-	{[0.475, 0.575, 0], [0.25, 0.05, 0], "Spectate", -1, game_spec, MENU_JOIN},
-	{[0.025, 0.500, 0], [0.25, 0.05, 0], "Resume", -1, menu_resume, MENU_PAUSE},
-	{[0.025, 0.575, 0], [0.25, 0.05, 0], "Restart", -1, menu_restart, MENU_PAUSE},
-	{[0.025, 0.650, 0], [0.25, 0.05, 0], "Settings", -1, menu_settings2, MENU_PAUSE},
-	{[0.025, 0.725, 0], [0.25, 0.05, 0], "Main Menu", -1, menu_main, MENU_PAUSE},
-	{[0.025, 0.925, 0], [0.25, 0.05, 0], "Back", -1, menu_back2, MENU_IGS},
-	{[0.025, 0.500, 0], [0.25, 0.05, 0], "Yes", -1, menu_resy, MENU_RES},
-	{[0.025, 0.575, 0], [0.25, 0.05, 0], "No", -1, menu_resn, MENU_RES},
+	{[0.025, 0.175, 0], [0.325, 0.06, 0], " Solo", -1, menu_single, MENU_MAIN},
+	{[0.025, 0.250, 0], [0.325, 0.06, 0], " Cooperative", -1, menu_multi, MENU_MAIN},
+	{[0.025, 0.325, 0], [0.325, 0.06, 0], " Settings", -1, menu_settings, MENU_MAIN},
+	{[0.025, 0.400, 0], [0.325, 0.06, 0], " Achievements", -1, menu_main, MENU_MAIN},
+	{[0.025, 0.475, 0], [0.325, 0.06, 0], " Credits", -1, menu_about, MENU_MAIN},
+	{[0.025, 0.550, 0], [0.325, 0.06, 0], " Quit", -1, menu_quit, MENU_MAIN},
+	{[0.025, 0.900, 0], [0.325, 0.06, 0], "Back", -1, menu_back, MENU_SINGLE + MENU_MULTI + MENU_SETTINGS + MENU_ABOUT},
+	{[0.025, 0.175, 0], [0.425, 0.06, 0], "Nacht Der Untoten", -1, menu_loadndu, MENU_SINGLE},
+	//{[0.025, 0.575, 0], [0.250, 0.05, 0], "Warehouse", -1, menu_loadwh, MENU_SINGLE},
+	{[0.475, 0.500, 0], [0.250, 0.05, 0], "Join", -1, game_join, MENU_JOIN},
+	{[0.475, 0.575, 0], [0.250, 0.05, 0], "Spectate", -1, game_spec, MENU_JOIN},
+	{[0.025, 0.500, 0], [0.250, 0.05, 0], "Resume", -1, menu_resume, MENU_PAUSE},
+	{[0.025, 0.575, 0], [0.250, 0.05, 0], "Restart", -1, menu_restart, MENU_PAUSE},
+	{[0.025, 0.650, 0], [0.250, 0.05, 0], "Settings", -1, menu_settings2, MENU_PAUSE},
+	{[0.025, 0.725, 0], [0.250, 0.05, 0], "Main Menu", -1, menu_main, MENU_PAUSE},
+	{[0.025, 0.925, 0], [0.250, 0.05, 0], "Back", -1, menu_back2, MENU_IGS},
+	{[0.025, 0.500, 0], [0.250, 0.05, 0], "Yes", -1, menu_resy, MENU_RES},
+	{[0.025, 0.575, 0], [0.250, 0.05, 0], "No", -1, menu_resn, MENU_RES},
 };
 
 //REMEMBER TO UPDATE THIS CONST IF YOU ADD BUTTONS
-const float BUTTONS_COUNT = 18;
+const float BUTTONS_COUNT = 17;
 
 float mapdesc = 0;
 
@@ -184,7 +184,7 @@ void(float index) Update_Button =
 	
 	if(buttons[index].active > 0)
 	{
-		buttons[index].active -= frametime * 5;
+		buttons[index].active -= frametime * 15;
 		if(buttons[index].active < 0)
 			buttons[index].active = 0;
 	}
@@ -249,10 +249,10 @@ void() Draw_Menu =
 	{
 		case MENU_MAIN:
 			title = "MAIN MENU";
-			drawfill ([0.025*g_width, 0.253*g_height + g_height*0.025 + 3, 0], [0.25*g_width, 0.0025*g_height, 0], [0.4, 0.4, 0.4], 1); //Play | Settings
-			drawfill ([0.025*g_width, 0.323*g_height + g_height*0.025 + 3, 0], [0.25*g_width, 0.0025*g_height, 0], [0.4, 0.4, 0.4], 1); //Settings | Achievements
-			drawfill ([0.025*g_width, 0.393*g_height + g_height*0.025 + 3, 0], [0.25*g_width, 0.0025*g_height, 0], [0.4, 0.4, 0.4], 1); //Achievements | Credits
-			drawfill ([0.025*g_width, 0.463*g_height + g_height*0.025 + 3, 0], [0.25*g_width, 0.0025*g_height, 0], [0.4, 0.4, 0.4], 1); //Credits | Quit 
+			//drawfill ([0.025*g_width, 0.253*g_height + g_height*0.025 + 3, 0], [0.22*g_width, 0.0025*g_height, 0], [0.4, 0.4, 0.4], 1); //Play | Settings
+			//drawfill ([0.025*g_width, 0.323*g_height + g_height*0.025 + 3, 0], [0.22*g_width, 0.0025*g_height, 0], [0.4, 0.4, 0.4], 1); //Settings | Achievements
+			//drawfill ([0.025*g_width, 0.393*g_height + g_height*0.025 + 3, 0], [0.22*g_width, 0.0025*g_height, 0], [0.4, 0.4, 0.4], 1); //Achievements | Credits
+			//drawfill ([0.025*g_width, 0.463*g_height + g_height*0.025 + 3, 0], [0.22*g_width, 0.0025*g_height, 0], [0.4, 0.4, 0.4], 1); //Credits | Quit 
 			break;
 		case MENU_SINGLE:
 			title = "SOLO";

@@ -69,7 +69,6 @@ void () W2_Frame_Update =
 			temp(S_LEFT);
 	}
 };
-
 void () W_Frame_Update =
 {
 	W2_Frame_Update();
