@@ -151,6 +151,7 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 		victim.health = victim.health - damage;
 
 		if (d_style == S_EXPLOSIVE) {
+			addmoney(attacker, 60, 1);
 		}
 
 
