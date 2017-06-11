@@ -779,16 +779,9 @@ void(float side) W_Fire =
 
 void () W_Knife =
 {
-	if (time < self.knife_delay || self.new_anim_stop)
-		return;
-	
-	if (self.zoom == 2 || self.zoom == 3)//dolphin dive here when its time has come
-		return; // naievil -- there are better times to activate this
-
-	if (self.downed)
-		return;
-		
-	if (!(self.flags & FL_ONGROUND))
+	if (time < self.knife_delay || self.new_anim_stop ||
+	  self.zoom == 2 || self.zoom == 3 || self.downed 
+      || (!(self.flags & FL_ONGROUND)))
 		return;
 
 	sound (self, CHAN_WEAPON, "sounds/weapons/knife/knife.wav", 1, ATTN_NORM);
@@ -813,7 +806,6 @@ void () W_Knife =
 
 	if (trace_ent.takedamage)
 	{
-
 		if (trace_ent.classname == "ai_zombie_head")
 			hit_ent = trace_ent.owner;
 		else if (trace_ent.classname == "ai_zombie_larm")
@@ -834,7 +826,6 @@ void () W_Knife =
 
 	if (r > 40 && hit)//lunge
 	{
-
 		if (self.weapon == W_BK)
 		{
 			Set_W_Frame (14, 24, 1.4, 0, KNIFE, SUB_Null, "progs/VModels/v_bk.mdl", false, S_RIGHT);
@@ -854,6 +845,9 @@ void () W_Knife =
 			self.knife_delay = time + 1;
 		}
 		self.velocity = v_forward * 200;
+		
+		// damage handler
+		LungeKnifeHit();
 	}
 	else
 	{
