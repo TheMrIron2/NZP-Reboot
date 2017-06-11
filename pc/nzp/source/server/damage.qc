@@ -43,7 +43,7 @@ void() GetDown =
 	
 	/* naievil -- there is a better place for this...*/
 	who = find(world,classname,"player");
-	while(who != world)
+	while(who != world && !who.downed)
 	{
 		if(who)
 		{
