@@ -56,6 +56,8 @@ void() W_SprintStop =
 	float startframe = GetFrame(self.weapon,SPRINT_OUT_START);
 	float endframe = GetFrame(self.weapon,SPRINT_OUT_END);
 	string modelname = GetWeaponModel(self.weapon, 0);
+	
+	self.viewzoom = 1;
 
 	Set_W_Frame (startframe, endframe, 0, 0, SPRINT, SUB_Null, modelname, false, S_BOTH);
 	self.sprinting = 0;
@@ -77,6 +79,7 @@ void W_SprintStart () {
 	float endframe = GetFrame(self.weapon,SPRINT_IN_END);
 	string modelname = GetWeaponModel(self.weapon, 0);
 
+	self.viewzoom = 0.9;
 	
 	if (startframe || endframe) {
 		Set_W_Frame (startframe, endframe, 0, 0, SPRINT, ContinueRun, modelname, false, S_BOTH);
