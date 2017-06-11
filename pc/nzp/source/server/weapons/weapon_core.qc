@@ -787,15 +787,14 @@ void () W_Knife =
       || (!(self.flags & FL_ONGROUND)))
 		return;
 
-	sound (self, CHAN_WEAPON, "sounds/weapons/knife/knife.wav", 1, ATTN_NORM);
-
 	vector	source;
 	entity	hit_ent;
 	//entity	oldself;
 	float	r;
 	vector	org;
 	float hit = false;
-
+	
+	sound (self, CHAN_WEAPON, "sounds/weapons/knife/knife.wav", 1, ATTN_NORM);
 	makevectors (self.v_angle);
 	source = self.origin + self.view_ofs;
 	if (self.weapon == W_BK)

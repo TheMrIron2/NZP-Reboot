@@ -13,6 +13,8 @@ pc/nzp/csprogs\.lno
 
 pc/conhistory.txt
 
+pc/nzp/iplog.txt
+
 *.dat
 
 # Map ignores
