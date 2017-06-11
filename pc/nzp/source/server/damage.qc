@@ -33,7 +33,7 @@ void() GetDown =
 	float startframe;
 	float endframe;
 	local string modelname;
-	
+	entity who;
 	
 	self.view_ofs = '0 0 -15';
 	self.velocity = '-80 0 -80';           			// Stop any old movement
@@ -41,6 +41,16 @@ void() GetDown =
 	self.downed = true;
 	self.movetype = MOVETYPE_NONE;
 	
+	/* naievil -- there is a better place for this...*/
+	who = find(world,classname,"player");
+	while(who != world)
+	{
+		if(who)
+		{
+			coop = 1;
+		}
+		who = find(who,classname,"player");
+	}	
 	
 	if (!deathmatch && !coop && !(self.perks & P_REVIVE))
 	{
@@ -61,9 +71,21 @@ void() GetDown =
 		centerprint(self, "YOU DON DEDED\n");
 		
       	return;
+	}
+	else if (coop) {
+	self.health = 19; 
+	self.downed = true;
 	} else {
 		self.health = 19;
 	}
+	
+	if (self.perks && P_REVIVE) {	
+	self.progress_bar = 10 + time;     
+	self.progress_bar_time = 10;
+	self.progress_bar_percent = 1;
+	self.points = 10*rint((self.points*0.95)/10);
+	}
+	
 	self.perks = 0;
 	SetPerk(self, self.perks);
 	if (self.health == 10)
@@ -87,10 +109,6 @@ void() GetDown =
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
 	
-	self.progress_bar = 10 + time;     
-	self.progress_bar_time = 10;
-	self.progress_bar_percent = 1;
-	self.points = 10*rint((self.points*0.95)/10);
 }
 
 void () GetUp =

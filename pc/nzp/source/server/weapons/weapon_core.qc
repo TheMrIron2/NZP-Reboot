@@ -1153,6 +1153,31 @@ void() CheckImpulses =
 	self.impulse = 0;
 }
 
+void() CheckPlayer = 
+{
+	local entity ent; 
+	ent = findradius(self.origin, 50);
+		
+	while(ent)
+	{
+		if(ent.classname == "player" && ent != self && !ent.downed) // small player push 
+		{
+			vector push;
+			push = ent.origin - self.origin;
+			push_z = 0;
+			push = normalize(push) * 5;
+			
+			ent.velocity += push;
+		}
+		if(ent.classname == "player" && ent != self && ent.downed)
+		{
+			centerprint(self, "Press USE to revive");
+			// naievil -- actual revive here
+		}
+		ent = ent.chain;
+	}
+}
+
 void () Weapon_Logic =
 {
 	W_Frame_Update ();
@@ -1223,4 +1248,5 @@ void () Weapon_Logic =
 		self.semiknife = false;
 	
 	CheckImpulses();
+	CheckPlayer();
 }
