@@ -22,7 +22,7 @@ void() screen_shake =
     zoom_factor = 0.5;
   else
     zoom_factor = 1;
-
+	
     self.enemy.punchangle_y = r * 8 * zoom_factor;
     self.enemy.punchangle_x = (4 + (s * 4)) * zoom_factor;
 

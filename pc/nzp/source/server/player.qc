@@ -193,7 +193,7 @@ void() PlayerSpawn =
 	self.grenades = self.grenades | 1;  // add frag grenades to player inventory
 	self.primary_grenades = 0; 			// start off without grenades
 	self.pri_grenade_state = 0; 		// defines that frag grenades are for player first, not betty
-	self.secondary_grenades = 0;
+	self.secondary_grenades = -1;		// shows that we both don't have betties AND shouldn't draw the image onscreen
 
 	/*self.secondaryweapon = W_KAR_SCOPE;
 	self.secondaryammo = getWeaponAmmo(self.secondaryweapon);

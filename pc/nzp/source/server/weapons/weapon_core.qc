@@ -848,8 +848,6 @@ void () W_Knife =
 		}
 		self.velocity = v_forward * 200;
 		
-		// damage handler
-		LungeKnifeHit();
 	}
 	else
 	{
@@ -876,6 +874,8 @@ void () W_Knife =
 		}
 	}
 	self.reload_delay2 = self.reload_delay = 0;
+	
+	LungeKnifeHit();
 
 	};
 
