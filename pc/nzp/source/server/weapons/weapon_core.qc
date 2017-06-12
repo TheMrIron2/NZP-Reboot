@@ -798,6 +798,10 @@ void () W_Knife =
 	vector	org;
 	float hit = false;
 	
+	if (self.sprinting) {
+		W_SprintStop();
+	}
+	
 	sound (self, CHAN_WEAPON, "sounds/weapons/knife/knife.wav", 1, ATTN_NORM);
 	makevectors (self.v_angle);
 	source = self.origin + self.view_ofs;
