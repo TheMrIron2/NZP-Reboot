@@ -255,6 +255,8 @@ void() ContinueReload = //Special reloads
 
 void(float side) W_Reload =
 {
+	self.viewzoom = 1;
+	
 	if (side == S_BOTH) {
 		W_Reload(S_RIGHT);
 		if (IsDualWeapon(self.weapon)) {
@@ -1157,7 +1159,7 @@ void() CheckImpulses =
 }
 
 void() CheckPlayer = 
-{
+{	
 	local entity ent; 
 	ent = findradius(self.origin, 50);
 		
