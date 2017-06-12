@@ -413,6 +413,7 @@ void() buy_weapon =
 
 void() BarrelExplode =
 {
+	sound (self, CHAN_WEAPON, "sounds/weapons/grenade/explode.wav", 1, ATTN_NORM);	
 	DamgageExplode (self, self.enemy, 500, 75, 200);//was 256 inch radius, kicked it down to 128 because 21 feet exploding radius is... a bit overkill...
 	te_explosionquad(self.origin);
 
