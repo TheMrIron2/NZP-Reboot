@@ -332,6 +332,10 @@ void(string com) SV_ParseClientCommand =
 					
 					self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
 				}
+			break;
+			case "god":
+					self.flags = self.flags | FL_GODMODE;
+					break;
 		}
 	}
 };
