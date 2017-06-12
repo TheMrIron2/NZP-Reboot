@@ -1,4 +1,6 @@
-
+void() crawler_rip_board1;
+void() crawler_da1;
+void() crawler_die1;
 
 void(float what) play_sound_z =
 {
@@ -472,7 +474,7 @@ void() zombie_hop10_5=[	$hop10,	SUB_Null		] {self.frame = 122;
 															self.hop_step = 6;
 															if(self.crawling == 2) 
 															{
-																//makeCrawler(self); 
+																makeCrawler(self); 
 																return;
 															}
 															self.movetype = MOVETYPE_WALK;
@@ -631,7 +633,7 @@ void() zombie_attack =
 	}
 		
 	
-	/*if(self.crawling == TRUE)
+	if(self.crawling == TRUE)
 	{
 		if(self.outside == TRUE)
 			crawler_rip_board1();
@@ -639,7 +641,7 @@ void() zombie_attack =
 			crawler_da1();//crawler delay attack
 	}
 	else
-	{*/
+	{
 		//zombie_attack_through_w1();
 		
 		if(self.outside == TRUE)
@@ -675,7 +677,7 @@ void() zombie_attack =
 		{
 			zombie_zda();//Zombie Delay Attack
 		}
-	//}
+	}
 	
 };
 
@@ -854,12 +856,12 @@ void() Zombie_Death =
 		}
 	}
 	
-	/*if(self.crawling == TRUE)
+	if(self.crawling == TRUE)
 	{
 		crawler_die1();
 	}
 	else
-	{*/
+	{
 		if(random() < 0.3)
 		{
 			zombie_deathA1();
@@ -872,7 +874,7 @@ void() Zombie_Death =
 		{
 			zombie_deathC1();
 		}
-	//}
+	}
 };
 
 
@@ -930,11 +932,11 @@ void() zombieRise =
 	if(self.frame == 36)
 	{
 		self.state = 0;
-		/*if(self.crawling == 2)
+		if(self.crawling == 2)
 		{
 			makeCrawler(self);
 			return;
-		}*/
+		}
 		self.th_walk();
 		return;
 	}

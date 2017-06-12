@@ -138,6 +138,7 @@ entity lastzombie;
 .vector idlebox;
 .vector hop_spot;//used for windows (zombies hop to these)
 .vector goalorigin;
+float crawler_num;
 //==== Reference Vars ====
 const float WWINDOW = 1; 
 const float WBOX1 = 2;
@@ -209,7 +210,7 @@ float sounds_playing;
 .float hitamount;
 
 .float laststep;
-//void(entity who) makeCrawler;
+void(entity who) makeCrawler;
 .float state;//used to delay making a crawler, ex) when zombie is rising from ground or climbing over barrier, turn zombie into a crawler afterwards
 
 void() spawnAllZombEnts;

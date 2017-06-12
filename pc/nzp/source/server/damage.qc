@@ -169,7 +169,21 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 		victim.health = victim.health - damage;
 
 		if (d_style == S_EXPLOSIVE) {
-			addmoney(attacker, 60, 1);
+			if (victim.health < z_health*0.5)
+			{
+				if (victim.crawling != TRUE && !(victim.health <= 0) && crawler_num < 5)
+				{
+					makeCrawler(victim);	
+				}
+				else
+				{
+					if (attacker.classname == "player" && (victim.health - damage)> 0)
+					addmoney(attacker, 10, 1);
+				}
+			}
+			else
+				victim.th_die();	
+		
 		}
 		
 		if (d_style == S_KNIFE) {
