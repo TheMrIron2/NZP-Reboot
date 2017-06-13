@@ -28,9 +28,70 @@ void() StartFrame =
 	entity SpawnedIn;
 	SpawnedIn = find(world, classname, "player");
 	
-	if (SpawnedIn)
+	if (SpawnedIn) {
 		InitRounds();
+		
+		if (instakill_finished >= time)
+	{
+		if (instakill_finished < 4 + time)
+		{
+			if (insta_blink< time - 0.25)
+				insta_blink = time + 0.25;
+		}
+		else if (instakill_finished < 7 + time)
+		{
+			if (insta_blink< time - 0.5)
+				insta_blink = time + 0.5;
+		}
+		else if (instakill_finished < 10 + time)
+		{
+			if (insta_blink< time - 1)
+				insta_blink = time + 1;
+		}
+		if (insta_blink < time)
+			SpawnedIn.insta_icon = true;
+		else 
+			SpawnedIn.insta_icon = false;			
 	}
+	else if(instakill_finished)
+	{
+		instakill_finished = 0;
+		SpawnedIn.insta_icon = false;
+	}
+	
+	if (x2_finished > time)
+	{
+		if (x2_finished < 4 + time)
+		{
+			if (x2_blink< time - 0.25)
+				x2_blink = time + 0.25;
+		}
+		else if (x2_finished < 7 + time)
+		{
+			if (x2_blink< time - 0.5)
+				x2_blink = time + 0.5;
+		}
+		else if (x2_finished < 10 + time)
+		{
+			if (x2_blink< time - 1)
+				x2_blink = time + 1;
+		}
+		if (x2_blink < time)
+			SpawnedIn.x2_icon = true;
+		else 
+			SpawnedIn.x2_icon = false;
+
+		
+	}
+	else if(x2_finished)
+	{
+		x2_finished = 0;
+		SpawnedIn.x2_icon = false;
+	}
+		
+		}
+	}
+	
 }
 
 //called when map loaded
@@ -187,6 +248,8 @@ void() worldspawn =
 	clientstat(STAT_WEAPONDURATION, EV_FLOAT, weapon_animduration);
 	clientstat(STAT_WEAPON2DURATION, EV_FLOAT, weapon2_animduration);
 	clientstat(STAT_WEAPONZOOM, EV_FLOAT, zoom);
+	clientstat(STAT_INSTA, EV_FLOAT, insta_icon);
+	clientstat(STAT_X2, EV_FLOAT, x2_icon);
 
 	mappath = strcat("maps/", mapname);
 	mappath = strzone(mappath);

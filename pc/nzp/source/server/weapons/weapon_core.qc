@@ -26,7 +26,7 @@ void() W_AimIn =
 	    self.weapon == 49 || self.weapon == 51)
 	{
 		self.zoom = 2;
-		SetUpdate(self, 4, 0, 0, 0);
+		SetUpdate(self, UT_ZOOM2, 0, 0, 0);
 		self.viewzoom = 0.5;
 	}
 	else

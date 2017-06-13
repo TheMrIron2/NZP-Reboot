@@ -660,3 +660,25 @@ void() trigger_electro =
 	//self.touch = electro_touch;
 	self.solid = SOLID_TRIGGER;
 };
+
+/* ================
+   Custom Teddy Code
+   ================*/
+
+void() teddy_spawn = 
+{
+  precache_model ("progs/Props/teddy.mdl");
+
+	self.movetype = MOVETYPE_NONE;	// so it doesn't get pushed by anything
+	self.solid=SOLID_BBOX;
+	self.classname = "teddy_spawn";
+	setmodel (self, "progs/Props/teddy.mdl");
+	setsize (self, '-8 -8 -4', '8 8 4');
+
+	self.takedamage = DAMAGE_YES;
+	self.health = 0;
+	self.th_die = teddy_react;
+	
+	if (self.noise)
+    precache_sound (self.noise);
+};

@@ -245,12 +245,12 @@ float isPowerOn;
 .float papState;
 
 //powerups
-float x2_icon;
-float insta_icon;
+.float x2_icon;
+.float insta_icon;
 float instakill_finished;
-//float insta_blink;
+float insta_blink;
 float x2_finished;
-//float x2_blink;
+float x2_blink;
 float total_windows_down;
 float total_powerup_points;
 float powerup_activate;
@@ -288,8 +288,6 @@ entity active_way;
 .string targets[MAX_WAY_TARGETS];
 
 
-
-
 //pathfinds
 #define MAX_WAYPOINTS 256 //max waypoints
 void LoadWaypointData();
@@ -315,7 +313,35 @@ waypoint_ai waypoints[MAX_WAYPOINTS];
 #define UT_HUD 				1
 #define UT_ROUNDS_CHANGE 	2
 #define UT_HM				3
+#define UT_ZOOM2			4
+#define UT_INSTA			5
+#define UT_X2				6
 
+//Misc patch definitions
+.string teddyremovetarget;
+
+void SetUpdate(entity client, float type, float val1, float val2, float val3)
+{
+	if (type != 2)
+	{
+		msg_entity = client;
+		WriteByte(MSG_ONE, SVC_CGAMEPACKET);
+		WriteByte(MSG_ONE, EVENT_UPDATE);
+		WriteByte(MSG_ONE, type); // UT_HUD, UT_ROUNDS_CHANGE
+		WriteByte(MSG_ONE, val1); 
+		WriteByte(MSG_ONE, val2);
+		WriteByte(MSG_ONE, val3); // misc flags/vars for later if needed
+	}
+	else
+	{
+		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
+		WriteByte(MSG_ALL, EVENT_UPDATE);
+		WriteByte(MSG_ALL, type); // UT_HUD, UT_ROUNDS_CHANGE
+		WriteByte(MSG_ALL, val1); 
+		WriteByte(MSG_ALL, val2);
+		WriteByte(MSG_ALL, val3); // misc flags/vars for later if needed
+	}
+}
 
 //FIXME(Jukki) Place in better place
 void(entity to, float type, float cost, float weapon) useprint = {
@@ -383,29 +409,6 @@ void(string to, float skin) UpdateV2model =
 	WriteByte(MSG_MULTICAST, skin);
 	msg_entity = self;
 	multicast('0 0 0', MULTICAST_ONE);
-}
-
-void SetUpdate(entity client, float type, float val1, float val2, float val3)
-{
-	if (type != 2)
-	{
-		msg_entity = client;
-		WriteByte(MSG_ONE, SVC_CGAMEPACKET);
-		WriteByte(MSG_ONE, EVENT_UPDATE);
-		WriteByte(MSG_ONE, type); // UT_HUD, UT_ROUNDS_CHANGE
-		WriteByte(MSG_ONE, val1); 
-		WriteByte(MSG_ONE, val2);
-		WriteByte(MSG_ONE, val3); // misc flags/vars for later if needed
-	}
-	else
-	{
-		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
-		WriteByte(MSG_ALL, EVENT_UPDATE);
-		WriteByte(MSG_ALL, type); // UT_HUD, UT_ROUNDS_CHANGE
-		WriteByte(MSG_ALL, val1); 
-		WriteByte(MSG_ALL, val2);
-		WriteByte(MSG_ALL, val3); // misc flags/vars for later if needed
-	}
 }
 
 void WeaponSwitch(entity player) {

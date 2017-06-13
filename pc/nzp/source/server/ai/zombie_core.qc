@@ -841,7 +841,7 @@ void() Zombie_Death =
 		self.s_time = 0;
 	}
 	
-	//Spawn_Powerup(self.origin);
+	Spawn_Powerup(self.origin);
 	if(self.outside == FALSE)
 	{
 		if (totalpowerups < 4)

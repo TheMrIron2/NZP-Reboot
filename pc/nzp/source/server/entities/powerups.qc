@@ -216,13 +216,13 @@ void() powerup_touch =
 			sound(self,CHAN_VOICE,"sounds/pu/double_points.wav",1,ATTN_NONE);   
 
 			x2_finished = time + 30;
-			x2_icon = true;
+			other.x2_icon = true;
 		}
 		else if(self.zombie_drop_id == 3)
 		{
 			sound(self,CHAN_VOICE,"sounds/pu/insta_kill.wav",1,ATTN_NONE);
 			instakill_finished = time + 30;
-			insta_icon = true;
+			other.insta_icon = true;
 		}
 		else if(self.zombie_drop_id == 4)
 		{

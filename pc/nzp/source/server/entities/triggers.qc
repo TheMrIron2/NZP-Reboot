@@ -63,3 +63,24 @@ void() weapon_wall =
 	//self.effects = EF_WEPLIGHT;
   
 }
+
+/* ===================
+   Custom Teddy Triggers
+   ===================*/
+
+void() teddy_react =
+{
+  local entity t;
+  
+	if (self.spawnflags & 1)
+  {
+   t = find (world, teddyremovetarget, self.target);
+    
+   if (!t)
+      objerror ("couldn't find target");
+      
+    remove(t); 
+  }
+  if (self.noise)
+    sound (other, CHAN_ITEM, self.noise, 1, ATTN_NORM);
+}

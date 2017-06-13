@@ -897,7 +897,17 @@ void() Draw_Crosshair =
 		drawstring([((480 - 8)/2/480)*g_width, ((272 - 8)/2)*(g_height/272), 0], ".", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1); 
 }
 
+void() HUD_Powerups = {
 
+
+	if(getstatf(STAT_X2))
+		drawpic([(g_width/2 - (28/272)*g_height),0,0], "gfx/hud/2x.tga", [(28/272)*g_height, (28/272)*g_height, 1], [1,1,1], 1);
+	if(getstatf(STAT_INSTA))
+		drawpic([(g_width/2 + (5/480)*g_width),0,0], "gfx/hud/in_kill.tga", [(28/272)*g_height, (28/272)*g_height, 1], [1,1,1], 1);
+		
+//	drawstring([0.01*g_width, 0.10*g_height, 0], ftos(getstatf(STAT_INSTA)), [0.03*g_width, 0.03*g_width, 0], [1, 1, 1], 1, 1);
+//	drawstring([0.01*g_width, 0.14*g_height, 0], ftos(getstatf(STAT_X2)), [0.03*g_width, 0.03*g_width, 0], [1, 1, 1], 1, 1);
+}
 
 /*******************
 *     HUD Draw     *
@@ -910,6 +920,7 @@ void(float width, float height) HUD_Draw =
 	HUD_Rounds(width, height);
 	HUD_Perks(width, height);
 	HUD_Progressbar(width, height);
+	HUD_Powerups();
 	
 	if (HUD_Change_time > time)
 	{
