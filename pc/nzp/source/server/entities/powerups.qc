@@ -199,6 +199,12 @@ void() powerup_flash =
 void() powerup_touch =
 {
   local float t;
+  local float exp;
+  
+  if (x2_finished > time)
+	exp = 2;
+  else
+	exp = 1;
   
   t = random();
   
@@ -227,11 +233,12 @@ void() powerup_touch =
 		else if(self.zombie_drop_id == 4)
 		{
 			sound(self,CHAN_VOICE,"sounds/pu/nuke.wav",1,ATTN_NONE);
-
+			addmoney(other, 400*exp, 0);
 			nuke();
 		}
 		else if(self.zombie_drop_id == 5)
 		{
+			addmoney(other, 200*exp, 0);
 			carpenter();
 		}
 		/*else if(self.zombie_drop_id == 6)

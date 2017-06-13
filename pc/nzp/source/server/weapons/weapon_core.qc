@@ -1162,8 +1162,72 @@ void() CheckImpulses =
 	self.impulse = 0;
 }
 
+void(entity ent) CheckPowerups =
+{
+	if (instakill_finished >= time)
+	{
+		if (instakill_finished < 4 + time)
+		{
+			if (insta_blink< time - 0.25)
+				insta_blink = time + 0.25;
+		}
+		else if (instakill_finished < 7 + time)
+		{
+			if (insta_blink< time - 0.5)
+				insta_blink = time + 0.5;
+		}
+		else if (instakill_finished < 10 + time)
+		{
+			if (insta_blink< time - 1)
+				insta_blink = time + 1;
+		}
+		if (insta_blink < time)
+			ent.insta_icon = true;
+		else 
+			ent.insta_icon = false;			
+	}
+	else if(instakill_finished)
+	{
+		instakill_finished = 0;
+		ent.insta_icon = false;
+	}
+	
+	if (x2_finished > time)
+	{
+		if (x2_finished < 4 + time)
+		{
+			if (x2_blink< time - 0.25)
+				x2_blink = time + 0.25;
+		}
+		else if (x2_finished < 7 + time)
+		{
+			if (x2_blink< time - 0.5)
+				x2_blink = time + 0.5;
+		}
+		else if (x2_finished < 10 + time)
+		{
+			if (x2_blink< time - 1)
+				x2_blink = time + 1;
+		}
+		if (x2_blink < time)
+			ent.x2_icon = true;
+		else 
+			ent.x2_icon = false;
+
+		
+	}
+	else if(x2_finished)
+	{
+		x2_finished = 0;
+		ent.x2_icon = false;
+	}
+
+}
+
 void() CheckPlayer = 
-{	
+{
+	CheckPowerups(self);
+	
 	local entity ent; 
 	ent = findradius(self.origin, 50);
 		

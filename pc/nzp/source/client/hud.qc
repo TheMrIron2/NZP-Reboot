@@ -915,6 +915,7 @@ void() HUD_Powerups = {
 
 void(float width, float height) HUD_Draw = 
 {	
+	Draw_Crosshair();
 	HUD_Health(width, height);
 	HUD_Points(width, height);
 	HUD_Rounds(width, height);
@@ -935,8 +936,6 @@ void(float width, float height) HUD_Draw =
 		
 	if (Hitmark_time > time)
 		HUD_Hitmark();
-		
-	Draw_Crosshair();
 }
 
 

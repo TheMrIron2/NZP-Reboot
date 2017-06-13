@@ -314,8 +314,6 @@ waypoint_ai waypoints[MAX_WAYPOINTS];
 #define UT_ROUNDS_CHANGE 	2
 #define UT_HM				3
 #define UT_ZOOM2			4
-#define UT_INSTA			5
-#define UT_X2				6
 
 //Misc patch definitions
 .string teddyremovetarget;
