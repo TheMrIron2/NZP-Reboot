@@ -155,6 +155,10 @@ void(entity attacker, float d_style) DieHandler =
             addmoney(attacker, 60, true);
             total_powerup_points = total_powerup_points + 60;
         }
+		else if (d_style == S_KNIFE){
+			addmoney(attacker, 130, true);
+			total_powerup_points = total_powerup_points + 130;
+		}
     }
 }
 
@@ -190,7 +194,8 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 		}
 		
 		if (d_style == S_KNIFE) {
-			addmoney(attacker, 10, 1);
+			if (victim.health > 0)
+				addmoney(attacker, 10, 1);
 		}
 
 

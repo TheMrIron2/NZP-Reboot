@@ -511,13 +511,13 @@ noref void() CSQC_Parse_Event =
 					muzzlepos += v_up * offset_z;
 
 					local entity tracer = spawn();
-					tracer.alpha = 1;
+					/*tracer.alpha = 1;
 					tracer.origin = muzzlepos;
 					tracer.targetpos = pos;
 					tracer.rate = 1/0.05;
 					tracer.angles = view_angles;
 					tracer.predraw = tracerthink;
-					tracer.drawmask = 1;
+					tracer.drawmask = 1;*/
 				}
 
 				
