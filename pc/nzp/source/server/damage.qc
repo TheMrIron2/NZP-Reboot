@@ -183,6 +183,9 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 			}
 			else
 				victim.th_die();	
+				
+			if (victim.health <= 0)
+				addmoney(attacker, 60, 1);
 		
 		}
 		
