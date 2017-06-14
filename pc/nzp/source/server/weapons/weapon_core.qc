@@ -817,7 +817,7 @@ void () W_Knife =
 	
 	org = trace_endpos - v_forward*4;
 
-	r = vlen(source - org);
+	r = fabs(vlen(source - org));
 
 	if (trace_ent.takedamage)
 	{
