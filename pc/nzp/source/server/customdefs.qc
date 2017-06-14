@@ -138,6 +138,7 @@ entity lastzombie;
 .vector idlebox;
 .vector hop_spot;//used for windows (zombies hop to these)
 .vector goalorigin;
+float crawler_num;
 //==== Reference Vars ====
 const float WWINDOW = 1; 
 const float WBOX1 = 2;
@@ -209,7 +210,7 @@ float sounds_playing;
 .float hitamount;
 
 .float laststep;
-//void(entity who) makeCrawler;
+void(entity who) makeCrawler;
 .float state;//used to delay making a crawler, ex) when zombie is rising from ground or climbing over barrier, turn zombie into a crawler afterwards
 
 void() spawnAllZombEnts;
@@ -244,12 +245,12 @@ float isPowerOn;
 .float papState;
 
 //powerups
-float x2_icon;
-float insta_icon;
+.float x2_icon;
+.float insta_icon;
 float instakill_finished;
-//float insta_blink;
+float insta_blink;
 float x2_finished;
-//float x2_blink;
+float x2_blink;
 float total_windows_down;
 float total_powerup_points;
 float powerup_activate;
@@ -287,8 +288,6 @@ entity active_way;
 .string targets[MAX_WAY_TARGETS];
 
 
-
-
 //pathfinds
 #define MAX_WAYPOINTS 256 //max waypoints
 void LoadWaypointData();
@@ -314,123 +313,7 @@ waypoint_ai waypoints[MAX_WAYPOINTS];
 #define UT_HUD 				1
 #define UT_ROUNDS_CHANGE 	2
 #define UT_HM				3
+#define UT_ZOOM2			4
 
-
-//FIXME(Jukki) Place in better place
-void(entity to, float type, float cost, float weapon) useprint = {
-	
-    
-    msg_entity = to;
-	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
-	WriteByte(MSG_ONE, EVENT_USEPRINT);
-	WriteByte(MSG_ONE, type);
-	WriteShort(MSG_ONE, cost);
-	WriteByte(MSG_ONE, weapon);
-}
-
-float() crandom =
-{
-	return 2*(random() - 0.5);
-}
-
-void NotifyNewRound(float to) {
-	WriteByte(MSG_ALL, SVC_CGAMEPACKET);
-	WriteByte(MSG_ALL, EVENT_NEWROUND);
-	WriteByte(MSG_ALL, to);
-}
-
-void SetRound(entity client, float to) {
-    msg_entity = client;
-	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
-	WriteByte(MSG_ONE, EVENT_SETROUND);
-	WriteByte(MSG_ONE, to);
-}
-
-void SetPerk(entity client, float to) 
-{
-    msg_entity = client;
-	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
-	WriteByte(MSG_ONE, EVENT_PERK);
-	WriteLong(MSG_ONE, to);
-}
-
-void(float to) SwitchWeapon =
-{
-	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
-	WriteByte(MSG_MULTICAST, EVENT_WEAPONCHANGE);
-	WriteByte(MSG_MULTICAST, to);
-	msg_entity = self;
-	multicast('0 0 0', MULTICAST_ONE);
-}
-
-void(string to, float skin) UpdateVmodel =
-{
-	
-	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
-	WriteByte(MSG_MULTICAST, EVENT_UPDATEVMODEL);
-	WriteString(MSG_MULTICAST, to);
-	WriteByte(MSG_MULTICAST, skin);
-	msg_entity = self;
-	multicast('0 0 0', MULTICAST_ONE);
-}
-
-void(string to, float skin) UpdateV2model =
-{
-	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
-	WriteByte(MSG_MULTICAST, EVENT_UPDATEV2MODEL);
-	WriteString(MSG_MULTICAST, to);
-	WriteByte(MSG_MULTICAST, skin);
-	msg_entity = self;
-	multicast('0 0 0', MULTICAST_ONE);
-}
-
-void SetUpdate(entity client, float type, float val1, float val2, float val3)
-{
-	if (type != 2)
-	{
-		msg_entity = client;
-		WriteByte(MSG_ONE, SVC_CGAMEPACKET);
-		WriteByte(MSG_ONE, EVENT_UPDATE);
-		WriteByte(MSG_ONE, type); // UT_HUD, UT_ROUNDS_CHANGE
-		WriteByte(MSG_ONE, val1); 
-		WriteByte(MSG_ONE, val2);
-		WriteByte(MSG_ONE, val3); // misc flags/vars for later if needed
-	}
-	else
-	{
-		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
-		WriteByte(MSG_ALL, EVENT_UPDATE);
-		WriteByte(MSG_ALL, type); // UT_HUD, UT_ROUNDS_CHANGE
-		WriteByte(MSG_ALL, val1); 
-		WriteByte(MSG_ALL, val2);
-		WriteByte(MSG_ALL, val3); // misc flags/vars for later if needed
-	}
-}
-
-void WeaponSwitch(entity player) {
-	float wep, cmag, cmag2, cammo;
-
-	wep = other.weapon;
-	other.weapon = other.secondaryweapon;
-	other.secondaryweapon = wep;
-
-	cmag = other.currentmag;
-	other.currentmag = other.secondarymag;
-	other.secondarymag = cmag;
-
-	cmag2 = other.currentmag2;
-	other.currentmag2 = other.secondarymag2;
-	other.secondarymag2 = cmag2;
-
-	cammo = other.currentammo;
-	other.currentammo = other.secondaryammo;
-	other.secondaryammo = cammo;
-
-	entity tempe = self;
-	self = player;
-	SwitchWeapon(other.weapon);
-	self = tempe;
-}
-
-//naievil (FIXME) No idea where this should go, maybe a dummys
-void() SUB_Remove = {remove(self);}
+//Misc patch definitions
+.string teddyremovetarget;

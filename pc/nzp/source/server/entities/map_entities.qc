@@ -250,6 +250,72 @@ void () buy_weapon_touch =
 			self = oldent;
 		}
 	}
+	if (self.weapon == W_BETTY)
+	{
+		if (other.secondary_grenades < 2)
+			useprint (other, 3, self.cost2, self.weapon);
+		else
+			return;
+		if (!other.button7 || other.semiuse)
+			return;
+		if (other.points < self.cost2)
+		{
+			centerprint(other, "You do not have enough points\n");
+			sound(other, 0,"sounds/misc/denybuy.wav", 1, 1);
+			return;
+		}
+		else
+		{
+			other.reload_delay = 0;
+			sound(other, 0,"sounds/misc/ching.wav", 1, 1);
+			//other.boughtweapon = true;
+			addmoney(other, 0 - self.cost2, FALSE);
+			other.grenades = other.grenades | 2;
+			other.secondary_grenades = 2;
+			if (self.enemy)
+			{
+				oldent = self;
+				self = self.enemy;
+				self.use();
+				self = oldent;
+			}
+		}
+		other.semiuse = true;
+		return;
+	}
+	else if (self.weapon == W_GRENADE)
+	{
+		if (other.primary_grenades < 4)
+			useprint (other, 3, self.cost2, self.weapon);
+		else
+			return;
+		if (!other.button7 || other.semiuse)
+			return;
+		if (other.points < self.cost)
+		{
+			centerprint(other, "You do not have enough points\n");
+			sound(other, 0,"sounds/misc/denybuy.wav", 1, 1);
+
+			return;
+		}
+		else
+		{
+			other.reload_delay = 0;
+			sound(other, 0,"sounds/misc/ching.wav", 1, 1);
+			//other.boughtweapon = true;
+			addmoney(other, 0 - self.cost, FALSE);
+			other.primary_grenades = 4;
+			if (self.enemy)
+			{
+				oldent = self;
+				self = self.enemy;
+				self.use();
+				self = oldent;
+			}
+		}
+		other.semiuse = true;
+		return;
+	}
 	else
 	{
 		entity tempe;
@@ -347,6 +413,7 @@ void() buy_weapon =
 
 void() BarrelExplode =
 {
+	sound (self, CHAN_WEAPON, "sounds/weapons/grenade/explode.wav", 1, ATTN_NORM);	
 	DamgageExplode (self, self.enemy, 500, 75, 200);//was 256 inch radius, kicked it down to 128 because 21 feet exploding radius is... a bit overkill...
 	te_explosionquad(self.origin);
 
@@ -448,8 +515,19 @@ void()	turnswitch4	=[	4,		SUB_Null	] {self.frame = 2;};
 
 void()	offswitch2		=[	2,		offswitch3		] {self.frame = 2;};
 void()	offswitch3		=[	3,		offswitch4		] {self.frame = 1;};
-void()	offswitch4		=[	4,		SUB_Null	] {self.frame = 0;};
+void()	offswitch4		=[	4,		SUB_Null		] {self.frame = 0;};
 
+
+void zap_zombie () {
+	entity tempe;
+
+	if (other.classname == "ai_zombie") {
+		tempe = self;
+		self = other;
+		self.th_die();
+		self = tempe;	
+	}
+}
 
 
 void zapper_play () {
@@ -459,8 +537,8 @@ void zapper_play () {
 		te_lightning3(self, self.origin, zents.origin);
 	}
 
+	zents.touch = zap_zombie;
 	
-
 	self.think = zapper_play;
 	self.nextthink = time + (1*random());
 }
@@ -592,4 +670,26 @@ void() trigger_electro =
 	InitTrigger ();
 	//self.touch = electro_touch;
 	self.solid = SOLID_TRIGGER;
+};
+
+/* ================
+   Custom Teddy Code
+   ================*/
+
+void() teddy_spawn = 
+{
+  precache_model ("progs/Props/teddy.mdl");
+
+	self.movetype = MOVETYPE_NONE;	// so it doesn't get pushed by anything
+	self.solid=SOLID_BBOX;
+	self.classname = "teddy_spawn";
+	setmodel (self, "progs/Props/teddy.mdl");
+	setsize (self, '-8 -8 -4', '8 8 4');
+
+	self.takedamage = DAMAGE_YES;
+	self.health = 0;
+	self.th_die = teddy_react;
+	
+	if (self.noise)
+    precache_sound (self.noise);
 };

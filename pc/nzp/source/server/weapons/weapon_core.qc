@@ -26,7 +26,7 @@ void() W_AimIn =
 	    self.weapon == 49 || self.weapon == 51)
 	{
 		self.zoom = 2;
-		SetUpdate(self, 4, 0, 0, 0);
+		SetUpdate(self, UT_ZOOM2, 0, 0, 0);
 		self.viewzoom = 0.5;
 	}
 	else
@@ -57,6 +57,9 @@ void() W_SprintStop =
 	float endframe = GetFrame(self.weapon,SPRINT_OUT_END);
 	string modelname = GetWeaponModel(self.weapon, 0);
 	
+	if (self.isBuying)
+		return;
+	
 	self.viewzoom = 1;
 
 	Set_W_Frame (startframe, endframe, 0, 0, SPRINT, SUB_Null, modelname, false, S_BOTH);
@@ -71,6 +74,7 @@ void W_SprintStart () {
 		self.fire_delay2 > time ||
 		self.new_anim_stop ||
 		self.new_anim2_stop ||
+		self.isBuying || 
 		!(self.flags & FL_ONGROUND)) {
 		return;
 	}
@@ -255,6 +259,8 @@ void() ContinueReload = //Special reloads
 
 void(float side) W_Reload =
 {
+	self.viewzoom = 1;
+	
 	if (side == S_BOTH) {
 		W_Reload(S_RIGHT);
 		if (IsDualWeapon(self.weapon)) {
@@ -265,12 +271,14 @@ void(float side) W_Reload =
 	if (side == S_RIGHT &&
 		(self.reload_delay > time ||
 		self.new_anim_stop ||
+		!self.currentammo || 
 		self.currentmag >= getWeaponMag(self.weapon))){
 		return;
 	}
 	if (side == S_LEFT &&
 		(self.reload_delay2 > time ||
-		self.new_anim2_stop ||
+		self.new_anim2_stop || 
+		!self.secondaryammo ||
 		self.currentmag2 >= getWeaponMag(self.weapon))) {
 		return;
 	}
@@ -630,6 +638,7 @@ void (float shotcount, float sprd, float Damage/*, float headmulti, float legmul
 				hitent = trace_ent.owner;
 			else
 				hitent = trace_ent;
+
 		}
 		hitent = world;
 
@@ -706,7 +715,7 @@ void(float side) W_Fire =
 	shotcount = GetWeaponShotcount(self.weapon);
     soundname = GetWeaponSound(self.weapon);
 	delay = getWeaponDelay(self.weapon, FIRE);
-	spread = GetWeaponSpread(self.weapon);
+	spread = 1.5*GetWeaponSpread(self.weapon);
 
 	if (self.zoom == 1) {
 		if (self.weapon == W_TRENCH ||
@@ -777,7 +786,7 @@ void(float side) W_Fire =
 
 
 /******************************
-* W_Knife                  *
+* W_Knife                     *
 ******************************/
 
 void () W_Knife =
@@ -787,15 +796,18 @@ void () W_Knife =
       || (!(self.flags & FL_ONGROUND)))
 		return;
 
-	sound (self, CHAN_WEAPON, "sounds/weapons/knife/knife.wav", 1, ATTN_NORM);
-
 	vector	source;
-	entity	hit_ent;
+	entity	hit_ent = world;
 	//entity	oldself;
 	float	r;
 	vector	org;
 	float hit = false;
-
+	
+	if (self.sprinting) {
+		W_SprintStop();
+	}
+	
+	sound (self, CHAN_WEAPON, "sounds/weapons/knife/knife.wav", 1, ATTN_NORM);
 	makevectors (self.v_angle);
 	source = self.origin + self.view_ofs;
 	if (self.weapon == W_BK)
@@ -805,7 +817,7 @@ void () W_Knife =
 	
 	org = trace_endpos - v_forward*4;
 
-	r = vlen(source - org);
+	r = fabs(vlen(source - org));
 
 	if (trace_ent.takedamage)
 	{
@@ -825,6 +837,17 @@ void () W_Knife =
 		sound (self, CHAN_WEAPON, "sounds/weapons/knife/knife_hit.wav", 1, ATTN_NORM);			
 		
 		/* naievil (FIXME) add weapon decal here */
+		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_PISTOLFIRE);
+	WriteEntity(MSG_MULTICAST, self);
+	WriteCoord(MSG_MULTICAST, org_x);
+	WriteCoord(MSG_MULTICAST, org_y);
+	WriteCoord(MSG_MULTICAST, org_z);
+	WriteCoord(MSG_MULTICAST, trace_plane_normal_x);
+	WriteCoord(MSG_MULTICAST, trace_plane_normal_y);
+	WriteCoord(MSG_MULTICAST, trace_plane_normal_z);
+	WriteEntity(MSG_MULTICAST, hit_ent);
+	multicast(trace_endpos, MULTICAST_PHS);
 	}
 
 	if (r > 40 && hit)//lunge
@@ -849,8 +872,6 @@ void () W_Knife =
 		}
 		self.velocity = v_forward * 200;
 		
-		// damage handler
-		LungeKnifeHit();
 	}
 	else
 	{
@@ -877,6 +898,8 @@ void () W_Knife =
 		}
 	}
 	self.reload_delay2 = self.reload_delay = 0;
+	
+	LungeKnifeHit();
 
 	};
 
@@ -889,21 +912,8 @@ void () W_Knife =
 
 void() switch_nade = 
 { 
-	if (self.downed) {
-		return;
-	}
-
-    if (self.isBuying)
-		return;
-      
-    if (!(self.grenades & 2))
-		return;
-      
-    if (self.semiswitch)
+	if (self.downed || self.isBuying || !(self.grenades & 2) || self.semiswitch)
       return;
-/*		tempf = self.primary_grenades;
-		self.primary_grenades = self.secondary_grenades;
-		self.secondary_grenades = tempf;*/
 
 	if (self.pri_grenade_state == 0)
 	{
@@ -915,13 +925,14 @@ void() switch_nade =
 		centerprint (self, "Frag Grenades Selected");
 		self.bk_nade = 0;
     }  	
-		
-		self.pri_grenade_state = self.bk_nade;
+	
+	self.pri_grenade_state = self.bk_nade;
 
 };
 
 void() GrenadeExplode =
 {
+	sound (self, CHAN_WEAPON, "sounds/weapons/grenade/explode.wav", 1, ATTN_NORM);	
 	DamgageExplode (self, self.owner, 225, 75, 128);//was 256 inch radius, kicked it down to 128 because 21 feet exploding radius is... a bit overkill...	
 	te_explosionquad(self.origin);
 	SUB_Remove ();
@@ -1143,6 +1154,9 @@ void () Impulse_Functions =
 		case 24:
 			W_SprintStop();
 			break;
+		case 25:
+			switch_nade();
+			break;
 	}
 	
 	self.impulse = 0;
@@ -1153,8 +1167,72 @@ void() CheckImpulses =
 	self.impulse = 0;
 }
 
+void(entity ent) CheckPowerups =
+{
+	if (instakill_finished >= time)
+	{
+		if (instakill_finished < 4 + time)
+		{
+			if (insta_blink< time - 0.25)
+				insta_blink = time + 0.25;
+		}
+		else if (instakill_finished < 7 + time)
+		{
+			if (insta_blink< time - 0.5)
+				insta_blink = time + 0.5;
+		}
+		else if (instakill_finished < 10 + time)
+		{
+			if (insta_blink< time - 1)
+				insta_blink = time + 1;
+		}
+		if (insta_blink < time)
+			ent.insta_icon = true;
+		else 
+			ent.insta_icon = false;			
+	}
+	else if(instakill_finished)
+	{
+		instakill_finished = 0;
+		ent.insta_icon = false;
+	}
+	
+	if (x2_finished > time)
+	{
+		if (x2_finished < 4 + time)
+		{
+			if (x2_blink< time - 0.25)
+				x2_blink = time + 0.25;
+		}
+		else if (x2_finished < 7 + time)
+		{
+			if (x2_blink< time - 0.5)
+				x2_blink = time + 0.5;
+		}
+		else if (x2_finished < 10 + time)
+		{
+			if (x2_blink< time - 1)
+				x2_blink = time + 1;
+		}
+		if (x2_blink < time)
+			ent.x2_icon = true;
+		else 
+			ent.x2_icon = false;
+
+		
+	}
+	else if(x2_finished)
+	{
+		x2_finished = 0;
+		ent.x2_icon = false;
+	}
+
+}
+
 void() CheckPlayer = 
 {
+	CheckPowerups(self);
+	
 	local entity ent; 
 	ent = findradius(self.origin, 50);
 		

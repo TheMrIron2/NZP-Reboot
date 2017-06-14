@@ -85,7 +85,7 @@ void() HUD_AmmoString =
 	int len = 0;
 	    
 	
-	if (GetLowAmmo(getstatf(STAT_ACTIVEWEAPON), 1) >= getstatf(STAT_CURRENTMAG) /*&& getstatf(STAT_ZOOM) != 2*/) // naievil (FIXME) can't do zoom yet!!
+	if (GetLowAmmo(getstatf(STAT_ACTIVEWEAPON), 1) >= getstatf(STAT_CURRENTMAG) && getstatf(STAT_WEAPONZOOM) != 2)
 	{
 		if (0 < getstatf(STAT_AMMO) && getstatf(STAT_CURRENTMAG) >= 0) {
 			len = 6;
@@ -122,10 +122,17 @@ void(float width, float height) HUD_Points =
 void(float width, float height) HUD_Grenades =
 {
 	local float grenades;
+	local float betties;
 
 	grenades = getstatf(STAT_GRENADES);
+	betties = getstatf(STAT_SECGRENADES);
 	drawpic([0.9*width,0.825*height,0], "gfx/hud/frag.tga", [50, 50, 0], [1,1,1], 1);
 	drawstring([0.9*width + 28, 0.825*height + 32, 0], ftos(grenades), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 1);
+	
+	if (betties != -1) {
+		drawpic([0.825*width,0.825*height,0], "gfx/hud/betty.tga", [50, 50, 0], [1,1,1], 1);
+		drawstring([0.825*width + 28, 0.825*height + 32, 0], ftos(betties), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 1);
+	}
 }
 
 /*******************
@@ -823,7 +830,9 @@ void() Draw_Crosshair =
     {
 		setmodel(vmodel, "");
 		setmodel(v2model, "");
-		drawpic([0,0,0], "gfx/hud/scope.tga", [g_width, g_height, 1], [1,1,1], 1);
+		drawfill('0 0 0',  [g_width/2 - g_height/2, g_height, 0], '0 0 0', 1);
+		drawpic([(g_width/2 - g_height/2),0,0], "gfx/hud/scope.tga", [g_height, g_height, 1], [1,1,1], 1);
+		drawfill([(g_width/2 + g_height/2),0,0],  [g_width, g_height, 0], '0 0 0', 1);
 	}
     
 	if (getstatf(STAT_HEALTH) < 11)
@@ -888,7 +897,17 @@ void() Draw_Crosshair =
 		drawstring([((480 - 8)/2/480)*g_width, ((272 - 8)/2)*(g_height/272), 0], ".", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1); 
 }
 
+void() HUD_Powerups = {
 
+
+	if(getstatf(STAT_X2))
+		drawpic([(g_width/2 - (28/272)*g_height),0,0], "gfx/hud/2x.tga", [(28/272)*g_height, (28/272)*g_height, 1], [1,1,1], 1);
+	if(getstatf(STAT_INSTA))
+		drawpic([(g_width/2 + (5/480)*g_width),0,0], "gfx/hud/in_kill.tga", [(28/272)*g_height, (28/272)*g_height, 1], [1,1,1], 1);
+		
+//	drawstring([0.01*g_width, 0.10*g_height, 0], ftos(getstatf(STAT_INSTA)), [0.03*g_width, 0.03*g_width, 0], [1, 1, 1], 1, 1);
+//	drawstring([0.01*g_width, 0.14*g_height, 0], ftos(getstatf(STAT_X2)), [0.03*g_width, 0.03*g_width, 0], [1, 1, 1], 1, 1);
+}
 
 /*******************
 *     HUD Draw     *
@@ -896,11 +915,13 @@ void() Draw_Crosshair =
 
 void(float width, float height) HUD_Draw = 
 {	
+	Draw_Crosshair();
 	HUD_Health(width, height);
 	HUD_Points(width, height);
 	HUD_Rounds(width, height);
 	HUD_Perks(width, height);
 	HUD_Progressbar(width, height);
+	HUD_Powerups();
 	
 	if (HUD_Change_time > time)
 	{
@@ -915,8 +936,6 @@ void(float width, float height) HUD_Draw =
 		
 	if (Hitmark_time > time)
 		HUD_Hitmark();
-		
-	Draw_Crosshair();
 }
 
 

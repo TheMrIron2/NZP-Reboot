@@ -43,7 +43,7 @@ void() GetDown =
 	
 	/* naievil -- there is a better place for this...*/
 	who = find(world,classname,"player");
-	while(who != world)
+	while(who != world && !who.downed)
 	{
 		if(who)
 		{
@@ -107,7 +107,7 @@ void() GetDown =
 	
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);
 	
 }
 
@@ -135,7 +135,7 @@ void () GetUp =
   
   	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);
 	
 };
 
@@ -155,6 +155,10 @@ void(entity attacker, float d_style) DieHandler =
             addmoney(attacker, 60, true);
             total_powerup_points = total_powerup_points + 60;
         }
+		else if (d_style == S_KNIFE){
+			addmoney(attacker, 130, true);
+			total_powerup_points = total_powerup_points + 130;
+		}
     }
 }
 
@@ -169,11 +173,29 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 		victim.health = victim.health - damage;
 
 		if (d_style == S_EXPLOSIVE) {
-			addmoney(attacker, 60, 1);
+			if (victim.health < z_health*0.5)
+			{
+				if (victim.crawling != TRUE && !(victim.health <= 0) && crawler_num < 5)
+				{
+					makeCrawler(victim);	
+				}
+				else
+				{
+					if (attacker.classname == "player" && (victim.health - damage)> 0)
+					addmoney(attacker, 10, 1);
+				}
+			}
+			else
+				victim.th_die();	
+				
+			if (victim.health <= 0)
+				addmoney(attacker, 60, 1);
+		
 		}
 		
 		if (d_style == S_KNIFE) {
-			addmoney(attacker, 10, 1);
+			if (victim.health > 0)
+				addmoney(attacker, 10, 1);
 		}
 
 

@@ -93,22 +93,22 @@ void() PlayerPostThink =
 	}
 	
 	//footsteps
-	if((vlen(self.velocity) > 315) &&( time - self.lastsound_time > 0.3) && (self.flags & FL_ONGROUND))
+	if((vlen(self.velocity) > 100) &&(( time - self.lastsound_time > 0.4) || (time - self.lastsound_time > 0.3 && self.sprinting)) && (self.flags & FL_ONGROUND))
 	{
 		local float movelen = vlen(input_movevalues);
 		if(movelen > 300)
 		{
 			local float ran = random();
 			if(ran > 0.8)
-				sound(self, CHAN_BODY, "sounds/player/footstep1.wav", 0.6, 2.5);
+				sound(self, CHAN_BODY, "sounds/player/footstep1.wav", 0.8, 2.5);
 			else if(ran > 0.6)
-				sound(self, CHAN_BODY, "sounds/player/footstep2.wav", 0.6, 2.5);
+				sound(self, CHAN_BODY, "sounds/player/footstep2.wav", 0.8, 2.5);
 			else if(ran > 0.4)
-				sound(self, CHAN_BODY, "sounds/player/footstep3.wav", 0.6, 2.5);
+				sound(self, CHAN_BODY, "sounds/player/footstep3.wav", 0.8, 2.5);
 			else if(ran > 0.2)
-				sound(self, CHAN_BODY, "sounds/player/footstep4.wav", 0.6, 2.5);
+				sound(self, CHAN_BODY, "sounds/player/footstep4.wav", 0.8, 2.5);
 			else
-				sound(self, CHAN_BODY, "sounds/player/footstep5.wav", 0.6, 2.5);
+				sound(self, CHAN_BODY, "sounds/player/footstep5.wav", 0.8, 2.5);
 			self.lastsound_time = time;
 		}
 	}
@@ -193,7 +193,7 @@ void() PlayerSpawn =
 	self.grenades = self.grenades | 1;  // add frag grenades to player inventory
 	self.primary_grenades = 0; 			// start off without grenades
 	self.pri_grenade_state = 0; 		// defines that frag grenades are for player first, not betty
-	self.secondary_grenades = 0;
+	self.secondary_grenades = -1;		// shows that we both don't have betties AND shouldn't draw the image onscreen
 
 	/*self.secondaryweapon = W_KAR_SCOPE;
 	self.secondaryammo = getWeaponAmmo(self.secondaryweapon);
@@ -261,11 +261,6 @@ void() SetChangeParms =
 {
 };
 
-void() info_player_start =
-{
-	
-};
-
 
 void(string com) SV_ParseClientCommand =
 {
@@ -328,10 +323,14 @@ void(string com) SV_ParseClientCommand =
 
 					SwitchWeapon(wep);
 					
-					Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
+					Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);
 					
 					self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
 				}
+			break;
+			case "god":
+					self.flags = self.flags | FL_GODMODE;
+					break;
 		}
 	}
 };

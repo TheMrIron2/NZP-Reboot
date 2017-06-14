@@ -30,7 +30,9 @@ void() StartFrame =
 	
 	if (SpawnedIn)
 		InitRounds();
+		
 	}
+	
 }
 
 //called when map loaded
@@ -75,6 +77,7 @@ void() worldspawn =
 	
 	precache_sound("sounds/weapons/grenade/prime.wav");
 	precache_sound("sounds/weapons/grenade/throw.wav");
+	precache_sound("sounds/weapons/grenade/explode.wav");
 	
 	precache_sound("sounds/weapons/knife/knife_hitbod.wav");
 	precache_sound("sounds/weapons/knife/knife.wav");
@@ -89,6 +92,7 @@ void() worldspawn =
 	precache_sound("sounds/misc/buy.wav");
 	precache_sound("sounds/misc/wood_door.wav");
 	precache_sound("sounds/misc/debris.wav");
+	precache_sound("sounds/misc/denybuy.wav");
 
 	
 	precache_model ("models/weapons/m1911/v_colt.mdl");
@@ -185,6 +189,8 @@ void() worldspawn =
 	clientstat(STAT_WEAPONDURATION, EV_FLOAT, weapon_animduration);
 	clientstat(STAT_WEAPON2DURATION, EV_FLOAT, weapon2_animduration);
 	clientstat(STAT_WEAPONZOOM, EV_FLOAT, zoom);
+	clientstat(STAT_INSTA, EV_FLOAT, insta_icon);
+	clientstat(STAT_X2, EV_FLOAT, x2_icon);
 
 	mappath = strcat("maps/", mapname);
 	mappath = strzone(mappath);
