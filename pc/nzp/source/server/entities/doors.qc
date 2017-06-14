@@ -64,7 +64,7 @@ void() door_go_up;
 
 void() door_blocked =
 {
-		//	DamageHandler (other, self, self.dmg, S_NORMAL);   // naievil (FIXME) probably useless...
+			DamageHandler (other, self, self.dmg, S_NORMAL); 
 	
 // if a door has a negative wait, it would never come back if blocked,
 // so let it just squash the object to death real fast
@@ -294,7 +294,7 @@ void() door_trigger_touch =
 		return;
 	}
 	
-	if (other.health <= 20)//FIXME, BUYING DOORS WHILE DOWNED?
+	if (other.health <= 20)
 		return;
 
 	activator = other;
@@ -570,7 +570,7 @@ void() func_door_nzp =
 	self.target8 = self.target;
 
 	self.max_health = self.health;
-  self.solid = SOLID_BSP;
+	self.solid = SOLID_BSP;
 	self.movetype = MOVETYPE_PUSH;
 	setorigin (self, self.origin);	
 	setmodel (self, self.model);

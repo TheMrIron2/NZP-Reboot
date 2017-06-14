@@ -33,7 +33,7 @@ void GivePerk(float perk) {
 	float endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	self.weaponskin = backupWepSkin;
 	self.perk_delay = self.fire_delay;
-	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
+	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);
 	SetPerk(self, self.perks);
 }
 

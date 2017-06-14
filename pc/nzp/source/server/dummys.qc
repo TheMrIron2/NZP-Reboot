@@ -23,6 +23,8 @@ void() trigger_onlyregistered   = {remove(self);};
 void() trigger_push             = {remove(self);};
 void() trigger_hurt             = {remove(self);};
 
+void() SUB_Remove = {remove(self);}
+
 // Player Starts
 void() info_player_start        = {};
 void() info_player_start2       = {};

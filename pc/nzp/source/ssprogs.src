@@ -3,6 +3,7 @@ server/ssdefs.qc
 shared/customdefs.qc
 shared/weapon_defines.qc
 server/customdefs.qc
+server/clientfuncs.qc
 
 server/dummys.qc
 server/rounds.qc

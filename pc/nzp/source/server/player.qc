@@ -323,7 +323,7 @@ void(string com) SV_ParseClientCommand =
 
 					SwitchWeapon(wep);
 					
-					Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
+					Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);
 					
 					self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
 				}
