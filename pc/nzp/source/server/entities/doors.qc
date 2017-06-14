@@ -147,9 +147,6 @@ void() door_fire =
 	local entity 	oself;
 	local entity	starte;
 
-	if (self.owner != self)
-		objerror ("door_fire: self.owner != self");
-
 	if (isPowerOn == FALSE)
 	{
 		if (self.spawnflags & DOOR_POWER )

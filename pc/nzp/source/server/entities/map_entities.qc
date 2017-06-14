@@ -515,8 +515,19 @@ void()	turnswitch4	=[	4,		SUB_Null	] {self.frame = 2;};
 
 void()	offswitch2		=[	2,		offswitch3		] {self.frame = 2;};
 void()	offswitch3		=[	3,		offswitch4		] {self.frame = 1;};
-void()	offswitch4		=[	4,		SUB_Null	] {self.frame = 0;};
+void()	offswitch4		=[	4,		SUB_Null		] {self.frame = 0;};
 
+
+void zap_zombie () {
+	entity tempe;
+
+	if (other.classname == "ai_zombie") {
+		tempe = self;
+		self = other;
+		self.th_die();
+		self = tempe;	
+	}
+}
 
 
 void zapper_play () {
@@ -526,8 +537,8 @@ void zapper_play () {
 		te_lightning3(self, self.origin, zents.origin);
 	}
 
+	zents.touch = zap_zombie;
 	
-
 	self.think = zapper_play;
 	self.nextthink = time + (1*random());
 }
