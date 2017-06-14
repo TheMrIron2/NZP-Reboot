@@ -57,6 +57,9 @@ void() W_SprintStop =
 	float endframe = GetFrame(self.weapon,SPRINT_OUT_END);
 	string modelname = GetWeaponModel(self.weapon, 0);
 	
+	if (self.isBuying)
+		return;
+	
 	self.viewzoom = 1;
 
 	Set_W_Frame (startframe, endframe, 0, 0, SPRINT, SUB_Null, modelname, false, S_BOTH);
@@ -71,6 +74,7 @@ void W_SprintStart () {
 		self.fire_delay2 > time ||
 		self.new_anim_stop ||
 		self.new_anim2_stop ||
+		self.isBuying || 
 		!(self.flags & FL_ONGROUND)) {
 		return;
 	}
@@ -634,6 +638,7 @@ void (float shotcount, float sprd, float Damage/*, float headmulti, float legmul
 				hitent = trace_ent.owner;
 			else
 				hitent = trace_ent;
+
 		}
 		hitent = world;
 
@@ -781,7 +786,7 @@ void(float side) W_Fire =
 
 
 /******************************
-* W_Knife                  *
+* W_Knife                     *
 ******************************/
 
 void () W_Knife =
