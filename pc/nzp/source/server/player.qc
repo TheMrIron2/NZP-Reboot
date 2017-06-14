@@ -261,11 +261,6 @@ void() SetChangeParms =
 {
 };
 
-void() info_player_start =
-{
-	
-};
-
 
 void(string com) SV_ParseClientCommand =
 {

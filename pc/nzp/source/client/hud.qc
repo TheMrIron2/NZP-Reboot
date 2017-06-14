@@ -85,7 +85,7 @@ void() HUD_AmmoString =
 	int len = 0;
 	    
 	
-	if (GetLowAmmo(getstatf(STAT_ACTIVEWEAPON), 1) >= getstatf(STAT_CURRENTMAG) /*&& getstatf(STAT_ZOOM) != 2*/) // naievil (FIXME) can't do zoom yet!!
+	if (GetLowAmmo(getstatf(STAT_ACTIVEWEAPON), 1) >= getstatf(STAT_CURRENTMAG) && getstatf(STAT_WEAPONZOOM) != 2)
 	{
 		if (0 < getstatf(STAT_AMMO) && getstatf(STAT_CURRENTMAG) >= 0) {
 			len = 6;

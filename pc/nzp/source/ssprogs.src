@@ -4,6 +4,7 @@ shared/customdefs.qc
 shared/weapon_defines.qc
 server/customdefs.qc
 
+server/dummys.qc
 server/rounds.qc
 server/main.qc
 server/player.qc
