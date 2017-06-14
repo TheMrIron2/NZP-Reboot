@@ -93,22 +93,22 @@ void() PlayerPostThink =
 	}
 	
 	//footsteps
-	if((vlen(self.velocity) > 315) &&( time - self.lastsound_time > 0.3) && (self.flags & FL_ONGROUND))
+	if((vlen(self.velocity) > 100) &&(( time - self.lastsound_time > 0.4) || (time - self.lastsound_time > 0.3 && self.sprinting)) && (self.flags & FL_ONGROUND))
 	{
 		local float movelen = vlen(input_movevalues);
 		if(movelen > 300)
 		{
 			local float ran = random();
 			if(ran > 0.8)
-				sound(self, CHAN_BODY, "sounds/player/footstep1.wav", 0.6, 2.5);
+				sound(self, CHAN_BODY, "sounds/player/footstep1.wav", 0.8, 2.5);
 			else if(ran > 0.6)
-				sound(self, CHAN_BODY, "sounds/player/footstep2.wav", 0.6, 2.5);
+				sound(self, CHAN_BODY, "sounds/player/footstep2.wav", 0.8, 2.5);
 			else if(ran > 0.4)
-				sound(self, CHAN_BODY, "sounds/player/footstep3.wav", 0.6, 2.5);
+				sound(self, CHAN_BODY, "sounds/player/footstep3.wav", 0.8, 2.5);
 			else if(ran > 0.2)
-				sound(self, CHAN_BODY, "sounds/player/footstep4.wav", 0.6, 2.5);
+				sound(self, CHAN_BODY, "sounds/player/footstep4.wav", 0.8, 2.5);
 			else
-				sound(self, CHAN_BODY, "sounds/player/footstep5.wav", 0.6, 2.5);
+				sound(self, CHAN_BODY, "sounds/player/footstep5.wav", 0.8, 2.5);
 			self.lastsound_time = time;
 		}
 	}
