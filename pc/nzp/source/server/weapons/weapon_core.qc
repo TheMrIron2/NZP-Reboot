@@ -75,6 +75,7 @@ void W_SprintStart () {
 		self.new_anim_stop ||
 		self.new_anim2_stop ||
 		self.isBuying || 
+		self.downed ||
 		!(self.flags & FL_ONGROUND)) {
 		return;
 	}

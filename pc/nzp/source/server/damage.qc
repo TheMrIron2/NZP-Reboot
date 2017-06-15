@@ -51,7 +51,6 @@ void() GetDown =
 		{
 			coop = 1;
 		}
-		who = who.chain;
 	}	
 	
 	if (!deathmatch && !coop && !(self.perks & P_REVIVE))
@@ -89,9 +88,6 @@ void() GetDown =
 	}
 	
 	self.perks = 0;
-	SetPerk(self, self.perks);
-	if (self.health == 10)
-		return;
 
 	self.weaponbk = self.weapon;
 	self.currentammobk = self.currentammo;
@@ -117,6 +113,7 @@ void() GetDown =
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);
 	
+	SetPerk(self, 0);
 }
 
 void () GetUp =

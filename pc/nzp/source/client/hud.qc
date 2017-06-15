@@ -84,7 +84,6 @@ void() HUD_AmmoString =
 {
 	int len = 0;
 	    
-	
 	if (GetLowAmmo(getstatf(STAT_ACTIVEWEAPON), 1) >= getstatf(STAT_CURRENTMAG) && getstatf(STAT_WEAPONZOOM) != 2)
 	{
 		if (0 < getstatf(STAT_AMMO) && getstatf(STAT_CURRENTMAG) >= 0) {
@@ -799,7 +798,7 @@ void(float width, float height) HUD_Progressbar =
 	drawfill ([bar_x - 1, bar_y - 1, 0], [bar_width+2, bar_height, 0], [0, 0, 0], 0.4);
 	drawfill ([bar_x, bar_y, 0], [bar_width * percent, bar_height-2, 0], [1, 1, 1], 0.4);
 	
-	drawstring([(width - (88))/2, height*0.75 + 10, 0], "Reviving...", [0.0175*width, 0.0175*width, 0], [1, 1, 1], 1, 1); 
+	drawstring([(width - (88))/2, height*0.77 + 10, 0], "Reviving...", [0.0175*width, 0.0175*width, 0], [1, 1, 1], 1, 1); 
 }
 
 /*******************
@@ -925,13 +924,13 @@ void(float width, float height) HUD_Draw =
 	HUD_Perks(width, height);
 	HUD_Progressbar(width, height);
 	HUD_Powerups();
+	HUD_AmmoString();
 	
 	if (HUD_Change_time > time)
 	{
 		HUD_Ammo(width, height);
 		HUD_Grenades(width, height);
 		HUD_Weaponstring(width, height);
-		HUD_AmmoString();
 	}
 		
 	if (useprint_time > time) 
