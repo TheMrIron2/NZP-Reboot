@@ -34,6 +34,9 @@ void() W_AimIn =
 		self.zoom = 1;
 		self.viewzoom = 0.9;
 	}
+	
+	if (!self.downed)	
+		playaim();
 		
 }
 
@@ -49,6 +52,9 @@ void() W_AimOut =
 	
 	self.zoom = 0;
 	self.viewzoom = 1;
+	
+	if (!self.downed)
+		playout();
 }
 
 void() W_SprintStop =
@@ -79,7 +85,7 @@ void W_SprintStart () {
 		!(self.flags & FL_ONGROUND)) {
 		return;
 	}
-
+	
 	float startframe = GetFrame(self.weapon,SPRINT_IN_START);
 	float endframe = GetFrame(self.weapon,SPRINT_IN_END);
 	string modelname = GetWeaponModel(self.weapon, 0);
@@ -298,6 +304,8 @@ void(float side) W_Reload =
 	
 	if (self.currentammo)
 	{
+		playreload();
+		
 		startframe = GetFrame(self.weapon,RELOAD_START);
 		endframe = GetFrame(self.weapon,RELOAD_END);
 		reloadcancelframe = GetFrame(self.weapon,RELOAD_CANCEL);
@@ -737,6 +745,8 @@ void(float side) W_Fire =
 	} else if (self.zoom == 2)
 		spread = spread * 0.05;
 
+	if (self.downed)
+		playdownfire();
 
 	//Fire weapons
 	if (firetype == 1)

@@ -47,6 +47,8 @@ void() GetDown =
 	local string modelname;
 	entity who;
 	
+	playdown();
+	
 	self.view_ofs = '0 0 -15';
 	self.velocity = '-80 0 -80';           			// Stop any old movement
 	self.zoom = 0;

@@ -2,6 +2,74 @@
 //	Player.qc - Various stuff done for the player, including per-frame functions like PlayerPreThink and PlayerPostThink, also client specific stuff like PutClientInServer etc.
 //
 
+
+// player animations
+
+void() playdown 	 	=[	1,		playdown1	  	] {self.frame = 32;}
+void() playdown1  		=[	2,		playdown2	  	] {self.frame = 33;} 
+void() playdown2  		=[	2,		playdown3	  	] {self.frame = 34;} 
+void() playdown3  		=[	2,		playdown4	  	] {self.frame = 35;} 
+void() playdown4  		=[	2,		playdown5	  	] {self.frame = 36;} 
+void() playdown5  		=[	2,		playdown5	  	] {self.frame = 37;} 
+//
+void() playreload   	=[	1,		playreload1	  	] {self.frame = 11;}
+void() playreload1  	=[	2,		playreload2	  	] {self.frame = 12;}
+void() playreload2  	=[	3,		playreload3	  	] {self.frame = 13;}
+void() playreload3  	=[	4,		playreload4	  	] {self.frame = 14;}
+void() playreload4  	=[	5,		playreload5	  	] {self.frame = 15;}
+void() playreload5  	=[	6,		playreload6	  	] {self.frame = 16;}
+void() playreload6  	=[	7,		playreload7	  	] {self.frame = 17;}
+void() playreload7  	=[	8,		playreload8	 	] {self.frame = 18;}
+void() playreload8  	=[	9,		playreload9 	] {self.frame = 19;}
+void() playreload9   	=[	10,		playreload10	] {self.frame = 20;}
+void() playreload10 	=[	11,		playreload11	] {self.frame = 21;}
+void() playreload11 	=[	12,		playreload12	] {self.frame = 22;}
+void() playreload12 	=[	13,		playreload13	] {self.frame = 23;}
+void() playreload13 	=[	14,		playreload13	] {self.frame = 24;}
+//
+void() playdownfire 	=[	1,		playdownfire1	] {self.frame = 38;}
+void() playdownfire1  	=[	2,		playdownfire1	] {self.frame = 39;} 
+//
+void() playaim 	 		=[	1,		playaim1		] {self.frame = 8;} // naievil -- player aimin anim
+void() playaim1 		=[	2,		playaim1		] {self.frame = 9;} // naievil -- second player aimin anim
+//
+void() playout 	  		=[	1,		playout1		] {self.frame = 10;} // naievil -- player aim out anim
+void() playout1 		=[	2,		playout1		] {self.frame = 11;} // naievil -- second player aim out anim
+//
+void() playrun1 		=[	1,		playrun2		] {self.frame = 25;}
+void() playrun2 		=[	2,		playrun3		] {self.frame = 26;}
+void() playrun3		 	=[	3,		playrun4		] {self.frame = 27;}
+void() playrun4 		=[	4,		playrun5		] {self.frame = 28;}
+void() playrun5 		=[	5,		playrun6		] {self.frame = 29;}
+void() playrun6 		=[	6,		playrun7		] {self.frame = 30;}
+void() playrun7 		=[	7,		playrun8		] {self.frame = 31;}
+void() playrun8 		=[	8,		playrun9		] {self.frame = 25;}
+void() playrun9 		=[	9,		playrun10		] {self.frame = 26;}
+void() playrun10 		=[	10,		playrun11		] {self.frame = 27;}
+void() playrun11 		=[	11,		playrun12		] {self.frame = 28;}
+void() playrun12 		=[	12,		playrun13		] {self.frame = 29;}
+void() playrun13 		=[	13,		playrun14		] {self.frame = 30;}
+void() playrun14 		=[	14,		playrun15		] {self.frame = 25;}
+void() playrun15 		=[	15,		playrun16		] {self.frame = 26;}
+void() playrun16 		=[	16,		playrun17		] {self.frame = 27;}
+void() playrun17 		=[	17,		playrun18		] {self.frame = 28;}
+void() playrun18 		=[	18,		playrun19		] {self.frame = 29;}
+void() playrun19 		=[	19,		playrun20		] {self.frame = 30;}
+void() playrun20 		=[	20,		playrun21		] {self.frame = 31;}
+void() playrun21 		=[	21,		playrun22		] {self.frame = 25;}
+void() playrun22 		=[	22,		playrun23		] {self.frame = 26;}
+void() playrun23 		=[	23,		playrun24 		] {self.frame = 27;}
+void() playrun24 		=[	24,		playrun25		] {self.frame = 28;}
+void() playrun25 		=[	25,		playrun26		] {self.frame = 29;}
+void() playrun26 		=[	26,		playrun27		] {self.frame = 30;}
+void() playrun27 		=[	27,		playrun28		] {self.frame = 25;}
+void() playrun28 		=[	28,		playrun29		] {self.frame = 26;}
+void() playrun29 		=[	29,		playrun30		] {self.frame = 27;}
+void() playrun30 		=[	30,		playrun31		] {self.frame = 28;}
+void() playrun31 		=[	31,		playrun32		] {self.frame = 29;}
+void() playrun32 		=[	32,		playrun33		] {self.frame = 30;}
+void() playrun33 		=[	33,		playrun33		] {self.frame = 31;}
+
 void() PlayerJump =
 {
 	if (!(self.flags & FL_ONGROUND) 
@@ -23,6 +91,7 @@ void() PlayerPreThink =
 	} else {
 		self.maxspeed = 175;
 		if (self.sprinting) {
+			playrun1();
 			self.maxspeed *= 1.66;
 		} else if (self.zoom == 1) {
 			self.maxspeed *= 0.5;
