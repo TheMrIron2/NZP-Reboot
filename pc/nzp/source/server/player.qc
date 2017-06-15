@@ -174,8 +174,10 @@ void() ClientConnect =
 };
 
 void() PlayerSpawn =
-{
+{	
 	local entity spawnpoint;
+	float player_count = 0;
+	
 	spawnpoint = find(world, classname, "info_player_start");
 	
 	self.isspec = FALSE;
@@ -184,6 +186,25 @@ void() PlayerSpawn =
 	setmodel(self, "models/player.mdl");
 	self.movetype = MOVETYPE_WALK;
 	self.max_health = self.health = 100;
+	
+	entity who = find(world,classname,"player");
+	while(who != world && who != self && player_count < 4)
+	{
+		if(who)
+		{
+			coop = 1;	
+			player_count++;
+			break;
+		}
+	}
+
+	switch(player_count) {
+		default: spawnpoint = find(world, classname, "info_player_start"); break;
+		case 1: spawnpoint = find(world, classname, "info_player_nikolai"); break;
+		case 2: spawnpoint = find(world, classname, "info_player_takeo"); break;
+		case 3: spawnpoint = find(world, classname, "info_player_doctor"); break;
+	}
+	
 	self.origin = spawnpoint.origin + [0,0,1];
 	self.angles = spawnpoint.angles;
 	self.fixangle = TRUE;
@@ -193,8 +214,14 @@ void() PlayerSpawn =
 	self.currentammo = 32;
 	self.currentmag = 8;
 	self.weapon = W_COLT;
+	
 	self.grenades = self.grenades | 1;  // add frag grenades to player inventory
-	self.primary_grenades = 0; 			// start off without grenades
+	
+	if (rounds)
+		self.primary_grenades = 2;
+	else
+		self.primary_grenades = 0; 		// start off without grenades
+		
 	self.pri_grenade_state = 0; 		// defines that frag grenades are for player first, not betty
 	self.secondary_grenades = -1;		// shows that we both don't have betties AND shouldn't draw the image onscreen
 

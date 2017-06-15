@@ -15,7 +15,6 @@ float coop;
 .float isspec;
 string mappath;
 
-
 //money
 .float points;
 .float cost;
