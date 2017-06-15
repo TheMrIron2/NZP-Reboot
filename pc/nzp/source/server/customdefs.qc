@@ -75,6 +75,7 @@ void Weapon_Logic();
 .float weapon2frame;
 .float reloadinterupted;
 .float hitcount;
+.float invoke_revive;
 
 #define S_LEFT 0
 #define S_RIGHT 1

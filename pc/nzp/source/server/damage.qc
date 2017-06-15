@@ -45,13 +45,13 @@ void() GetDown =
 	
 	/* naievil -- there is a better place for this...*/
 	who = find(world,classname,"player");
-	while(who != world && !who.downed)
+	while(who != world)
 	{
 		if(who)
 		{
 			coop = 1;
 		}
-		who = find(who,classname,"player");
+		who = who.chain;
 	}	
 	
 	if (!deathmatch && !coop && !(self.perks & P_REVIVE))
@@ -147,6 +147,13 @@ void () GetUp =
 	
 };
 
+void(entity ent) CheckRevive =
+{
+	if (self.invoke_revive) {
+		GetUp();
+		self.invoke_revive = 0;
+	}
+}
 
 void(entity attacker, float d_style) DieHandler =
 {

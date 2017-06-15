@@ -1238,6 +1238,7 @@ void(entity ent) CheckPowerups =
 void() CheckPlayer = 
 {
 	CheckPowerups(self);
+	CheckRevive(self);
 	
 	local entity ent; 
 	ent = findradius(self.origin, 50);
@@ -1253,10 +1254,12 @@ void() CheckPlayer =
 			
 			ent.velocity += push;
 		}
-		if(ent.classname == "player" && ent != self && ent.downed)
+		else if(ent.classname == "player" && ent != self && ent.downed && !self.downed)
 		{
 			centerprint(self, "Press USE to revive");
-			// naievil -- actual revive here
+			
+			if (self.button7)
+				ent.invoke_revive = 1;
 		}
 		ent = ent.chain;
 	}
