@@ -70,6 +70,16 @@ void() playrun31 		=[	31,		playrun32		] {self.frame = 29;}
 void() playrun32 		=[	32,		playrun33		] {self.frame = 30;}
 void() playrun33 		=[	33,		playrun33		] {self.frame = 31;}
 
+void() playwalk		=[   1,     playwalk1		] {if (self.velocity) { self.frame = 0; }}
+void() playwalk1		=[   2,     playwalk2		] {if (self.velocity) { self.frame = 1; }}
+void() playwalk2		=[   3,     playwalk3		] {if (self.velocity) { self.frame = 2; }}
+void() playwalk3		=[   4,     playwalk4		] {if (self.velocity) { self.frame = 3; }}
+void() playwalk4		=[   5,     playwalk5		] {if (self.velocity) { self.frame = 4; }}
+void() playwalk5		=[   6,     playwalk6		] {if (self.velocity) { self.frame = 5; }}
+void() playwalk6		=[   7,     playwalk7		] {if (self.velocity) { self.frame = 6; }}
+void() playwalk7		=[   8,     playwalk8		] {if (self.velocity) { self.frame = 7; }}
+void() playwalk8		=[   9,     playwalk8		] {if (self.velocity) { self.frame = 8; }}
+
 void() PlayerJump =
 {
 	if (!(self.flags & FL_ONGROUND) 
@@ -163,6 +173,9 @@ void() PlayerPostThink =
 		local float movelen = vlen(input_movevalues);
 		if(movelen > 300)
 		{
+			if (!self.sprinting)
+				playwalk();
+				
 			local float ran = random();
 			if(ran > 0.8)
 				sound(self, CHAN_BODY, "sounds/player/footstep1.wav", 0.8, 2.5);

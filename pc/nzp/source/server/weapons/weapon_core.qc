@@ -72,6 +72,9 @@ void() W_SprintStop =
 	self.sprinting = 0;
 	self.into_sprint = 0;
 	self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
+	
+	if (self.velocity)
+		playwalk();
 }
 
 void W_SprintStart () {
@@ -1299,7 +1302,6 @@ void() CheckPlayer =
 			
 			ent.velocity += push;
 		}
-		
 		ent = ent.chain;
 	}
 }
