@@ -302,7 +302,6 @@ void() perk_speed =
 	precache_model ("models/machines/speed_cola.mdl");
 	precache_model ("models/machines/v_perk.mdl");
 	precache_sound ("sounds/machines/perk_drink.wav");
-	precache_sound("player/talk/fast.wav");//FIXME(Jukki)
 	setorigin (self, self.origin);
 	setmodel (self, "models/machines/speed_cola.mdl");
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);

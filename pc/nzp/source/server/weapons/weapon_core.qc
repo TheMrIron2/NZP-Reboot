@@ -1240,27 +1240,55 @@ void() CheckPlayer =
 	CheckPowerups(self);
 	CheckRevive(self);
 	
-	local entity ent; 
-	ent = findradius(self.origin, 50);
+	entity ent;
+	ent = findradius(self.origin, 70);
 		
 	while(ent)
 	{
-		if(ent.classname == "player" && ent != self && !ent.downed) // small player push 
+		if(ent.classname == "player" && ent != self && ent.downed && !self.downed)
+		{
+			useprint (self, 13, 0, 0);
+			
+			if (self.button7) {
+				centerprint(ent, "Another player is reviving you...");
+				
+				if (!self.progress_bar_percent) {
+					Set_W_Frame (0, 21, 0, 0, SPRINT, SUB_Null, "models/v_morphine.mdl", false, S_BOTH);
+					self.progress_bar = 4 + time;     
+					self.progress_bar_time = 4;
+					self.progress_bar_percent = 1;
+					self.reviving = true;
+				}
+				
+				if (self.revived) {
+					self.reviving = 0;
+					self.progress_bar = 0;
+					self.progress_bar_time = 0;
+					self.progress_bar_percent = 0;
+					self.revived = 0;
+					ent.invoke_revive = 1;
+					ReturnWeaponModel();
+				}
+			}
+			else if (!self.button7) {
+				self.reviving = 0;
+				self.progress_bar = 0;
+				self.progress_bar_time = 0;
+				self.progress_bar_percent = 0;
+				self.revived = 0;
+				ReturnWeaponModel();
+			}
+		}
+		else if(ent.classname == "player" && ent != self && !ent.downed) // small player push 
 		{
 			vector push;
-			push = ent.origin - self.origin;
+			push =  ent.origin - self.origin;
 			push_z = 0;
-			push = normalize(push) * 5;
+			push = normalize(push) * 2;
 			
 			ent.velocity += push;
 		}
-		else if(ent.classname == "player" && ent != self && ent.downed && !self.downed)
-		{
-			centerprint(self, "Press USE to revive");
-			
-			if (self.button7)
-				ent.invoke_revive = 1;
-		}
+		
 		ent = ent.chain;
 	}
 }

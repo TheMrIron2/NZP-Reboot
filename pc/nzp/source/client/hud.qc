@@ -691,6 +691,9 @@ void(float width, float height) HUD_Useprint =
 			case 12://packapunch
 				usestring = strcat("Hold ",usebutton, " to Pack a Punch [Cost:", ftos(useprint_cost), "]");
 				break;
+			case 13://revive
+				usestring = strcat("Hold ",usebutton, " to revive player");
+				break;
 			default:
 				usestring = "This should not happen you dum fuck";
 				break;

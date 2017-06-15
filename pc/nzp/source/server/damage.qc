@@ -45,7 +45,7 @@ void() GetDown =
 	
 	/* naievil -- there is a better place for this...*/
 	who = find(world,classname,"player");
-	while(who != world)
+	while(who != world && who != self)
 	{
 		if(who)
 		{
@@ -82,10 +82,10 @@ void() GetDown =
 	}
 	
 	if (self.perks && P_REVIVE) {	
-	self.progress_bar = 10 + time;     
-	self.progress_bar_time = 10;
-	self.progress_bar_percent = 1;
-	self.points = 10*rint((self.points*0.95)/10);
+		self.progress_bar = 10 + time;     
+		self.progress_bar_time = 10;
+		self.progress_bar_percent = 1;
+		self.points = 10*rint((self.points*0.95)/10);
 	}
 	
 	self.perks = 0;

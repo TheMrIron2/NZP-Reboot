@@ -39,6 +39,7 @@ void() StartFrame =
 void() worldspawn =
 {
 	precache_model ("models/player.mdl");
+	precache_model ("models/v_morphine.mdl");
 	
 	precache_model ("models/ai/zfull.mdl");
 	precache_model ("models/ai/zb#.mdl");
@@ -94,7 +95,6 @@ void() worldspawn =
 	precache_sound("sounds/misc/debris.wav");
 	precache_sound("sounds/misc/denybuy.wav");
 
-	
 	precache_model ("models/weapons/m1911/v_colt.mdl");
 	precache_model ("models/weapons/m1911/g_colt.mdl");
 	precache_model ("progs/VModels/v_nade.mdl");

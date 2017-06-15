@@ -118,10 +118,17 @@ void() PlayerPostThink =
 	
 	if (self.progress_bar) {
 		if (self.progress_bar < time) {
-			GetUp();
+			if (self.downed)
+				GetUp();
+			
+			if (self.reviving)
+				self.revived = 1;
+			
 			self.progress_bar = 0;
 			self.progress_bar_time = 0;
 			self.progress_bar_percent = 0;
+			
+				
 		} else {
 			float remaining = self.progress_bar - time;
 			self.progress_bar_percent = invertfloat((remaining / self.progress_bar_time));
