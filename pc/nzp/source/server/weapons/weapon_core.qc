@@ -435,7 +435,10 @@ void(vector org, vector vel, float damage) SpawnBlood =
 {
   local entity f;
   
-	particle (org, vel*0.1, 73, damage*2);
+  te_blood(org, vel, 1);
+
+  
+	//particle (org, vel*0.1, 73, damage*2);
 	//below is for gib testing.
 	//particle (org, org, 225, 1);
 	
@@ -501,7 +504,7 @@ void() LungeKnifeHit =
 			f_damage = 500;
 		else
 			f_damage = 150;
-		
+					
 		if (trace_ent.classname == "ai_zombie_head")
 		{
 			hit_ent = trace_ent.owner;
@@ -519,12 +522,13 @@ void() LungeKnifeHit =
 		{
 			hit_ent = trace_ent;
 		}
-		/*if (hit_ent.takedamage != DAMAGE_NOMARKER)
+		
+		if (hit_ent.takedamage)
 		{
 			org = source + (v_forward * 20);
 			SpawnBlood (org, org, 50);
 			//hit = 1;
-		}*/
+		}
 		
 		DamageHandler (hit_ent, self, f_damage, S_KNIFE);
 	}
@@ -560,6 +564,8 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 			self = oldself;
 			return;
 		}
+		
+		SpawnBlood (org, vel, damage*10);
 		
 
 		f_damage = damage;
