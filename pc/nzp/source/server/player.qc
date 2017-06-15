@@ -4,13 +4,9 @@
 
 void() PlayerJump =
 {
-	if (!(self.flags & FL_ONGROUND))
-		return;
-
-	if ( !(self.flags & FL_JUMPRELEASED) )
-		return;
-
-	if (self.downed) {
+	if (!(self.flags & FL_ONGROUND) 
+	    || !(self.flags & FL_JUMPRELEASED)
+		|| self.downed) {
 		return;
 	}
 			
@@ -128,7 +124,7 @@ void() PlayerPostThink =
 			self.progress_bar_percent = 0;
 		} else {
 			float remaining = self.progress_bar - time;
-			self.progress_bar_percent = (remaining / self.progress_bar_time);
+			self.progress_bar_percent = invertfloat((remaining / self.progress_bar_time));
 		}
 	}
 

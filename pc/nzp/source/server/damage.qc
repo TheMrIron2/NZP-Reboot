@@ -1,4 +1,6 @@
-
+//
+// damage.qc -- used for any sort of down, hit, etc that the player or entity experiences
+//
 
 void() EndGame =
 {
@@ -96,10 +98,16 @@ void() GetDown =
 	self.currentmagbk = self.currentmag;
 	self.currentmagbk2 = self.currentmag2;
 	
-	self.weapon = W_BIATCH;
-	self.currentammo = 12;
-	self.currentmag = 6;
-	self.currentmag2 = 6;
+	if (self.weapon == W_BIATCH || self.secondaryweapon == W_BIATCH || self.progress_bar_percent > 0) {
+		self.weapon = W_BIATCH;
+		self.currentammo = 12;
+		self.currentmag = 6;
+		self.currentmag2 = 6;
+	} else {
+		self.weapon = W_COLT;
+		self.currentammo = 16;
+		self.currentmag = 8;
+	}
       
   	modelname = GetWeaponModel(self.weapon, 0);
 	self.weaponmodel = modelname;

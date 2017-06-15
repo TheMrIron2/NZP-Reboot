@@ -798,8 +798,8 @@ void(float side) W_Fire =
 void () W_Knife =
 {
 	if (time < self.knife_delay || self.new_anim_stop ||
-	  self.zoom == 2 || self.zoom == 3 || self.downed 
-      || (!(self.flags & FL_ONGROUND)))
+	  self.zoom == 2 || self.zoom == 3 || self.health == 10 || 
+	  (!(self.flags & FL_ONGROUND)))
 		return;
 
 	vector	source;
