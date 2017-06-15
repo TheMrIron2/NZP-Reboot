@@ -9,6 +9,7 @@ const float EVENT_UPDATEVMODEL = 20;
 const float EVENT_UPDATEV2MODEL = 21;
 const float EVENT_PERK = 22;
 const float EVENT_UPDATE = 23;
+const float EVENT_BROADCAST = 24;
 
 //nzp weapon defines
 //id list

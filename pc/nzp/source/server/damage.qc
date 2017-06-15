@@ -30,6 +30,16 @@ void() EndGame =
 	}
 }
 
+void() remove_revive =
+{
+	if (!self.owner.downed)
+		SUB_Remove ();
+	else {
+		self.think = remove_revive;
+		self.nextthink = time + 0.1;
+	}
+}
+
 void() GetDown =
 {
 	float startframe;
@@ -50,6 +60,7 @@ void() GetDown =
 		if(who)
 		{
 			coop = 1;
+			break;
 		}
 	}	
 	
@@ -87,6 +98,8 @@ void() GetDown =
 		self.points = 10*rint((self.points*0.95)/10);
 	}
 	
+	BroadcastMessage(time + 3, 2);
+	
 	self.perks = 0;
 
 	self.weaponbk = self.weapon;
@@ -112,6 +125,19 @@ void() GetDown =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);
+	
+	local entity revive;
+	
+	revive = spawn ();
+	revive.owner = self;
+	revive.movetype = MOVETYPE_NONE;
+	revive.solid = SOLID_NOT;
+	revive.think = remove_revive;
+	revive.nextthink = time + 0.1;
+
+	setmodel (revive, "progs/Sprites/revive.spr");
+	revive.origin = self.origin + VEC_VIEW_OFS;
+	setorigin (revive, revive.origin);
 	
 	SetPerk(self, 0);
 }

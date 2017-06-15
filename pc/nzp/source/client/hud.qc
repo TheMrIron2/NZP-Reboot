@@ -911,6 +911,21 @@ void() HUD_Powerups = {
 //	drawstring([0.01*g_width, 0.14*g_height, 0], ftos(getstatf(STAT_X2)), [0.03*g_width, 0.03*g_width, 0], [1, 1, 1], 1, 1);
 }
 
+void() HUD_Broadcast = {
+
+	string broadcast_msg = "";
+	float health = getstatf(STAT_HEALTH);
+	
+		switch(broadcast_type) {
+			case 2: broadcast_msg = "A Player needs to be revived"; break;
+			default: broadcast_msg = "benis"; break;
+		}
+	float print_width = stringwidth (broadcast_msg, 0, [0.015*g_width, 0.015*g_width, 0]);
+	float x = (g_width - print_width)/2;
+	if (broadcast_type == 2 && health > 19)
+		drawstring([x, g_height/2, 0], broadcast_msg, [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1);
+}
+
 /*******************
 *     HUD Draw     *
 *******************/
@@ -938,6 +953,9 @@ void(float width, float height) HUD_Draw =
 		
 	if (Hitmark_time > time)
 		HUD_Hitmark();
+		
+	if (broadcast_time > time)
+		HUD_Broadcast();
 }
 
 

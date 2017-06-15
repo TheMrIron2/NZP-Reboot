@@ -26,8 +26,6 @@ void SetUpdate(entity client, float type, float val1, float val2, float val3)
 }
 
 void(entity to, float type, float cost, float weapon) useprint = {
-	
-    
     msg_entity = to;
 	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
 	WriteByte(MSG_ONE, EVENT_USEPRINT);
@@ -91,6 +89,18 @@ void(string to, float skin) UpdateV2model =
 	msg_entity = self;
 	multicast('0 0 0', MULTICAST_ONE);
 }
+
+void(float broadcast_time, float type) BroadcastMessage =
+{
+	WriteByte(MSG_ALL, SVC_CGAMEPACKET);
+	WriteByte(MSG_ALL, EVENT_BROADCAST);
+	WriteByte(MSG_ALL, broadcast_time);
+	WriteByte(MSG_ALL, type);
+}
+
+// *****************************************
+// Unrelated to engine, but custom functions
+// *****************************************
 
 void WeaponSwitch(entity player) {
 	float wep, cmag, cmag2, cammo;

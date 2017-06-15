@@ -626,5 +626,9 @@ noref void() CSQC_Parse_Event =
 					break;
 			}
 			break;
+		case EVENT_BROADCAST:
+			broadcast_time = readbyte();
+			broadcast_type = readbyte();
+			break;
 	}
 }

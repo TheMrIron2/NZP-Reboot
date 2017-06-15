@@ -40,6 +40,7 @@ void() worldspawn =
 {
 	precache_model ("models/player.mdl");
 	precache_model ("models/v_morphine.mdl");
+	precache_model ("progs/Sprites/revive.spr");
 	
 	precache_model ("models/ai/zfull.mdl");
 	precache_model ("models/ai/zb#.mdl");
