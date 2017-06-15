@@ -534,7 +534,7 @@ void zapper_play () {
 	entity zents = find(world, targetname, self.target);
 
 	if (zents) {
-		te_lightning3(self, self.origin, zents.origin);
+		te_lightning2(self, self.origin, zents.origin);
 	}
 
 	zents.touch = zap_zombie;
