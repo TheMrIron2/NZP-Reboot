@@ -124,7 +124,7 @@ vector	VEC_HULL_MIN = '-16 -16 -32';
 vector	VEC_HULL_MAX = '16 16 40';
 vector	VEC_HULL2_MIN = '-32 -32 -24';
 vector	VEC_HULL2_MAX = '32 32 64';
-vector  VEC_VIEW_OFS  = '0 0 32';
+vector  VEC_VIEW_OFS  = '0 0 40';
 vector	trace_plane_normal;
 
 
