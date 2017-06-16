@@ -69,7 +69,7 @@ void() playrun30 		=[	30,		playrun31		] {self.frame = 28;}
 void() playrun31 		=[	31,		playrun32		] {self.frame = 29;}
 void() playrun32 		=[	32,		playrun33		] {self.frame = 30;}
 void() playrun33 		=[	33,		playrun33		] {self.frame = 31;}
-
+//
 void() playwalk		=[   1,     playwalk1		] {if (self.velocity) { self.frame = 0; }}
 void() playwalk1		=[   2,     playwalk2		] {if (self.velocity) { self.frame = 1; }}
 void() playwalk2		=[   3,     playwalk3		] {if (self.velocity) { self.frame = 2; }}
@@ -79,6 +79,19 @@ void() playwalk5		=[   6,     playwalk6		] {if (self.velocity) { self.frame = 5;
 void() playwalk6		=[   7,     playwalk7		] {if (self.velocity) { self.frame = 6; }}
 void() playwalk7		=[   8,     playwalk8		] {if (self.velocity) { self.frame = 7; }}
 void() playwalk8		=[   9,     playwalk8		] {if (self.velocity) { self.frame = 8; }}
+//
+void() playgetup 		=[	1,		playgetup1		] {self.frame = 38;}
+void() playgetup1 		=[	2,		playgetup2		] {self.frame = 39;}
+void() playgetup2		=[	3,		playgetup3		] {self.frame = 40;}
+void() playgetup3		=[	4,		playgetup4		] {self.frame = 41;}
+void() playgetup4		=[	5,		playgetup5		] {self.frame = 42;}
+void() playgetup5		=[	6,		playgetup6		] {self.frame = 43;}
+void() playgetup6		=[	7,		playgetup7		] {self.frame = 44;}
+void() playgetup7		=[	8,		playgetup8		] {self.frame = 45;}
+void() playgetup8		=[	9,		playgetup9		] {self.frame = 46;}
+void() playgetup9		=[	10,		playgetup10		] {self.frame = 47;}
+void() playgetup10		=[	11,		playgetup10		] {self.frame = 48;}
+
 
 void() PlayerJump =
 {
@@ -281,10 +294,10 @@ void() PlayerSpawn =
 	}
 
 	switch(player_count) {
-		default: spawnpoint = find(world, classname, "info_player_start"); break;
-		case 1: spawnpoint = find(world, classname, "info_player_nikolai"); break;
-		case 2: spawnpoint = find(world, classname, "info_player_takeo"); break;
-		case 3: spawnpoint = find(world, classname, "info_player_doctor"); break;
+		default: spawnpoint = find(world, classname, "info_player_start"); if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");} break;
+		case 1: spawnpoint = find(world, classname, "info_player_nikolai");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");} break;
+		case 2: spawnpoint = find(world, classname, "info_player_takeo");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");} break;
+		case 3: spawnpoint = find(world, classname, "info_player_doctor");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");}  break;
 	}
 	
 	self.origin = spawnpoint.origin + [0,0,1];

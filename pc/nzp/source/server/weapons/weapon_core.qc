@@ -1290,7 +1290,6 @@ void() CheckPlayer =
 				self.progress_bar_time = 0;
 				self.progress_bar_percent = 0;
 				self.revived = 0;
-				ReturnWeaponModel();
 			}
 		}
 		else if(ent.classname == "player" && ent != self && !ent.downed) // small player push 

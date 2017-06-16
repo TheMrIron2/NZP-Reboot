@@ -149,7 +149,9 @@ void () GetUp =
 	local string modelname;
 	float startframe;
 	float endframe;
-  
+	
+	playgetup();				// animation
+	
 	self.view_ofs = VEC_VIEW_OFS;
 	self.health = 100;
 	self.downed = 0;
