@@ -441,7 +441,10 @@ void(string com) SV_ParseClientCommand =
 				}
 			break;
 			case "god":
-					self.flags = self.flags | FL_GODMODE;
+					if (!(self.flags & FL_GODMODE))
+						self.flags = self.flags | FL_GODMODE;
+					else
+						self.flags = self.flags & (~FL_GODMODE);
 					break;
 		}
 	}
