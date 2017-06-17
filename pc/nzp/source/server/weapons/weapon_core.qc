@@ -802,6 +802,7 @@ void(float side) W_Fire =
 	}
 	
 	SetUpdate(self, UT_HUD, 6, 0, 0);
+	SetUpdate(self, UT_CROSSHAIR, 5, 0, 0);
 }
 
 

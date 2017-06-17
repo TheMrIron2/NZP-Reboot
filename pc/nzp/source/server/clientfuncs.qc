@@ -4,7 +4,7 @@
 
 void SetUpdate(entity client, float type, float val1, float val2, float val3)
 {
-	if (type != 2)
+	if (type != 2 || type == 5)
 	{
 		msg_entity = client;
 		WriteByte(MSG_ONE, SVC_CGAMEPACKET);

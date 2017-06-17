@@ -493,8 +493,6 @@ noref void() CSQC_Parse_Event =
 			norm_z = readcoord();
 			
 			traceent = readentitynum();
-			
-			crosshair_spread_time = time + 70/getWeaponRecoilReturn(getstatf(STAT_ACTIVEWEAPON));
 
 			if(entnum == player_localentnum)
 			{
@@ -621,6 +619,9 @@ noref void() CSQC_Parse_Event =
 					break;
 				case 4:
 					zoom_2_time = time + 0.25;
+					break;
+				case 5:
+					crosshair_spread_time = time + 70/getWeaponRecoilReturn(getstatf(STAT_ACTIVEWEAPON));
 					break;
 				default: 
 					break;
