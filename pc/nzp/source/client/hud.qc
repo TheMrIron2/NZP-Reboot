@@ -185,7 +185,6 @@ void(float width, float height) HUD_Rounds =
 	sb_round_num[8] = "gfx/hud/r_num8.tga";
 	sb_round_num[9] = "gfx/hud/r_num9.tga";
 
-
 	if (rounds_change == 1)//this is the rounds icon at the middle of the screen
 	{		
 		alphabling = alphabling + 15;

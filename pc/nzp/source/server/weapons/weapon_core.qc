@@ -1281,6 +1281,7 @@ void() CheckPlayer =
 			
 			if (self.button7 && !ent.invoke_revive) {
 				centerprint(ent, "Another player is reviving you...");
+				ent.beingrevived = true;
 				
 				if (!self.progress_bar_percent) {
 					self.movetype = MOVETYPE_NONE;
@@ -1300,6 +1301,7 @@ void() CheckPlayer =
 					self.movetype = MOVETYPE_WALK;
 					W_TakeOut();
 					ent.invoke_revive = 1;
+					ent.beingrevived = false;
 					self.reviving = 0;
 					self.progress_bar = 0;
 					self.progress_bar_time = 0;
@@ -1309,6 +1311,7 @@ void() CheckPlayer =
 			}
 			else if (!self.button7 && self.reviving) {
 				self.movetype = MOVETYPE_WALK;
+				ent.beingrevived = false;
 				W_TakeOut();
 				self.progress_bar = 0;
 				self.progress_bar_time = 0;

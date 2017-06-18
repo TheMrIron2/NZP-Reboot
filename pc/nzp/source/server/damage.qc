@@ -44,7 +44,16 @@ void() startspectate =
 {
 	if (!self.downed)
 		return;
-
+		
+	if (self.beingrevived)
+	{
+		centerprint(self, "benis lmao");
+		self.think = startspectate;
+		self.nextthink = time + 0.1;
+		return;
+	}
+	
+	self.beingrevived = false;
 	self.model = "";
 	setmodel(self, self.model);
 	self.health = 100;

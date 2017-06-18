@@ -337,6 +337,7 @@ void() PlayerSpawn =
 	SetRound(self, rounds);
 
 	self.stamina = 3;
+	self.reviving = 0;
 
 	if (rounds < 1) {
 		sound (self, CHAN_AUTO, "sounds/rounds/splash.wav", 1, ATTN_NONE);//temporarily here.
