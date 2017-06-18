@@ -32,12 +32,32 @@ void() EndGame =
 
 void() remove_revive =
 {
-	if (!self.owner.downed)
+	if (!self.owner.downed || self.owner.isspec)
 		SUB_Remove ();
 	else {
 		self.think = remove_revive;
 		self.nextthink = time + 0.1;
 	}
+}
+
+void() startspectate =
+{
+	if (!self.downed)
+		return;
+
+	self.model = "";
+	setmodel(self, self.model);
+	self.health = 100;
+	self.weaponmodel = "";
+	self.weapon2model = "";
+	self.downed = 0;
+	self.frame = 0;
+
+	UpdateVmodel(self.weaponmodel, GetWepSkin(self.weapon));
+	UpdateV2model(self.weapon2model, GetWepSkin(self.weapon));
+	
+	SpectatorSpawn();
+
 }
 
 void() GetDown =
@@ -130,6 +150,9 @@ void() GetDown =
 	setorigin (revive, revive.origin);
 	
 	SetPerk(self, 0);
+	
+	self.think = startspectate;
+	self.nextthink = time + 5; // should be 45
 }
 
 void () GetUp =

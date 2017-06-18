@@ -1,7 +1,3 @@
-
-
-
-
 void() Spawn_Enemy = 
 {
 	if (roundtype == 1)
@@ -31,8 +27,23 @@ void() EndRound =
 	playSoundAtPlayers("sounds/rounds/eround.wav");
 	round_changetime = time + 5;
 }
+
+void() PlayerSpawn;
+
 void() NewRound =
 {
+	entity who = find(world,classname,"spectator");
+	while(who != world)
+	{
+		if(who.isspec)
+		{
+			self = who;
+			PlayerSpawn();
+			break;
+		}
+		
+	}
+
 	entity tempe;
 	round_changetime = 0;
 	spawn_time = time + 5;
