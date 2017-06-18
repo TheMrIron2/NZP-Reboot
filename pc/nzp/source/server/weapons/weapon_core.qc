@@ -168,6 +168,21 @@ void() W_PutOut =
 	}
 }
 
+void() W_TakeOut =
+{
+	W_AimOut();
+	
+	float startframe;
+	float endframe;
+	string modelname;
+	startframe = GetFrame(self.weapon,TAKE_OUT_START);
+	endframe = GetFrame(self.weapon,TAKE_OUT_END);
+	modelname = GetWeaponModel(self.weapon, 0);
+	
+	Set_W_Frame (startframe, endframe, (endframe - startframe)/10, 0, SWITCHWEP, SUB_Null, modelname, false, S_BOTH);//FIXME
+	self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
+}
+
 
 
 //RELOAD
@@ -1264,10 +1279,11 @@ void() CheckPlayer =
 		{
 			useprint (self, 13, 0, 0);
 			
-			if (self.button7) {
+			if (self.button7 && !ent.invoke_revive) {
 				centerprint(ent, "Another player is reviving you...");
 				
 				if (!self.progress_bar_percent) {
+					self.movetype = MOVETYPE_NONE;
 					Set_W_Frame (0, 21, 0, 0, SPRINT, SUB_Null, "models/v_morphine.mdl", false, S_BOTH);
 					
 					if !(self.perks & P_REVIVE)
@@ -1281,20 +1297,24 @@ void() CheckPlayer =
 				}
 				
 				if (self.revived) {
+					self.movetype = MOVETYPE_WALK;
+					W_TakeOut();
+					ent.invoke_revive = 1;
 					self.reviving = 0;
 					self.progress_bar = 0;
 					self.progress_bar_time = 0;
 					self.progress_bar_percent = 0;
 					self.revived = 0;
-					ent.invoke_revive = 1;
-					ReturnWeaponModel();
 				}
 			}
-			else if (!self.button7) {
+			else if (!self.button7 && self.reviving) {
+				self.movetype = MOVETYPE_WALK;
+				W_TakeOut();
 				self.progress_bar = 0;
 				self.progress_bar_time = 0;
 				self.progress_bar_percent = 0;
 				self.revived = 0;
+				self.reviving = 0;
 			}
 		}
 		else if(ent.classname == "player" && ent != self && !ent.downed) // small player push 
@@ -1302,7 +1322,7 @@ void() CheckPlayer =
 			vector push;
 			push =  ent.origin - self.origin;
 			push_z = 0;
-			push = normalize(push) * 2;
+			push = normalize(push) * 0.5;
 			
 			ent.velocity += push;
 		}
