@@ -59,14 +59,11 @@ void() GetDown =
 	who = find(world,classname,"player");
 	while(who != world && who != self)
 	{
-		if(who)
-		{
 			coop = 1;
 			break;
-		}
 	}	
 	
-	if (!deathmatch && !coop && !(self.perks & P_REVIVE))
+	if (!coop && !(self.perks & P_REVIVE) && !who)
 	{
 		game_over = true;
 		self.health = 10;
