@@ -1269,8 +1269,13 @@ void() CheckPlayer =
 				
 				if (!self.progress_bar_percent) {
 					Set_W_Frame (0, 21, 0, 0, SPRINT, SUB_Null, "models/v_morphine.mdl", false, S_BOTH);
-					self.progress_bar = 4 + time;     
-					self.progress_bar_time = 4;
+					
+					if !(self.perks & P_REVIVE)
+						self.progress_bar_time = 4;
+					else
+						self.progress_bar_time = 2;
+					
+					self.progress_bar = self.progress_bar_time + time;     
 					self.progress_bar_percent = 1;
 					self.reviving = true;
 				}
@@ -1286,7 +1291,6 @@ void() CheckPlayer =
 				}
 			}
 			else if (!self.button7) {
-				self.reviving = 0;
 				self.progress_bar = 0;
 				self.progress_bar_time = 0;
 				self.progress_bar_percent = 0;

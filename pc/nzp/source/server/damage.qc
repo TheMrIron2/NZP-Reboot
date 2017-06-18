@@ -81,7 +81,7 @@ void() GetDown =
 		self.health = 19;
 	}
 	
-	if (self.perks && P_REVIVE) {	
+	if (self.perks && P_REVIVE && !coop) {	
 		self.progress_bar = 10 + time;     
 		self.progress_bar_time = 10;
 		self.progress_bar_percent = 1;
