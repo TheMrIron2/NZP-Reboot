@@ -192,6 +192,7 @@ void() worldspawn =
 	clientstat(STAT_WEAPONZOOM, EV_FLOAT, zoom);
 	clientstat(STAT_INSTA, EV_FLOAT, insta_icon);
 	clientstat(STAT_X2, EV_FLOAT, x2_icon);
+	clientstat(STAT_SPECTATING, EV_FLOAT, isspec);
 
 	mappath = strcat("maps/", mapname);
 	mappath = strzone(mappath);

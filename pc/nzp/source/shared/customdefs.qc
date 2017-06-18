@@ -136,3 +136,4 @@ const float EVENT_BROADCAST = 24;
 #define STAT_WEAPONZOOM        	60
 #define STAT_INSTA	        	61
 #define STAT_X2		        	62
+#define STAT_SPECTATING			63

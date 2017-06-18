@@ -325,7 +325,8 @@ void() PlayerSpawn =
 	self.secondarymag = getWeaponMag(self.secondaryweapon);*/
 	//self.secondarymag2 = getWeaponMag(self.secondaryweapon);
 
-	addmoney(self, 500, 0);
+	if (!self.points)
+		addmoney(self, 500, 0);
 
 	self.weaponmodel = GetWeaponModel(self.weapon, 0);// Give weapon model
 

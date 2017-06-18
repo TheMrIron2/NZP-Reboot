@@ -931,31 +931,35 @@ void() HUD_Broadcast = {
 *******************/
 
 void(float width, float height) HUD_Draw = 
-{	
-	Draw_Crosshair();
-	HUD_Health(width, height);
-	HUD_Points(width, height);
-	HUD_Rounds(width, height);
-	HUD_Perks(width, height);
-	HUD_Progressbar(width, height);
-	HUD_Powerups();
-	HUD_AmmoString();
-	
-	if (HUD_Change_time > time)
+{
+	if (!getstatf(STAT_SPECTATING))
 	{
-		HUD_Ammo(width, height);
-		HUD_Grenades(width, height);
-		HUD_Weaponstring(width, height);
+		Draw_Crosshair();
+		HUD_Health(width, height);
+		HUD_Points(width, height);
+		HUD_Rounds(width, height);
+		HUD_Perks(width, height);
+		HUD_Progressbar(width, height);
+		HUD_Powerups();
+		HUD_AmmoString();
+	
+		if (HUD_Change_time > time)
+		{
+			HUD_Ammo(width, height);
+			HUD_Grenades(width, height);
+			HUD_Weaponstring(width, height);
+		}
+			
+		if (useprint_time > time) 
+			HUD_Useprint(width, height);
+		
+		if (Hitmark_time > time)
+			HUD_Hitmark();
 	}
-		
-	if (useprint_time > time) 
-		HUD_Useprint(width, height);
-		
-	if (Hitmark_time > time)
-		HUD_Hitmark();
-		
+	
+	// Only keep broadcast messages outside in case they are important
 	if (broadcast_time > time)
-		HUD_Broadcast();
+			HUD_Broadcast();
 }
 
 
