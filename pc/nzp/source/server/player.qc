@@ -365,6 +365,7 @@ void() PutClientInServer =
 	bprint(PRINT_HIGH, self.netname);
 	bprint(PRINT_HIGH, " has joined the game.\n");
 	PlayerSpawn();
+	
 	/*stuffcmd(self, "promptjoin\n");
 	SpectatorSpawn();*/
 };
@@ -406,6 +407,8 @@ void(string com) SV_ParseClientCommand =
 			return;
 		else
 		{
+			coop = 1;
+
 			/*SpectatorSpawn();
 			bprint(PRINT_HIGH, self.netname); //print player name
 			bprint(PRINT_HIGH, " has joined the spectators.\n");*/

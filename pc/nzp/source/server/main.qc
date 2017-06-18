@@ -13,7 +13,7 @@ void() main =
 void() StartFrame =
 {
 	deathmatch = cvar("deathmatch");
-	coop = cvar("coop");
+	//coop = cvar("coop");
 	framecount = framecount + 1;
 
 	if (waypoint_mode) {

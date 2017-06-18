@@ -45,7 +45,6 @@ void() GetDown =
 	float startframe;
 	float endframe;
 	local string modelname;
-	entity who;
 	
 	playdown();
 	
@@ -54,17 +53,6 @@ void() GetDown =
 	self.zoom = 0;
 	self.downed = true;
 	self.movetype = MOVETYPE_NONE;
-	
-	/* naievil -- there is a better place for this...*/
-	who = find(world,classname,"player");
-	while(who != world && who != self)
-	{
-		if(who)
-		{
-			coop = 1;
-			break;
-		}
-	}	
 	
 	if (!deathmatch && !coop && !(self.perks & P_REVIVE))
 	{
