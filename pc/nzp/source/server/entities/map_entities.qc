@@ -216,9 +216,15 @@ void () buy_weapon_touch =
 		return;
 	}
 	
-	if (self.weapon == other.weapon || self.weapon == other.secondaryweapon) {
+	if (self.weapon == other.weapon || self.weapon == other.secondaryweapon 
+	|| self.weapon == EqualNonPapWeapon(other.weapon) 
+	|| self.weapon == EqualNonPapWeapon(other.secondaryweapon)) {
 
-		useprint (other, 3, self.cost2, self.weapon);
+		if (self.weapon == EqualNonPapWeapon(other.secondaryweapon) 
+		|| self.weapon == EqualNonPapWeapon(other.weapon))
+			useprint (other, 3, 4500, other.weapon);
+		else
+			useprint (other, 3, self.cost2, self.weapon);
 
 		if (!other.button7 || other.semiuse) {
 			return;
@@ -229,20 +235,26 @@ void () buy_weapon_touch =
 			}
 
 		other.semiuse = true;
-		if (other.points < self.cost2) {
+		if ((other.points < self.cost2 && !IsPapWeapon(other.weapon)) || (other.points < 4500 && IsPapWeapon(other.weapon))) {
 			centerprint(other, "You do not have enough points\n");
 			return;
 		}
 
-		if (self.weapon == other.weapon) {
+		if (self.weapon == other.weapon || (self.weapon == EqualNonPapWeapon(other.weapon))) {
 			other.currentammo = getWeaponAmmo(self.weapon);
-		} else if (self.weapon == other.secondaryweapon) {
+		} else if (self.weapon == other.secondaryweapon || (self.weapon == EqualNonPapWeapon(other.secondaryweapon)) ) {
 			other.secondaryammo = getWeaponAmmo(self.weapon);
 		}
+		
 
 		sound(other, 0,"sounds/misc/ching.wav", 1, 1);
 		other.reload_delay = 0;
-		addmoney(other, -1*self.cost2, 0);
+		
+		if (!IsPapWeapon(other.weapon))
+			addmoney(other, -1*self.cost2, 0);
+		else
+			addmoney(other, -1*4500, 0);
+			
 		if (self.enemy) {
 			oldent = self;
 			self = self.enemy;
