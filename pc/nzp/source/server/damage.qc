@@ -32,6 +32,11 @@ void() EndGame =
 
 void() remove_revive =
 {
+	if (self.owner.beingrevived)
+		setmodel (self, "progs/Sprites/revive_white.spr");
+	else
+		setmodel (self, "progs/Sprites/revive.spr");
+
 	if (!self.owner.downed || self.owner.isspec)
 		SUB_Remove ();
 	else {
@@ -47,7 +52,6 @@ void() startspectate =
 		
 	if (self.beingrevived)
 	{
-		centerprint(self, "benis lmao");
 		self.think = startspectate;
 		self.nextthink = time + 0.1;
 		return;
