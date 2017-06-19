@@ -263,6 +263,9 @@ void() ClientKill =
 void() ClientConnect =
 {
 	stuffcmd(self, "fog 0.075\n"); // naievil -- temp reliable fog
+	
+	if (mapname == "ndu")				// the only one we REALLY need to fix is NDU since I don't want to edit the file
+		stuffcmd(self, "sky sky\n");
 
 	bprint(PRINT_HIGH, self.netname); //print player name
 	bprint(PRINT_HIGH, " connected.\n");
