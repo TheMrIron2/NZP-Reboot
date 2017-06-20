@@ -105,13 +105,17 @@ void() HUD_AmmoString =
 
 void(float width, float height) HUD_Points =
 {
-	local float points, pointlength = 0, increm = 10;
+	local float pointlength = 0, increm = 10, i = 0;
 	
-	points = getstatf(STAT_POINTS);
-	pointlength = strlen(ftos(points));
-		
-	drawpic([0.8*width,0.70*height,0], "gfx/hud/moneyback.tga", [0.2*width, 0.07*height, 0], [1,1,1], 1);
-	drawstring([.9414*width - pointlength*20*width/1024, 0.715*height, 0], ftos(points), [0.022*width, 0.022*width, 0], [1, 1, 1], 1, 1);   // naievil (FIXME) real offset needed (pointlength)
+	for (i = 0; i <= 3; i = i + 1)
+	{
+		if (playerpoints[i] == -1)
+			return;
+	
+		pointlength = strlen(ftos(playerpoints[i]));
+		drawpic([0.8*width,0.70*height - (.071*height*i),0], "gfx/hud/moneyback.tga", [0.2*width, 0.07*height, 0], [1,1,1], 1); 
+		drawstring([.9414*width - pointlength*20*width/1024, 0.715*height - 0.07*height*i, 0], ftos(playerpoints[i]), [0.022*width, 0.022*width, 0], [1, 1, 1], 1, 1); 
+	}
 }
 
 /*******************
@@ -978,8 +982,6 @@ void(float width, float height) HUD_Draw =
 	
 	if (getstatf(STAT_HEALTH) <= 10 && getstatf(STAT_SPECTATING))
 		HUD_Endgame();
-	
-	//drawstring([0.01*width, 0.10*height, 0], ftos(getstatf(STAT_PLAYERNUM)), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
 }
 
 

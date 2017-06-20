@@ -98,6 +98,14 @@ void(float broadcast_time, float type) BroadcastMessage =
 	WriteByte(MSG_ALL, type);
 }
 
+void(float playernum, float points) UpdatePlayerPoints =
+{
+	WriteByte(MSG_ALL, SVC_CGAMEPACKET);
+	WriteByte(MSG_ALL, EVENT_POINTUPDATE);
+	WriteByte(MSG_ALL, playernum);
+	WriteLong(MSG_ALL, points);
+}
+
 // *****************************************
 // Unrelated to engine, but custom functions
 // *****************************************

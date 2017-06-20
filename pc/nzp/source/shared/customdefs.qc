@@ -10,6 +10,7 @@ const float EVENT_UPDATEV2MODEL = 21;
 const float EVENT_PERK = 22;
 const float EVENT_UPDATE = 23;
 const float EVENT_BROADCAST = 24;
+const float EVENT_POINTUPDATE = 25;
 
 //nzp weapon defines
 //id list
@@ -137,4 +138,4 @@ const float EVENT_BROADCAST = 24;
 #define STAT_INSTA	        	61
 #define STAT_X2		        	62
 #define STAT_SPECTATING			63
-#define STAT_PLAYERNUM			64
+//#define STAT_PLAYERNUM			64	// useless now but will be kept just in case

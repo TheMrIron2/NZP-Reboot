@@ -345,6 +345,8 @@ void() PlayerSpawn =
 	if (rounds < 1) {
 		sound (self, CHAN_AUTO, "sounds/rounds/splash.wav", 1, ATTN_NONE);//temporarily here.
 	}
+	
+	UpdatePlayerPoints(self.playernum, self.points);
 };
 
 void() SpectatorSpawn =

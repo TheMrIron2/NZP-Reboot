@@ -68,6 +68,10 @@ noref void() CSQC_WorldLoaded =
 	mzlflash.origin = vmodel.origin + vmodel_muzzleoffset;
 	//setmodel(mzlflash,"models/weapons/mg/mzl.iqm");
 	
+	playerpoints[1] = -1;
+	playerpoints[2] = -1;
+	playerpoints[3] = -1;
+	
 };
 
 #define ADS_THOMPSON    '-3 +5.80 +4.52'
@@ -630,6 +634,17 @@ noref void() CSQC_Parse_Event =
 		case EVENT_BROADCAST:
 			broadcast_time = readbyte();
 			broadcast_type = readbyte();
+			break;
+		case EVENT_POINTUPDATE:
+			float playernum = readbyte();
+			float temppoints = readlong();
+			
+			switch(playernum) {
+				case 1: playerpoints[0] = temppoints; break;
+				case 2: playerpoints[1] = temppoints; break;
+				case 3: playerpoints[2] = temppoints; break;
+				case 4: playerpoints[3] = temppoints; break;		
+			}
 			break;
 	}
 }

@@ -27,6 +27,8 @@ void(entity person, float expamt , float doublepoint) addmoney =
 		person.points = person.points + expamt*2;
 	else
 		person.points = person.points + expamt;
+		
+	UpdatePlayerPoints(person.playernum, person.points);
 };
 
 // button and multiple button
