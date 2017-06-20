@@ -259,11 +259,6 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 				addmoney(attacker, 60, 1);
 		
 		}
-		
-		if (d_style == S_KNIFE) {
-			if (victim.health > 0)
-				addmoney(attacker, 10, 1);
-		}
 
 
 		if (victim.health <= 0 || instakill_finished) {
