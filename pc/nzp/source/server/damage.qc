@@ -100,6 +100,7 @@ void() GetDown =
 		self.weapon2model = "";
 		self.animend = SUB_Null;
 		self.perks = 0;
+		self.isspec = true;
 		SetPerk(self, self.perks);
 		SwitchWeapon(0);
 

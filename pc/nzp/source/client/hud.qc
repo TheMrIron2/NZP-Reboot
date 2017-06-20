@@ -925,13 +925,29 @@ void() HUD_Broadcast = {
 		drawstring([x, g_height/2, 0], broadcast_msg, [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1);
 }
 
+void() HUD_Endgame = {
+
+	string message = "GAME OVER";
+	string subtext = "Name                             Score";
+	
+	float print_width = stringwidth(message, 0, [(1/30)*g_width, (1/30)*g_width, 0]);
+	float x = (g_width - print_width)/2;
+	
+	drawstring([x, g_height*(1/4), 0], message, [(1/30)*g_width, (1/30)*g_width, 0], [1, 1, 1], 1, 1);
+
+	print_width = stringwidth(subtext, 0, [0.015*g_width, 0.015*g_width, 0]);
+	x = (g_width - print_width)/2;
+	
+	drawstring([x,g_height*(1/3), 0], subtext, [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1);
+}
+
 /*******************
 *     HUD Draw     *
 *******************/
 
 void(float width, float height) HUD_Draw = 
 {
-	if (!getstatf(STAT_SPECTATING))
+	if (!getstatf(STAT_SPECTATING) && (getstatf(STAT_HEALTH) > 10))
 	{
 		Draw_Crosshair();
 		HUD_Health(width, height);
@@ -958,7 +974,10 @@ void(float width, float height) HUD_Draw =
 	
 	// Only keep broadcast messages outside in case they are important
 	if (broadcast_time > time)
-			HUD_Broadcast();
+		HUD_Broadcast();
+	
+	if (getstatf(STAT_HEALTH) <= 10 && getstatf(STAT_SPECTATING))
+		HUD_Endgame();
 }
 
 
