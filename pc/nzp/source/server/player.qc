@@ -271,6 +271,25 @@ void() ClientConnect =
 	bprint(PRINT_HIGH, " connected.\n");
 };
 
+void() PollPlayerPoints =
+{
+	float i, breakpoint;
+	entity pollent;
+	breakpoint = 0;
+	
+	for (i = 1; i <= 4 && !breakpoint; i++)
+	{
+		pollent = findfloat(world, playernum, i);
+		
+		if (pollent == world) {
+			breakpoint = 1;
+			break;
+		}
+		
+		UpdatePlayerPoints(i, pollent.points);
+	}
+}
+
 void() PlayerSpawn =
 {	
 	local entity spawnpoint;
@@ -346,7 +365,7 @@ void() PlayerSpawn =
 		sound (self, CHAN_AUTO, "sounds/rounds/splash.wav", 1, ATTN_NONE);//temporarily here.
 	}
 	
-	UpdatePlayerPoints(self.playernum, self.points);
+	PollPlayerPoints();
 };
 
 void() SpectatorSpawn =

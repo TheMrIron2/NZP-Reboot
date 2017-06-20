@@ -17,20 +17,6 @@ void() func_illusionary =
 	// makestatic (self); // dr_mabuse1981: dont use makestatic, it doesnt show the HL rendermodes then.
 };
 
-//weapon buying code
-void(entity person, float expamt , float doublepoint) addmoney =
-{
-	if (person.classname != "player")
-		return;
-
-	if (expamt > 0 && doublepoint == TRUE && x2_finished> time)
-		person.points = person.points + expamt*2;
-	else
-		person.points = person.points + expamt;
-		
-	UpdatePlayerPoints(person.playernum, person.points);
-};
-
 // button and multiple button
 
 void() button_wait;

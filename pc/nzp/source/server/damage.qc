@@ -119,13 +119,12 @@ void() GetDown =
 		self.progress_bar = 10 + time;     
 		self.progress_bar_time = 10;
 		self.progress_bar_percent = 1;
-		self.points = 10*rint((self.points*0.95)/10);
 	}
-	
+	self.points = 10*rint((self.points*0.95)/10);
+	addmoney(self, 0, true);						// used to call a broadcast
 	BroadcastMessage(time + 3, 2);
 	
 	self.perks = 0;
-
 	self.weaponbk = self.weapon;
 	self.currentammobk = self.currentammo;
 	self.currentmagbk = self.currentmag;
@@ -166,7 +165,7 @@ void() GetDown =
 	SetPerk(self, 0);
 	
 	self.think = startspectate;
-	self.nextthink = time + 5; // should be 45
+	self.nextthink = time + 45;
 }
 
 void () GetUp =
