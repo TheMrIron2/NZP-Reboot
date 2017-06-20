@@ -274,7 +274,6 @@ void() ClientConnect =
 void() PlayerSpawn =
 {	
 	local entity spawnpoint;
-	float player_count = 0;
 	
 	spawnpoint = find(world, classname, "info_player_start");
 	
@@ -286,7 +285,7 @@ void() PlayerSpawn =
 	self.max_health = self.health = 100;
 	
 	entity who = find(world,classname,"player");
-	while(who != world && who != self && player_count < 4)
+	while(who != self)
 	{
 		if(who)
 		{
@@ -341,6 +340,7 @@ void() PlayerSpawn =
 
 	self.stamina = 3;
 	self.reviving = 0;
+	self.playernum = player_count + 1;
 
 	if (rounds < 1) {
 		sound (self, CHAN_AUTO, "sounds/rounds/splash.wav", 1, ATTN_NONE);//temporarily here.

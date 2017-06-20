@@ -14,6 +14,8 @@ float coop;
 .float lastsound_time;
 .float isspec;
 string mappath;
+.float playernum;
+float player_count;
 
 //money
 .float points;

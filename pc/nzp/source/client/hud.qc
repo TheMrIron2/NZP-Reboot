@@ -978,6 +978,8 @@ void(float width, float height) HUD_Draw =
 	
 	if (getstatf(STAT_HEALTH) <= 10 && getstatf(STAT_SPECTATING))
 		HUD_Endgame();
+	
+	//drawstring([0.01*width, 0.10*height, 0], ftos(getstatf(STAT_PLAYERNUM)), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
 }
 
 
