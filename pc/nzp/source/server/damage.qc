@@ -116,10 +116,7 @@ void() EndGameSetup =
 	self.perks = 0;
 	self.isspec = true;
 	SetPerk(self, self.perks);
-	SwitchWeapon(0);
-
-	centerprint(self, "YOU DON DEDED\n");
-		
+	SwitchWeapon(0);		
     return;
 }
 

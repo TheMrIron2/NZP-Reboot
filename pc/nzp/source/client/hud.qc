@@ -932,17 +932,35 @@ void() HUD_Broadcast = {
 void() HUD_Endgame = {
 
 	string message = "GAME OVER";
+	string survive = strcat("You survived ",ftos(rounds)," rounds");
 	string subtext = "Name                             Score";
+	float i;
 	
+	
+	// first message
 	float print_width = stringwidth(message, 0, [(1/30)*g_width, (1/30)*g_width, 0]);
 	float x = (g_width - print_width)/2;
-	
 	drawstring([x, g_height*(1/4), 0], message, [(1/30)*g_width, (1/30)*g_width, 0], [1, 1, 1], 1, 1);
 
+	// second message
+	print_width = stringwidth(survive, 0, [0.025*g_width, 0.025*g_width, 0]);
+	x = (g_width - print_width)/2;
+	drawstring([x,g_height*(1/3), 0], survive, [0.025*g_width, 0.025*g_width, 0], [1, 1, 1], 1, 1);
+	
+	// third message
 	print_width = stringwidth(subtext, 0, [0.015*g_width, 0.015*g_width, 0]);
 	x = (g_width - print_width)/2;
+	drawstring([x,g_height*(5/12), 0], subtext, [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1);
 	
-	drawstring([x,g_height*(1/3), 0], subtext, [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1);
+	for (i = 0; i < 4; i = i + 1)
+	{
+		if (playerpoints[i] == -1)
+			break;
+			
+		print_width = stringwidth(ftos(playerpoints[i]), 0, [0.015*g_width, 0.015*g_width, 0]);
+		x = (g_width + (0.5*g_width) - print_width)/2;
+		drawstring([x,g_height*(5.75/12)+(i*g_height/12), 0], ftos(playerpoints[i]), [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1); 
+	}
 }
 
 /*******************
