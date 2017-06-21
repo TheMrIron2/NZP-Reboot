@@ -82,6 +82,7 @@ void Weapon_Logic();
 .float reviving;
 .float revived;
 .float beingrevived;
+.float downedloop;
 
 #define S_LEFT 0
 #define S_RIGHT 1

@@ -2,6 +2,7 @@
 // damage.qc -- used for any sort of down, hit, etc that the player or entity experiences
 //
 
+//Actual endgame function, all zombies die, music plays
 void() EndGame =
 {
 	local entity oldself;
@@ -30,6 +31,7 @@ void() EndGame =
 	}
 }
 
+// removes revive icon from downed player heads, used as a recursive think function
 void() remove_revive =
 {
 	if (self.owner.beingrevived)
@@ -45,6 +47,7 @@ void() remove_revive =
 	}
 }
 
+// when dead and other players exist and are alive, throw user into spectate mode
 void() startspectate =
 {
 	if (!self.downed)
@@ -57,6 +60,7 @@ void() startspectate =
 		return;
 	}
 	
+	self.downedloop = 0;
 	self.beingrevived = false;
 	self.model = "";
 	setmodel(self, self.model);
@@ -70,7 +74,74 @@ void() startspectate =
 	UpdateV2model(self.weapon2model, GetWepSkin(self.weapon));
 	
 	SpectatorSpawn();
+}
 
+// searches for players that are alive given which clients have which playernumbers
+//      Returns 1 if there IS someone in the world that's not downed
+float() PollPlayersAlive = 
+{
+	float i, gotalive;
+	entity playerent;
+	
+	gotalive = 0;
+	
+	for (i = 1; i <= 4; i++)
+	{
+		playerent = findfloat(world, playernum, i);
+		
+		if (playerent) {
+			if (!playerent.downed && !playerent.isspec) {
+				gotalive = 1;
+				break;
+			}
+		}
+	}
+	
+	return gotalive;
+}
+
+// Endgamesetup -- think function for setting up the death of everyone
+void() EndGameSetup =
+{
+	game_over = true;
+	self.health = 10;
+	self.think = EndGame;
+	self.nextthink = time + 5;
+	self.weapon = 0;
+	self.currentammo = 0;
+	self.currentmag = 0;
+	self.weaponmodel = "";
+	self.weapon2model = "";
+	self.animend = SUB_Null;
+	self.perks = 0;
+	self.isspec = true;
+	SetPerk(self, self.perks);
+	SwitchWeapon(0);
+
+	centerprint(self, "YOU DON DEDED\n");
+		
+    return;
+}
+
+// rec_downed is used as a recursive loop where we consistently check to see if ALL players are downed
+//    if they aren't dead, we keep looping until our OWN death (45 seconds, so 450 loops)
+void() rec_downed = 
+{
+	self.downedloop++;
+	if (self.downedloop == /*450*/ 40) {
+		startspectate();
+		return;
+	}
+	
+	float gotalive = PollPlayersAlive();
+	
+	if (!gotalive) {
+		EndGameSetup();
+		return;
+	}
+	
+	self.think = rec_downed;
+	self.nextthink = time + 0.1;
 }
 
 void() GetDown =
@@ -87,26 +158,12 @@ void() GetDown =
 	self.downed = true;
 	self.movetype = MOVETYPE_NONE;
 	
-	if (!deathmatch && !coop && !(self.perks & P_REVIVE))
+	float gotalive = PollPlayersAlive();	
+	
+	if ((!deathmatch && !coop && !(self.perks & P_REVIVE)) || !gotalive)
 	{
-		game_over = true;
-		self.health = 10;
-		self.think = EndGame;
-		self.nextthink = time + 5;
-		self.weapon = 0;
-		self.currentammo = 0;
-		self.currentmag = 0;
-		self.weaponmodel = "";
-		self.weapon2model = "";
-		self.animend = SUB_Null;
-		self.perks = 0;
-		self.isspec = true;
-		SetPerk(self, self.perks);
-		SwitchWeapon(0);
-
-		centerprint(self, "YOU DON DEDED\n");
-		
-      	return;
+		EndGameSetup();
+		return;
 	}
 	else if (coop) {
 	self.health = 19; 
@@ -164,8 +221,8 @@ void() GetDown =
 	
 	SetPerk(self, 0);
 	
-	self.think = startspectate;
-	self.nextthink = time + 45;
+	self.think = rec_downed;
+	self.nextthink = time + 0.1;
 }
 
 void () GetUp =
@@ -178,6 +235,7 @@ void () GetUp =
 	
 	self.view_ofs = VEC_VIEW_OFS;
 	self.health = 100;
+	self.downedloop = 0;		// used for death timing vs endgame
 	self.downed = 0;
 	self.classname = "player";
 	if (self.weaponbk)
@@ -198,6 +256,7 @@ void () GetUp =
 	
 };
 
+// poll checking whether to see if our revive invoke is active
 void(entity ent) CheckRevive =
 {
 	if (self.invoke_revive) {
