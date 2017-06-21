@@ -98,12 +98,13 @@ void(float broadcast_time, float type) BroadcastMessage =
 	WriteByte(MSG_ALL, type);
 }
 
-void(float playernum, float points) UpdatePlayerPoints =
+void(float playernum, float points, string name) UpdatePlayerPoints =
 {
 	WriteByte(MSG_ALL, SVC_CGAMEPACKET);
 	WriteByte(MSG_ALL, EVENT_POINTUPDATE);
 	WriteByte(MSG_ALL, playernum);
 	WriteLong(MSG_ALL, points);
+	WriteString(MSG_ALL, name);
 }
 
 // *****************************************
@@ -156,5 +157,5 @@ void(entity person, float expamt , float doublepoint) addmoney =
 	else
 		person.points = person.points + expamt;
 		
-	UpdatePlayerPoints(person.playernum, person.points);
+	UpdatePlayerPoints(person.playernum, person.points, person.netname);
 };

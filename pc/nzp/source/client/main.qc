@@ -638,12 +638,13 @@ noref void() CSQC_Parse_Event =
 		case EVENT_POINTUPDATE:
 			float playernum = readbyte();
 			float temppoints = readlong();
+			string tempname = readstring();
 			
 			switch(playernum) {
-				case 1: playerpoints[0] = temppoints; break;
-				case 2: playerpoints[1] = temppoints; break;
-				case 3: playerpoints[2] = temppoints; break;
-				case 4: playerpoints[3] = temppoints; break;		
+				case 1: playerpoints[0] = temppoints; playernames[0] = tempname; break;
+				case 2: playerpoints[1] = temppoints; playernames[1] = tempname;  break;
+				case 3: playerpoints[2] = temppoints; playernames[2] = tempname; break;
+				case 4: playerpoints[3] = temppoints; playernames[3] = tempname; break;		
 			}
 			break;
 	}

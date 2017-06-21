@@ -286,7 +286,7 @@ void() PollPlayerPoints =
 			break;
 		}
 		
-		UpdatePlayerPoints(i, pollent.points);
+		UpdatePlayerPoints(i, pollent.points, pollent.netname);
 	}
 }
 

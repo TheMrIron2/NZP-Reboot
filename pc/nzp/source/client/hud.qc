@@ -934,6 +934,7 @@ void() HUD_Endgame = {
 	string message = "GAME OVER";
 	string survive = strcat("You survived ",ftos(rounds)," rounds");
 	string subtext = "Name                             Score";
+	float xback;
 	float i;
 	
 	
@@ -952,6 +953,8 @@ void() HUD_Endgame = {
 	x = (g_width - print_width)/2;
 	drawstring([x,g_height*(5/12), 0], subtext, [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1);
 	
+	xback = x;
+	
 	for (i = 0; i < 4; i = i + 1)
 	{
 		if (playerpoints[i] == -1)
@@ -960,6 +963,7 @@ void() HUD_Endgame = {
 		print_width = stringwidth(ftos(playerpoints[i]), 0, [0.015*g_width, 0.015*g_width, 0]);
 		x = (g_width + (0.5*g_width) - print_width)/2;
 		drawstring([x,g_height*(5.75/12)+(i*g_height/12), 0], ftos(playerpoints[i]), [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1); 
+		drawstring([xback,g_height*(5.75/12)+(i*g_height/12), 0], playernames[i], [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1); 
 	}
 }
 
