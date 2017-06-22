@@ -304,7 +304,7 @@ void() PlayerSpawn =
 	self.max_health = self.health = 100;
 	
 	entity who = find(world,classname,"player");
-	while(who != self)
+	while(who != self && !self.playernum)
 	{
 		if(who)
 		{
@@ -319,6 +319,15 @@ void() PlayerSpawn =
 		case 1: spawnpoint = find(world, classname, "info_player_nikolai");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");} break;
 		case 2: spawnpoint = find(world, classname, "info_player_takeo");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");} break;
 		case 3: spawnpoint = find(world, classname, "info_player_doctor");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");}  break;
+	}
+	
+	if (self.playernum) {
+		switch(self.playernum) {
+			default: spawnpoint = find(world, classname, "info_player_start"); if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");} break;
+			case 1: spawnpoint = find(world, classname, "info_player_nikolai");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");} break;
+			case 2: spawnpoint = find(world, classname, "info_player_takeo");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");} break;
+			case 3: spawnpoint = find(world, classname, "info_player_doctor");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");}  break;
+	    }
 	}
 	
 	self.origin = spawnpoint.origin + [0,0,1];
@@ -359,7 +368,9 @@ void() PlayerSpawn =
 
 	self.stamina = 3;
 	self.reviving = 0;
-	self.playernum = player_count + 1;
+	
+	if (!self.playernum)
+		self.playernum = player_count + 1;
 
 	if (rounds < 1) {
 		sound (self, CHAN_AUTO, "sounds/rounds/splash.wav", 1, ATTN_NONE);//temporarily here.
@@ -447,6 +458,13 @@ void(string com) SV_ParseClientCommand =
 		static float paused;
 		paused = !paused;
 		setpause(paused);
+	}
+	else if (com == "noclip")
+	{
+		if (self.movetype == MOVETYPE_WALK)
+			self.movetype = MOVETYPE_NOCLIP;
+		else
+			self.movetype = MOVETYPE_WALK;
 	}
 	else
 	{
