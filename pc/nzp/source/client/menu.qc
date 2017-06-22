@@ -226,7 +226,6 @@ void() Menu_Click =
 void() Draw_Menu =
 {
 	precache_sound("sounds/menu/enter.wav");
-	precache_sound("sounds/menu/tune1.wav");
 	
 	//Background picture with a nice scrolling effect, scrolling happens in the shader in scripts/menu.shader
 	//moto - put loading of demo.bsp when it's time has come.

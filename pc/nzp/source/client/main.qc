@@ -25,7 +25,6 @@ void() ToggleMenu =
 		in_menu = MENU_MAIN;
 		time_in_menu = 0;
 		setcursormode(TRUE,"menu/cursor");
-		sound(self, 0, "sounds/menu/tune1.wav", 1, ATTN_NONE);
 	}
 }
 
