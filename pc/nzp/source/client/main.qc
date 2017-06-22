@@ -35,6 +35,7 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	registercommand("startwalk");
 	registercommand("stopwalk");
 	registercommand("promptjoin");
+	registercommand("showscores");
 		
 	//print("CSQC Started\n");
 	dummy = spawn();
@@ -307,13 +308,20 @@ noref float(string cmd) CSQC_ConsoleCommand =
 		case "promptjoin":
 			menu_join();
 			return TRUE;
+		case "showscores":
+			if (score_show)
+				score_show = FALSE;
+			else
+				score_show = TRUE;
+			return TRUE;
+			break;
 		default:
 			return FALSE;
 	}
 	return FALSE;
 };
 //**********************************************************************//
-// Input_Keycheck                                                       //
+// Input_Movecheck                                                      //
 //                                                                      //
 // Called at InputEvent and allows to set var if key is at that state   //
 // NOTE: ALL movekeys are called in order to prevent unsetting keys     //

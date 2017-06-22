@@ -929,14 +929,36 @@ void() HUD_Broadcast = {
 		drawstring([x, g_height/2, 0], broadcast_msg, [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1);
 }
 
+void() HUD_Scores =
+{
+	string subtext = "Name                             Score";
+	float xback, i, x;
+	
+	if(serverkey("constate") != "disconnected")
+	{
+		float print_width = stringwidth(subtext, 0, [0.015*g_width, 0.015*g_width, 0]);
+		x = (g_width - print_width)/2;
+		drawstring([x,g_height*(5/12), 0], subtext, [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1);
+	
+		xback = x;
+	
+		for (i = 0; i < 4; i = i + 1)
+		{
+			if (playerpoints[i] == -1)
+				break;
+			
+			print_width = stringwidth(ftos(playerpoints[i]), 0, [0.015*g_width, 0.015*g_width, 0]);
+			x = (g_width + (0.5*g_width) - print_width)/2;
+			drawstring([x,g_height*(5.75/12)+(i*g_height/12), 0], ftos(playerpoints[i]), [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1); 
+			drawstring([xback,g_height*(5.75/12)+(i*g_height/12), 0], playernames[i], [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1); 
+		}
+	}
+}
+
 void() HUD_Endgame = {
 
 	string message = "GAME OVER";
 	string survive = strcat("You survived ",ftos(rounds)," rounds");
-	string subtext = "Name                             Score";
-	float xback;
-	float i;
-	
 	
 	// first message
 	float print_width = stringwidth(message, 0, [(1/30)*g_width, (1/30)*g_width, 0]);
@@ -948,23 +970,7 @@ void() HUD_Endgame = {
 	x = (g_width - print_width)/2;
 	drawstring([x,g_height*(1/3), 0], survive, [0.025*g_width, 0.025*g_width, 0], [1, 1, 1], 1, 1);
 	
-	// third message
-	print_width = stringwidth(subtext, 0, [0.015*g_width, 0.015*g_width, 0]);
-	x = (g_width - print_width)/2;
-	drawstring([x,g_height*(5/12), 0], subtext, [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1);
-	
-	xback = x;
-	
-	for (i = 0; i < 4; i = i + 1)
-	{
-		if (playerpoints[i] == -1)
-			break;
-			
-		print_width = stringwidth(ftos(playerpoints[i]), 0, [0.015*g_width, 0.015*g_width, 0]);
-		x = (g_width + (0.5*g_width) - print_width)/2;
-		drawstring([x,g_height*(5.75/12)+(i*g_height/12), 0], ftos(playerpoints[i]), [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1); 
-		drawstring([xback,g_height*(5.75/12)+(i*g_height/12), 0], playernames[i], [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1); 
-	}
+	HUD_Scores();
 }
 
 /*******************
@@ -973,7 +979,7 @@ void() HUD_Endgame = {
 
 void(float width, float height) HUD_Draw = 
 {
-	if (!getstatf(STAT_SPECTATING) && (getstatf(STAT_HEALTH) > 10))
+	if (!getstatf(STAT_SPECTATING) && (getstatf(STAT_HEALTH) > 10) && !score_show)
 	{
 		Draw_Crosshair();
 		HUD_Health(width, height);
@@ -1004,6 +1010,9 @@ void(float width, float height) HUD_Draw =
 	
 	if (getstatf(STAT_HEALTH) <= 10 && getstatf(STAT_SPECTATING))
 		HUD_Endgame();
+		
+	if (score_show)
+		HUD_Scores();
 }
 
 
