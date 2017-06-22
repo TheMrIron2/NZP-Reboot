@@ -138,4 +138,4 @@ const float EVENT_POINTUPDATE = 25;
 #define STAT_INSTA	        	61
 #define STAT_X2		        	62
 #define STAT_SPECTATING			63
-//#define STAT_PLAYERNUM			64	// useless now but will be kept just in case
+#define STAT_PLAYERNUM			64

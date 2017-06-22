@@ -84,3 +84,7 @@ float K_LEFTDOWN, K_RIGHTDOWN, K_BACKDOWN, K_FORWARDDOWN;
 #define 	P_REVIVE	8
 #define 	P_FLOP		16
 #define 	P_STAMIN	32
+
+vector TEXT_LIGHTBLUE = [(2/255), (118/255), (181/255)];
+vector TEXT_ORANGE    = [(235/255), (189/255), 0];
+vector TEXT_GREEN     = [0, (230/255), (34/255)];

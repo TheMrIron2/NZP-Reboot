@@ -194,7 +194,7 @@ void() worldspawn =
 	clientstat(STAT_INSTA, EV_FLOAT, insta_icon);
 	clientstat(STAT_X2, EV_FLOAT, x2_icon);
 	clientstat(STAT_SPECTATING, EV_FLOAT, isspec);
-	//clientstat(STAT_PLAYERNUM, EV_FLOAT, playernum);		// literally useless but will be kept in case
+	clientstat(STAT_PLAYERNUM, EV_FLOAT, playernum);		// literally useless but will be kept in case
 
 	mappath = strcat("maps/", mapname);
 	mappath = strzone(mappath);
