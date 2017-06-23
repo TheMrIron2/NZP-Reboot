@@ -108,10 +108,10 @@ void(float width, float height) HUD_Points =
 	local float pointlength = 0, increm = 10, i = 0;
 	vector TEXTCOLOR;
 	
-	for (i = 0; i <= 3; i = i + 1)
+	for (i = 3; i >= 0; i = i - 1)
 	{
 		if (playerpoints[i] == -1)
-			return;
+			continue;
 			
 		switch(i) {
 			case 1: TEXTCOLOR = TEXT_LIGHTBLUE; break;
@@ -119,10 +119,17 @@ void(float width, float height) HUD_Points =
 			case 3: TEXTCOLOR = TEXT_GREEN; break;
 			default: TEXTCOLOR = [1, 1, 1]; break;
 		}
-	
-		pointlength = strlen(ftos(playerpoints[i]));
-		drawpic([0.8*width,0.70*height - (.071*height*i),0], "gfx/hud/moneyback.tga", [0.2*width, 0.07*height, 0], [1,1,1], 1); 
-		drawstring([.9414*width - pointlength*20*width/1024, 0.715*height - 0.07*height*i, 0], ftos(playerpoints[i]), [0.022*width, 0.022*width, 0], TEXTCOLOR, 1, 1); 
+		
+		if ((i+1) == getstatf(STAT_PLAYERNUM)) {
+			pointlength = strlen(ftos(playerpoints[i]));
+			drawpic([0.8*width,0.70*height - (.061*height*i),0], "gfx/hud/moneyback.tga", [0.2*width, 0.07*height, 0], [1,1,1], 1); 
+			drawstring([.9414*width - pointlength*20*width/1024, 0.715*height - 0.06*height*i, 0], ftos(playerpoints[i]), [0.022*width, 0.022*width, 0], TEXTCOLOR, 1, 1); 
+		}
+		else {
+			pointlength = strlen(ftos(playerpoints[i]));
+			drawpic([0.85*width,0.70*height - (.071*height*i*0.8),0], "gfx/hud/moneyback.tga", [0.2*width*0.8, 0.07*height*0.8, 0], [1,1,1], 1); 
+			drawstring([.97*width - pointlength*20*width/1024, 0.715*height - 0.07*height*i*0.8, 0], ftos(playerpoints[i]), [0.022*width*0.8, 0.022*width*0.8, 0], TEXTCOLOR, 1, 1); 
+		}
 	}
 }
 
