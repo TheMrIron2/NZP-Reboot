@@ -819,7 +819,7 @@ void() Float_Change =
 				
 		self.velocity = '0 0 0';
 		
-		if (!teddygen || teddygen < 0.1) {		//naievil FIXME -- should be a BETTER random num, spin count comes later
+		if (!teddygen || teddygen < 0.9) {		//naievil FIXME -- should be a BETTER random num, spin count comes later
 			self.owner.boxstatus = 2;
 			self.weapon = r;
 			self.nextthink = time + 5;
