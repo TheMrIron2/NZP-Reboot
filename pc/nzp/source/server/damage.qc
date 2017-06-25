@@ -312,9 +312,7 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 				
 			if (victim.health <= 0)
 				addmoney(attacker, 60, 1);
-		
 		}
-
 
 		if (victim.health <= 0 || instakill_finished) {
 			old_self = self;

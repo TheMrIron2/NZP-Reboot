@@ -39,7 +39,6 @@ void() zapper1 = {remove(self);};
 void() zapper2 = {remove(self);};
 void() item_switch = {remove(self);};
 void() zap_light = {remove(self);};
-void() mystery_box_tp_spot = {remove(self);};
 void() info_end = {remove(self);};
 //// beta removal 
 void() monster_dog = {remove(self);};

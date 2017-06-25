@@ -4,7 +4,7 @@
 
 void SetUpdate(entity client, float type, float val1, float val2, float val3)
 {
-	if (type != 2 || type == 5)
+	if (type != 2)
 	{
 		msg_entity = client;
 		WriteByte(MSG_ONE, SVC_CGAMEPACKET);
@@ -32,11 +32,6 @@ void(entity to, float type, float cost, float weapon) useprint = {
 	WriteByte(MSG_ONE, type);
 	WriteShort(MSG_ONE, cost);
 	WriteByte(MSG_ONE, weapon);
-}
-
-float() crandom =
-{
-	return 2*(random() - 0.5);
 }
 
 void NotifyNewRound(float to) {
@@ -110,6 +105,11 @@ void(float playernum, float points, string name) UpdatePlayerPoints =
 // *****************************************
 // Unrelated to engine, but custom functions
 // *****************************************
+
+float() crandom =
+{
+	return 2*(random() - 0.5);
+}
 
 void WeaponSwitch(entity player) {
 	float wep, cmag, cmag2, cammo;

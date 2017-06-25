@@ -2,6 +2,7 @@
 float backupWepSkin;
 float sound_perk_delay; 
 void() W_Switch;
+void() mystery_touch;
 
 void GivePerk(float perk) {
 	switch(perk) {
@@ -739,9 +740,61 @@ void() Float_Decrease =
 	self.think = Finalize_box;
 }
 
+void() findboxspot =
+{	
+	entity newspot = findfloat(world, visited, 1); // we are LOOKING to visit
+	if (!newspot) {
+		newspot = findfloat(world, visited, 2);
+		while (newspot)
+		{
+			newspot.visited = 1;
+			newspot = findfloat(world, visited, 2);
+		}
+	}
+	newspot = findfloat(world, visited, 1);
+	
+	self.owner.model = "progs/Misc/teddy.mdl";
+	setmodel(self.owner, self.owner.model);
+	self.owner.classname = "mystery_box_tp_spot";
+	self.owner.touch = SUB_Null;
+	self.owner.visited = 2;		// we HAVE visited
+	
+	if (!(self.owner.spawnflags & 2))
+	{
+		local entity g;
+		g = spawn();
+		newspot.goaldummy = g;
+		setmodel(g,"models/machines/mglow$.mdl");
+		setorigin(g,newspot.origin);
+		g.angles = newspot.angles;
+	}
+	
+	remove(self);      // remove teddy
+	
+	newspot.boxstatus = 0;
+	newspot.touch = mystery_touch;
+	newspot.solid=SOLID_TRIGGER;
+	newspot.classname = "mystery";
+	setorigin(newspot, newspot.origin);
+	newspot.visited = 2;
+	setmodel (newspot, "models/machines/mystery.mdl");
+	setsize (newspot, VEC_HULL2_MIN, VEC_HULL2_MAX);
+}
+
+void() remove_box =
+{
+	setmodel(self.owner.goaldummy, "");
+	self.owner.frame = 0;	// set box frame
+	makevectors(self.angles);
+	self.velocity = v_up*100;
+	self.think = findboxspot;
+	self.nextthink = time + 2;
+}
+
 void() Float_Change =
 {
-	float r, tempf;
+	entity tpspot;
+	float r, tempf, teddygen;
 	string temps;
 
 	tempf = randomweapon ();
@@ -757,12 +810,32 @@ void() Float_Change =
 	self.boxstatus = self.boxstatus + 0.01;
 	if (self.wait <= time)
 	{
+		tpspot = find(world, classname, "mystery_box_tp_spot");
+		if (tpspot) {
+				teddygen = random();
+			}
+			else
+				teddygen = 0;
+				
 		self.velocity = '0 0 0';
-		self.owner.boxstatus = 2;
-		self.weapon = r;
-		self.nextthink = time + 5;
-		self.think = Float_Decrease;
-		return;
+		
+		if (!teddygen || teddygen < 0.1) {		//naievil FIXME -- should be a BETTER random num, spin count comes later
+			self.owner.boxstatus = 2;
+			self.weapon = r;
+			self.nextthink = time + 5;
+			self.think = Float_Decrease;
+			return;
+		}
+		else {
+			self.owner.boxstatus = 3;
+			self.model = "progs/Misc/teddy.mdl";
+			setmodel(self, self.model);
+			self.angles_y = self.angles_y - 90;
+			self.nextthink = time + 5;
+			self.think = remove_box;
+			sound (self, CHAN_ITEM, "sounds/music/end.wav", 1, ATTN_NORM);	//naievil FIXME -- change sound
+			return;
+		}
 	}
 	if (self.ltime <= time)
 	{
@@ -772,7 +845,6 @@ void() Float_Change =
 	self.nextthink = time + self.boxstatus;
 	self.think = Float_Change;
 }
-
 
 void() Create_Floating_Weapon =
 {
@@ -788,7 +860,7 @@ void() Create_Floating_Weapon =
 		r = Getweaponid(tempf);
 	}
 	temps = GetWeaponModel(r, 1);
-	
+		
 	gun = spawn();
 	
 	setorigin (gun, self.origin);
@@ -811,11 +883,29 @@ void() Create_Floating_Weapon =
 	gun.think = Float_Change;
 }
 
+void() mystery_box_tp_spot = 
+{
+	entity mbox;
+	mbox = find(world, classname, "mystery");
+	if (!mbox)	
+		remove(self);		// if we don't have a mystery box why do we have a teleport spot
+		
+	precache_model ("progs/Misc/teddy.mdl"); 
+	
+	self.solid=SOLID_TRIGGER;
+	self.classname = "mystery_box_tp_spot";
+	self.visited = 1;
+	setorigin(self, self.origin);
+	setmodel (self, "progs/Misc/teddy.mdl");
+	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+};
+
 void() mystery_touch =
 {
 	entity tempe;
 	float startframe, endframe;
 	string modelname;
+	
 	if (other.classname != "player" || other.downed)
 		return;
 		
@@ -831,7 +921,7 @@ void() mystery_touch =
 		if (!self.boxstatus)
 		{
 			if (other.points >= 950)
-			{
+			{					
 				sound (self, CHAN_ITEM, "sounds/machines/mbox_open.wav", 1, ATTN_NORM);
 				addmoney(other, -950, FALSE);
 				self.boxstatus = 1;

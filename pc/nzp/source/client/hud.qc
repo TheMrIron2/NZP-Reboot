@@ -13,9 +13,6 @@ void(float width, float height) HUD_Health =
 	local float health;	
 	float alpha;
 	
-	if (!rounds)
-		return;
-	
 	health = getstatf(STAT_HEALTH); 
 
 	if (health < 100)
@@ -44,10 +41,9 @@ void(float width, float height) HUD_Health =
 
 void(float width, float height) HUD_Ammo =
 {
-	local float ammo, curmag, x_itoa, benis, benis2;
+	local float ammo, curmag, benis, benis2;
 	string ammostring, ammostring_1, ammostring_2;
 	vector color;
-	
 	
 	curmag = getstatf(STAT_CURRENTMAG);		
 	ammo = getstatf(STAT_AMMO);	
@@ -82,20 +78,22 @@ void(float width, float height) HUD_Ammo =
 
 void() HUD_AmmoString =
 {
-	int len = 0;
-	    
+	vector textcolor = [1, 1, 1];
+	string message = "";
+	
 	if (GetLowAmmo(getstatf(STAT_ACTIVEWEAPON), 1) >= getstatf(STAT_CURRENTMAG) && getstatf(STAT_WEAPONZOOM) != 2)
 	{
 		if (0 < getstatf(STAT_AMMO) && getstatf(STAT_CURRENTMAG) >= 0) {
-			len = 6;
-		drawstring([g_width/2, g_height/2 + (30/272)*g_height, 0], "Reload", [0.02*g_width, 0.02*g_width, 0], [1,1,1], 1, 1);
+			message = "Reload";
+			textcolor = [1, 1, 1];
 		} else if (0 < getstatf(STAT_CURRENTMAG)) {
-			len = 8;
-		drawstring([g_width/2, g_height/2 + (30/272)*g_height, 0], "LOW AMMO", [0.02*g_width, 0.02*g_width, 0], [219/255, 203/255, 19/255], 1, 1);
+			message = "LOW AMMO";
+			textcolor = [219/255, 203/255, 19/255];		
 		} else {
-			len = 7;
-		drawstring([g_width/2, g_height/2 + (30/272)*g_height, 0], "NO AMMO", [0.02*g_width, 0.02*g_width, 0], [215/255, 0, 0], 1, 1);
+			message = "NO AMMO";
+			textcolor = [215/255, 0, 0];
 		}
+		drawstring([g_width/2, g_height/2 + (30/272)*g_height, 0], message, [0.02*g_width, 0.02*g_width, 0], textcolor, 1, 1);
 	}
 }
 
@@ -666,7 +664,6 @@ void(float width, float height) HUD_Useprint =
 		
 		tokenize(findkeysforcommand("+button7"));
 		usebutton = strtoupper(keynumtostring(stof(argv(0))));
-		//usebutton = keynumtostring(-1);
 
 		switch (useprint_type) {
 			case 0://clear
@@ -781,13 +778,11 @@ void(float width, float height) HUD_Perks =
 void(float width, float height) HUD_Weaponstring =
 {
 	string weaponstring; 
-	local float ws_offset;
+	float ws_offset;
 	
 	weaponstring = GetWeaponName(getstatf(STAT_ACTIVEWEAPON));
 	ws_offset = (strlen(weaponstring));
-	
-	//	drawstring([width - (42/480)*width - (benis*20*width/1024), 0.96*height, 0], ammostring, [0.02*width, 0.02*width, 0], [1, 1, 1], 1, 1);
-	
+		
 	drawstring([0.925*width + (40*width/1024) - ws_offset*20*width/1024, 0.75*height + 10, 0], weaponstring, [0.02*width, 0.02*width, 0], [1, 1, 1], 1, 1);
 }
 
@@ -832,9 +827,7 @@ void() HUD_Hitmark =
 *   HUD Crosshair  *
 *******************/
 
-//extern cvar_t crosshair;
-float croshhairmoving; // naievil (FIXME) used to see if we are moving or not
-//extern cvar_t cl_zoom;
+float croshhairmoving; // naievil --used t o see if we are moving or not
 float cur_spread;
 float crosshair_offset_step;
 
@@ -919,14 +912,10 @@ void() Draw_Crosshair =
 
 void() HUD_Powerups = {
 
-
 	if(getstatf(STAT_X2))
 		drawpic([(g_width/2 - (28/272)*g_height),0,0], "gfx/hud/2x.tga", [(28/272)*g_height, (28/272)*g_height, 1], [1,1,1], 1);
 	if(getstatf(STAT_INSTA))
 		drawpic([(g_width/2 + (5/480)*g_width),0,0], "gfx/hud/in_kill.tga", [(28/272)*g_height, (28/272)*g_height, 1], [1,1,1], 1);
-		
-//	drawstring([0.01*g_width, 0.10*g_height, 0], ftos(getstatf(STAT_INSTA)), [0.03*g_width, 0.03*g_width, 0], [1, 1, 1], 1, 1);
-//	drawstring([0.01*g_width, 0.14*g_height, 0], ftos(getstatf(STAT_X2)), [0.03*g_width, 0.03*g_width, 0], [1, 1, 1], 1, 1);
 }
 
 void() HUD_Broadcast = {
@@ -972,8 +961,8 @@ void() HUD_Scores =
 			
 			print_width = stringwidth(ftos(playerpoints[i]), 0, [0.015*g_width, 0.015*g_width, 0]);
 			x = (g_width + (0.5*g_width) - print_width)/2;
-			drawstring([x,g_height*(5.75/12)+(i*g_height/12), 0], ftos(playerpoints[i]), [0.015*g_width, 0.015*g_width, 0], TEXTCOLOR, 1, 1); 
-			drawstring([xback,g_height*(5.75/12)+(i*g_height/12), 0], playernames[i], [0.015*g_width, 0.015*g_width, 0], TEXTCOLOR, 1, 1); 
+			drawstring([x,g_height*(5.75/12)+(i*g_width*0.03), 0], ftos(playerpoints[i]), [0.015*g_width, 0.015*g_width, 0], TEXTCOLOR, 1, 1); 
+			drawstring([xback,g_height*(5.75/12)+(i*g_width*0.03), 0], playernames[i], [0.015*g_width, 0.015*g_width, 0], TEXTCOLOR, 1, 1); 
 		}
 	}
 }
@@ -993,6 +982,7 @@ void() HUD_Endgame = {
 	x = (g_width - print_width)/2;
 	drawstring([x,g_height*(1/3), 0], survive, [0.025*g_width, 0.025*g_width, 0], [1, 1, 1], 1, 1);
 	
+	// we can reuse our tab scores for the endgame
 	HUD_Scores();
 }
 
@@ -1037,8 +1027,6 @@ void(float width, float height) HUD_Draw =
 	if (score_show)
 		HUD_Scores();
 }
-
-
 
 void UpdatePerks (float newperks) {
 	float s;

@@ -451,9 +451,6 @@ void() explosive_barrel =
 	self.health = 300;
 };
 
-
-
-
 .float radioState;
 .float length;
 .string tune;
