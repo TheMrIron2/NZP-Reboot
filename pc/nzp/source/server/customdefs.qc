@@ -121,12 +121,9 @@ void Set_W_Frame (float startframe, float endframe, float duration, float funcca
 .void() animend;
 .void(optional float t) animend2;
 
-
 //Null functions
 void() SUB_Null = {};
 void() SUB_Null2 = {};
-
-
 
 vector	VEC_HULL_MIN = '-16 -16 -32';
 vector	VEC_HULL_MAX = '16 16 40';
@@ -250,6 +247,7 @@ float isPowerOn;
 .float boxstatus;
 .entity boxweapon;
 .float visited; 		// 2 is we HAVE visited, 1 is we have the ability to visit
+.float spins;
 .float papState;
 
 //powerups

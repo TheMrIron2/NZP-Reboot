@@ -122,7 +122,7 @@ void() PlayerPreThink =
 
 		self.maxspeed *= GetWeaponWalkSpeed(self.weapon);
 	}
-	if(self.isspec != 0)
+	if(self.isspec != 0 && !self.downed)
 	{
 		if(self.button0)
 		{

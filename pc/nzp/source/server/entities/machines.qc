@@ -771,6 +771,7 @@ void() findboxspot =
 	
 	remove(self);      // remove teddy
 	
+	newspot.spins = 0;
 	newspot.boxstatus = 0;
 	newspot.touch = mystery_touch;
 	newspot.solid=SOLID_TRIGGER;
@@ -811,7 +812,7 @@ void() Float_Change =
 	if (self.wait <= time)
 	{
 		tpspot = find(world, classname, "mystery_box_tp_spot");
-		if (tpspot) {
+		if (tpspot && self.owner.spins >= 3) {
 				teddygen = random();
 			}
 			else
@@ -827,7 +828,6 @@ void() Float_Change =
 			return;
 		}
 		else {
-			self.owner.boxstatus = 3;
 			self.model = "progs/Misc/teddy.mdl";
 			setmodel(self, self.model);
 			self.angles_y = self.angles_y - 90;
@@ -928,6 +928,7 @@ void() mystery_touch =
 				self.owner = other;
 				box_open1 ();
 				Create_Floating_Weapon();
+				self.spins++;
 			}
 			else {
         		centerprint (other, "Not enough points\n");
