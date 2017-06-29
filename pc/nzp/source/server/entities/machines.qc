@@ -758,7 +758,9 @@ void() findboxspot =
 	self.owner.classname = "mystery_box_tp_spot";
 	self.owner.touch = SUB_Null;
 	self.owner.visited = 2;		// we HAVE visited
+	self.owner.angles_y -= 90;
 	
+	newspot.angles_y += 90;
 	if (!(self.owner.spawnflags & 2))
 	{
 		local entity g;
@@ -820,7 +822,7 @@ void() Float_Change =
 				
 		self.velocity = '0 0 0';
 		
-		if (!teddygen || teddygen < 0.9) {		//naievil FIXME -- should be a BETTER random num, spin count comes later
+		if (!teddygen || teddygen < 0.9) {		//teddy gen threshold, high means less chance
 			self.owner.boxstatus = 2;
 			self.weapon = r;
 			self.nextthink = time + 5;
@@ -898,6 +900,9 @@ void() mystery_box_tp_spot =
 	setorigin(self, self.origin);
 	setmodel (self, "progs/Misc/teddy.mdl");
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	
+	if (self.model == "progs/Misc/teddy.mdl")
+		self.angles_y -= 90;
 };
 
 void() mystery_touch =
