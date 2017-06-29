@@ -76,6 +76,7 @@ void Weapon_Logic();
 .float weapon2frame;
 .float reloadinterupted;
 .float hitcount;
+.float weaponnum;	// 0 for weapon one, 1 for second weapon...we invert value for easy comparison, a third gun would need to be hardwired
 
 //Reviving
 .float invoke_revive;

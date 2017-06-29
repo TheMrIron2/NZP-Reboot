@@ -153,6 +153,7 @@ void() W_PutOut =
 	}
 	
 	W_AimOut();
+	self.weaponnum = !self.weaponnum;
 	
 	if (self.secondaryweapon && !self.new_anim_stop)
 	{
@@ -1174,15 +1175,18 @@ void() W_Grenade =
    }    
 }
 
+void() CheckButtonOne = {if (self.weaponnum == 1){W_PutOut();}}		// weapon switch to two if 1
+void() CheckButtonTwo = {if (self.weaponnum == 0) {W_PutOut();}}	// weapon switch to one if 2
+
 void () Impulse_Functions =
 {
+	if (!self.impulse)
+		return;
+		
 	switch (self.impulse)
 	{		
 		case 22:
-			entity benis;
-			benis = find (world, classname, "player");
-			addmoney(benis, 10000, 0);
-			//crouchset();
+			addmoney(self, 10000, 0);
 			break;
 		case 23:
 			W_SprintStart();
@@ -1192,6 +1196,15 @@ void () Impulse_Functions =
 			break;
 		case 25:
 			switch_nade();
+			break;
+		case 110:
+			CheckButtonOne();
+			break;
+		case 111:
+			CheckButtonTwo();
+			break;		
+		default:
+			bprint(PRINT_HIGH, "Unknown impulse: ", ftos(self.impulse));
 			break;
 	}
 	

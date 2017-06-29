@@ -368,6 +368,7 @@ void() PlayerSpawn =
 
 	self.stamina = 3;
 	self.reviving = 0;
+	self.weaponnum = 0;
 	
 	if (!self.playernum)
 		self.playernum = player_count + 1;
