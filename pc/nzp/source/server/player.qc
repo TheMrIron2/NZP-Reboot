@@ -118,6 +118,8 @@ void() PlayerPreThink =
 			self.maxspeed *= 1.66;
 		} else if (self.zoom == 1) {
 			self.maxspeed *= 0.5;
+		} if (self.damagetimer > time) {
+			self.maxspeed *= 0.5;
 		}
 
 		self.maxspeed *= GetWeaponWalkSpeed(self.weapon);
@@ -285,6 +287,7 @@ void() PollPlayerPoints =
 			breakpoint = 1;
 			break;
 		}
+		
 		
 		UpdatePlayerPoints(i, pollent.points, pollent.netname);
 	}

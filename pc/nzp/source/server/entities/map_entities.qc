@@ -523,6 +523,11 @@ void zap_zombie () {
 		self = other;
 		self.th_die();
 		self = tempe;	
+	} else if (other.classname == "player") {
+		if (other.damagetimer < time) {
+			DamageHandler (other, self, 50, S_ZAPPER);
+			other.damagetimer = time + 1.5;
+		}
 	}
 }
 
@@ -597,14 +602,12 @@ void zapper_start(string zapper) {
 void zapper_touch () {
 	if (other.classname != "player") {
 		return;
-	}
-	
+	}	
     
 	if (self.requirespower == true && !isPowerOn) {
 		useprint (other, 8, 0, 0);
 		return;
-	}
-	
+	}	
 
 	if (self.state == 0) {
 		useprint (other, 11, self.cost, self.weapon);

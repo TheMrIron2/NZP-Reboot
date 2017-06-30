@@ -63,7 +63,7 @@ void() W_SprintStop =
 	float endframe = GetFrame(self.weapon,SPRINT_OUT_END);
 	string modelname = GetWeaponModel(self.weapon, 0);
 	
-	if (self.isBuying)
+	if (self.isBuying || self.damagetimer > time)
 		return;
 	
 	self.viewzoom = 1;

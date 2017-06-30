@@ -41,7 +41,7 @@ entity activator;
 .float stamina;
 void() W_SprintStop;
 .float into_sprint;
-
+.float damagetimer;
 
 //Weaponsystem defines
 void SwitchWeapon(float to);

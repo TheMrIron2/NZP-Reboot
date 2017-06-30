@@ -115,6 +115,7 @@ const float EVENT_POINTUPDATE = 25;
 #define S_NORMAL	3
 #define S_ZOMBIE	4
 #define S_EXPLOSIVE	5
+#define S_ZAPPER	6
 
 //Perk types
 #define 	P_JUG		1

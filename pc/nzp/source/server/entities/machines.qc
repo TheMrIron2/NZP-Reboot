@@ -214,22 +214,22 @@ void() setup_perk =
 			self.effects = EF_BLUE;
 		else
 			self.requirespower = true;
-	}/*
+	}
 	else
 	{
 		if (self.classname == "perk_revive")
 			self.effects = EF_BLUE;
-		else if (self.classname == "perk_flopper")
-			self.effects = EF_PURPLELIGHT;
+		/*else if (self.classname == "perk_flopper")
+			self.effects = EF_PURPLELIGHT;*/
 		else if (self.classname == "perk_juggernog")
-			self.effects = EF_REDLIGHT;
-		else if (self.classname == "perk_staminup")
-			self.effects = EF_ORANGELIGHT;
+			self.effects = EF_RED;
+		/*else if (self.classname == "perk_staminup")
+			self.effects = EF_ORANGELIGHT;*/
 		else if (self.classname == "perk_speed")
-			self.effects = EF_GREENLIGHT;
-		else if (self.classname == "perk_double")
-			self.effects = EF_ORANGELIGHT;
-	} */
+			self.effects = EF_GREEN;
+		/*else if (self.classname == "perk_double")
+			self.effects = EF_ORANGELIGHT;*/
+	} 
 	
 		// naievil (FIXME) light effects 
 }
@@ -336,27 +336,24 @@ void()	turnpower4	=[	4,		SUB_Null	] {self.frame = 4;};
 
 void() Turn_Lights =
 {
-	/*entity tempe;
-	SUB_UseTargets();
-
-	tempe = findfloat (world, requirespower, 1);// trigger all paired doors
+	entity tempe = findfloat (world, requirespower, 1);// trigger all paired doors
 	while (tempe)
 	{
 		if (tempe.classname == "perk_revive")
 			tempe.effects = EF_BLUE;
-		else if (tempe.classname == "perk_flopper")
-			tempe.effects = EF_PURPLELIGHT;
+		/*else if (tempe.classname == "perk_flopper")
+			tempe.effects = EF_PURPLELIGHT;*/
 		else if (tempe.classname == "perk_juggernog")
-			tempe.effects = EF_REDLIGHT;
-		else if (tempe.classname == "perk_staminup")
-			tempe.effects = EF_ORANGELIGHT;
+			tempe.effects = EF_RED;
+		/*else if (tempe.classname == "perk_staminup")
+			tempe.effects = EF_ORANGELIGHT;*/
 		else if (tempe.classname == "perk_speed")
-			tempe.effects = EF_GREENLIGHT;
-		else if (tempe.classname == "perk_double")
-			tempe.effects = EF_ORANGELIGHT;
+			tempe.effects = EF_GREEN;
+		/*else if (tempe.classname == "perk_double")
+			tempe.effects = EF_ORANGELIGHT;*/
       
 		tempe = findfloat (tempe, requirespower, 1);// trigger all paired doors
-	} */ // naievil (FIXME) redo light effects 
+	}  // naievil (FIXME) redo light effects 
 } 
 
 void() touch_power_Switch =
