@@ -286,7 +286,7 @@ void(entity attacker, float d_style) DieHandler =
 
 void(entity victim,entity attacker, float damage, float d_style) DamageHandler = {
 	entity old_self;
-	if (victim.classname == "ai_zombie") {
+	if (victim.classname == "ai_zombie" || victim.classname == "ai_dog") {
 
 		if (attacker.classname == "player" && (victim.health - damage)> 0) {
 			addmoney(attacker, 10, 1);
@@ -297,7 +297,7 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 		if (d_style == S_EXPLOSIVE) {
 			if (victim.health < z_health*0.5)
 			{
-				if (victim.crawling != TRUE && !(victim.health <= 0) && crawler_num < 5)
+				if (victim.crawling != TRUE && !(victim.health <= 0) && crawler_num < 5 && victim.classname != "ai_dog")
 				{
 					makeCrawler(victim);	
 				}

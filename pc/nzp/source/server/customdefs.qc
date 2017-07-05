@@ -222,6 +222,7 @@ void(entity who) makeCrawler;
 void() spawnAllZombEnts;
 void() set_z_health;
 float() spawn_a_zombieA;
+float() spawn_a_dogA;
 float z_health;
 .float bleedingtime;
 .float time_to_die;
@@ -282,7 +283,6 @@ float sounds_playing;
 
 float rounds;
 float rounds_change;
-
 
 //Waypoints
 void () Waypoint_Logic;

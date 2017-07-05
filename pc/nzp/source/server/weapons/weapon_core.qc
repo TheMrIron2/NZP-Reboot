@@ -482,12 +482,11 @@ void Parse_Damage () = // DO NOT TOUCH
 	ent = findfloat (world, washit, 1);
 
 	while (ent) {
-		if (ent.classname == "ai_zombie") {
+		if (ent.classname == "ai_zombie" || ent.classname == "ai_dog") {
 			total_dmg = ent.hitamount;
 			//Clear hit
 			ent.washit = 0;
 			ent.hitamount = 0;
-
 			
 			DamageHandler(ent,self, total_dmg, S_NORMAL);
 		}
@@ -1187,6 +1186,7 @@ void () Impulse_Functions =
 	{		
 		case 22:
 			addmoney(self, 10000, 0);
+			rounds += 4;
 			break;
 		case 23:
 			W_SprintStart();

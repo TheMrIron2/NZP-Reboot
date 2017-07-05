@@ -30,7 +30,6 @@ void() StartFrame =
 	
 	if (SpawnedIn)
 		InitRounds();
-		
 	}
 	
 }
@@ -54,6 +53,8 @@ void() worldspawn =
 	precache_model ("models/ai/zalc(.mdl");
 	precache_model ("models/ai/zarc(.mdl");
 	precache_model ("models/ai/zhc^.mdl");
+	
+	precache_model ("models/ai/dog.mdl");
 
 	precache_model ("progs/Misc/maxammo!.mdl");
 	precache_model ("progs/Misc/x2!.mdl");
@@ -96,6 +97,8 @@ void() worldspawn =
 	precache_sound("sounds/misc/wood_door.wav");
 	precache_sound("sounds/misc/debris.wav");
 	precache_sound("sounds/misc/denybuy.wav");
+	
+	precache_sound("sounds/misc/what.wav");
 
 	precache_model ("models/weapons/m1911/v_colt.mdl");
 	precache_model ("models/weapons/m1911/g_colt.mdl");

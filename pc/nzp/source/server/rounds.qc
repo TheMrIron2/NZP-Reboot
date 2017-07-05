@@ -7,6 +7,13 @@ void() Spawn_Enemy =
 			Current_Zombies = Current_Zombies + 1;
 		}
 	}
+	else if (roundtype == 2)
+	{
+		if (spawn_a_dogA())
+		{
+			Current_Zombies = Current_Zombies + 1;
+		}
+	}
 }
 
 void(string s) playSoundAtPlayers =
@@ -31,7 +38,7 @@ void() EndRound =
 void() PlayerSpawn;
 
 void() NewRound =
-{
+{		
 	entity who = find(world,classname,"spectator");
 	while(who != world)
 	{
@@ -110,21 +117,11 @@ void() NewRound =
 	totalpowerups = 0;
 	powerup_activate = powerup_activate*1.14;
 	
-	if (rounds == 5)
-	{
-		WriteByte (MSG_ALL, 43);
-		WriteByte (MSG_ALL, 0);
-	}
-	if (rounds == 10)
-	{
-		WriteByte (MSG_ALL, 43);
-		WriteByte (MSG_ALL, 1);
-	}
-	if (rounds == 15)
-	{
-		WriteByte (MSG_ALL, 43);
-		WriteByte (MSG_ALL, 2);
-	}
+	entity gotdog = find(world, classname, "spawn_dog");
+	if ((rounds == 5 || rounds == 10 || rounds == 15) && gotdog)
+		roundtype = 2;
+	else
+		roundtype = 1;
 }
 void() Round_Core =
 {
@@ -153,6 +150,8 @@ void() Round_Core =
 		return;
 	if (round_changetime)
 	{
+		roundtype = 1;
+			
 		NewRound();
 		return;
 	}
