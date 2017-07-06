@@ -268,7 +268,7 @@ void(entity attacker, float d_style) DieHandler =
 
     t = random();
 
-    if (self.classname == "ai_zombie") {
+    if (self.classname == "ai_zombie" || self.classname == "ai_dog") {
         self.th_die();
     }
 
