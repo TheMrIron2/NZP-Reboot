@@ -16,6 +16,8 @@ float coop;
 string mappath;
 .float playernum;
 float player_count;
+.string fog;		// used for hacking in changing fog from world.fog for legacy maps
+entity trueclient;
 
 //money
 .float points;
@@ -223,6 +225,7 @@ void() spawnAllZombEnts;
 void() set_z_health;
 float() spawn_a_zombieA;
 float() spawn_a_dogA;
+float gotdog;
 float z_health;
 .float bleedingtime;
 .float time_to_die;

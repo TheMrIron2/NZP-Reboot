@@ -10,6 +10,8 @@ void()	dog_deathanim7		=[	$dogdeath7,		dog_deathanim8	] 	{self.frame = 46;};
 void()	dog_deathanim8		=[	$dogdeath8,		SUB_Null	] 	{self.nextthink = time + 3; self.think = removeZombie;  self.frame = 36;};
 
 
+void() Dog_Walk_Setup ={ };
+
 void() Dog_Death =
 {
 	self.aistatus = "0";
@@ -115,7 +117,8 @@ void(entity where) spawn_a_dogB =
 	sdog.yaw_speed = 20;
 	sdog.health = z_health;
 	sdog.th_die = Dog_Death;
-	/*sdog.th_walk = Zombie_Walk_Setup;
+	sdog.th_walk = Dog_Walk_Setup;
+	/*
 	sdog.th_melee = zombie_attack;
 	sdog.th_idle = zombie_idle;
 	sdog.th_windowhop = zombie_hop1;
@@ -123,14 +126,14 @@ void(entity where) spawn_a_dogB =
 	sdog.th_fall = zombie_fall1;
 	sdog.th_land = zombie_land1;*/
 	
-	//SetZombieWalk(sdog);
+	SetZombieWalk(sdog);
 	
 	sdog.reload_delay = 30 + time;//save  floats, equals respawn time.
 	local entity old_self;
 	old_self = self;
 	self = sdog;
 	//droptofloor();
-	//self.th_walk();
+	self.th_walk();
 	self = old_self;
 };
 

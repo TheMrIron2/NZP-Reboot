@@ -25,11 +25,18 @@ void() StartFrame =
 		Do_Zombie_AI ();
 	} else {
 	
-	entity SpawnedIn;
-	SpawnedIn = find(world, classname, "player");
+		entity SpawnedIn;
+		SpawnedIn = find(world, classname, "player");
 	
-	if (SpawnedIn)
-		InitRounds();
+		if (SpawnedIn) {
+			entity getdog = find(world, classname, "spawn_dog");
+			if (getdog)
+				gotdog = 1;
+			else 
+				gotdog = 0;
+				
+			InitRounds();
+		}
 	}
 	
 }

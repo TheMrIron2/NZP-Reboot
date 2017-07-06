@@ -93,8 +93,10 @@ void() NewRound =
 			Remaining_Zombies = Total_Zombies = 13;//13 jukkihere 42
 		else if (rounds == 4)
 			Remaining_Zombies = Total_Zombies = 18;//18 jukkihere 42
-		else if (rounds == 5)
+		else if (rounds == 5 && !gotdog)
 			Remaining_Zombies = Total_Zombies = 24;
+		else if (rounds == 5 && gotdog)
+			Remaining_Zombies = Total_Zombies = 10; // naievil -- if we have dogs then we should have the true value
 		else if (rounds == 6)
 			Remaining_Zombies = Total_Zombies = 27;
 		else if (rounds == 7)
@@ -106,7 +108,10 @@ void() NewRound =
 	}
 	else
 	{
-		Remaining_Zombies = Total_Zombies = rint((0.0842 * rounds * rounds) + (0.1954 * rounds)+22.05);
+		if ((rounds == 10 || rounds == 15) && gotdog)
+			Remaining_Zombies = Total_Zombies = 15;
+		else
+			Remaining_Zombies = Total_Zombies = rint((0.0842 * rounds * rounds) + (0.1954 * rounds)+22.05);
 	}
 	maxreward = 50 * rounds;
 	if (maxreward > 500)
@@ -117,11 +122,13 @@ void() NewRound =
 	totalpowerups = 0;
 	powerup_activate = powerup_activate*1.14;
 	
-	entity gotdog = find(world, classname, "spawn_dog");
-	if ((rounds == 5 || rounds == 10 || rounds == 15) && gotdog)
+	if ((rounds == 5 || rounds == 10 || rounds == 15) && gotdog) {
 		roundtype = 2;
-	else
+		stuffcmd(trueclient, "fog 0.25\n"); 
+	} else {
 		roundtype = 1;
+		stuffcmd(trueclient, strcat("fog ", world.fog));
+	}
 }
 void() Round_Core =
 {
