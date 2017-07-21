@@ -13,9 +13,6 @@ void(float width, float height) HUD_Health =
 	local float health;	
 	float alpha;
 	
-	if (!rounds)
-		return;
-	
 	health = getstatf(STAT_HEALTH); 
 
 	if (health < 100)
@@ -44,10 +41,9 @@ void(float width, float height) HUD_Health =
 
 void(float width, float height) HUD_Ammo =
 {
-	local float ammo, curmag, x_itoa, benis, benis2;
+	local float ammo, curmag, benis, benis2;
 	string ammostring, ammostring_1, ammostring_2;
 	vector color;
-	
 	
 	curmag = getstatf(STAT_CURRENTMAG);		
 	ammo = getstatf(STAT_AMMO);	
@@ -82,21 +78,22 @@ void(float width, float height) HUD_Ammo =
 
 void() HUD_AmmoString =
 {
-	int len = 0;
-	    
+	vector textcolor = [1, 1, 1];
+	string message = "";
 	
 	if (GetLowAmmo(getstatf(STAT_ACTIVEWEAPON), 1) >= getstatf(STAT_CURRENTMAG) && getstatf(STAT_WEAPONZOOM) != 2)
 	{
 		if (0 < getstatf(STAT_AMMO) && getstatf(STAT_CURRENTMAG) >= 0) {
-			len = 6;
-		drawstring([g_width/2, g_height/2 + (30/272)*g_height, 0], "Reload", [0.02*g_width, 0.02*g_width, 0], [1,1,1], 1, 1);
+			message = "Reload";
+			textcolor = [1, 1, 1];
 		} else if (0 < getstatf(STAT_CURRENTMAG)) {
-			len = 8;
-		drawstring([g_width/2, g_height/2 + (30/272)*g_height, 0], "LOW AMMO", [0.02*g_width, 0.02*g_width, 0], [219/255, 203/255, 19/255], 1, 1);
+			message = "LOW AMMO";
+			textcolor = [219/255, 203/255, 19/255];		
 		} else {
-			len = 7;
-		drawstring([g_width/2, g_height/2 + (30/272)*g_height, 0], "NO AMMO", [0.02*g_width, 0.02*g_width, 0], [215/255, 0, 0], 1, 1);
+			message = "NO AMMO";
+			textcolor = [215/255, 0, 0];
 		}
+		drawstring([g_width/2, g_height/2 + (30/272)*g_height, 0], message, [0.02*g_width, 0.02*g_width, 0], textcolor, 1, 1);
 	}
 }
 
@@ -106,13 +103,32 @@ void() HUD_AmmoString =
 
 void(float width, float height) HUD_Points =
 {
-	local float points, pointlength = 0, increm = 10;
+	local float pointlength = 0, increm = 10, i = 0;
+	vector TEXTCOLOR;
 	
-	points = getstatf(STAT_POINTS);
-	pointlength = strlen(ftos(points));
+	for (i = 3; i >= 0; i = i - 1)
+	{
+		if (playerpoints[i] == -1)
+			continue;
+			
+		switch(i) {
+			case 1: TEXTCOLOR = TEXT_LIGHTBLUE; break;
+			case 2: TEXTCOLOR = TEXT_ORANGE; break;
+			case 3: TEXTCOLOR = TEXT_GREEN; break;
+			default: TEXTCOLOR = [1, 1, 1]; break;
+		}
 		
-	drawpic([0.8*width,0.70*height,0], "gfx/hud/moneyback.tga", [0.2*width, 0.07*height, 0], [1,1,1], 1);
-	drawstring([.9414*width - pointlength*20*width/1024, 0.715*height, 0], ftos(points), [0.022*width, 0.022*width, 0], [1, 1, 1], 1, 1);   // naievil (FIXME) real offset needed (pointlength)
+		if ((i+1) == getstatf(STAT_PLAYERNUM)) {
+			pointlength = strlen(ftos(playerpoints[i]));
+			drawpic([0.8*width,0.70*height - (.061*height*i),0], "gfx/hud/moneyback.tga", [0.2*width, 0.07*height, 0], [1,1,1], 1); 
+			drawstring([.9414*width - pointlength*20*width/1024, 0.715*height - 0.06*height*i, 0], ftos(playerpoints[i]), [0.022*width, 0.022*width, 0], TEXTCOLOR, 1, 1); 
+		}
+		else {
+			pointlength = strlen(ftos(playerpoints[i]));
+			drawpic([0.85*width,0.70*height - (.071*height*i*0.8),0], "gfx/hud/moneyback.tga", [0.2*width*0.8, 0.07*height*0.8, 0], [1,1,1], 1); 
+			drawstring([.97*width - pointlength*20*width/1024, 0.715*height - 0.07*height*i*0.8, 0], ftos(playerpoints[i]), [0.022*width*0.8, 0.022*width*0.8, 0], TEXTCOLOR, 1, 1); 
+		}
+	}
 }
 
 /*******************
@@ -185,7 +201,6 @@ void(float width, float height) HUD_Rounds =
 	sb_round_num[7] = "gfx/hud/r_num7.tga";
 	sb_round_num[8] = "gfx/hud/r_num8.tga";
 	sb_round_num[9] = "gfx/hud/r_num9.tga";
-
 
 	if (rounds_change == 1)//this is the rounds icon at the middle of the screen
 	{		
@@ -649,7 +664,6 @@ void(float width, float height) HUD_Useprint =
 		
 		tokenize(findkeysforcommand("+button7"));
 		usebutton = strtoupper(keynumtostring(stof(argv(0))));
-		//usebutton = keynumtostring(-1);
 
 		switch (useprint_type) {
 			case 0://clear
@@ -690,6 +704,9 @@ void(float width, float height) HUD_Useprint =
 				break;
 			case 12://packapunch
 				usestring = strcat("Hold ",usebutton, " to Pack a Punch [Cost:", ftos(useprint_cost), "]");
+				break;
+			case 13://revive
+				usestring = strcat("Hold ",usebutton, " to revive player");
 				break;
 			default:
 				usestring = "This should not happen you dum fuck";
@@ -761,13 +778,11 @@ void(float width, float height) HUD_Perks =
 void(float width, float height) HUD_Weaponstring =
 {
 	string weaponstring; 
-	local float ws_offset;
+	float ws_offset;
 	
 	weaponstring = GetWeaponName(getstatf(STAT_ACTIVEWEAPON));
 	ws_offset = (strlen(weaponstring));
-	
-	//	drawstring([width - (42/480)*width - (benis*20*width/1024), 0.96*height, 0], ammostring, [0.02*width, 0.02*width, 0], [1, 1, 1], 1, 1);
-	
+		
 	drawstring([0.925*width + (40*width/1024) - ws_offset*20*width/1024, 0.75*height + 10, 0], weaponstring, [0.02*width, 0.02*width, 0], [1, 1, 1], 1, 1);
 }
 
@@ -796,7 +811,7 @@ void(float width, float height) HUD_Progressbar =
 	drawfill ([bar_x - 1, bar_y - 1, 0], [bar_width+2, bar_height, 0], [0, 0, 0], 0.4);
 	drawfill ([bar_x, bar_y, 0], [bar_width * percent, bar_height-2, 0], [1, 1, 1], 0.4);
 	
-	drawstring([(width - (88))/2, height*0.75 + 10, 0], "Reviving...", [0.0175*width, 0.0175*width, 0], [1, 1, 1], 1, 1); 
+	drawstring([(width - (88))/2, height*0.77 + 10, 0], "Reviving...", [0.0175*width, 0.0175*width, 0], [1, 1, 1], 1, 1); 
 }
 
 /*******************
@@ -812,9 +827,7 @@ void() HUD_Hitmark =
 *   HUD Crosshair  *
 *******************/
 
-//extern cvar_t crosshair;
-float croshhairmoving; // naievil (FIXME) used to see if we are moving or not
-//extern cvar_t cl_zoom;
+float croshhairmoving; // naievil --used t o see if we are moving or not
 float cur_spread;
 float crosshair_offset_step;
 
@@ -899,14 +912,89 @@ void() Draw_Crosshair =
 
 void() HUD_Powerups = {
 
-
 	if(getstatf(STAT_X2))
 		drawpic([(g_width/2 - (28/272)*g_height),0,0], "gfx/hud/2x.tga", [(28/272)*g_height, (28/272)*g_height, 1], [1,1,1], 1);
 	if(getstatf(STAT_INSTA))
 		drawpic([(g_width/2 + (5/480)*g_width),0,0], "gfx/hud/in_kill.tga", [(28/272)*g_height, (28/272)*g_height, 1], [1,1,1], 1);
-		
-//	drawstring([0.01*g_width, 0.10*g_height, 0], ftos(getstatf(STAT_INSTA)), [0.03*g_width, 0.03*g_width, 0], [1, 1, 1], 1, 1);
-//	drawstring([0.01*g_width, 0.14*g_height, 0], ftos(getstatf(STAT_X2)), [0.03*g_width, 0.03*g_width, 0], [1, 1, 1], 1, 1);
+}
+
+void() HUD_Broadcast = {
+
+	string broadcast_msg = "";
+	float health = getstatf(STAT_HEALTH);
+	
+		switch(broadcast_type) {
+			case 2: broadcast_msg = "A Player needs to be revived"; break;
+			default: broadcast_msg = "benis"; break;
+		}
+	float print_width = stringwidth (broadcast_msg, 0, [0.015*g_width, 0.015*g_width, 0]);
+	float x = (g_width - print_width)/2;
+	if (broadcast_type == 2 && health > 19)
+		drawstring([x, g_height/2, 0], broadcast_msg, [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1);
+}
+
+void() HUD_Scores =
+{
+	string subtext = "Name                             Score";
+	float xback, i, x;
+	vector TEXTCOLOR = [1, 1, 1];
+	
+	if(serverkey("constate") != "disconnected")
+	{
+		float print_width = stringwidth(subtext, 0, [0.015*g_width, 0.015*g_width, 0]);
+		x = (g_width - print_width)/2;
+		drawstring([x,g_height*(5/12), 0], subtext, [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1);
+	
+		xback = x;
+	
+		for (i = 0; i < 4; i = i + 1)
+		{
+			if (playerpoints[i] == -1)
+				break;
+			
+			switch(i) {
+				case 1: TEXTCOLOR = TEXT_LIGHTBLUE; break;
+				case 2: TEXTCOLOR = TEXT_ORANGE; break;
+				case 3: TEXTCOLOR = TEXT_GREEN; break;
+				default: TEXTCOLOR = [1, 1, 1]; break;
+			}
+			
+			print_width = stringwidth(ftos(playerpoints[i]), 0, [0.015*g_width, 0.015*g_width, 0]);
+			x = (g_width + (0.5*g_width) - print_width)/2;
+			drawstring([x,g_height*(5.75/12)+(i*g_width*0.03), 0], ftos(playerpoints[i]), [0.015*g_width, 0.015*g_width, 0], TEXTCOLOR, 1, 1); 
+			drawstring([xback,g_height*(5.75/12)+(i*g_width*0.03), 0], playernames[i], [0.015*g_width, 0.015*g_width, 0], TEXTCOLOR, 1, 1); 
+		}
+	}
+}
+
+void() HUD_Endgame = {
+
+	string message = "GAME OVER";
+	string survive = strcat("You survived ",ftos(rounds)," rounds");
+	
+	// first message
+	float print_width = stringwidth(message, 0, [(1/30)*g_width, (1/30)*g_width, 0]);
+	float x = (g_width - print_width)/2;
+	drawstring([x, g_height*(1/4), 0], message, [(1/30)*g_width, (1/30)*g_width, 0], [1, 1, 1], 1, 1);
+
+	// second message
+	print_width = stringwidth(survive, 0, [0.025*g_width, 0.025*g_width, 0]);
+	x = (g_width - print_width)/2;
+	drawstring([x,g_height*(1/3), 0], survive, [0.025*g_width, 0.025*g_width, 0], [1, 1, 1], 1, 1);
+	
+	// we can reuse our tab scores for the endgame
+	HUD_Scores();
+}
+
+float oldfade_alpha;
+void() HUD_Fade = 
+{    
+	float alpha = sin(((fade_time - time) * 2));
+	if (oldfade_alpha > 0.95)
+		alpha = 1;
+	        
+	drawfill ([0, 0, 0], [g_width, g_height, 0], [0, 0, 0], alpha);	// background
+	oldfade_alpha = alpha;
 }
 
 /*******************
@@ -914,31 +1002,45 @@ void() HUD_Powerups = {
 *******************/
 
 void(float width, float height) HUD_Draw = 
-{	
-	Draw_Crosshair();
-	HUD_Health(width, height);
-	HUD_Points(width, height);
-	HUD_Rounds(width, height);
-	HUD_Perks(width, height);
-	HUD_Progressbar(width, height);
-	HUD_Powerups();
-	
-	if (HUD_Change_time > time)
+{
+	if (!getstatf(STAT_SPECTATING) && (getstatf(STAT_HEALTH) > 10) && !score_show)
 	{
-		HUD_Ammo(width, height);
-		HUD_Grenades(width, height);
-		HUD_Weaponstring(width, height);
+		Draw_Crosshair();
+		HUD_Health(width, height);
+		HUD_Points(width, height);
+		HUD_Rounds(width, height);
+		HUD_Perks(width, height);
+		HUD_Progressbar(width, height);
+		HUD_Powerups();
 		HUD_AmmoString();
+	
+		if (HUD_Change_time > time)
+		{
+			HUD_Ammo(width, height);
+			HUD_Grenades(width, height);
+			HUD_Weaponstring(width, height);
+		}
+			
+		if (useprint_time > time) 
+			HUD_Useprint(width, height);
+		
+		if (Hitmark_time > time)
+			HUD_Hitmark();
 	}
+	
+	// Only keep broadcast messages outside in case they are important
+	if (broadcast_time > time)
+		HUD_Broadcast();
+	
+	if (getstatf(STAT_HEALTH) <= 10 && getstatf(STAT_SPECTATING))
+		HUD_Endgame();
 		
-	if (useprint_time > time) 
-		HUD_Useprint(width, height);
+	if (score_show)
+		HUD_Scores();
 		
-	if (Hitmark_time > time)
-		HUD_Hitmark();
+	if (fade_time > time)
+		HUD_Fade();
 }
-
-
 
 void UpdatePerks (float newperks) {
 	float s;

@@ -26,19 +26,12 @@ void SetUpdate(entity client, float type, float val1, float val2, float val3)
 }
 
 void(entity to, float type, float cost, float weapon) useprint = {
-	
-    
     msg_entity = to;
 	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
 	WriteByte(MSG_ONE, EVENT_USEPRINT);
 	WriteByte(MSG_ONE, type);
 	WriteShort(MSG_ONE, cost);
 	WriteByte(MSG_ONE, weapon);
-}
-
-float() crandom =
-{
-	return 2*(random() - 0.5);
 }
 
 void NotifyNewRound(float to) {
@@ -92,6 +85,42 @@ void(string to, float skin) UpdateV2model =
 	multicast('0 0 0', MULTICAST_ONE);
 }
 
+void(float broadcast_time, float type) BroadcastMessage =
+{
+	WriteByte(MSG_ALL, SVC_CGAMEPACKET);
+	WriteByte(MSG_ALL, EVENT_BROADCAST);
+	WriteByte(MSG_ALL, broadcast_time);
+	WriteByte(MSG_ALL, type);
+}
+
+void(float playernum, float points, string name) UpdatePlayerPoints =
+{
+	WriteByte(MSG_ALL, SVC_CGAMEPACKET);
+	WriteByte(MSG_ALL, EVENT_POINTUPDATE);
+	WriteByte(MSG_ALL, playernum);
+	WriteLong(MSG_ALL, points);
+	WriteString(MSG_ALL, name);
+}
+
+void(float newtime, float newtype, entity change) PromptLevelChange = 
+{
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_BLACKOUT);
+	WriteByte(MSG_MULTICAST, newtime);
+	WriteByte(MSG_MULTICAST, newtype);
+	msg_entity = change;
+	multicast('0 0 0', MULTICAST_ONE);
+}
+
+// *****************************************
+// Unrelated to engine, but custom functions
+// *****************************************
+
+float() crandom =
+{
+	return 2*(random() - 0.5);
+}
+
 void WeaponSwitch(entity player) {
 	float wep, cmag, cmag2, cammo;
 
@@ -116,3 +145,27 @@ void WeaponSwitch(entity player) {
 	SwitchWeapon(other.weapon);
 	self = tempe;
 }
+
+//
+// invert float takes in float value between 0 and 1, inverts position
+// eg: 0.1 returns 0.9, 0.34 returns 0.66
+float invertfloat(float input) {
+	
+	if (input <= 0 || input >= 1)
+		return input; 					// out of boundaries 
+	
+	return (1 - input);	
+}
+
+void(entity person, float expamt , float doublepoint) addmoney =
+{
+	if (person.classname != "player")
+		return;
+
+	if (expamt > 0 && doublepoint == TRUE && x2_finished> time)
+		person.points = person.points + expamt*2;
+	else
+		person.points = person.points + expamt;
+		
+	UpdatePlayerPoints(person.playernum, person.points, person.netname);
+};

@@ -17,18 +17,6 @@ void() func_illusionary =
 	// makestatic (self); // dr_mabuse1981: dont use makestatic, it doesnt show the HL rendermodes then.
 };
 
-//weapon buying code
-void(entity person, float expamt , float doublepoint) addmoney =
-{
-	if (person.classname != "player")
-		return;
-
-	if (expamt > 0 && doublepoint == TRUE && x2_finished> time)
-		person.points = person.points + expamt*2;
-	else
-		person.points = person.points + expamt;
-};
-
 // button and multiple button
 
 void() button_wait;
@@ -216,9 +204,15 @@ void () buy_weapon_touch =
 		return;
 	}
 	
-	if (self.weapon == other.weapon || self.weapon == other.secondaryweapon) {
+	if (self.weapon == other.weapon || self.weapon == other.secondaryweapon 
+	|| self.weapon == EqualNonPapWeapon(other.weapon) 
+	|| self.weapon == EqualNonPapWeapon(other.secondaryweapon)) {
 
-		useprint (other, 3, self.cost2, self.weapon);
+		if (self.weapon == EqualNonPapWeapon(other.secondaryweapon) 
+		|| self.weapon == EqualNonPapWeapon(other.weapon))
+			useprint (other, 3, 4500, other.weapon);
+		else
+			useprint (other, 3, self.cost2, self.weapon);
 
 		if (!other.button7 || other.semiuse) {
 			return;
@@ -229,20 +223,26 @@ void () buy_weapon_touch =
 			}
 
 		other.semiuse = true;
-		if (other.points < self.cost2) {
+		if ((other.points < self.cost2 && !IsPapWeapon(other.weapon)) || (other.points < 4500 && IsPapWeapon(other.weapon))) {
 			centerprint(other, "You do not have enough points\n");
 			return;
 		}
 
-		if (self.weapon == other.weapon) {
+		if (self.weapon == other.weapon || (self.weapon == EqualNonPapWeapon(other.weapon))) {
 			other.currentammo = getWeaponAmmo(self.weapon);
-		} else if (self.weapon == other.secondaryweapon) {
+		} else if (self.weapon == other.secondaryweapon || (self.weapon == EqualNonPapWeapon(other.secondaryweapon)) ) {
 			other.secondaryammo = getWeaponAmmo(self.weapon);
 		}
+		
 
 		sound(other, 0,"sounds/misc/ching.wav", 1, 1);
 		other.reload_delay = 0;
-		addmoney(other, -1*self.cost2, 0);
+		
+		if (!IsPapWeapon(other.weapon))
+			addmoney(other, -1*self.cost2, 0);
+		else
+			addmoney(other, -1*4500, 0);
+			
 		if (self.enemy) {
 			oldent = self;
 			self = self.enemy;
@@ -451,9 +451,6 @@ void() explosive_barrel =
 	self.health = 300;
 };
 
-
-
-
 .float radioState;
 .float length;
 .string tune;
@@ -526,6 +523,11 @@ void zap_zombie () {
 		self = other;
 		self.th_die();
 		self = tempe;	
+	} else if (other.classname == "player") {
+		if (other.damagetimer < time) {
+			DamageHandler (other, self, 50, S_ZAPPER);
+			other.damagetimer = time + 1.5;
+		}
 	}
 }
 
@@ -534,7 +536,7 @@ void zapper_play () {
 	entity zents = find(world, targetname, self.target);
 
 	if (zents) {
-		te_lightning3(self, self.origin, zents.origin);
+		te_lightning2(self, self.origin, zents.origin);
 	}
 
 	zents.touch = zap_zombie;
@@ -600,14 +602,12 @@ void zapper_start(string zapper) {
 void zapper_touch () {
 	if (other.classname != "player") {
 		return;
-	}
-	
+	}	
     
 	if (self.requirespower == true && !isPowerOn) {
 		useprint (other, 8, 0, 0);
 		return;
-	}
-	
+	}	
 
 	if (self.state == 0) {
 		useprint (other, 11, self.cost, self.weapon);
@@ -689,7 +689,4 @@ void() teddy_spawn =
 	self.takedamage = DAMAGE_YES;
 	self.health = 0;
 	self.th_die = teddy_react;
-	
-	if (self.noise)
-    precache_sound (self.noise);
 };

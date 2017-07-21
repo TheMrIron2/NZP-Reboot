@@ -34,6 +34,9 @@ void() W_AimIn =
 		self.zoom = 1;
 		self.viewzoom = 0.9;
 	}
+	
+	if (!self.downed)	
+		playaim();
 		
 }
 
@@ -49,6 +52,9 @@ void() W_AimOut =
 	
 	self.zoom = 0;
 	self.viewzoom = 1;
+	
+	if (!self.downed)
+		playout();
 }
 
 void() W_SprintStop =
@@ -57,7 +63,7 @@ void() W_SprintStop =
 	float endframe = GetFrame(self.weapon,SPRINT_OUT_END);
 	string modelname = GetWeaponModel(self.weapon, 0);
 	
-	if (self.isBuying)
+	if (self.isBuying || self.damagetimer > time)
 		return;
 	
 	self.viewzoom = 1;
@@ -66,6 +72,9 @@ void() W_SprintStop =
 	self.sprinting = 0;
 	self.into_sprint = 0;
 	self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
+	
+	if (self.velocity)
+		playwalk();
 }
 
 void W_SprintStart () {
@@ -75,10 +84,11 @@ void W_SprintStart () {
 		self.new_anim_stop ||
 		self.new_anim2_stop ||
 		self.isBuying || 
+		self.downed ||
 		!(self.flags & FL_ONGROUND)) {
 		return;
 	}
-
+	
 	float startframe = GetFrame(self.weapon,SPRINT_IN_START);
 	float endframe = GetFrame(self.weapon,SPRINT_IN_END);
 	string modelname = GetWeaponModel(self.weapon, 0);
@@ -143,6 +153,7 @@ void() W_PutOut =
 	}
 	
 	W_AimOut();
+	self.weaponnum = !self.weaponnum;
 	
 	if (self.secondaryweapon && !self.new_anim_stop)
 	{
@@ -156,6 +167,21 @@ void() W_PutOut =
 		Set_W_Frame (startframe, endframe, (endframe - startframe)/10, 0, SWITCHWEP, W_Switch, modelname, false, S_BOTH);//FIXME
 		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
 	}
+}
+
+void() W_TakeOut =
+{
+	W_AimOut();
+	
+	float startframe;
+	float endframe;
+	string modelname;
+	startframe = GetFrame(self.weapon,TAKE_OUT_START);
+	endframe = GetFrame(self.weapon,TAKE_OUT_END);
+	modelname = GetWeaponModel(self.weapon, 0);
+	
+	Set_W_Frame (startframe, endframe, (endframe - startframe)/10, 0, SWITCHWEP, SUB_Null, modelname, false, S_BOTH);//FIXME
+	self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
 }
 
 
@@ -297,6 +323,8 @@ void(float side) W_Reload =
 	
 	if (self.currentammo)
 	{
+		playreload();
+		
 		startframe = GetFrame(self.weapon,RELOAD_START);
 		endframe = GetFrame(self.weapon,RELOAD_END);
 		reloadcancelframe = GetFrame(self.weapon,RELOAD_CANCEL);
@@ -435,7 +463,10 @@ void(vector org, vector vel, float damage) SpawnBlood =
 {
   local entity f;
   
-	particle (org, vel*0.1, 73, damage*2);
+  te_blood(org, vel, 1);
+
+  
+	//particle (org, vel*0.1, 73, damage*2);
 	//below is for gib testing.
 	//particle (org, org, 225, 1);
 	
@@ -451,12 +482,11 @@ void Parse_Damage () = // DO NOT TOUCH
 	ent = findfloat (world, washit, 1);
 
 	while (ent) {
-		if (ent.classname == "ai_zombie") {
+		if (ent.classname == "ai_zombie" || ent.classname == "ai_dog") {
 			total_dmg = ent.hitamount;
 			//Clear hit
 			ent.washit = 0;
 			ent.hitamount = 0;
-
 			
 			DamageHandler(ent,self, total_dmg, S_NORMAL);
 		}
@@ -501,7 +531,7 @@ void() LungeKnifeHit =
 			f_damage = 500;
 		else
 			f_damage = 150;
-		
+					
 		if (trace_ent.classname == "ai_zombie_head")
 		{
 			hit_ent = trace_ent.owner;
@@ -519,12 +549,13 @@ void() LungeKnifeHit =
 		{
 			hit_ent = trace_ent;
 		}
-		/*if (hit_ent.takedamage != DAMAGE_NOMARKER)
+		
+		if (hit_ent.takedamage)
 		{
 			org = source + (v_forward * 20);
 			SpawnBlood (org, org, 50);
 			//hit = 1;
-		}*/
+		}
 		
 		DamageHandler (hit_ent, self, f_damage, S_KNIFE);
 	}
@@ -560,6 +591,8 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 			self = oldself;
 			return;
 		}
+		
+		SpawnBlood (org, vel, damage*10);
 		
 
 		f_damage = damage;
@@ -730,6 +763,8 @@ void(float side) W_Fire =
 	} else if (self.zoom == 2)
 		spread = spread * 0.05;
 
+	if (self.downed)
+		playdownfire();
 
 	//Fire weapons
 	if (firetype == 1)
@@ -782,6 +817,7 @@ void(float side) W_Fire =
 	}
 	
 	SetUpdate(self, UT_HUD, 6, 0, 0);
+	SetUpdate(self, UT_CROSSHAIR, 5, 0, 0);
 }
 
 
@@ -792,8 +828,8 @@ void(float side) W_Fire =
 void () W_Knife =
 {
 	if (time < self.knife_delay || self.new_anim_stop ||
-	  self.zoom == 2 || self.zoom == 3 || self.downed 
-      || (!(self.flags & FL_ONGROUND)))
+	  self.zoom == 2 || self.zoom == 3 || self.health == 10 || 
+	  (!(self.flags & FL_ONGROUND)))
 		return;
 
 	vector	source;
@@ -1138,15 +1174,19 @@ void() W_Grenade =
    }    
 }
 
+void() CheckButtonOne = {if (self.weaponnum == 1){W_PutOut();}}		// weapon switch to two if 1
+void() CheckButtonTwo = {if (self.weaponnum == 0) {W_PutOut();}}	// weapon switch to one if 2
+
 void () Impulse_Functions =
 {
+	if (!self.impulse)
+		return;
+		
 	switch (self.impulse)
 	{		
 		case 22:
-			entity benis;
-			benis = find (world, classname, "player");
-			addmoney(benis, 10000, 0);
-			//crouchset();
+			addmoney(self, 10000, 0);
+			rounds += 4;
 			break;
 		case 23:
 			W_SprintStart();
@@ -1156,6 +1196,15 @@ void () Impulse_Functions =
 			break;
 		case 25:
 			switch_nade();
+			break;
+		case 110:
+			CheckButtonOne();
+			break;
+		case 111:
+			CheckButtonTwo();
+			break;		
+		default:
+			bprint(PRINT_HIGH, "Unknown impulse: ", ftos(self.impulse));
 			break;
 	}
 	
@@ -1232,25 +1281,66 @@ void(entity ent) CheckPowerups =
 void() CheckPlayer = 
 {
 	CheckPowerups(self);
+	CheckRevive(self);
 	
-	local entity ent; 
-	ent = findradius(self.origin, 50);
+	entity ent;
+	ent = findradius(self.origin, 70);
 		
 	while(ent)
 	{
-		if(ent.classname == "player" && ent != self && !ent.downed) // small player push 
+		if(ent.classname == "player" && ent != self && ent.downed && !self.downed)
+		{
+			useprint (self, 13, 0, 0);
+			
+			if (self.button7 && !ent.invoke_revive) {
+				centerprint(ent, "Another player is reviving you...");
+				ent.beingrevived = true;
+				
+				if (!self.progress_bar_percent) {
+					self.movetype = MOVETYPE_NONE;
+					Set_W_Frame (0, 21, 0, 0, SPRINT, SUB_Null, "models/v_morphine.mdl", false, S_BOTH);
+					
+					if !(self.perks & P_REVIVE)
+						self.progress_bar_time = 4;
+					else
+						self.progress_bar_time = 2;
+					
+					self.progress_bar = self.progress_bar_time + time;     
+					self.progress_bar_percent = 1;
+					self.reviving = true;
+				}
+				
+				if (self.revived) {
+					self.movetype = MOVETYPE_WALK;
+					W_TakeOut();
+					ent.invoke_revive = 1;
+					ent.beingrevived = false;
+					self.reviving = 0;
+					self.progress_bar = 0;
+					self.progress_bar_time = 0;
+					self.progress_bar_percent = 0;
+					self.revived = 0;
+				}
+			}
+			else if (!self.button7 && self.reviving) {
+				self.movetype = MOVETYPE_WALK;
+				ent.beingrevived = false;
+				W_TakeOut();
+				self.progress_bar = 0;
+				self.progress_bar_time = 0;
+				self.progress_bar_percent = 0;
+				self.revived = 0;
+				self.reviving = 0;
+			}
+		}
+		else if(ent.classname == "player" && ent != self && !ent.downed) // small player push 
 		{
 			vector push;
-			push = ent.origin - self.origin;
+			push =  ent.origin - self.origin;
 			push_z = 0;
-			push = normalize(push) * 5;
+			push = normalize(push) * 0.5;
 			
 			ent.velocity += push;
-		}
-		if(ent.classname == "player" && ent != self && ent.downed)
-		{
-			centerprint(self, "Press USE to revive");
-			// naievil -- actual revive here
 		}
 		ent = ent.chain;
 	}

@@ -14,7 +14,9 @@ float coop;
 .float lastsound_time;
 .float isspec;
 string mappath;
-
+.float playernum;
+float player_count;
+.string fog;		// used for hacking in changing fog from world.fog for legacy maps
 
 //money
 .float points;
@@ -40,7 +42,7 @@ entity activator;
 .float stamina;
 void() W_SprintStop;
 .float into_sprint;
-
+.float damagetimer;
 
 //Weaponsystem defines
 void SwitchWeapon(float to);
@@ -75,6 +77,14 @@ void Weapon_Logic();
 .float weapon2frame;
 .float reloadinterupted;
 .float hitcount;
+.float weaponnum;	// 0 for weapon one, 1 for second weapon...we invert value for easy comparison, a third gun would need to be hardwired
+
+//Reviving
+.float invoke_revive;
+.float reviving;
+.float revived;
+.float beingrevived;
+.float downedloop;
 
 #define S_LEFT 0
 #define S_RIGHT 1
@@ -113,18 +123,15 @@ void Set_W_Frame (float startframe, float endframe, float duration, float funcca
 .void() animend;
 .void(optional float t) animend2;
 
-
 //Null functions
 void() SUB_Null = {};
 void() SUB_Null2 = {};
-
-
 
 vector	VEC_HULL_MIN = '-16 -16 -32';
 vector	VEC_HULL_MAX = '16 16 40';
 vector	VEC_HULL2_MIN = '-32 -32 -24';
 vector	VEC_HULL2_MAX = '32 32 64';
-vector  VEC_VIEW_OFS  = '0 0 32';
+vector  VEC_VIEW_OFS  = '0 0 40';
 vector	trace_plane_normal;
 
 
@@ -216,6 +223,8 @@ void(entity who) makeCrawler;
 void() spawnAllZombEnts;
 void() set_z_health;
 float() spawn_a_zombieA;
+float() spawn_a_dogA;
+float gotdog;
 float z_health;
 .float bleedingtime;
 .float time_to_die;
@@ -241,7 +250,8 @@ float isPowerOn;
 
 .float boxstatus;
 .entity boxweapon;
-
+.float visited; 		// 2 is we HAVE visited, 1 is we have the ability to visit
+.float spins;
 .float papState;
 
 //powerups
@@ -275,7 +285,6 @@ float sounds_playing;
 
 float rounds;
 float rounds_change;
-
 
 //Waypoints
 void () Waypoint_Logic;
@@ -314,6 +323,7 @@ waypoint_ai waypoints[MAX_WAYPOINTS];
 #define UT_ROUNDS_CHANGE 	2
 #define UT_HM				3
 #define UT_ZOOM2			4
+#define UT_CROSSHAIR		5
 
 //Misc patch definitions
 .string teddyremovetarget;

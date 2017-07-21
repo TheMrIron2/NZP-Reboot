@@ -81,6 +81,6 @@ void() teddy_react =
       
     remove(t); 
   }
-  if (self.noise)
-    sound (other, CHAN_ITEM, self.noise, 1, ATTN_NORM);
+ /* if (self.noise)
+    sound (other, CHAN_ITEM, self.noise, 1, ATTN_NORM);*/
 }

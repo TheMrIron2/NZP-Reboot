@@ -9,6 +9,9 @@ const float EVENT_UPDATEVMODEL = 20;
 const float EVENT_UPDATEV2MODEL = 21;
 const float EVENT_PERK = 22;
 const float EVENT_UPDATE = 23;
+const float EVENT_BROADCAST = 24;
+const float EVENT_POINTUPDATE = 25;
+const float EVENT_BLACKOUT = 26;
 
 //nzp weapon defines
 //id list
@@ -113,6 +116,7 @@ const float EVENT_UPDATE = 23;
 #define S_NORMAL	3
 #define S_ZOMBIE	4
 #define S_EXPLOSIVE	5
+#define S_ZAPPER	6
 
 //Perk types
 #define 	P_JUG		1
@@ -135,3 +139,5 @@ const float EVENT_UPDATE = 23;
 #define STAT_WEAPONZOOM        	60
 #define STAT_INSTA	        	61
 #define STAT_X2		        	62
+#define STAT_SPECTATING			63
+#define STAT_PLAYERNUM			64

@@ -276,7 +276,7 @@ void() sparkle_think =
 };
 
 float last_pu;
-void(vector where) Spawn_Powerup =
+void(vector where, float type) Spawn_Powerup =
 {
 	entity new_powerup;
 	float t;
@@ -308,68 +308,74 @@ void(vector where) Spawn_Powerup =
 	sound(new_powerup,CHAN_AUTO,"sounds/pu/drop.wav",1,ATTN_NONE);
 	//========================================================
 	t = random();
-	if (total_windows_down >= 5)
-	{
-		if (t < 0.2)
+	
+	if (!type) {
+		if (total_windows_down >= 5)
 		{
-			setmodel(new_powerup,"progs/Misc/maxammo!.mdl");
-			new_powerup.zombie_drop_id = 1;
-		}
-		else if (t < 0.4)
-		{
-			setmodel(new_powerup,"progs/Misc/x2!.mdl");
-			new_powerup.zombie_drop_id = 2;
-		}
-		else if (t < 0.6)
-		{
-			setmodel(new_powerup,"progs/Misc/instakill!.mdl");
-			new_powerup.zombie_drop_id = 3;
-		}
-		else if (t < 0.8)
-		{
-			setmodel(new_powerup,"progs/Misc/nuke!.mdl");
-			new_powerup.zombie_drop_id = 4;
+			if (t < 0.2)
+			{
+				setmodel(new_powerup,"progs/Misc/maxammo!.mdl");
+				new_powerup.zombie_drop_id = 1;
+			}
+			else if (t < 0.4)
+			{
+				setmodel(new_powerup,"progs/Misc/x2!.mdl");
+				new_powerup.zombie_drop_id = 2;
+			}
+			else if (t < 0.6)
+			{
+				setmodel(new_powerup,"progs/Misc/instakill!.mdl");
+				new_powerup.zombie_drop_id = 3;
+			}
+			else if (t < 0.8)
+			{
+				setmodel(new_powerup,"progs/Misc/nuke!.mdl");
+				new_powerup.zombie_drop_id = 4;
+			}
+			else
+			{
+				setmodel(new_powerup,"progs/Misc/carpenter!.mdl");
+				new_powerup.zombie_drop_id = 5;
+			}
+			/*else
+		 {
+				setmodel(new_powerup,"progs/Misc/perkbottle!.mdl");
+				new_powerup.zombie_drop_id = 6;
+			}*/
 		}
 		else
 		{
-			setmodel(new_powerup,"progs/Misc/carpenter!.mdl");
-			new_powerup.zombie_drop_id = 5;
+			if (t < 0.25)
+			{
+				setmodel(new_powerup,"progs/Misc/maxammo!.mdl");
+				new_powerup.zombie_drop_id = 1;
+			}
+			else if (t < 0.5)
+			{
+				setmodel(new_powerup,"progs/Misc/x2!.mdl");
+				new_powerup.zombie_drop_id = 2;
+			}
+			else if (t < 0.75)
+			{
+				setmodel(new_powerup,"progs/Misc/instakill!.mdl");
+				new_powerup.zombie_drop_id = 3;
+			}
+			else
+			{
+				setmodel(new_powerup,"progs/Misc/nuke!.mdl");
+				new_powerup.zombie_drop_id = 4;
+			}
+			/*
+			else
+		 {
+				setmodel(new_powerup,"progs/Misc/perkbottle!.mdl");
+				new_powerup.zombie_drop_id = 6;
+			}
+			*/
 		}
-		/*else
-     {
-			setmodel(new_powerup,"progs/Misc/perkbottle!.mdl");
-			new_powerup.zombie_drop_id = 6;
-		}*/
-	}
-	else
-	{
-		if (t < 0.25)
-		{
-			setmodel(new_powerup,"progs/Misc/maxammo!.mdl");
-			new_powerup.zombie_drop_id = 1;
-		}
-		else if (t < 0.5)
-		{
-			setmodel(new_powerup,"progs/Misc/x2!.mdl");
-			new_powerup.zombie_drop_id = 2;
-		}
-		else if (t < 0.75)
-		{
-			setmodel(new_powerup,"progs/Misc/instakill!.mdl");
-			new_powerup.zombie_drop_id = 3;
-		}
-		else
-		{
-			setmodel(new_powerup,"progs/Misc/nuke!.mdl");
-			new_powerup.zombie_drop_id = 4;
-		}
-		/*
-		else
-     {
-			setmodel(new_powerup,"progs/Misc/perkbottle!.mdl");
-			new_powerup.zombie_drop_id = 6;
-		}
-		*/
+	} else if (type == 1) {
+		setmodel(new_powerup,"progs/Misc/maxammo!.mdl");
+		new_powerup.zombie_drop_id = 1;
 	}
 	last_pu = new_powerup.zombie_drop_id;
 	new_powerup.touch = powerup_touch;

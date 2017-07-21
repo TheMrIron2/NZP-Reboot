@@ -25,7 +25,6 @@ void() ToggleMenu =
 		in_menu = MENU_MAIN;
 		time_in_menu = 0;
 		setcursormode(TRUE,"menu/cursor");
-		sound(self, 0, "sounds/menu/tune1.wav", 1, ATTN_NONE);
 	}
 }
 
@@ -35,6 +34,7 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	registercommand("startwalk");
 	registercommand("stopwalk");
 	registercommand("promptjoin");
+	registercommand("showscores");
 		
 	//print("CSQC Started\n");
 	dummy = spawn();
@@ -67,6 +67,10 @@ noref void() CSQC_WorldLoaded =
 	mzlflash.renderflags = vmodel.renderflags;
 	mzlflash.origin = vmodel.origin + vmodel_muzzleoffset;
 	//setmodel(mzlflash,"models/weapons/mg/mzl.iqm");
+	
+	playerpoints[1] = -1;
+	playerpoints[2] = -1;
+	playerpoints[3] = -1;
 	
 };
 
@@ -303,13 +307,20 @@ noref float(string cmd) CSQC_ConsoleCommand =
 		case "promptjoin":
 			menu_join();
 			return TRUE;
+		case "showscores":
+			if (score_show)
+				score_show = FALSE;
+			else
+				score_show = TRUE;
+			return TRUE;
+			break;
 		default:
 			return FALSE;
 	}
 	return FALSE;
 };
 //**********************************************************************//
-// Input_Keycheck                                                       //
+// Input_Movecheck                                                      //
 //                                                                      //
 // Called at InputEvent and allows to set var if key is at that state   //
 // NOTE: ALL movekeys are called in order to prevent unsetting keys     //
@@ -493,8 +504,6 @@ noref void() CSQC_Parse_Event =
 			norm_z = readcoord();
 			
 			traceent = readentitynum();
-			
-			crosshair_spread_time = time + 70/getWeaponRecoilReturn(getstatf(STAT_ACTIVEWEAPON));
 
 			if(entnum == player_localentnum)
 			{
@@ -622,9 +631,32 @@ noref void() CSQC_Parse_Event =
 				case 4:
 					zoom_2_time = time + 0.25;
 					break;
+				case 5:
+					crosshair_spread_time = time + 70/getWeaponRecoilReturn(getstatf(STAT_ACTIVEWEAPON));
+					break;
 				default: 
 					break;
 			}
+			break;
+		case EVENT_BROADCAST:
+			broadcast_time = readbyte();
+			broadcast_type = readbyte();
+			break;
+		case EVENT_POINTUPDATE:
+			float playernum = readbyte();
+			float temppoints = readlong();
+			string tempname = readstring();
+			
+			switch(playernum) {
+				case 1: playerpoints[0] = temppoints; playernames[0] = tempname; break;
+				case 2: playerpoints[1] = temppoints; playernames[1] = tempname;  break;
+				case 3: playerpoints[2] = temppoints; playernames[2] = tempname; break;
+				case 4: playerpoints[3] = temppoints; playernames[3] = tempname; break;		
+			}
+			break;
+		case EVENT_BLACKOUT:
+			fade_time = readbyte();
+			fade_type = readbyte();
 			break;
 	}
 }

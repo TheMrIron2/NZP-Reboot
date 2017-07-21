@@ -54,6 +54,8 @@ float HUD_Change_time;
 float Hitmark_time;
 float crosshair_spread_time;
 float zoom_2_time;
+float broadcast_time;
+float broadcast_type;
 
 float weaponframetime;
 float weapon2frametime;
@@ -69,6 +71,11 @@ float rounds;
 float perks;
 float rounds_change;
 
+float playerpoints[4]; 			// player point holders, player 1 points are index 0, player 2 at 1...
+string playernames[4]; 			// player name holders, player 1 name at index 0, player 2 at 1...
+float score_show;
+
+
 float K_LEFTDOWN, K_RIGHTDOWN, K_BACKDOWN, K_FORWARDDOWN;
 
 #define 	P_JUG		1
@@ -77,3 +84,10 @@ float K_LEFTDOWN, K_RIGHTDOWN, K_BACKDOWN, K_FORWARDDOWN;
 #define 	P_REVIVE	8
 #define 	P_FLOP		16
 #define 	P_STAMIN	32
+
+vector TEXT_LIGHTBLUE = [(2/255), (118/255), (181/255)];
+vector TEXT_ORANGE    = [(235/255), (189/255), 0];
+vector TEXT_GREEN     = [0, (230/255), (34/255)];
+
+float fade_time;
+float fade_type;

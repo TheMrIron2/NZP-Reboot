@@ -13,7 +13,7 @@ void() main =
 void() StartFrame =
 {
 	deathmatch = cvar("deathmatch");
-	coop = cvar("coop");
+	//coop = cvar("coop");
 	framecount = framecount + 1;
 
 	if (waypoint_mode) {
@@ -25,12 +25,18 @@ void() StartFrame =
 		Do_Zombie_AI ();
 	} else {
 	
-	entity SpawnedIn;
-	SpawnedIn = find(world, classname, "player");
+		entity SpawnedIn;
+		SpawnedIn = find(world, classname, "player");
 	
-	if (SpawnedIn)
-		InitRounds();
-		
+		if (SpawnedIn) {
+			entity getdog = find(world, classname, "spawn_dog");
+			if (getdog)
+				gotdog = 1;
+			else 
+				gotdog = 0;
+				
+			InitRounds();
+		}
 	}
 	
 }
@@ -39,6 +45,9 @@ void() StartFrame =
 void() worldspawn =
 {
 	precache_model ("models/player.mdl");
+	precache_model ("models/v_morphine.mdl");
+	precache_model ("progs/Sprites/revive.spr");
+	precache_model ("progs/Sprites/revive_white.spr");
 	
 	precache_model ("models/ai/zfull.mdl");
 	precache_model ("models/ai/zb#.mdl");
@@ -51,6 +60,8 @@ void() worldspawn =
 	precache_model ("models/ai/zalc(.mdl");
 	precache_model ("models/ai/zarc(.mdl");
 	precache_model ("models/ai/zhc^.mdl");
+	
+	precache_model ("models/ai/dog.mdl");
 
 	precache_model ("progs/Misc/maxammo!.mdl");
 	precache_model ("progs/Misc/x2!.mdl");
@@ -93,8 +104,9 @@ void() worldspawn =
 	precache_sound("sounds/misc/wood_door.wav");
 	precache_sound("sounds/misc/debris.wav");
 	precache_sound("sounds/misc/denybuy.wav");
-
 	
+	precache_sound("sounds/misc/what.wav");
+
 	precache_model ("models/weapons/m1911/v_colt.mdl");
 	precache_model ("models/weapons/m1911/g_colt.mdl");
 	precache_model ("progs/VModels/v_nade.mdl");
@@ -191,6 +203,8 @@ void() worldspawn =
 	clientstat(STAT_WEAPONZOOM, EV_FLOAT, zoom);
 	clientstat(STAT_INSTA, EV_FLOAT, insta_icon);
 	clientstat(STAT_X2, EV_FLOAT, x2_icon);
+	clientstat(STAT_SPECTATING, EV_FLOAT, isspec);
+	clientstat(STAT_PLAYERNUM, EV_FLOAT, playernum);		// literally useless but will be kept in case
 
 	mappath = strcat("maps/", mapname);
 	mappath = strzone(mappath);
