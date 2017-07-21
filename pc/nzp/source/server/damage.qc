@@ -2,6 +2,19 @@
 // damage.qc -- used for any sort of down, hit, etc that the player or entity experiences
 //
 
+void() EndGame_Restart = 
+{
+	localcmd("restart");
+}
+
+// Fade to black function, creates another think for restart
+void() EndGame_FadePrompt =
+{
+	PromptLevelChange(time + 6, 2, self);
+	self.think = EndGame_Restart;
+	self.nextthink = time + 5;
+}
+
 //Actual endgame function, all zombies die, music plays
 void() EndGame =
 {
@@ -29,6 +42,9 @@ void() EndGame =
 		
 		who = find(who,classname,"ai_zombie");
 	}
+	
+	self.think = EndGame_FadePrompt;
+	self.nextthink = time + 33;
 }
 
 // removes revive icon from downed player heads, used as a recursive think function

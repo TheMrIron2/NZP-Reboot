@@ -10,8 +10,32 @@ void()	dog_deathanim7		=[	$dogdeath7,		dog_deathanim8	] 	{self.frame = 46;};
 void()	dog_deathanim8		=[	$dogdeath8,		SUB_Null	] 	{self.nextthink = time + 3; self.think = removeZombie;  self.frame = 36;};
 
 
-void() Dog_Walk_Setup ={ };
-
+void() Dog_Walk_Setup = 
+{	
+	if(self.walktype == 1)
+	{
+		zombie_walk1();
+	}
+	
+	else if(self.walktype == 2)
+	{
+		zombie_walkb1();
+	}
+	
+	else if(self.walktype == 3)
+	{
+		zombie_walkc1();
+	}
+	
+	else if(self.walktype == 4)
+	{
+		zombie_jog1();
+	}
+	else if(self.walktype == 5)
+	{
+		zombie_run1();
+	}
+};
 void() Dog_Death =
 {
 	self.aistatus = "0";
@@ -106,7 +130,6 @@ void(entity where) spawn_a_dogB =
 	sdog.aistatus = "1";
 	setorigin (sdog.goaldummy, '0 0 0');
 	sdog.origin_z = sdog.origin_z + 1;
-	sdog.outside = true;
 	sdog.takedamage = DAMAGE_YES;
 	setorigin(sdog, sdog.origin);
 	sdog.flags = sdog.flags | FL_PARTIALGROUND | FL_MONSTER;
@@ -117,14 +140,15 @@ void(entity where) spawn_a_dogB =
 	sdog.yaw_speed = 20;
 	sdog.health = z_health;
 	sdog.th_die = Dog_Death;
-	sdog.th_walk = Dog_Walk_Setup;
-	/*
+	sdog.th_walk = Zombie_Walk_Setup;	// Naievil FIXME
+	sdog.outside = FALSE;
+	
 	sdog.th_melee = zombie_attack;
 	sdog.th_idle = zombie_idle;
 	sdog.th_windowhop = zombie_hop1;
 	
 	sdog.th_fall = zombie_fall1;
-	sdog.th_land = zombie_land1;*/
+	sdog.th_land = zombie_land1;
 	
 	SetZombieWalk(sdog);
 	
@@ -132,7 +156,7 @@ void(entity where) spawn_a_dogB =
 	local entity old_self;
 	old_self = self;
 	self = sdog;
-	//droptofloor();
+	droptofloor();
 	self.th_walk();
 	self = old_self;
 };

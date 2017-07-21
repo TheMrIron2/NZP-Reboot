@@ -17,7 +17,6 @@ string mappath;
 .float playernum;
 float player_count;
 .string fog;		// used for hacking in changing fog from world.fog for legacy maps
-entity trueclient;
 
 //money
 .float points;

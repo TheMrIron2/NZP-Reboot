@@ -88,3 +88,6 @@ float K_LEFTDOWN, K_RIGHTDOWN, K_BACKDOWN, K_FORWARDDOWN;
 vector TEXT_LIGHTBLUE = [(2/255), (118/255), (181/255)];
 vector TEXT_ORANGE    = [(235/255), (189/255), 0];
 vector TEXT_GREEN     = [0, (230/255), (34/255)];
+
+float fade_time;
+float fade_type;

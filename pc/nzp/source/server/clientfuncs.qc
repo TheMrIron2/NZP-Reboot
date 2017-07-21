@@ -102,6 +102,16 @@ void(float playernum, float points, string name) UpdatePlayerPoints =
 	WriteString(MSG_ALL, name);
 }
 
+void(float newtime, float newtype, entity change) PromptLevelChange = 
+{
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_BLACKOUT);
+	WriteByte(MSG_MULTICAST, newtime);
+	WriteByte(MSG_MULTICAST, newtype);
+	msg_entity = change;
+	multicast('0 0 0', MULTICAST_ONE);
+}
+
 // *****************************************
 // Unrelated to engine, but custom functions
 // *****************************************

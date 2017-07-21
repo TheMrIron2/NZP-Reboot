@@ -269,8 +269,6 @@ void() ClientConnect =
 		stuffcmd(self, "fog 0.075\n"); // naievil -- temp reliable fog
 	}
 	
-	trueclient = self;
-
 	bprint(PRINT_HIGH, self.netname); //print player name
 	bprint(PRINT_HIGH, " connected.\n");
 };

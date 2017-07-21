@@ -654,5 +654,9 @@ noref void() CSQC_Parse_Event =
 				case 4: playerpoints[3] = temppoints; playernames[3] = tempname; break;		
 			}
 			break;
+		case EVENT_BLACKOUT:
+			fade_time = readbyte();
+			fade_type = readbyte();
+			break;
 	}
 }
