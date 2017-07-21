@@ -381,6 +381,7 @@ void() PlayerSpawn =
 	}
 	
 	PollPlayerPoints();
+	PromptLevelChange(self.nextthink + 3, 1, self);
 };
 
 void() SpectatorSpawn =

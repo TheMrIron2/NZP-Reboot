@@ -141,3 +141,14 @@ const float EVENT_BLACKOUT = 26;
 #define STAT_X2		        	62
 #define STAT_SPECTATING			63
 #define STAT_PLAYERNUM			64
+
+//
+// invert float takes in float value between 0 and 1, inverts position
+// eg: 0.1 returns 0.9, 0.34 returns 0.66
+float invertfloat(float input) {
+	
+	if (input <= 0 || input >= 1)
+		return input; 					// out of boundaries 
+	
+	return (1 - input);	
+}

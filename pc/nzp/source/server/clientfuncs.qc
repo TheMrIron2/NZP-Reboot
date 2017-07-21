@@ -146,17 +146,6 @@ void WeaponSwitch(entity player) {
 	self = tempe;
 }
 
-//
-// invert float takes in float value between 0 and 1, inverts position
-// eg: 0.1 returns 0.9, 0.34 returns 0.66
-float invertfloat(float input) {
-	
-	if (input <= 0 || input >= 1)
-		return input; 					// out of boundaries 
-	
-	return (1 - input);	
-}
-
 void(entity person, float expamt , float doublepoint) addmoney =
 {
 	if (person.classname != "player")
