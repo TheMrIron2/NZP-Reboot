@@ -78,7 +78,7 @@ void() W_SprintStop =
 }
 
 void W_SprintStart () {
-
+	
 	if (self.fire_delay > time ||
 		self.fire_delay2 > time ||
 		self.new_anim_stop ||
@@ -88,7 +88,7 @@ void W_SprintStart () {
 		!(self.flags & FL_ONGROUND)) {
 		return;
 	}
-	
+		
 	float startframe = GetFrame(self.weapon,SPRINT_IN_START);
 	float endframe = GetFrame(self.weapon,SPRINT_IN_END);
 	string modelname = GetWeaponModel(self.weapon, 0);

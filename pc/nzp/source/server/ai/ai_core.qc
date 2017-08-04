@@ -43,7 +43,7 @@ entity(entity blarg) find_new_enemy =
 	local float bestdist;
 	local float dist;
 	bestdist = 10000;
-	if(self.classname == "ai_zombie") {
+	if(self.classname == "ai_zombie" || self.classname == "ai_dog") {
 		player = find(world,classname,"monkey");
 		if(player) {
 			return player;
@@ -64,7 +64,6 @@ entity(entity blarg) find_new_enemy =
 			if (dist < bestdist) {
 				closest = player;
 				bestdist = dist;
-				
 			}
 			player = find(player,classname,"player");
 		}

@@ -93,13 +93,24 @@ void(float broadcast_time, float type) BroadcastMessage =
 	WriteByte(MSG_ALL, type);
 }
 
-void(float playernum, float points, string name) UpdatePlayerPoints =
+void(float playernum, float points, string name, entity person) UpdatePlayerPoints =
 {
-	WriteByte(MSG_ALL, SVC_CGAMEPACKET);
-	WriteByte(MSG_ALL, EVENT_POINTUPDATE);
-	WriteByte(MSG_ALL, playernum);
-	WriteLong(MSG_ALL, points);
-	WriteString(MSG_ALL, name);
+	if (player_count == 0) {
+		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+		WriteByte(MSG_MULTICAST, EVENT_POINTUPDATE);
+		WriteByte(MSG_MULTICAST, playernum);
+		WriteLong(MSG_MULTICAST, points);
+		WriteString(MSG_MULTICAST, name);
+		msg_entity = person;
+		multicast('0 0 0', MULTICAST_ONE);
+	}
+	else {
+		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
+		WriteByte(MSG_ALL, EVENT_POINTUPDATE);
+		WriteByte(MSG_ALL, playernum);
+		WriteLong(MSG_ALL, points);
+		WriteString(MSG_ALL, name);
+	}
 }
 
 void(float newtime, float newtype, entity change) PromptLevelChange = 
@@ -156,5 +167,5 @@ void(entity person, float expamt , float doublepoint) addmoney =
 	else
 		person.points = person.points + expamt;
 		
-	UpdatePlayerPoints(person.playernum, person.points, person.netname);
+	UpdatePlayerPoints(person.playernum, person.points, person.netname, person);
 };

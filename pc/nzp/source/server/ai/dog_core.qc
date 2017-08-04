@@ -47,18 +47,6 @@ void() Dog_Death =
 	
 	self.usedent = world;
 	
-	if(self.goalentity.classname == "window")
-	{
-		if(self.goalentity.box1owner == self)
-			self.goalentity.box1owner = world;
-		if(self.goalentity.box2owner == self)
-			self.goalentity.box2owner = world;
-		if(self.goalentity.box3owner == self)
-			self.goalentity.box3owner = world;
-		if(self.goalentity.usedent == self)
-			self.goalentity.usedent = world;
-	}
-	
 	self.health = 0;
 	Remaining_Zombies = Remaining_Zombies - 1;
 	
@@ -103,19 +91,6 @@ void(entity where) spawn_a_dogB =
 	sdog.mins = '-8 -8 -32';//-16 16 -32
 	sdog.maxs = '8 8 30';//16 16 40
 	setsize (sdog, sdog.mins, sdog.maxs);
-	
-	local float tex;
-	tex = random();
-	sdog.skin = 0;
-	/*if(tex < 0.25)
-		sdog.skin = 0;
-	else if(tex < 0.5)
-		sdog.skin = 1;
-	else if(tex < 0.75)
-		sdog.skin = 2;
-	else if(tex <= 1)
-		sdog.skin = 3;*/
-	// naievil -- FIXME
 		
 	if(pointcontents(sdog.origin - '0 0 36') == -2)
 	{
@@ -135,6 +110,7 @@ void(entity where) spawn_a_dogB =
 	sdog.flags = sdog.flags | FL_PARTIALGROUND | FL_MONSTER;
 
 	sdog.spawnflags = where.spawnflags;
+	sdog.spawnflags = sdog.spawnflags | 1;
 	
 	sdog.ideal_yaw = sdog.angles_y;
 	sdog.yaw_speed = 20;
@@ -151,6 +127,7 @@ void(entity where) spawn_a_dogB =
 	sdog.th_land = zombie_land1;
 	
 	SetZombieWalk(sdog);
+	sdog.walktype = 5;
 	
 	sdog.reload_delay = 30 + time;//save  floats, equals respawn time.
 	local entity old_self;
