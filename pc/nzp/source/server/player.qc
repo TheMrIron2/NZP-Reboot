@@ -406,7 +406,11 @@ void() PutClientInServer =
 {
 	bprint(PRINT_HIGH, self.netname);
 	bprint(PRINT_HIGH, " has joined the game.\n");
-	PlayerSpawn();
+	
+	if (spawn_time > time || !rounds)
+		PlayerSpawn();
+	else 
+		SpectatorSpawn();
 	
 	/*stuffcmd(self, "promptjoin\n");
 	SpectatorSpawn();*/

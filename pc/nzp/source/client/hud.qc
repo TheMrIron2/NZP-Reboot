@@ -1046,7 +1046,7 @@ void(float width, float height) HUD_Draw =
 	if (broadcast_time > time)
 		HUD_Broadcast();
 	
-	if (getstatf(STAT_HEALTH) <= 10 && getstatf(STAT_SPECTATING))
+	if (getstatf(STAT_HEALTH) <= 10 && getstatf(STAT_SPECTATING) && !find(world, classname, "ai_zombie"))
 		HUD_Endgame();
 		
 	if (score_show)
