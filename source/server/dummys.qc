@@ -22,9 +22,6 @@ void() trigger_monsterjump      = {remove(self);};
 void() trigger_onlyregistered   = {remove(self);};
 void() trigger_push             = {remove(self);};
 void() trigger_hurt             = {remove(self);};
-
-void() SUB_Remove = {remove(self);}
-
 // Player Starts
 void() info_player_start        = {};
 void() info_player_start2       = {};
@@ -65,74 +62,3 @@ void() change_frame =
 	self.think = change_frame2;
 	self.nextthink = time + 1;
 }
-/*void() test_dummy =
-{
-	self.frame = 0;
-	
-	self.solid = SOLID_SLIDEBOX;
-	self.movetype = MOVETYPE_STEP;
-
-	
-	setmodel(self, "progs/ai/zfull.mdl");
-	
-	setsize (self, '-8 -8 -32', '8 8 30');
-	setorigin(self, self.origin);
-	self.classname = "ai_zombie";
-	self.takedamage = DAMAGE_YES;
-	self.flags = self.flags | FL_PARTIALGROUND | FL_MONSTER;
-	self.health = 999999;
-
-
-	/*self.head = spawn();
-	self.head.classname = "in_ai_zombie_head";
-	self.head.owner = self;
-	self.head.solid = SOLID_NOT;
-	self.head.movetype = MOVETYPE_NONE;
-	self.head.takedamage = DAMAGE_NO;
-	
-	self.larm = spawn();
-	self.larm.classname = "in_ai_zombie_larm";
-	self.larm.owner = self;
-	self.larm.solid = SOLID_NOT;
-	self.larm.movetype = MOVETYPE_NONE;
-	self.larm.takedamage = DAMAGE_NO;
-	
-	self.rarm = spawn();
-	self.rarm.classname = "in_ai_zombie_rarm";
-	self.rarm.owner = self;
-	self.rarm.solid = SOLID_NOT;
-	self.rarm.movetype = MOVETYPE_NONE;
-	self.rarm.takedamage = DAMAGE_NO;
-
-	self.head.deadflag = 1;
-	self.larm.deadflag = 1;
-	self.rarm.deadflag = 1;
-	
-
-	setmodel(self.head, "progs/ai/zh^.mdl");
-	setmodel(self.rarm, "progs/ai/zar(.mdl");
-	setmodel(self.larm, "progs/ai/zal(.mdl");
-	updateLimb (self, 0, self.head);
-	updateLimb (self, 1, self.larm);
-	updateLimb (self, 2, self.rarm);
-
-	self.head.solid = SOLID_CORPSE;
-	self.head.movetype = MOVETYPE_NONE;
-	self.head.classname = "ai_zombie_head";
-	self.head.takedamage = DAMAGE_YES;
-
-	self.larm.solid = SOLID_CORPSE;
-	self.larm.movetype = MOVETYPE_NONE;
-	self.larm.classname = "ai_zombie_larm";
-	self.larm.takedamage = DAMAGE_YES;
-
-	self.rarm.solid = SOLID_CORPSE;
-	self.rarm.movetype = MOVETYPE_NONE;
-	self.rarm.classname = "ai_zombie_rarm";
-	self.rarm.takedamage = DAMAGE_YES;
-	
-	SetZombieHitBox(1);
-	
-	self.think = change_frame;
-	self.nextthink = time + 1;
-}*/

@@ -1,6 +1,7 @@
 //
 //	Main.qc - mostly functions that will be called from the engine and are expected to exist
 //
+void() SUB_Remove = {remove(self);}
 
 //called when starting server/loading the map
 void() main =

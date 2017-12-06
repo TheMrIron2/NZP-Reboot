@@ -1,8 +1,9 @@
 ./../psp/nzportable/nzp/progs.dat
 
 psp/QC/Defs.qc                                             // Definitions
-psp/QC/NZP_Defs.qc                                         // NZP specific definitions
+shared/customdefs.qc
+shared/weapon_defines.qc
 psp/QC/Main.qc                                             // Main subroutines
 psp/QC/Client.qc                                           // Client subroutines
 
-psp/QC/Dummys.qc                                           // Null spawn functions
+server/dummys.qc                                           // Null spawn functions

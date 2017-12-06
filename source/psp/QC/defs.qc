@@ -13,6 +13,8 @@
 +=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-+
 */
 
+#define PSP 
+
 // These lines CANNOT be altered/moved
 entity          self;
 entity		other;
@@ -460,12 +462,7 @@ float	AS_SLIDING		= 2;
 float	AS_MELEE		= 3;
 float	AS_MISSILE		= 4;
 
-void() SUB_Null = {};
-void() SUB_Null2 = {};
-
 // Quake assumes these are defined.
-entity activator;
-string string_null;    // null string, nothing should be held here
 
 //.string         wad, map;
 .float /*worldtype,*/ delay, wait, lip, /*light_lev,*/ speed, style/*, skill*/;
@@ -482,7 +479,6 @@ void() SUB_Remove = {remove(self);};
 
 void(string s) println = {bprint(s);} //just when brain decided to think this is c
 
-entity damage_attacker;
 
 //doors
 .float		state;
@@ -490,3 +486,5 @@ float	STATE_TOP		= 0;
 float	STATE_BOTTOM	= 1;
 float	STATE_UP		= 2;
 float	STATE_DOWN		= 3;
+
+string mappath;
