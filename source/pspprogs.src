@@ -1,9 +1,13 @@
 ./../psp/nzportable/nzp/progs.dat
+#pragma warning disable Q208
 
-psp/QC/Defs.qc                                             // Definitions
+psp/QC/Defs.qc                                             // These HAVE to stay
 shared/customdefs.qc
 shared/weapon_defines.qc
+server/customdefs.qc
+server/clientfuncs.qc
+
 psp/QC/Main.qc                                             // Main subroutines
 psp/QC/Client.qc                                           // Client subroutines
-
 server/dummys.qc                                           // Null spawn functions
+psp/QC/funcdummys.qc

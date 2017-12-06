@@ -1,6 +1,8 @@
 // put custom server-only globals and fields here
 
+#ifndef PSP
 #pragma target FTE
+#endif 
 
 #define true 1
 #define false 0
