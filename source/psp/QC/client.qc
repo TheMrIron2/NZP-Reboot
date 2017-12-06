@@ -9,8 +9,8 @@
 */
 void() ClientKill = {};
 
-void() ClientConnect = {bprint("Client connected\n");};
-void() ClientDisconnect = {bprint("Client disconnected\n");};
+void() ClientConnect = {bprint(0, "Client connected\n");};
+void() ClientDisconnect = {bprint(0, "Client disconnected\n");};
 
 void() PlayerPreThink = 
 {

@@ -472,13 +472,12 @@ float	AS_MISSILE		= 4;
 .vector pos1, pos2/*, mangle*/;
 
 void(vector o, vector d, float color, float count) particle = #48;// start a particle effect
-void(string s) bprint				= #23;
+void(string s) bprint_psp					= #23;
 void(entity client, string s) sprint		= #24;
-void() SUB_Remove = {remove(self);};
 // End
 
-void(string s) println = {bprint(s);} //just when brain decided to think this is c
-
+void(string s) println = {bprint_psp(s);} //just when brain decided to think this is c
+void(float ignore, string s) bprint = {bprint_psp(s);};
 
 //doors
 .float		state;
@@ -488,3 +487,4 @@ float	STATE_UP		= 2;
 float	STATE_DOWN		= 3;
 
 string mappath;
+float PRINT_HIGH = 0;

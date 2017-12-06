@@ -62,3 +62,11 @@ void() change_frame =
 	self.think = change_frame2;
 	self.nextthink = time + 1;
 }
+
+// PSP Exclusives
+//
+#ifdef PSP
+void() SetNewParms = {};
+void() SetChangeParms = {};
+void() EndFrame = {};
+#endif

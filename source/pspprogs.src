@@ -7,7 +7,7 @@ shared/weapon_defines.qc
 server/customdefs.qc
 server/clientfuncs.qc
 
-psp/QC/Main.qc                                             // Main subroutines
+server/main.qc                                             // Main subroutines
 psp/QC/Client.qc                                           // Client subroutines
 server/dummys.qc                                           // Null spawn functions
 psp/QC/funcdummys.qc
