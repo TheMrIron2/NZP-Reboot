@@ -2,29 +2,7 @@
 
 psp/QC/Defs.qc                                             // Definitions
 psp/QC/NZP_Defs.qc                                         // NZP specific definitions
-psp/QC/Rounds.qc                                           // Round system
 psp/QC/Main.qc                                             // Main subroutines
 psp/QC/Client.qc                                           // Client subroutines
-psp/QC/Damage.qc                                           // Damage handler
 
 psp/QC/Dummys.qc                                           // Null spawn functions
-psp/QC/Entities/Sub_Functions.qc							// Sub Functions
-psp/QC/Entities/Triggers.qc								// Map triggers
-psp/QC/Entities/Map_Entities.qc							// Map entities
-psp/QC/Entities/Internal.qc                                // Entity Management
-psp/QC/Entities/Lights.qc                                  // Light Entities
-psp/QC/Entities/Ambient.qc                                 // Ambient Sounds
-psp/QC/Entities/doors.qc                                 	// Doors
-psp/QC/Entities/window.qc                                 	// Window
-psp/QC/Entities/powerups.qc                                // Power ups
-psp/QC/Entities/Machines.qc                                // Perks and pack-a-punch
-
-psp/QC/ai/ai_core.qc										// AI core
-psp/QC/ai/waypoints_func.qc								// Waypoint functions
-psp/QC/ai/waypoints_core.qc								// Waypoints core
-psp/QC/ai/zombie_core.qc									// Zombie core
-psp/QC/ai/crawler_core.qc									// Crawler core
-
-psp/QC/Weapons/Weapon_Defines.qc							// Weapon functions
-psp/QC/Weapons/Frames_Core.qc                              // Frame core
-psp/QC/Weapons/Weapon_Core.qc                              // Weapon core

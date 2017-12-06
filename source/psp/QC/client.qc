@@ -7,11 +7,8 @@
 | Handle's "clients" (eg, Players) connecting, disconnecting, etc.           |
 +=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-+
 */
-void () Weapon_Logic;
-void () Waypoint_logic;
-string(float wep, float gorvmodel) GetWeaponModel;
-void() sprintstop;
 void() ClientKill = {};
+
 void() ClientConnect = {bprint("Client connected\n");};
 void() ClientDisconnect = {bprint("Client disconnected\n");};
 
@@ -80,12 +77,7 @@ void() PlayerPreThink =
 			d = find(d,classname,"door_open");
 		}
 	}
-	if (cvar("waypoint_mode"))
-		Waypoint_logic();
-	else
-		Weapon_Logic();
 };
-void () GetUp;
 //Player sound footstep function
 /*void() footstep = 
 {
@@ -145,15 +137,7 @@ void() PlayerPostThink =
 	self.cost = 0;
 	if (self.health <= 0)
 		return;
-	if (!roundinitfinal)
-	{
-		if (roundinit == 10)// Create a delay for the round start to make sure the player has fully loaded in
-			InitRounds();
-		else
-			roundinit = roundinit + 1;
-	}
-	
-	if (self.health_delay < time && self.health != self.max_health && !self.downed)
+		if (self.health_delay < time && self.health != self.max_health && !self.downed)
 	{
 		self.health = self.health + 5;
 		if (self.max_health < self.health)
@@ -161,22 +145,18 @@ void() PlayerPostThink =
 	}
 	if (self.progress_bar < time && self.progress_bar)
 	{
-		GetUp();
 		self.progress_bar = 0;
 	}
 	
 	if (self.zoom == 3)
 	{
 		if (!self.velocity)//we are not moving, stop sprinting
-			sprintstop();
 		
 		if (self.perks & P_STAMIN)
 			self.stamina = self.stamina - 0.015;
 		else
 			self.stamina = self.stamina - 0.03;
 
-		if (self.stamina <= 0)
-			sprintstop();
 	}
 	else if (self.stamina < 3)
 	{
@@ -232,9 +212,7 @@ void() PutClientInServer =
 	
 	self.currentammo = 32;						// Give reserve ammo
 	self.currentmag = 8;						// Give magazine ammo
-	self.weapon = W_COLT;						// Define weapon
-	self.weaponmodel = GetWeaponModel(self.weapon, 0);// Give weapon model
-	
+	self.weapon = W_COLT;						// Define weapon	
 	/*self.secondaryweapon= W_KAR_SCOPE;
 	self.secondaryammo = 50;
 	self.secondarymag = 5;*/
@@ -246,6 +224,5 @@ void() PutClientInServer =
 	self.stamina = 3;
 
 
-	addmoney(self, 500, 0);						//starting points
 };
 

@@ -8,9 +8,7 @@
 | does much, except to setup basic variables and entities.                   |
 +=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-+
 */
-void() LightStyles_setup;       // Entities/Lights.QC
 void() precaches;
-void() Load_Waypoints;
 float zombie_cleaned_w;
 
 void() main = {};
@@ -122,12 +120,7 @@ void() StartFrame =
 		return;
 	}
 	
-	if (roundinit && ai_delay_time < time)
-	{
-		ai_delay_time = time + 0.03;//Only run 30 times per second
-		Round_Core();
-		Do_Zombie_AI ();
-	}
+	
 	
 	if (instakill_finished >= time)
 	{
@@ -190,12 +183,9 @@ void() StartFrame =
 void() worldspawn = 
 {
 	precaches();
-	LightStyles_setup();
 	mappath = strcat("maps/", mapname);
 	mappath = strzone(mappath);
 	dprint("Error: file not found \n");
-	if (cvar("waypoint_mode"))
-		Load_Waypoints();
 }
 
 void() precaches =

@@ -44,8 +44,6 @@ void() mystery_box_tp_spot = {remove(self);};
 void() info_end = {remove(self);};
 void() spawn_dog = {remove(self);};
 
-void(float which)  SetZombieHitBox;
-
 void() change_frame;
 void() change_frame2 =
 {
@@ -125,7 +123,6 @@ void() test_dummy =
 	self.rarm.classname = "ai_zombie_rarm";
 	self.rarm.takedamage = DAMAGE_YES;
 	
-	SetZombieHitBox(1);
 	
 	self.think = change_frame;
 	self.nextthink = time + 1;

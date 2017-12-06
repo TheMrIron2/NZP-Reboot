@@ -19,7 +19,6 @@
 
 // AI definitions
 //Used for global one-zombie-at-a-time type ai
-void Do_Zombie_AI();
 float ai_delay_time;
 .string aistatus;
 entity lastzombie;
@@ -87,7 +86,6 @@ float INACTIVE = 1;
 //nzp: economy defines
 .float cost;
 .float semiuse; //used to not buy twice, or anyting like that
-void(entity person, float expamt , float doublepoint) addmoney;
 
 //nzp weapon defines
 //id list
@@ -236,9 +234,6 @@ float sounds_playing;
 .float currentHitBoxSetup;
 .float laststep;
 .vector		bbmins, bbmaxs;		// Used for zombie hitboxes
-void(entity who) makeCrawler;
 .float state;//used to delay making a crawler, ex) when zombie is rising from ground or climbing over barrier, turn zombie into a crawler afterwards
-float crandom();
-
 float z_health;
 .float bleedingtime;
