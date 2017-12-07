@@ -12,8 +12,6 @@ void() main =
 //called for each frame that QC runs
 void() StartFrame =
 {
-//TEMPORARY
-#ifndef PSP
 	deathmatch = cvar("deathmatch");
 	//coop = cvar("coop");
 	framecount = framecount + 1;
@@ -40,7 +38,6 @@ void() StartFrame =
 			InitRounds();
 		}
 	}
-#endif
 }
 
 void() precaches = 

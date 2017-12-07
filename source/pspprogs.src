@@ -8,6 +8,7 @@ server/customdefs.qc
 server/clientfuncs.qc
 
 server/dummys.qc                                           // Null spawn functions
+server/rounds.qc
 server/main.qc                                             // Main subroutines
 server/player.qc                                           // Client subroutines
 psp/QC/funcdummys.qc
