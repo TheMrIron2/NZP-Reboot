@@ -827,7 +827,7 @@ void CL_RelinkEntities (void)
 			dl->color[2] = 0.25;
 		}
 
-		if (!strcmp(ent->model->name, "progs/flame2.mdl"))
+		if (!strcmp(ent->model->name, "models/flame2.mdl"))
 		{
 			if (qmb_initialized && r_part_flames.value)
 			{
@@ -837,7 +837,7 @@ void CL_RelinkEntities (void)
 			}
 		}
 
-		if ((!strcmp(ent->model->name, "progs/s_spike.mdl"))||(!strcmp(ent->model->name, "progs/spike.mdl")))
+		if ((!strcmp(ent->model->name, "models/s_spike.mdl"))||(!strcmp(ent->model->name, "models/spike.mdl")))
 		{
 			if (qmb_initialized && r_part_trails.value)
 			{

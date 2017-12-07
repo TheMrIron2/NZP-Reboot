@@ -259,17 +259,17 @@ void() PlayerPostThink =
 	self.oldvelocity = self.velocity;
 };
 
-void() ClientKill =
-{
-};
+void() ClientKill = {};
 
 //called when a client connects to the server
 void() ClientConnect =
 {
+	#ifndef PSP
 	if (mapname == "ndu")	{			// the only one we REALLY need to fix is NDU since I don't want to edit the file
 		stuffcmd(self, "sky sky\n");
 		stuffcmd(self, "fog 0.075\n"); // naievil -- temp reliable fog
 	}
+	#endif
 	
 	bprint(PRINT_HIGH, self.netname); //print player name
 	bprint(PRINT_HIGH, " connected.\n");
@@ -366,10 +366,16 @@ void() PlayerSpawn =
 	self.weaponmodel = GetWeaponModel(self.weapon, 0);// Give weapon model
 
 	SwitchWeapon(self.weapon);
+	
+	#ifndef PSP
 	UpdateV2model("", 0);
 	stuffcmd(self, "cl_gunx 8;cl_guny 16;cl_gunz 25\n");
+	#endif
 
+	//TEMPORARY
+	#ifndef PSP
 	SetRound(self, rounds);
+	#endif
 
 	self.stamina = 3;
 	self.reviving = 0;
@@ -382,7 +388,10 @@ void() PlayerSpawn =
 		sound (self, CHAN_AUTO, "sounds/rounds/splash.wav", 1, ATTN_NONE);//temporarily here.
 	}
 	
+	//TEMPORARY
+	#ifndef PSP
 	PollPlayerPoints();
+	#endif
 	PromptLevelChange(self.nextthink + 3, 1, self);
 };
 
@@ -411,11 +420,11 @@ void() PutClientInServer =
 	
 	if (spawn_time > time || !rounds)
 		PlayerSpawn();
+	// TEMPORARY
+	#ifndef PSP
 	else 
 		SpectatorSpawn();
-	
-	/*stuffcmd(self, "promptjoin\n");
-	SpectatorSpawn();*/
+	#endif
 };
 
 //called when client disconnects from the server

@@ -982,7 +982,7 @@ float(float wep, float delaytype) getWeaponDelay =
     return 0;
 }
 
-float GetWeaponWalkSpeed (int weapontype)
+float GetWeaponWalkSpeed (float weapontype)
 {
 	switch(weapontype) {
 		default: return 1;

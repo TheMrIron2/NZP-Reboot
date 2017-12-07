@@ -169,12 +169,12 @@ void Fog_DisableGFog (void);
 
 bool modelIsArm (char *m_name)
 {
-    if (!strcmp (m_name, "progs/ai/zal.mdl") ||
-        !strcmp (m_name, "progs/ai/zar.mdl") ||
-        !strcmp (m_name, "progs/ai/bzal.mdl") ||
-        !strcmp (m_name, "progs/ai/bzar.mdl") ||
-        !strcmp (m_name, "progs/ai/zalc.mdl") ||
-        !strcmp (m_name, "progs/ai/zarc.mdl"))
+    if (!strcmp (m_name, "models/ai/zal.mdl") ||
+        !strcmp (m_name, "models/ai/zar.mdl") ||
+        !strcmp (m_name, "models/ai/bzal.mdl") ||
+        !strcmp (m_name, "models/ai/bzar.mdl") ||
+        !strcmp (m_name, "models/ai/zalc.mdl") ||
+        !strcmp (m_name, "models/ai/zarc.mdl"))
             return true;
 
     return false;
@@ -182,9 +182,9 @@ bool modelIsArm (char *m_name)
 }
 bool modelIsHead (char *m_name)
 {
-    if (!strcmp (m_name, "progs/ai/zh.mdl") ||
-        !strcmp (m_name, "progs/ai/bzh.mdl") ||
-        !strcmp (m_name, "progs/ai/zhc.mdl"))
+    if (!strcmp (m_name, "models/ai/zh.mdl") ||
+        !strcmp (m_name, "models/ai/bzh.mdl") ||
+        !strcmp (m_name, "models/ai/zhc.mdl"))
             return true;
 
     return false;
@@ -192,9 +192,9 @@ bool modelIsHead (char *m_name)
 }
 bool modelIsBody (char *m_name)
 {
-    if (!strcmp (m_name, "progs/ai/zb.mdl") ||
-        !strcmp (m_name, "progs/ai/bzb.mdl") ||
-        !strcmp (m_name, "progs/ai/zbc.mdl"))
+    if (!strcmp (m_name, "models/ai/zb.mdl") ||
+        !strcmp (m_name, "models/ai/bzb.mdl") ||
+        !strcmp (m_name, "models/ai/zbc.mdl"))
             return true;
 
     return false;
@@ -2303,9 +2303,9 @@ void R_DrawAliasModel (entity_t *e)
 	if(doZHack && specChar == '#')
 	{
 		if(clmodel->name[strlen(clmodel->name) - 6] == 'c')
-			paliashdr = (aliashdr_t *) Mod_Extradata(Mod_FindName("progs/ai/zcfull.mdl"));
+			paliashdr = (aliashdr_t *) Mod_Extradata(Mod_FindName("models/ai/zcfull.mdl"));
 		else
-			paliashdr = (aliashdr_t *) Mod_Extradata(Mod_FindName("progs/ai/zfull.mdl"));
+			paliashdr = (aliashdr_t *) Mod_Extradata(Mod_FindName("models/ai/zfull.mdl"));
 	}
 	else
 		paliashdr = (aliashdr_t *)Mod_Extradata (e->model);
@@ -2345,7 +2345,7 @@ void R_DrawAliasModel (entity_t *e)
 	//if (e->colormap != vid.colormap && 0 /* && !gl_nocolors.value*/)
 	//{
 	//	i = e - cl_entities;
-	//	if (i >= 1 && i<=cl.maxclients /*&& !strcmp (e->model->name, "progs/player.mdl")*/)
+	//	if (i >= 1 && i<=cl.maxclients /*&& !strcmp (e->model->name, "models/player.mdl")*/)
 	//	{
 	//	    GL_Bind(playertextures - 1 + i);
 	//	}
@@ -2612,7 +2612,7 @@ void R_DrawMD2Model (entity_t *e)
 
 	// ZOID: never allow players to go totally black
 	//	i = e - cl_entities;
-	//	if (i >= 1 && i<=cl.maxclients /*&& !strcmp (e->model->name, "progs/player.mdl") */)
+	//	if (i >= 1 && i<=cl.maxclients /*&& !strcmp (e->model->name, "models/player.mdl") */)
 	// LordHavoc: .lit support begin
 	//	if (ambientlight < 8) // LordHavoc: original code
 	//		ambientlight = shadelight = 8; // LordHavoc: original code
@@ -2635,25 +2635,25 @@ void R_DrawMD2Model (entity_t *e)
 			lightcolor[g] = 125;
 	}
 	// HACK HACK HACK -- no fullbright colors, so make torches and projectiles full light
-	if (!strcmp (clmodel->name, "progs/flame2.mdl") ||
-	    !strcmp (clmodel->name, "progs/flame.mdl") ||
-	    !strcmp (clmodel->name, "progs/lavaball.mdl") ||
-	    !strcmp (clmodel->name, "progs/bolt.mdl") ||
-	    !strcmp (clmodel->name, "progs/bolt2.mdl") ||
-	    !strcmp (clmodel->name, "progs/bolt3.mdl") ||
-	    !strcmp (clmodel->name, "progs/eyes.mdl") ||
-	    !strcmp (clmodel->name, "progs/k_spike.mdl") ||
-	    !strcmp (clmodel->name, "progs/s_spike.mdl") ||
-	    !strcmp (clmodel->name, "progs/spike.mdl") ||
-	    !strcmp (clmodel->name, "progs/Misc/chalk.mdl") ||
-	    !strcmp (clmodel->name, "progs/Misc/x2.mdl") ||
-	    !strcmp (clmodel->name, "progs/Misc/nuke.mdl") ||
-	    !strcmp (clmodel->name, "progs/Misc/instakill.mdl") ||
-	    !strcmp (clmodel->name, "progs/Misc/perkbottle.mdl") ||
-	    !strcmp (clmodel->name, "progs/Misc/carpenter.mdl") ||
-	    !strcmp (clmodel->name, "progs/Misc/maxammo.mdl") ||
-	    !strcmp (clmodel->name, "progs/Misc/lamp_ndu.mdl") ||
-	    !strcmp (clmodel->name, "progs/laser.mdl"))
+	if (!strcmp (clmodel->name, "models/flame2.mdl") ||
+	    !strcmp (clmodel->name, "models/flame.mdl") ||
+	    !strcmp (clmodel->name, "models/lavaball.mdl") ||
+	    !strcmp (clmodel->name, "models/bolt.mdl") ||
+	    !strcmp (clmodel->name, "models/bolt2.mdl") ||
+	    !strcmp (clmodel->name, "models/bolt3.mdl") ||
+	    !strcmp (clmodel->name, "models/eyes.mdl") ||
+	    !strcmp (clmodel->name, "models/k_spike.mdl") ||
+	    !strcmp (clmodel->name, "models/s_spike.mdl") ||
+	    !strcmp (clmodel->name, "models/spike.mdl") ||
+	    !strcmp (clmodel->name, "models/Misc/chalk.mdl") ||
+	    !strcmp (clmodel->name, "models/Misc/x2.mdl") ||
+	    !strcmp (clmodel->name, "models/Misc/nuke.mdl") ||
+	    !strcmp (clmodel->name, "models/Misc/instakill.mdl") ||
+	    !strcmp (clmodel->name, "models/Misc/perkbottle.mdl") ||
+	    !strcmp (clmodel->name, "models/Misc/carpenter.mdl") ||
+	    !strcmp (clmodel->name, "models/Misc/maxammo.mdl") ||
+	    !strcmp (clmodel->name, "models/Misc/lamp_ndu.mdl") ||
+	    !strcmp (clmodel->name, "models/laser.mdl"))
 	{
 		lightcolor[0] = lightcolor[1] = lightcolor[2] = 256;
 		force_fullbright = true;
@@ -2665,9 +2665,9 @@ void R_DrawMD2Model (entity_t *e)
 		force_fullbright = true;
 	}
 
-	if (!strcmp (clmodel->name, "progs/v_rpg.mdl") ||
-	 !strcmp (clmodel->name, "progs/stalker.mdl") ||
-	 !strcmp (clmodel->name, "progs/VModels/scope.mdl"))
+	if (!strcmp (clmodel->name, "models/v_rpg.mdl") ||
+	 !strcmp (clmodel->name, "models/stalker.mdl") ||
+	 !strcmp (clmodel->name, "models/weapons/v_karscope.mdl"))
 	{
 		alphafunc = true;
 	}
@@ -2700,7 +2700,7 @@ void R_DrawMD2Model (entity_t *e)
 	if (e->colormap != vid.colormap && 0 /* && !gl_nocolors.value*/)
 	{
 		i = e - cl_entities;
-		if (i >= 1 && i<=cl.maxclients /*&& !strcmp (e->model->name, "progs/player.mdl")*/)
+		if (i >= 1 && i<=cl.maxclients /*&& !strcmp (e->model->name, "models/player.mdl")*/)
 		{
 		    GL_Bind(playertextures - 1 + i);
 		}
@@ -2894,9 +2894,9 @@ void R_DrawQ3Frame (int frame, md3header_t *pmd3hdr, md3surface_t *pmd3surf, ent
 
 	pose = frame;
 
-	if (!strcmp(clmodel->name, "progs/player/lower.md3"))
+	if (!strcmp(clmodel->name, "models/player/lower.md3"))
 		ent->frame_interval = anims[legsanim].interval;
-	else if (!strcmp(clmodel->name, "progs/player/upper.md3"))
+	else if (!strcmp(clmodel->name, "models/player/upper.md3"))
 		ent->frame_interval = anims[bodyanim].interval;
 	else
 		ent->frame_interval = 0.1;
@@ -3131,9 +3131,9 @@ void R_SetupQ3Frame (entity_t *ent)
 	model_t		*clmodel = ent->model;
 	tagentity_t	*tagent;
 
-	if (!strcmp(clmodel->name, "progs/player/lower.md3"))
+	if (!strcmp(clmodel->name, "models/player/lower.md3"))
 		frame = legsframe;
-	else if (!strcmp(clmodel->name, "progs/player/upper.md3"))
+	else if (!strcmp(clmodel->name, "models/player/upper.md3"))
 		frame = bodyframe;
 	else
 		frame = ent->frame;
@@ -3373,7 +3373,7 @@ void R_DrawQ3Model (entity_t *ent)
 
    //==========================================================================
 
-	if ((!strcmp(ent->model->name, "progs/player/lower.md3"))||(!strcmp(ent->model->name, "progs/player/upper.md3")))
+	if ((!strcmp(ent->model->name, "models/player/lower.md3"))||(!strcmp(ent->model->name, "models/player/upper.md3")))
 	{
 		//q3player_body.ent.renderamt = q3player_head.ent.renderamt = cl_entities[cl.viewentity].renderamt;
 		R_ReplaceQ3Frame (ent->frame);
@@ -3607,7 +3607,7 @@ void R_ShowBoundingBoxes (void)
 //==================================================================================
 int SetFlameModelState (void)
 {
-	if (!r_part_flames.value && !strcmp(currententity->model->name, "progs/flame0.mdl"))
+	if (!r_part_flames.value && !strcmp(currententity->model->name, "models/flame0.mdl"))
 	{
 		currententity->model = cl.model_precache[cl_modelindex[mi_flame1]];
 	}
@@ -3670,7 +3670,7 @@ int SetFlameModelState (void)
 			}
 			return -1;	//continue;
 		}
-        else if (!strcmp(currententity->model->name, "progs/wyvflame.mdl"))
+        else if (!strcmp(currententity->model->name, "models/wyvflame.mdl"))
 		{
 			liteorg[2] -= 1;
 

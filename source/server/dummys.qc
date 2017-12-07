@@ -66,7 +66,5 @@ void() change_frame =
 // PSP Exclusives
 //
 #ifdef PSP
-void() SetNewParms = {};
-void() SetChangeParms = {};
 void() EndFrame = {};
 #endif

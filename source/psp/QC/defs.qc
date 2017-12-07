@@ -473,11 +473,12 @@ float	AS_MISSILE		= 4;
 
 void(vector o, vector d, float color, float count) particle = #48;// start a particle effect
 void(string s) bprint_psp					= #23;
-void(entity client, string s) sprint		= #24;
+void(entity client, string s) sprint_psp	= #24;
 // End
 
 void(string s) println = {bprint_psp(s);} //just when brain decided to think this is c
 void(float ignore, string s) bprint = {bprint_psp(s);};
+void(entity client, float type, string s) sprint = {sprint_psp(client, s);};
 
 //doors
 .float		state;
@@ -488,3 +489,5 @@ float	STATE_DOWN		= 3;
 
 string mappath;
 float PRINT_HIGH = 0;
+.float isspec;
+.float maxspeed;

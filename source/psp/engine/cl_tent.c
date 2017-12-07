@@ -148,7 +148,7 @@ void CL_ParseTEnt (void)
 		pos[1] = MSG_ReadCoord ();
 		pos[2] = MSG_ReadCoord ();
         if (r_part_spikes.value == 2 && !cl_q3gunshot_mod)
-			cl_q3gunshot_mod = Mod_ForName ("progs/bullet.md3", true);
+			cl_q3gunshot_mod = Mod_ForName ("models/bullet.md3", true);
 		R_RunParticleEffect (pos, vec3_origin, 20, 30);
 		//S_StartSound (-1, 0, cl_sfx_wizhit, pos, 1, 1);
 		break;
@@ -158,7 +158,7 @@ void CL_ParseTEnt (void)
 		pos[1] = MSG_ReadCoord ();
 		pos[2] = MSG_ReadCoord ();
         if (r_part_spikes.value == 2 && !cl_q3gunshot_mod)
-			cl_q3gunshot_mod = Mod_ForName ("progs/bullet.md3", true);
+			cl_q3gunshot_mod = Mod_ForName ("models/bullet.md3", true);
 		R_RunParticleEffect (pos, vec3_origin, 226, 20);
 		//S_StartSound (-1, 0, cl_sfx_knighthit, pos, 1, 1);
 		break;
@@ -168,7 +168,7 @@ void CL_ParseTEnt (void)
 		pos[1] = MSG_ReadCoord ();
 		pos[2] = MSG_ReadCoord ();
         if (r_part_spikes.value == 2 && !cl_q3gunshot_mod)
-			cl_q3gunshot_mod = Mod_ForName ("progs/bullet.md3", true);
+			cl_q3gunshot_mod = Mod_ForName ("models/bullet.md3", true);
 		//R00k--start
 		if (r_decal_bullets.value)
 		{
@@ -184,7 +184,7 @@ void CL_ParseTEnt (void)
 		pos[1] = MSG_ReadCoord ();
 		pos[2] = MSG_ReadCoord ();
         if (r_part_spikes.value == 2 && !cl_q3gunshot_mod)
-			cl_q3gunshot_mod = Mod_ForName ("progs/bullet.md3", true);
+			cl_q3gunshot_mod = Mod_ForName ("models/bullet.md3", true);
 		R_RunParticleEffect (pos, vec3_origin, 0, 20);
 
 		//R00k--start
@@ -201,7 +201,7 @@ void CL_ParseTEnt (void)
 		pos[1] = MSG_ReadCoord ();
 		pos[2] = MSG_ReadCoord ();
         if (r_part_gunshots.value == 2 && !cl_q3gunshot_mod)
-			cl_q3gunshot_mod = Mod_ForName ("progs/bullet.md3", true);
+			cl_q3gunshot_mod = Mod_ForName ("models/bullet.md3", true);
 
 		//R00k--start
 		if (r_decal_bullets.value)
@@ -238,20 +238,20 @@ void CL_ParseTEnt (void)
 		break;
 
 	case TE_LIGHTNING1:				// lightning bolts
-		CL_ParseBeam (Mod_ForName("progs/bolt.mdl", true));
+		CL_ParseBeam (Mod_ForName("models/bolt.mdl", true));
 		break;
 
 	case TE_LIGHTNING2:				// lightning bolts
-		CL_ParseBeam (Mod_ForName("progs/bolt2.mdl", true));
+		CL_ParseBeam (Mod_ForName("models/bolt2.mdl", true));
 		break;
 
 	case TE_LIGHTNING3:				// lightning bolts
-		CL_ParseBeam (Mod_ForName("progs/bolt3.mdl", true));
+		CL_ParseBeam (Mod_ForName("models/bolt3.mdl", true));
 		break;
 
 // PGM 01/21/97
 	case TE_BEAM:				// grappling hook beam
-		CL_ParseBeam (Mod_ForName("progs/beam.mdl", true));
+		CL_ParseBeam (Mod_ForName("models/beam.mdl", true));
 		break;
 // PGM 01/21/97
 
@@ -272,7 +272,7 @@ void CL_ParseTEnt (void)
 		pos[1] = MSG_ReadCoord ();
 		pos[2] = MSG_ReadCoord ();
         if (r_part_telesplash.value == 2 && !cl_q3teleport_mod)
-			cl_q3teleport_mod = Mod_ForName ("progs/telep.md3", true);
+			cl_q3teleport_mod = Mod_ForName ("models/telep.md3", true);
 		R_TeleportSplash (pos);
 		break;
 

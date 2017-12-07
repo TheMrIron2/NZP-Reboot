@@ -151,7 +151,7 @@ typedef struct
 } dfunction_t;
 
 
-#define	PROG_VERSION	7
+#define	PROG_VERSION	6
 typedef struct
 {
 	int		version;

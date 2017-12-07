@@ -121,4 +121,5 @@ CXX      = vs-psp-g++
 endif
 
 install: EBOOT.PBP
+	mv EBOOT.PBP ../../../../psp/nzportable/
 	@echo DONE
