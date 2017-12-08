@@ -103,14 +103,15 @@ void		end_sys_globals;		// flag for structure dumping
 .entity		chain;
 .float		deadflag;
 .vector		view_ofs;			// add to origin to get eye point
-.float		button0;		// fire
-.float		button1;		// use
-.float		button2;		// jump
-.float		button3;		// grenade
-.float		button4;		// switch
-.float		button5;		// reload
-.float		button6;		// knife
-.float		button7;		// aim
+.float		button0;		// 
+.float		button1;		// 
+.float		button2;		// 
+.float		button3;		// 
+.float		button4;		// 
+.float		button5;		// 
+.float		button6;		// 
+.float		button7;		// 
+.float		button8;		// 
 .float		impulse;		// weapon changes
 .float		fixangle;
 .vector		v_angle;		// view / targeting angle for players

@@ -608,7 +608,7 @@ float deltaPitch,deltaYaw;
 void CL_SendMove (usercmd_t *cmd)
 {
 	int		i;
-	int		bits;
+	long int		bits;
 	sizebuf_t	buf;
 	byte	data[128];
 	vec3_t tempv;
@@ -672,7 +672,7 @@ void CL_SendMove (usercmd_t *cmd)
 //
 	bits = 0;
 
-	if ( in_attack.state & 3 )
+	if (in_attack.state & 3 )
 		bits |= 1;
 	in_attack.state &= ~2;
 
@@ -700,12 +700,11 @@ void CL_SendMove (usercmd_t *cmd)
 		bits |= 128;
 	in_use.state &= ~2;
 	
-	// Naievil -- FIXME will not work since we don't have that many bits
-	/* if (in_aim.state & 3)
+	if (in_aim.state & 3)
 		bits |= 256;
-	in_aim.state &= ~2; */
+	in_aim.state &= ~2; 
 
-    MSG_WriteByte (&buf, bits);
+    MSG_WriteLong (&buf, bits);
 
     MSG_WriteByte (&buf, in_impulse);
 	in_impulse = 0;

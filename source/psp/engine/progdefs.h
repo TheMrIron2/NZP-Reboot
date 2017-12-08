@@ -118,6 +118,7 @@ typedef struct
 	float	button5;
 	float	button6;
 	float	button7;
+	float	button8;
 	float	impulse;
 	float	fixangle;
 	vec3_t	v_angle;

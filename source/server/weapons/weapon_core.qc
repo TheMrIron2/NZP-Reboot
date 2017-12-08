@@ -49,16 +49,17 @@ void() W_AimIn =
 void() W_AimOut =
 {
 	if (!self.zoom ||
-		self.new_anim_stop) {
+		self.new_anim_stop || 
+		self.sprinting) {
 		return;
 	}
 	if (self.weapon == 11 || self.weapon == 19 ||
 	    self.weapon == 49 || self.weapon == 51)
 		ReturnWeaponModel();
-	
 	self.zoom = 0;
+	
 	//TEMPORARY
-	#ifndef PSP
+	#ifndef PSP	
 	self.viewzoom = 1;
 	#endif
 	
@@ -1425,14 +1426,14 @@ void () Weapon_Logic =
 		} else {
 			self.semi = FALSE;
 		}
-
-		#ifndef PSP
 		if (self.button8 && !self.zoom) {
 			W_AimIn();
 		} else if (!self.button8 && self.zoom) {
+
 			W_AimOut();
+			
+
 		}
-		#endif
 	}
 
 	
