@@ -613,9 +613,7 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 			self = hit_ent;
 			self.health = self.health - damage;
 			
-			#ifndef PSP
 			barrel_hit ();
-			#endif 
 			
 			self = oldself;
 			return;
@@ -630,6 +628,11 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 		hit_ent.hitamount = hit_ent.hitamount + f_damage;
 		
 		SetUpdate(self, UT_HM, 0, 0, 0);
+		
+		#ifdef PSP
+		msg_entity = self;
+		WriteByte(MSG_ONE, SVC_HITMARK);
+		#endif
 	}
 	
 	#ifndef PSP
@@ -645,6 +648,13 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 	WriteEntity(MSG_MULTICAST, hit_ent);
 	multicast(trace_endpos, MULTICAST_PHS);
 	#endif
+	#ifdef PSP
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_GUNSHOT);
+	WriteCoord (MSG_BROADCAST, org_x);
+	WriteCoord (MSG_BROADCAST, org_y);
+	WriteCoord (MSG_BROADCAST, org_z);
+	#endif
 };
 
 void (float shotcount, float sprd, float Damage/*, float headmulti, float legmulti*/) FireTrace =
@@ -656,6 +666,10 @@ void (float shotcount, float sprd, float Damage/*, float headmulti, float legmul
 	makevectors(self.v_angle);
 	
 	src = self.origin + self.view_ofs;
+	
+	#ifdef PSP
+	CL_SendWeaponFire();
+	#endif
 
 	while (count < shotcount)
 	{
@@ -678,9 +692,7 @@ void (float shotcount, float sprd, float Damage/*, float headmulti, float legmul
 		{
 			while (1)
 			{
-				#ifndef PSP
 				traceline (trace_start_org, trace_start_org + dir, MOVE_HITMODEL, trace_ent);
-				#endif
 				
 				if (hitent == world)
 					break;
@@ -920,6 +932,12 @@ void () W_Knife =
 	WriteCoord(MSG_MULTICAST, trace_plane_normal_z);
 	WriteEntity(MSG_MULTICAST, hit_ent);
 	multicast(trace_endpos, MULTICAST_PHS);
+	#else
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_GUNSHOT);
+	WriteCoord (MSG_BROADCAST, org_x);
+	WriteCoord (MSG_BROADCAST, org_y);
+	WriteCoord (MSG_BROADCAST, org_z);
 	#endif
 	}
 

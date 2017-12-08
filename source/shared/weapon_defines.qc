@@ -3258,3 +3258,180 @@ int(int weapon, int type) GetLowAmmo = // determine what ammo value you should h
 		default: return 0;
 	}
 }
+
+// PSP Specific!!
+vector(float wep) GetWeaponRecoil =
+{
+	vector guaranteed, kick_change, final_kick;
+	float change_1, change_2, change_3,total_recoil, r, temp1, temp2;
+	switch (wep)
+	{
+		case W_COLT:
+			guaranteed = '0 35 0';
+			kick_change = '25 15 25';
+			break;
+		case W_BIATCH:
+			guaranteed = '0 35 0';
+			kick_change = '25 15 25';
+			break;
+		case W_357:
+			guaranteed = '0 80 50';
+			kick_change = '0 60 40';
+			break;
+		case W_KILLU:
+			guaranteed = '0 80 50';
+			kick_change = '0 60 40';
+			break;
+		case W_THOMPSON:
+			kick_change = '74 74 85';
+			break;
+		case W_GIBS:
+			kick_change = '74 74 85';
+			break;
+		case W_MP40:
+			kick_change = '44 44 44';
+			break;
+		case W_AFTERBURNER:
+			kick_change = '44 44 44';
+			break;
+		case W_TYPE:
+			kick_change = '44 44 44';
+			break;
+		case W_SAMURAI:
+			kick_change = '24 74 24';
+			break;
+		case W_PPSH:
+			kick_change = '4 22 4';
+			break;
+		case W_REAPER:
+			kick_change = '4 22 4';
+			break;
+		case W_GEWEHR:
+			kick_change = '50 60 50';
+			break;
+		case W_COMPRESSOR:
+			kick_change = '50 60 50';
+			break;
+		case W_M1:
+			guaranteed = '0 35 0';
+			kick_change = '30 30 30';
+			break;
+		case W_M1000:
+			guaranteed = '0 35 0';
+			kick_change = '30 30 30';
+			break;
+		case W_STG:
+			kick_change = '15 44 15';
+			break;
+		case W_SPATZ:
+			kick_change = '15 44 15';
+			break;
+		case W_M1A1:
+			kick_change = '50 60 50';
+			break;
+		case W_WIDDER:
+			kick_change = '50 60 50';
+			break;
+		case W_KAR:
+			guaranteed = '0 50 0';
+			kick_change = '25 30 25';
+			break;
+		case W_ARMAGEDDON:
+			guaranteed = '0 50 0';
+			kick_change = '25 30 25';
+			break;
+		case W_KAR_SCOPE:
+			guaranteed = '0 50 0';
+			kick_change = '25 30 25';
+			break;
+		case W_HEADCRACKER:
+			guaranteed = '0 50 0';
+			kick_change = '25 30 25';
+			break;
+		case W_PTRS:
+			guaranteed = '0 100 85';
+			kick_change = '0 95 75';
+			break;
+		case W_PENETRATOR:
+			guaranteed = '0 100 85';
+			kick_change = '0 95 75';
+			break;
+		case W_TRENCH:
+			guaranteed = '0 100 85';
+			kick_change = '0 95 75';
+			break;
+		case W_GUT:
+			guaranteed = '0 100 85';
+			kick_change = '0 95 75';
+			break;
+		case W_DB:
+			guaranteed = '0 95 0';
+			kick_change = '45 85 45';
+			break;
+		case W_BORE:
+			guaranteed = '0 95 0';
+			kick_change = '45 85 45';
+			break;
+		case W_SAWNOFF:
+			guaranteed = '0 95 0';
+			kick_change = '45 85 45';
+			break;
+		case W_SNUFF:
+			guaranteed = '0 95 0';
+			kick_change = '45 85 45';
+			break;
+		case W_BAR:
+			kick_change = '0 50 0';
+			break;
+		case W_WIDOW:
+			kick_change = '0 50 0';
+			break;
+		case W_MG:
+			kick_change = '40 30 40';
+			break;
+		case W_BARRACUDA:
+			kick_change = '40 30 40';
+			break;
+		case W_FG:
+			kick_change = '30 45 0';
+			break;
+		case W_IMPELLER:
+			kick_change = '30 45 0';
+			break;
+		case W_BROWNING:
+			kick_change = '50 66 50';
+			break;
+		case W_ACCELERATOR:
+			kick_change = '50 66 50';
+			break;
+		case W_TESLA:
+			kick_change = '74 74 85';
+			break;
+	}
+	total_recoil = kick_change_x + kick_change_y + kick_change_z;
+
+	change_1 = (kick_change_x)/total_recoil;
+	change_2 = (kick_change_y)/total_recoil;
+	change_3 = (kick_change_z)/total_recoil;
+
+	r = random();
+	temp1 = change_1 + change_2;
+	temp2 = change_1 + change_2 + change_3;
+	if (r < change_1)
+		final_kick_y = kick_change_x;
+	else if (r < temp1)
+		final_kick_x = kick_change_y*-1;
+	else if (r < temp2)
+		final_kick_y = kick_change_z*-1;
+
+	final_kick_y = final_kick_y + guaranteed_x;
+	final_kick_x = final_kick_x - guaranteed_y;
+	final_kick_y = final_kick_y - guaranteed_z;
+
+	final_kick_x = final_kick_x / 10;
+	final_kick_y = final_kick_y / 10;
+	final_kick_z = final_kick_z / 10;
+	//bprint	(vtos(final_kick));
+	//bprint	("\n");
+	return final_kick;
+}

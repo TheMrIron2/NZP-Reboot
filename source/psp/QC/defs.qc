@@ -498,3 +498,7 @@ float PRINT_HIGH = 0;
 float FILE_READ = 0;
 float FILE_APPEND = 1;
 float FILE_WRITE = 2;
+
+float MOVE_HITMODEL = 0;	// must be different for this engine!
+
+.float recoil_delay;

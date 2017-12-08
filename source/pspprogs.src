@@ -7,7 +7,7 @@ shared/weapon_defines.qc
 server/customdefs.qc
 server/clientfuncs.qc
 
-psp/QC/funcdummys.qc
+psp/QC/psp_specifics.qc
 
 server/dummys.qc                                           // Null spawn functions
 server/rounds.qc
