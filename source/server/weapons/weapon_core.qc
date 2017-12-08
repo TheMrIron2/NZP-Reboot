@@ -73,7 +73,7 @@ void() W_SprintStop =
 	float endframe = GetFrame(self.weapon,SPRINT_OUT_END);
 	string modelname = GetWeaponModel(self.weapon, 0);
 	
-	if (self.isBuying || self.damagetimer > time)
+	if (self.isBuying || self.damagetimer > time || !self.sprinting)
 		return;
 	
 	//TEMPORARY
@@ -83,7 +83,8 @@ void() W_SprintStop =
 	self.zoom = 0;
 	#endif
 
-	Set_W_Frame (startframe, endframe, 0, 0, SPRINT, SUB_Null, modelname, false, S_BOTH);
+	Set_W_Frame (startframe, endframe, 0, 0, SPRINT, SUB_Null, modelname, false, S_BOTH);  // BUG IS HERE
+	
 	self.sprinting = 0;
 	self.into_sprint = 0;
 	self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
@@ -153,16 +154,14 @@ void() W_Switch =
 		modelname = GetWeaponModel(self.weapon, 0);
 
 		SwitchWeapon(self.weapon);
-		
-		/*if ((self.weapon == W_DB && self.secondaryweapon == W_SAWNOFF) || (self.weapon == W_SAWNOFF && self.secondaryweapon == W_DB))
-      self.currentammo = self.secondaryammo;*/
+	
 		
 		//UpdateWeapons(1);
 		//if (self.weaponslot1.dualwield)
 		//	Set_W2_Frame (self.weaponslot1.TakeWeaponStart, self.weaponslot1.TakeWeaponEnd, 0, 0, 0, SUB_Null, self.weaponslot1.v_model2, false);//FIXME
 		Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
 		
-		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
+		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0; 
 	}
 }
 
