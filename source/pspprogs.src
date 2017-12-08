@@ -7,8 +7,21 @@ shared/weapon_defines.qc
 server/customdefs.qc
 server/clientfuncs.qc
 
+psp/QC/funcdummys.qc
+
 server/dummys.qc                                           // Null spawn functions
 server/rounds.qc
 server/main.qc                                             // Main subroutines
 server/player.qc                                           // Client subroutines
-psp/QC/funcdummys.qc
+server/damage.qc
+
+server/entities/sub_functions.qc
+server/entities/triggers.qc
+server/entities/map_entities.qc
+server/entities/lights.qc
+server/entities/doors.qc
+server/entities/window.qc
+server/entities/machines.qc
+
+server/weapons/frames_core.qc
+server/weapons/weapon_core.qc

@@ -1874,7 +1874,6 @@ float(float wep, float frametype) GetFrame =
 
 string(float wep, float gorvmodel) GetWeaponModel =
 {
-
 	switch (wep)
 	{
 		case W_COLT:
@@ -2022,13 +2021,26 @@ string(float wep, float gorvmodel) GetWeaponModel =
 				return ("models/weapons/type/g_type.mdl");
 			else
 				return ("models/weapons/type/v_type.mdl");
+		case W_GRENADE:
+			return ("models/weapons/grenade/g_grenade.mdl");
+		case W_BETTY:
+			return ("models/weapons/grenade/g_betty.mdl");
+		case W_TESLA:
+			if (gorvmodel)
+				return ("models/weapons/tesla/g_tesla.mdl");
+			else
+				return ("models/weapons/tesla/v_tesla.mdl");
+		case W_BK:
+			if (gorvmodel)
+				return ("models/weapons/bk/g_bk.mdl");
+			else
+				return ("models/weapons/bk/v_bk.mdl");
     }
 
-    return "";
+    return ("");
 }
 
 string(float wep) GetWeaponSound =
-
 {
 	switch (wep)
 	{

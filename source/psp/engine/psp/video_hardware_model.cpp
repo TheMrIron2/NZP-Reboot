@@ -378,7 +378,7 @@ model_t *Mod_LoadModel (model_t *mod, qboolean crash)
 	    if (!buf && crash)
 		{
 			// Reload with another .mdl
-			buf = (unsigned *)COM_LoadStackFile("models/missing_model.mdl", stackbuf, sizeof(stackbuf));
+			buf = (unsigned *)COM_LoadStackFile("progs/missing_model.mdl", stackbuf, sizeof(stackbuf));
 			if (buf)
 			{
 				Con_Printf ("Missing model %s substituted\n", mod->name);
@@ -2100,51 +2100,28 @@ void Mod_LoadAliasModel (model_t *mod, void *buffer)
 // some models are special
 	// NOTE: comparing not only with player.mdl, but with all models
 	// begin with "player" coz we need to support DME models as well!
-	if (!strncmp(mod->name, "models/player", 12))
+	if (!strncmp(mod->name, "progs/player", 12))
 		mod->modhint = MOD_PLAYER;
-	else if (!strcmp(mod->name, "models/eyes.mdl"))
+	else if (!strcmp(mod->name, "progs/eyes.mdl"))
 		mod->modhint = MOD_EYES;
-	else if (!strcmp(mod->name, "models/flame0.mdl") ||
-		 !strcmp(mod->name, "models/flame.mdl") ||
-		 !strcmp(mod->name, "models/flame2.mdl"))
+	else if (!strcmp(mod->name, "progs/flame0.mdl") ||
+		 !strcmp(mod->name, "progs/flame.mdl") ||
+		 !strcmp(mod->name, "progs/flame2.mdl"))
 		mod->modhint = MOD_FLAME;
-	else if (!strcmp(mod->name, "models/bolt.mdl") ||
-		 !strcmp(mod->name, "models/bolt2.mdl") ||
-		 !strcmp(mod->name, "models/bolt3.mdl"))
+	else if (!strcmp(mod->name, "progs/bolt.mdl") ||
+		 !strcmp(mod->name, "progs/bolt2.mdl") ||
+		 !strcmp(mod->name, "progs/bolt3.mdl"))
 		mod->modhint = MOD_THUNDERBOLT;
-	else if (!strcmp(mod->name, "models/weapons/m1911/v_colt.mdl") || //JUKKI Add nzp weapons here please plox
-		 !strcmp(mod->name, "models/weapons/kar/v_kar.mdl") ||
-		 !strcmp(mod->name, "models/weapons/thomp/v_thomp.mdl") || 
-		 !strcmp(mod->name, "models/weapons/357/v_357.mdl") || 
-		 !strcmp(mod->name, "models/weapons/bar/v_bar.mdl") || 
-		 !strcmp(mod->name, "models/weapons/browning/v_browning.mdl") ||
-		 !strcmp(mod->name, "models/weapons/db/v_db.mdl") ||
-		 !strcmp(mod->name, "models/weapons/fg42/v_fg.mdl") || 
-		 !strcmp(mod->name, "models/weapons/garand/v_m1.mdl") || 
-		 !strcmp(mod->name, "models/weapons/gewehr/v_gewehr.mdl") || 
-		 !strcmp(mod->name, "models/weapons/m1carbine/v_m1a1.mdl") || 
-		 !strcmp(mod->name, "models/weapons/m2flame/v_m2flame.mdl") || 
-		 !strcmp(mod->name, "models/weapons/m1911/v_biatch_left.mdl") || 
-		 !strcmp(mod->name, "models/weapons/m1911/v_biatch_right.mdl") || 
-		 !strcmp(mod->name, "models/weapons/mg/v_mg.mdl") || 
-		 !strcmp(mod->name, "models/weapons/mp40/v_mp40.mdl") || 
-		 !strcmp(mod->name, "models/weapons/panzer/v_panzer.mdl") || 
-		 !strcmp(mod->name, "models/weapons/ppsh/v_ppsh.mdl") || 
-		 !strcmp(mod->name, "models/weapons/ptrs/v_ptrs.mdl") || 
-		 !strcmp(mod->name, "models/weapons/ray/v_ray.mdl") || 
-		 !strcmp(mod->name, "models/weapons/sawnoff/v_sawnoff.mdl") || 
-		 !strcmp(mod->name, "models/weapons/sawnoff/v_snuff_left.mdl") || 
-		 !strcmp(mod->name, "models/weapons/sawnoff/v_snuff_right.mdl") || 
-		 !strcmp(mod->name, "models/weapons/stg/v_stg.mdl") || 
-		 !strcmp(mod->name, "models/weapons/trench/v_trench.mdl") ||
-		 !strcmp(mod->name, "models/weapons/type/v_type.mdl"))
+	else if (!strcmp(mod->name, "progs/VModels/v_Colt.mdl") || //JUKKI Add nzp weapons here please plox
+		 !strcmp(mod->name, "progs/VModels/v_kar.mdl") ||
+		 !strcmp(mod->name, "progs/VModels/v_thomp.mdl"))
 		mod->modhint = MOD_WEAPON;
-	else if (!strcmp(mod->name, "models/lavaball.mdl"))
+	else if (!strcmp(mod->name, "progs/lavaball.mdl"))
 		mod->modhint = MOD_LAVABALL;
-	else if (!strcmp(mod->name, "models/spike.mdl") ||
-		 !strcmp(mod->name, "models/s_spike.mdl"))
+	else if (!strcmp(mod->name, "progs/spike.mdl") ||
+		 !strcmp(mod->name, "progs/s_spike.mdl"))
 		mod->modhint = MOD_SPIKE;
-	else if (!strcmp(mod->name, "models/shambler.mdl"))
+	else if (!strcmp(mod->name, "progs/shambler.mdl"))
 		mod->modhint = MOD_SHAMBLER;
 	else
 		mod->modhint = MOD_NORMAL;
@@ -2764,7 +2741,7 @@ void Mod_LoadQ3Animation (void)
 
     tmp1.offset = 0;
     tmp2.offset = 0;
-	if (!(animdata = (char *)COM_LoadFile("models/player/animation.cfg", 0)))
+	if (!(animdata = (char *)COM_LoadFile("progs/player/animation.cfg", 0)))
 	{
 		Con_Printf ("ERROR: Couldn't open animation file\n");
 		return;
@@ -2818,7 +2795,7 @@ void Mod_LoadQ3ModelTexture (char *identifier, int flags, int *gl_texnum)
 	}
 	if (!*gl_texnum)
 	{
-		Q_snprintfz (loadpath, sizeof(loadpath), "models/%s", identifier);
+		Q_snprintfz (loadpath, sizeof(loadpath), "progs/%s", identifier);
 		*gl_texnum = loadtextureimage (loadpath, 0, 0, qtrue, GU_LINEAR);
 	}
 	if (!*gl_texnum)
@@ -3007,106 +2984,83 @@ void Mod_LoadQ3AliasModel (model_t *mod, void *buffer)
 
 	COM_StripExtension(mod->name, &md3name[0]);
 
-	if (!strcmp (md3name, "models/g_shot") ||
-		!strcmp (md3name, "models/g_nail") ||
-		!strcmp (md3name, "models/g_nail2") ||
-		!strcmp (md3name, "models/g_rock") ||
-		!strcmp (md3name, "models/g_rock2") ||
-		!strcmp (md3name, "models/g_light") ||
-		!strcmp (md3name, "models/armor") ||
-		!strcmp (md3name, "models/backpack") ||
-		!strcmp (md3name, "models/w_g_key") ||
-		!strcmp (md3name, "models/w_s_key") ||
-		!strcmp (md3name, "models/m_g_key") ||
-		!strcmp (md3name, "models/m_s_key") ||
-		!strcmp (md3name, "models/b_g_key") ||
-		!strcmp (md3name, "models/b_s_key") ||
-		!strcmp (md3name, "models/quaddama") ||
-		!strcmp (md3name, "models/invisibl") ||
-		!strcmp (md3name, "models/invulner") ||
-		!strcmp (md3name, "models/jetpack") ||
-		!strcmp (md3name, "models/cube") ||
-		!strcmp (md3name, "models/suit") ||
-		!strcmp (md3name, "models/boots") ||
-		!strcmp (md3name, "models/end1") ||
-		!strcmp (md3name, "models/end2") ||
-		!strcmp (md3name, "models/end3") ||
-		!strcmp (md3name, "models/end4")) {
+	if (!strcmp (md3name, "progs/g_shot") ||
+		!strcmp (md3name, "progs/g_nail") ||
+		!strcmp (md3name, "progs/g_nail2") ||
+		!strcmp (md3name, "progs/g_rock") ||
+		!strcmp (md3name, "progs/g_rock2") ||
+		!strcmp (md3name, "progs/g_light") ||
+		!strcmp (md3name, "progs/armor") ||
+		!strcmp (md3name, "progs/backpack") ||
+		!strcmp (md3name, "progs/w_g_key") ||
+		!strcmp (md3name, "progs/w_s_key") ||
+		!strcmp (md3name, "progs/m_g_key") ||
+		!strcmp (md3name, "progs/m_s_key") ||
+		!strcmp (md3name, "progs/b_g_key") ||
+		!strcmp (md3name, "progs/b_s_key") ||
+		!strcmp (md3name, "progs/quaddama") ||
+		!strcmp (md3name, "progs/invisibl") ||
+		!strcmp (md3name, "progs/invulner") ||
+		!strcmp (md3name, "progs/jetpack") ||
+		!strcmp (md3name, "progs/cube") ||
+		!strcmp (md3name, "progs/suit") ||
+		!strcmp (md3name, "progs/boots") ||
+		!strcmp (md3name, "progs/end1") ||
+		!strcmp (md3name, "progs/end2") ||
+		!strcmp (md3name, "progs/end3") ||
+		!strcmp (md3name, "progs/end4")) {
 		mod->flags |= EF_ROTATE;
 	}
-	else if (!strcmp (md3name, "models/missile"))
+	else if (!strcmp (md3name, "progs/missile"))
 	{
 		mod->flags |= EF_ROCKET;
 	}
-	else if (!strcmp (md3name, "models/gib1") || //EF_GIB
-		!strcmp (md3name, "models/gib2") ||
-		!strcmp (md3name, "models/gib3") ||
-		!strcmp (md3name, "models/h_player") ||
-		!strcmp (md3name, "models/h_dog") ||
-		!strcmp (md3name, "models/h_mega") ||
-		!strcmp (md3name, "models/h_guard") ||
-		!strcmp (md3name, "models/h_wizard") ||
-		!strcmp (md3name, "models/h_knight") ||
-		!strcmp (md3name, "models/h_hellkn") ||
-		!strcmp (md3name, "models/h_zombie") ||
-		!strcmp (md3name, "models/h_shams") ||
-		!strcmp (md3name, "models/h_shal") ||
-		!strcmp (md3name, "models/h_ogre") ||
-		!strcmp (md3name, "models/armor") ||
-		!strcmp (md3name, "models/h_demon")) {
+	else if (!strcmp (md3name, "progs/gib1") || //EF_GIB
+		!strcmp (md3name, "progs/gib2") ||
+		!strcmp (md3name, "progs/gib3") ||
+		!strcmp (md3name, "progs/h_player") ||
+		!strcmp (md3name, "progs/h_dog") ||
+		!strcmp (md3name, "progs/h_mega") ||
+		!strcmp (md3name, "progs/h_guard") ||
+		!strcmp (md3name, "progs/h_wizard") ||
+		!strcmp (md3name, "progs/h_knight") ||
+		!strcmp (md3name, "progs/h_hellkn") ||
+		!strcmp (md3name, "progs/h_zombie") ||
+		!strcmp (md3name, "progs/h_shams") ||
+		!strcmp (md3name, "progs/h_shal") ||
+		!strcmp (md3name, "progs/h_ogre") ||
+		!strcmp (md3name, "progs/armor") ||
+		!strcmp (md3name, "progs/h_demon")) {
 		mod->flags |= EF_GIB;
 	}
-	else if (!strcmp (md3name, "models/grenade"))
+	else if (!strcmp (md3name, "progs/grenade"))
 	{
 		mod->flags |= EF_GRENADE;
 	}
-	else if (!strcmp (md3name, "models/w_spike"))
+	else if (!strcmp (md3name, "progs/w_spike"))
 	{
 		mod->flags |= EF_TRACER;
 	}
-	else if (!strcmp (md3name, "models/k_spike"))
+	else if (!strcmp (md3name, "progs/k_spike"))
 	{
 		mod->flags |= EF_TRACER2;
 	}
-	else if (!strcmp (md3name, "models/v_spike"))
+	else if (!strcmp (md3name, "progs/v_spike"))
 	{
 		mod->flags |= EF_TRACER3;
 	}
-	else if (!strcmp (md3name, "models/zom_gib"))
+	else if (!strcmp (md3name, "progs/zom_gib"))
 	{
 		mod->flags |= EF_ZOMGIB;
 	}
-	else if (!strcmp(md3name, "models/weapons/m1911/v_colt.mdl") || //JUKKI Add nzp weapons here please plox
-		 !strcmp(md3name, "models/weapons/kar/v_kar.mdl") ||
-		 !strcmp(md3name, "models/weapons/thomp/v_thomp.mdl") || 
-		 !strcmp(md3name, "models/weapons/357/v_357.mdl") || 
-		 !strcmp(md3name, "models/weapons/bar/v_bar.mdl") || 
-		 !strcmp(md3name, "models/weapons/browning/v_browning.mdl") ||
-		 !strcmp(md3name, "models/weapons/db/v_db.mdl") ||
-		 !strcmp(md3name, "models/weapons/fg42/v_fg.mdl") || 
-		 !strcmp(md3name, "models/weapons/garand/v_m1.mdl") || 
-		 !strcmp(md3name, "models/weapons/gewehr/v_gewehr.mdl") || 
-		 !strcmp(md3name, "models/weapons/m1carbine/v_m1a1.mdl") || 
-		 !strcmp(md3name, "models/weapons/m2flame/v_m2flame.mdl") || 
-		 !strcmp(md3name, "models/weapons/m1911/v_biatch_left.mdl") || 
-		 !strcmp(md3name, "models/weapons/m1911/v_biatch_right.mdl") || 
-		 !strcmp(md3name, "models/weapons/mg/v_mg.mdl") || 
-		 !strcmp(md3name, "models/weapons/mp40/v_mp40.mdl") || 
-		 !strcmp(md3name, "models/weapons/panzer/v_panzer.mdl") || 
-		 !strcmp(md3name, "models/weapons/ppsh/v_ppsh.mdl") || 
-		 !strcmp(md3name, "models/weapons/ptrs/v_ptrs.mdl") || 
-		 !strcmp(md3name, "models/weapons/ray/v_ray.mdl") || 
-		 !strcmp(md3name, "models/weapons/sawnoff/v_sawnoff.mdl")|| 
-		 !strcmp(md3name, "models/weapons/sawnoff/v_snuff_left.mdl") || 
-		 !strcmp(md3name, "models/weapons/sawnoff/v_snuff_right.mdl") || 
-		 !strcmp(md3name, "models/weapons/stg/v_stg.mdl") || 
-		 !strcmp(md3name, "models/weapons/trench/v_trench.mdl") ||
-		 !strcmp(md3name, "models/weapons/type/v_type.mdl"))
+	else if (!strcmp(md3name, "progs/VModel/v_colt")	||
+		!strcmp(md3name, "progs/VModel/v_kar")	||
+		!strcmp(md3name, "progs/VModel/v_thomp"))
 		{
 			mod->modhint = MOD_WEAPON;
 		}
 
-	else if (!strcmp (md3name, "models/lavaball"))
+	else if (!strcmp (md3name, "progs/lavaball"))
 	{
 		mod->modhint = MOD_LAVABALL;
 	}
@@ -3278,7 +3232,7 @@ void Mod_LoadQ3AliasModel (model_t *mod, void *buffer)
 	Mod_LoadAllQ3Skins (mod->name, header);
 
 // load the animation frames if loading the player model
-	if (!strcmp(mod->name, "models/player/lower.md3"))
+	if (!strcmp(mod->name, "progs/player/lower.md3"))
 		Mod_LoadQ3Animation ();
 
 	surf = (md3surface_t *)((byte *)header + header->ofssurfs);

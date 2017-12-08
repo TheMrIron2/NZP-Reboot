@@ -240,11 +240,20 @@ void() PlayerPostThink =
 			W_SprintStop();
 		}
 		
+		// Have to choose from PSP and PC here since frametime is a lot different...
+		#ifndef PSP
 		if (self.perks & P_STAMIN) {
 			self.stamina = self.stamina - 5*frametime;
 		} else {
 			self.stamina = self.stamina - (10*frametime);
 		}
+		#else
+		if (self.perks & P_STAMIN) {
+			self.stamina = self.stamina - 0.015;
+		} else { 
+			self.stamina = self.stamina - 0.03;
+		} 
+		#endif
 
 		if (self.stamina <= 0) {
 			W_SprintStop();

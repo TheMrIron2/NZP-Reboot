@@ -1,11 +1,3 @@
-void() W_SprintStop = {};
-
-void() GetUp = {};
-
-void() Weapon_Logic = {};
-
-void Set_W_Frame (float startframe, float endframe, float duration, float funccalledin, float animtype, void(float t) endanimfunc, string set_model, float dontstartnew, float side) = {};
-
 void() Do_Zombie_A = {};
 
 void(entity who) makeCrawler = {};

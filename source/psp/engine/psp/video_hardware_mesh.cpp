@@ -363,7 +363,7 @@ void GL_MakeAliasModelDisplayLists (model_t *m, aliashdr_t *hdr)
 	//
 	char	cache[MAX_QPATH];
 	sprintf(cache, "%s/glquake/", com_gamedir);
-	COM_StripExtension (m->name+strlen("models/"), cache+strlen(cache));
+	COM_StripExtension (m->name+strlen("progs/"), cache+strlen(cache));
 	strcat (cache, ".ms2");
 
 	int	f;

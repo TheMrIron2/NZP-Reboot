@@ -437,12 +437,12 @@ float	UPDATE_TEMP		= 3;
 
 // entity effects
 
-#define	EF_BLUELIGHT			1
+#define	EF_BLUE					1
 #define	EF_MUZZLEFLASH 			2
 #define	EF_BRIGHTLIGHT 			4
-#define	EF_REDLIGHT 			8
+#define	EF_RED		 			8
 #define	EF_ORANGELIGHT			16
-#define	EF_GREENLIGHT			32
+#define	EF_GREEN				32
 #define	EF_LIGHT				64
 #define	EF_NODRAW				128
 #define EF_BRIGHTFIELD			256
@@ -479,6 +479,7 @@ void(entity client, string s) sprint_psp	= #24;
 void(string s) println = {bprint_psp(s);} //just when brain decided to think this is c
 void(float ignore, string s) bprint = {bprint_psp(s);};
 void(entity client, float type, string s) sprint = {sprint_psp(client, s);};
+void(string s) print = {bprint_psp(s);};
 
 //doors
 .float		state;
@@ -489,5 +490,10 @@ float	STATE_DOWN		= 3;
 
 string mappath;
 float PRINT_HIGH = 0;
+
 .float isspec;
 .float maxspeed;
+
+float FILE_READ = 0;
+float FILE_APPEND = 1;
+float FILE_WRITE = 2;

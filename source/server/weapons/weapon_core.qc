@@ -27,12 +27,18 @@ void() W_AimIn =
 	{
 		self.zoom = 2;
 		SetUpdate(self, UT_ZOOM2, 0, 0, 0);
+		//TEMPORARY
+		#ifndef PSP
 		self.viewzoom = 0.5;
+		#endif
 	}
 	else
 	{
 		self.zoom = 1;
+		//TEMPORARY
+		#ifndef PSP
 		self.viewzoom = 0.9;
+		#endif
 	}
 	
 	if (!self.downed)	
@@ -51,7 +57,10 @@ void() W_AimOut =
 		ReturnWeaponModel();
 	
 	self.zoom = 0;
+	//TEMPORARY
+	#ifndef PSP
 	self.viewzoom = 1;
+	#endif
 	
 	if (!self.downed)
 		playout();
@@ -66,7 +75,12 @@ void() W_SprintStop =
 	if (self.isBuying || self.damagetimer > time)
 		return;
 	
+	//TEMPORARY
+	#ifndef PSP
 	self.viewzoom = 1;
+	#else 
+	self.zoom = 0;
+	#endif
 
 	Set_W_Frame (startframe, endframe, 0, 0, SPRINT, SUB_Null, modelname, false, S_BOTH);
 	self.sprinting = 0;
@@ -93,7 +107,12 @@ void W_SprintStart () {
 	float endframe = GetFrame(self.weapon,SPRINT_IN_END);
 	string modelname = GetWeaponModel(self.weapon, 0);
 
+	//TEMPORARY
+	#ifndef PSP
 	self.viewzoom = 0.9;
+	#else 
+	self.zoom = 3;
+	#endif
 	
 	if (startframe || endframe) {
 		Set_W_Frame (startframe, endframe, 0, 0, SPRINT, ContinueRun, modelname, false, S_BOTH);
@@ -285,7 +304,11 @@ void() ContinueReload = //Special reloads
 
 void(float side) W_Reload =
 {
+	//TEMPORARY
+	#ifndef PSP
 	self.viewzoom = 1;
+	#endif
+	self.zoom = false;
 	
 	if (side == S_BOTH) {
 		W_Reload(S_RIGHT);
@@ -387,7 +410,6 @@ void(float side) W_Reload =
 			self.reload_delay2 = delay + time;
 		}
 		
-		self.zoom = false;
 		Set_W_Frame (startframe, endframe, delay, reloadcancelframe, RELOAD, endanimfunc, modelname, false, side);
 	}
 	

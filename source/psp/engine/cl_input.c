@@ -680,10 +680,6 @@ void CL_SendMove (usercmd_t *cmd)
 		bits |= 2;
 	in_jump.state &= ~2;
 
-	if (in_use.state & 3)
-		bits |= 4;
-	in_use.state &= ~2;
-
 	if (in_grenade.state & 3)
 		bits |= 8;
 	in_grenade.state &= ~2;
@@ -699,10 +695,15 @@ void CL_SendMove (usercmd_t *cmd)
 	if (in_knife.state & 3)
 		bits |= 64;
 	in_knife.state &= ~2;
-
-	if (in_aim.state & 3)
+	
+	if (in_use.state & 3)
 		bits |= 128;
-	in_aim.state &= ~2;
+	in_use.state &= ~2;
+	
+	// Naievil -- FIXME will not work since we don't have that many bits
+	/* if (in_aim.state & 3)
+		bits |= 256;
+	in_aim.state &= ~2; */
 
     MSG_WriteByte (&buf, bits);
 

@@ -415,7 +415,16 @@ void() BarrelExplode =
 {
 	sound (self, CHAN_WEAPON, "sounds/weapons/grenade/explode.wav", 1, ATTN_NORM);	
 	DamgageExplode (self, self.enemy, 500, 75, 200);//was 256 inch radius, kicked it down to 128 because 21 feet exploding radius is... a bit overkill...
+	
+	#ifndef PSP
 	te_explosionquad(self.origin);
+	#else
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
+	WriteCoord (MSG_BROADCAST, self.origin_x);
+	WriteCoord (MSG_BROADCAST, self.origin_y);
+	WriteCoord (MSG_BROADCAST, self.origin_z);
+	#endif
 
 	SUB_Remove ();
 };
@@ -536,7 +545,10 @@ void zapper_play () {
 	entity zents = find(world, targetname, self.target);
 
 	if (zents) {
+		//TEMPORARY
+		#ifndef PSP
 		te_lightning2(self, self.origin, zents.origin);
+		#endif
 	}
 
 	zents.touch = zap_zombie;

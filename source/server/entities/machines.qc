@@ -217,18 +217,28 @@ void() setup_perk =
 	}
 	else
 	{
-		if (self.classname == "perk_revive")
-			self.effects = EF_BLUE;
-		/*else if (self.classname == "perk_flopper")
-			self.effects = EF_PURPLELIGHT;*/
-		else if (self.classname == "perk_juggernog")
-			self.effects = EF_RED;
-		/*else if (self.classname == "perk_staminup")
-			self.effects = EF_ORANGELIGHT;*/
-		else if (self.classname == "perk_speed")
-			self.effects = EF_GREEN;
-		/*else if (self.classname == "perk_double")
-			self.effects = EF_ORANGELIGHT;*/
+		switch(self.classname)
+		{
+			case "perk_revive": 
+				self.effects = EF_BLUE;
+				break;
+			case "perk_flopper":
+				//self.effects = EF_PURPLELIGHT;
+				break;
+			case "perk_juggernog":
+				self.effects = EF_RED;
+				break;
+			case "perk_staminup":
+				//self.effects = EF_ORANGELIGHT;
+				break;
+			case "perk_speed":
+				self.effects = EF_GREEN;
+				break;
+			case "perk_double":
+				//self.effects = EF_ORANGELIGHT;
+				break;
+		
+		}
 	} 
 	
 		// naievil (FIXME) light effects 
@@ -992,7 +1002,7 @@ void() Load_Mbox_Data =
 	local float file;
 	local string h;
 	string temps;
-	h = strcat(mapname,  ".mbox");
+	h = strcat(mapname, ".mbox");
 	h = strcat("maps/",  h);
 	file = fopen (h, FILE_READ);
 	

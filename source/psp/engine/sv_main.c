@@ -1033,7 +1033,7 @@ void SV_CreateBaseline (void)
 		if (entnum > 0 && entnum <= svs.maxclients)
 		{
 			svent->baseline.colormap = entnum;
-			svent->baseline.modelindex = SV_ModelIndex("models/player.mdl");
+			svent->baseline.modelindex = SV_ModelIndex("progs/player.mdl");
 		}
 		else
 		{
