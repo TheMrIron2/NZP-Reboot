@@ -764,8 +764,8 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 	MSG_WriteByte (msg, ent->v.weapon);
 	MSG_WriteByte (msg, pr_global_struct->rounds);
 	MSG_WriteByte (msg, pr_global_struct->rounds_change);
-	MSG_WriteByte (msg, pr_global_struct->x2_icon);
-	MSG_WriteByte (msg, pr_global_struct->insta_icon);
+	MSG_WriteByte (msg, ent->v.x2_icon);
+	MSG_WriteByte (msg, ent->v.insta_icon);
 	MSG_WriteByte (msg, ent->v.progress_bar);
 	MSG_WriteByte (msg, SV_ModelIndex(pr_strings+ent->v.weapon2model));
 	MSG_WriteByte (msg, ent->v.weapon2skin);

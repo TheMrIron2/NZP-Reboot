@@ -25,3 +25,5 @@ server/entities/machines.qc
 
 server/weapons/frames_core.qc
 server/weapons/weapon_core.qc
+
+server/entities/powerups.qc

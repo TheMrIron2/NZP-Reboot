@@ -1214,6 +1214,37 @@ void PF_strunzone (void)
 
 /*
 =================
+PF_strtrim
+
+string strtrim (string)
+=================
+*/
+void PF_strtrim (void)
+{
+	char *m;
+	m = G_STRING(OFS_PARM0);
+	
+  char *c;
+  c = m; 
+  
+  while (c != '\0' && *c == ' ')
+    c++;
+  m = c;
+  
+  c = m + strlen (m) - 1;
+  while (c >= m)
+  {
+    if (*c == ' ')
+      *c = '\0';
+    else
+      break;
+      c--;
+  }
+	G_INT(OFS_RETURN) = m - pr_strings;
+};
+
+/*
+=================
 PF_strlen
 
 float strlen (string)
@@ -3279,6 +3310,7 @@ ebfs_builtin_t pr_ebfs_builtins[] =
 	{ 117, "stov", PF_stov },
 	{ 118, "strzone", PF_strzone },
 	{ 119, "strunzone", PF_strunzone },
+	{ 120, "strtrim", PF_strtrim },
 	{   0, "zone", PF_strzone },		// 0 indicates that this entry is just for remapping (because of name and number change)
 	{   0, "unzone", PF_strunzone },
 

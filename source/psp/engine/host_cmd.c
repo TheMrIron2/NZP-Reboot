@@ -1030,11 +1030,11 @@ void Host_Spawn_f (void)
 
 	MSG_WriteByte (&host_client->message, svc_updatestat);
 	MSG_WriteByte (&host_client->message, STAT_X2);
-	MSG_WriteByte (&host_client->message, pr_global_struct->x2_icon);
+	MSG_WriteByte (&host_client->message, sv_player->v.x2_icon);
 
 	MSG_WriteByte (&host_client->message, svc_updatestat);
 	MSG_WriteByte (&host_client->message, STAT_INSTA);
-	MSG_WriteByte (&host_client->message, pr_global_struct->insta_icon);
+	MSG_WriteByte (&host_client->message, sv_player->v.insta_icon);
 
 
 //

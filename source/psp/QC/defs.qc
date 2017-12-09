@@ -29,8 +29,6 @@ float		teamplay;
 float		serverflags;		// propagated from level to level, used to
 float		rounds;
 float		rounds_change;
-float		x2_icon;		// double points icon
-float		insta_icon;	// number of monsters killed
 float		parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16;
 vector		v_forward, v_up, v_right;	// set by makevectors()
 float		trace_allsolid;
@@ -144,6 +142,8 @@ void		end_sys_globals;		// flag for structure dumping
 .string		message;		// trigger messages
 .float		sounds;		// either a cd track number or sound number
 .string         noise, noise1, noise2, noise3;  // contains names of wavs to play
+.float		x2_icon;			// double points icon
+.float 		insta_icon;
 
 void		end_sys_fields;			// flag for structure dumping
 // End. Lines below this MAY be altered, to some extent
@@ -260,6 +260,7 @@ string(string s, float start, float length) substring = #116;
 vector(string s) stov = #117;
 string(string s) strzone = #118;
 string(string s) strunzone = #119;
+string(string s) strtrim = #120;
 // 2001-09-20 QuakeC string manipulation by FrikaC  end
 
 //

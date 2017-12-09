@@ -16,8 +16,6 @@ typedef struct
 	float	serverflags;
 	float	rounds;
 	float	rounds_change;
-	float	x2_icon;
-	float	insta_icon;
 	float	parm1;
 	float	parm2;
 	float	parm3;
@@ -153,6 +151,8 @@ typedef struct
 	string_t	noise1;
 	string_t	noise2;
 	string_t	noise3;
+	float	x2_icon;
+	float	insta_icon;
 } entvars_t;
 
 #define PROGHEADER_CRC 2903
