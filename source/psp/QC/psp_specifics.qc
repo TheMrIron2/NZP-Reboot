@@ -17,3 +17,5 @@ void () CL_SendWeaponFire =
 	//self.punchangle = Wep_Recoil;
 	self.recoil_delay = 60/return_time + time;
 }
+
+void() trigger_activator = {};

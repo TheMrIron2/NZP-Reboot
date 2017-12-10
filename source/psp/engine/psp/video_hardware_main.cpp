@@ -2345,7 +2345,7 @@ void R_DrawAliasModel (entity_t *e)
 	//if (e->colormap != vid.colormap && 0 /* && !gl_nocolors.value*/)
 	//{
 	//	i = e - cl_entities;
-	//	if (i >= 1 && i<=cl.maxclients /*&& !strcmp (e->model->name, "progs/player.mdl")*/)
+	//	if (i >= 1 && i<=cl.maxclients /*&& !strcmp (e->model->name, "models/player.mdl")*/)
 	//	{
 	//	    GL_Bind(playertextures - 1 + i);
 	//	}
@@ -2612,7 +2612,7 @@ void R_DrawMD2Model (entity_t *e)
 
 	// ZOID: never allow players to go totally black
 	//	i = e - cl_entities;
-	//	if (i >= 1 && i<=cl.maxclients /*&& !strcmp (e->model->name, "progs/player.mdl") */)
+	//	if (i >= 1 && i<=cl.maxclients /*&& !strcmp (e->model->name, "models/player.mdl") */)
 	// LordHavoc: .lit support begin
 	//	if (ambientlight < 8) // LordHavoc: original code
 	//		ambientlight = shadelight = 8; // LordHavoc: original code
@@ -2700,7 +2700,7 @@ void R_DrawMD2Model (entity_t *e)
 	if (e->colormap != vid.colormap && 0 /* && !gl_nocolors.value*/)
 	{
 		i = e - cl_entities;
-		if (i >= 1 && i<=cl.maxclients /*&& !strcmp (e->model->name, "progs/player.mdl")*/)
+		if (i >= 1 && i<=cl.maxclients /*&& !strcmp (e->model->name, "models/player.mdl")*/)
 		{
 		    GL_Bind(playertextures - 1 + i);
 		}
@@ -2894,9 +2894,9 @@ void R_DrawQ3Frame (int frame, md3header_t *pmd3hdr, md3surface_t *pmd3surf, ent
 
 	pose = frame;
 
-	if (!strcmp(clmodel->name, "progs/player/lower.md3"))
+	if (!strcmp(clmodel->name, "models/player/lower.md3"))
 		ent->frame_interval = anims[legsanim].interval;
-	else if (!strcmp(clmodel->name, "progs/player/upper.md3"))
+	else if (!strcmp(clmodel->name, "models/player/upper.md3"))
 		ent->frame_interval = anims[bodyanim].interval;
 	else
 		ent->frame_interval = 0.1;
@@ -3131,9 +3131,9 @@ void R_SetupQ3Frame (entity_t *ent)
 	model_t		*clmodel = ent->model;
 	tagentity_t	*tagent;
 
-	if (!strcmp(clmodel->name, "progs/player/lower.md3"))
+	if (!strcmp(clmodel->name, "models/player/lower.md3"))
 		frame = legsframe;
-	else if (!strcmp(clmodel->name, "progs/player/upper.md3"))
+	else if (!strcmp(clmodel->name, "models/player/upper.md3"))
 		frame = bodyframe;
 	else
 		frame = ent->frame;
@@ -3373,7 +3373,7 @@ void R_DrawQ3Model (entity_t *ent)
 
    //==========================================================================
 
-	if ((!strcmp(ent->model->name, "progs/player/lower.md3"))||(!strcmp(ent->model->name, "progs/player/upper.md3")))
+	if ((!strcmp(ent->model->name, "models/player/lower.md3"))||(!strcmp(ent->model->name, "models/player/upper.md3")))
 	{
 		//q3player_body.ent.renderamt = q3player_head.ent.renderamt = cl_entities[cl.viewentity].renderamt;
 		R_ReplaceQ3Frame (ent->frame);

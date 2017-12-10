@@ -155,4 +155,4 @@ typedef struct
 	float	insta_icon;
 } entvars_t;
 
-#define PROGHEADER_CRC 2903
+#define PROGHEADER_CRC 44555

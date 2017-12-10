@@ -509,3 +509,9 @@ float MOVE_HITMODEL = 0;	// must be different for this engine!
 
 .float recoil_delay;
 .float gravity;
+
+.float renderamt;
+.float rendermode;
+.vector rendercolor;
+.string mapversion;
+.float ammo;

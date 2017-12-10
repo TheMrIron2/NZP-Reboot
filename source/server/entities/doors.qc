@@ -541,7 +541,8 @@ void() func_door =
 
 void() func_door_nzp =
 {
-	/*if (!self.renderamt)
+	#ifdef PSP
+	if (!self.renderamt)
 		self.renderamt = 255;
 	
 	if (!self.rendermode)
@@ -555,7 +556,7 @@ void() func_door_nzp =
 	
 	if (!self.ammo)
 		self.ammo = 0; //thease are just here because they can be sp there is no error message. serve no real purpose
-	 */  
+	#endif
 	 
 	// naievil (FIXME) ^^^^ hl rendermodes, mapversion
 	

@@ -111,11 +111,10 @@ void() precaches =
 
 	precache_model ("models/weapons/m1911/v_colt.mdl");
 	precache_model ("models/weapons/m1911/g_colt.mdl");
+	precache_model ("progs/VModels/v_knife.mdl");
 	precache_model ("progs/VModels/v_nade.mdl");
 	precache_model ("progs/GModels/g_grenade.mdl");
-	precache_model ("progs/GModels/g_betty.mdl");
-
-	
+	precache_model ("progs/GModels/g_betty.mdl");	
 	
 	//sprites
 	precache_model ("models/way/current_way.spr");

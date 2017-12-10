@@ -181,7 +181,7 @@ void() Round_Core =
 }
 
 void() InitRounds =
-{
+{		
 	roundtype = 1;
 	delay_at_round = 2/0.95;
 	totalpowerups = 0;

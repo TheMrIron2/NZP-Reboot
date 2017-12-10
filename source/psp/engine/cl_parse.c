@@ -322,12 +322,12 @@ void CL_ParseServerInfo (void)
 
 		if (r_loadq3models.value)
 		{
-			if (!strcmp(str, "progs/player.mdl") &&
-			    FS_FindFile("progs/player/head.md3") &&
-			    FS_FindFile("progs/player/upper.md3") &&
-			    FS_FindFile("progs/player/lower.md3"))
+			if (!strcmp(str, "models/player.mdl") &&
+			    FS_FindFile("models/player/head.md3") &&
+			    FS_FindFile("models/player/upper.md3") &&
+			    FS_FindFile("models/player/lower.md3"))
 			{
-				Q_strncpyz (tempname, "progs/player/lower.md3", MAX_QPATH);
+				Q_strncpyz (tempname, "models/player/lower.md3", MAX_QPATH);
 				str = tempname;
 				cl_modelindex[mi_player] = nummodels;
 				r_loadq3player = true;
@@ -347,7 +347,7 @@ void CL_ParseServerInfo (void)
 
 		Mod_TouchModel (str);
 
-		if (!strcmp(model_precache[nummodels], "progs/player.mdl"))
+		if (!strcmp(model_precache[nummodels], "models/player.mdl"))
 			cl_modelindex[mi_player] = nummodels;
 		else if (!strcmp(model_precache[nummodels], "progs/flame.mdl"))
 			cl_modelindex[mi_flame1] = nummodels;
@@ -365,9 +365,9 @@ void CL_ParseServerInfo (void)
 		}
 		else
 		{
-			Q_strncpyz (model_precache[nummodels], "progs/player/upper.md3", sizeof(model_precache[nummodels]));
+			Q_strncpyz (model_precache[nummodels], "models/player/upper.md3", sizeof(model_precache[nummodels]));
 			cl_modelindex[mi_q3torso] = nummodels++;
-			Q_strncpyz (model_precache[nummodels], "progs/player/head.md3", sizeof(model_precache[nummodels]));
+			Q_strncpyz (model_precache[nummodels], "models/player/head.md3", sizeof(model_precache[nummodels]));
 			cl_modelindex[mi_q3head] = nummodels++;
 		}
 	}

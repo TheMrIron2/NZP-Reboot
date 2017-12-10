@@ -819,7 +819,7 @@ void Host_InitVCR (quakeparms_t *parms)
 
 void Preload (void)
 {
-	Mod_ForName ("progs/player.mdl", true);
+	Mod_ForName ("models/player.mdl", true);
 
 	Mod_ForName ("progs/ai/zb#.mdl",true);
 	Mod_ForName ("progs/ai/zal(.mdl",true);

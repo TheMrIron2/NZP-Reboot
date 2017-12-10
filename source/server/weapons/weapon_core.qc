@@ -632,6 +632,14 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 		msg_entity = self;
 		WriteByte(MSG_ONE, SVC_HITMARK);
 		#endif
+	} else {
+	#ifdef PSP
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_GUNSHOT);
+	WriteCoord (MSG_BROADCAST, org_x);
+	WriteCoord (MSG_BROADCAST, org_y);
+	WriteCoord (MSG_BROADCAST, org_z);
+	#endif
 	}
 	
 	#ifndef PSP
@@ -647,13 +655,7 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 	WriteEntity(MSG_MULTICAST, hit_ent);
 	multicast(trace_endpos, MULTICAST_PHS);
 	#endif
-	#ifdef PSP
-	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-	WriteByte (MSG_BROADCAST, TE_GUNSHOT);
-	WriteCoord (MSG_BROADCAST, org_x);
-	WriteCoord (MSG_BROADCAST, org_y);
-	WriteCoord (MSG_BROADCAST, org_z);
-	#endif
+	
 };
 
 void (float shotcount, float sprd, float Damage/*, float headmulti, float legmulti*/) FireTrace =
@@ -1027,6 +1029,12 @@ void() GrenadeExplode =
 	
 	#ifndef PSP
 	te_explosionquad(self.origin);
+	#else
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
+	WriteCoord (MSG_BROADCAST, self.origin_x);
+	WriteCoord (MSG_BROADCAST, self.origin_y);
+	WriteCoord (MSG_BROADCAST, self.origin_z);
 	#endif
 	
 	SUB_Remove ();

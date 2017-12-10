@@ -2788,7 +2788,7 @@ void PF_GetSoundLen (void)
 
 //Con_Printf ("S_LoadSound: %x\n", (int)stackbuf);
 // load it in
-    Q_strcpy(namebuffer, "sound/");
+    Q_strcpy(namebuffer, "");
     Q_strcat(namebuffer, name);
 
 	data = COM_LoadStackFile(namebuffer, stackbuf, sizeof(stackbuf));
