@@ -235,7 +235,11 @@ void () Link_Waypoints =
 	float i;
 	entity tempe;
 	for	(i = 0; i < MAX_WAY_TARGETS; i++) {
+		#ifndef PSP
 		tempe = findfloat (world, waynum, active_way.targets[i]);
+		#else 
+		tempe = find (world, waynum, active_way.targets[i]);
+		#endif
 
 		if (tempe == world) {
 			if (Link(active_way, current_way)) {
@@ -268,17 +272,17 @@ void() Dual_Link_Waypoints =
 	if(!result1)
 	{
 		if (Link(current_way,active_way)) {
-			bprint(PRINT_HIGH, "Linked waypoint ", current_way.waynum, " to ", active_way.waynum, "\n");
+			bprint(PRINT_HIGH, strcat("Linked waypoint ", strcat(current_way.waynum, strcat(" to ",strcat(active_way.waynum, "\n")))));
 		} else {
-			bprint(PRINT_HIGH, "ERROR: Could not link waypoint ", current_way.waynum, " to ", active_way.waynum, "\n");
+			bprint(PRINT_HIGH, strcat("ERROR: Could not link waypoint ", strcat(current_way.waynum, strcat(" to ", strcat(active_way.waynum, "\n")))));
 		}
 	}
 	if(!result2)
 	{
 		if (Link(active_way,current_way)) {
-			bprint(PRINT_HIGH, "Linked waypoint ", active_way.waynum, " to ", current_way.waynum, "\n");
+			bprint(PRINT_HIGH, strcat("Linked waypoint ", strcat(active_way.waynum, strcat(" to ", strcat(current_way.waynum, "\n")))));
 		} else {
-			bprint(PRINT_HIGH, "ERROR: Could not link waypoint ", active_way.waynum, " to ", current_way.waynum, "\n");
+			bprint(PRINT_HIGH, strcat("ERROR: Could not link waypoint ", strcat(active_way.waynum, strcat(" to ", strcat(current_way.waynum, "\n")))));
 		}
 	}
 }
@@ -324,8 +328,8 @@ void() Remove_Links =
 	tempe = find(world,classname,"waypoint");
 	while(tempe != world)
 	{
-		int i;
-		for (i = 0; i < MAX_WAY_TARGETS; i++) {
+		float i;
+		for (i = 0; i < MAX_WAY_TARGETS; i = i + 1) {
 			if (tempe.targetname != "")
 				setmodel(tempe, "models/way/normal_way_door.spr");
 			else
@@ -345,7 +349,8 @@ void() Save_Waypoints
 
 	h = strcat(mappath, ".way");
 	file = fopen (h, FILE_WRITE);
-	dprint ("Saving waypoints ", h, "\n");
+	
+	dprint (strcat("Saving waypoints ", strcat(h, "\n")));
 	
 	local entity dway;
 	//fputs(file, "begin\n");
@@ -354,20 +359,24 @@ void() Save_Waypoints
 	{
 		fputs(file,"waypoint\n");
 		fputs(file,"{\n");
-		fputs(file, " id: ", dway.waynum, "\n");
-		fputs(file, " origin: ", vtos(dway.origin), "\n");
+		fputs(file, strcat(" id: ", strcat(dway.waynum, "\n")));
+		fputs(file, strcat(" origin: ", strcat(vtos(dway.origin), "\n")));
 		if (dway.targetname != "") {
-			fputs(file, " door: ", dway.targetname, "\n");
+			fputs(file, strcat(" door: ", strcat(dway.targetname, "\n")));
 		}
 
 		fputs(file, " targets:\n");
 		fputs(file, " [\n");
 		for (i = 0; i < MAX_WAY_TARGETS; i++) {
 			if (dway.targets[i] != "") {
+				#ifndef PSP
 				tempe = findfloat (world, waynum, dway.targets[i]);
+				#else 
+				tempe = find (world, waynum, dway.targets[i]);
+				#endif
 
 				if (tempe != world) {
-					fputs(file, "  ", dway.targets[i], "\n");
+					fputs(file, strcat("  ", strcat(dway.targets[i], "\n")));
 				}
 			}
 		}
@@ -481,14 +490,14 @@ void() Load_Waypoints
 					point = 1;
 					targetcount = 0;
 				} else {
-					bprint(PRINT_HIGH, "Error: unknown point ", h, "\n");
+					bprint(PRINT_HIGH, strcat("Error: unknown point ", strcat(h, "\n")));
 				}
 				break;
 			case 1:
 				if (h == "{") {
 					point = 2;
 				} else {
-					bprint(PRINT_HIGH, "Error: unknown variable ", h, " expected {\n");
+					bprint(PRINT_HIGH, strcat("Error: unknown variable ", strcat(h, " expected {\n")));
 				}
 				break;
 			case 2:
@@ -501,7 +510,7 @@ void() Load_Waypoints
 				switch (variable) {
 					case "origin":
 						
-						print(value, "\n");
+						print(strcat(value, "\n"));
 						setorigin(new_way, stov(value));
 						break;
 					case "id":
@@ -519,7 +528,7 @@ void() Load_Waypoints
 						point = 0;
 						break;
 					default:
-						bprint(PRINT_HIGH, "Error: unknown variable ", variable, "\n");
+						bprint(PRINT_HIGH, strcat("Error: unknown variable ", strcat(variable, "\n")));
 						break;
 				}
 				break;
@@ -527,7 +536,7 @@ void() Load_Waypoints
 				if (h == "[") {
 					point = 4;
 				} else {
-					bprint(PRINT_HIGH, "Error: unknown variable ", h, " expected [\n");
+					bprint(PRINT_HIGH, strcat("Error: unknown variable ", strcat(h, " expected [\n")));
 				}
 				break;
 			case 4:

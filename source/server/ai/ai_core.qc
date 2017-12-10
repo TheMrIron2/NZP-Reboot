@@ -474,6 +474,7 @@ void() NextPathfindToEnemy {
 	}
 }
 
+#ifndef PSP
 //
 float(vector start, vector min, vector max, vector end, float nomonsters, entity forent) tracemove
 {
@@ -486,6 +487,7 @@ float(vector start, vector min, vector max, vector end, float nomonsters, entity
 		return 0;	
 	}		
 }
+#endif
 
 float() TryWalkToEnemy =
 {

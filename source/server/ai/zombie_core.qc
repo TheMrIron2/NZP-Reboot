@@ -1075,7 +1075,7 @@ void(entity where) spawn_a_zombieB =
 	local entity old_self;
 	old_self = self;
 	self = szombie;
-	droptofloor();
+	//droptofloor();
 	if (self.spawnflags & 2)//RISER
 	{
 		zombieRise();

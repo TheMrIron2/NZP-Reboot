@@ -218,10 +218,7 @@ void() worldspawn =
 	mappath = strcat("maps/", mapname);
 	mappath = strzone(mappath);
 
-//TEMPORARY
-#ifndef PSP
 	LoadWaypointData();
-#endif
 }
 
 void() SpectatorConnect =

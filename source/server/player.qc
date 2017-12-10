@@ -455,7 +455,7 @@ void() SetChangeParms =
 
 
 void(string com) SV_ParseClientCommand =
-{
+{	
 	if(com == "joingame")
 	{
 		if(self.isspec)
@@ -499,7 +499,6 @@ void(string com) SV_ParseClientCommand =
 	}
 	else
 	{
-		#ifndef PSP
 		tokenize(com);
 
 		switch(argv(0))
@@ -539,7 +538,6 @@ void(string com) SV_ParseClientCommand =
 						self.flags = self.flags & (~FL_GODMODE);
 					break;
 		}
-		#endif
 	}
 };
 

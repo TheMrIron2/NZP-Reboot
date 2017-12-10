@@ -20,9 +20,9 @@ float closed;
 float closed_first;
 void SV_WP_ClearSet()
 {
-	int i;
+	float i;
 
-	for (i = 0; i < MAX_WAYPOINTS; i++)
+	for (i = 0; i < MAX_WAYPOINTS; i = i + 1)
 	{
 		waypoints[i].set = 0;
 	}
@@ -213,7 +213,8 @@ float Do_Pathfind(entity from, entity to) {
 	dist = 0;
 	best_dist = 100000000;
 
-	for (i = 0; i < MAX_WAYPOINTS; i++) {
+	#ifndef PSP
+	for (i = 0; i < MAX_WAYPOINTS; i = i + 1) {
 		if (IsActive(i)) {
 			TraceResult = tracemove (from.origin, VEC_HULL_MIN, VEC_HULL_MAX, waypoints[i].org, TRUE ,from);
 			if (TraceResult) {
@@ -229,7 +230,7 @@ float Do_Pathfind(entity from, entity to) {
 	dist = 0;
 	best_dist = 100000000;
 
-	for (i = 0; i < MAX_WAYPOINTS; i++) {
+	for (i = 0; i < MAX_WAYPOINTS; i = i + 1) {
 		if (IsActive(i)) {
 			TraceResult = tracemove (to.origin, VEC_HULL_MIN, VEC_HULL_MAX, waypoints[i].org, TRUE ,to);
 			if (TraceResult) {
@@ -249,6 +250,9 @@ float Do_Pathfind(entity from, entity to) {
 
 
 	return Pathfind(from, best, best_target);
+	#else 
+	return 0;
+	#endif
 }
 
 void CalcDistances() {
@@ -271,7 +275,7 @@ void CalcDistances() {
 			
 
 void creator_way_touch();
-void LoadWaypointData() {
+void LoadWaypointData() { 
     float file, point;
 	string h;
 	float targetcount, loop, waycount;
@@ -287,9 +291,12 @@ void LoadWaypointData() {
 	}
 
     float i, s;
+	
 
-    for (i = 0; i < MAX_WAYPOINTS; i++) {
-		waypoint_ai way;
+	#ifndef PSP 
+    for (i = 0; i < MAX_WAYPOINTS; i = i + 1) {
+		waypoint_ai way; 
+		
 		way = waypoints[i];
         way.org = '0 0 0';
         way.id = 0;
@@ -298,11 +305,13 @@ void LoadWaypointData() {
 		way.set = 0;
         way.targetdoor = "";
 
-        for (s = 0; s < MAX_WAY_TARGETS; s++) {
+        for (s = 0; s < MAX_WAY_TARGETS; s = s + 1) {
             way.target_id[s] = 0;
             way.dist[s] = 0;
         }
+		
     }
+	#endif
 
 	new_way = spawn();
 	point = 0;
@@ -338,14 +347,14 @@ void LoadWaypointData() {
 					point = 1;
 					targetcount = 0;
 				} else {
-					bprint(PRINT_HIGH, "Error: unknown point ", h, "\n");
+					bprint(PRINT_HIGH, strcat("Error: unknown point ", strcat(h, "\n")));
 				}
 				break;
 			case 1:
 				if (h == "{") {
 					point = 2;
 				} else {
-					bprint(PRINT_HIGH, "Error: unknown variable ", h, " expected {\n");
+					bprint(PRINT_HIGH, strcat("Error: unknown variable ", strcat(h, " expected {\n")));
 				}
 				break;
 			case 2:
@@ -389,7 +398,7 @@ void LoadWaypointData() {
 						point = 0;
 						break;
 					default:
-						bprint(PRINT_HIGH, "Error: unknown variable ", variable, "\n");
+						bprint(PRINT_HIGH, strcat("Error: unknown variable ", strcat(variable, "\n")));
 						break;
 				}
 				break;
@@ -397,7 +406,7 @@ void LoadWaypointData() {
 				if (h == "[") {
 					point = 4;
 				} else {
-					bprint(PRINT_HIGH, "Error: unknown variable ", h, " expected [\n");
+					bprint(PRINT_HIGH, strcat("Error: unknown variable ", strcat(h, " expected [\n")));
 				}
 				break;
 			case 4:
@@ -421,6 +430,7 @@ void LoadWaypointData() {
 
 	fclose(file);
 
-
+	#ifndef PSP
 	CalcDistances();
+	#endif
 }

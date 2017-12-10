@@ -226,7 +226,7 @@ float(vector start, vector min, vector max, vector end, float nomonsters, entity
 entity (entity start, .float field, float match) findfloat = #98;
 float(string s) stof = #81;	// 2001-09-20 QuakeC string manipulation by FrikaC
 vector(entity what) Get_Waypoint_Near = #83;
-float(entity zombie, entity target) Do_Pathfind = #84;
+float(entity zombie, entity target) Do_Pathfind_psp = #84;
 void(string s) Open_Waypoint = #85;
 vector(entity zombie,vector start,vector min, vector max) Get_Next_Waypoint = #86;
 void(entity client, float type, float cost, float weapon) useprint = #87;
@@ -262,6 +262,11 @@ string(string s) strzone = #118;
 string(string s) strunzone = #119;
 string(string s) strtrim = #120;
 // 2001-09-20 QuakeC string manipulation by FrikaC  end
+
+// 2001-11-15 DarkPlaces general builtin functions by Lord Havoc  start
+float(string s) tokenize = #441;
+string(float num) argv = #442;
+// 2001-11-15 DarkPlaces general builtin functions by Lord Havoc  end
 
 //
 // constants
@@ -503,3 +508,4 @@ float FILE_WRITE = 2;
 float MOVE_HITMODEL = 0;	// must be different for this engine!
 
 .float recoil_delay;
+.float gravity;

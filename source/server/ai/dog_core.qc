@@ -133,7 +133,7 @@ void(entity where) spawn_a_dogB =
 	local entity old_self;
 	old_self = self;
 	self = sdog;
-	droptofloor();
+	//droptofloor();
 	self.th_walk();
 	self = old_self;
 };

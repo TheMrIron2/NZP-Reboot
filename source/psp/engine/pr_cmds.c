@@ -3143,6 +3143,38 @@ void PF_builtin_find (void)
 
 	G_FLOAT(OFS_RETURN) = funcno;
 }
+
+/*
+=================
+PF_tokenize
+
+float tokenize (string) = #441
+=================
+*/
+//KRIMZON_SV_PARSECLIENTCOMMAND added both of these
+// refined to work on psp on 2017-DEC-09
+void PF_tokenize (void)
+{
+  char *m = G_STRING(OFS_PARM0);
+	Cmd_TokenizeString(m);
+	G_FLOAT(OFS_RETURN) = Cmd_Argc();
+};
+
+/*
+=================
+PF_argv
+
+string argv (float num) = #442
+=================
+*/
+void PF_ArgV  (void)
+{
+	char *dest = "";
+	strcpy(dest, Cmd_Argv(G_FLOAT(OFS_PARM0)));
+	G_INT(OFS_RETURN) = dest - pr_strings;
+}
+
+
 // 2001-09-14 Enhanced BuiltIn Function System (EBFS) by Maddes  end
 builtin_t *pr_builtins;
 int pr_numbuiltins;
@@ -3351,9 +3383,12 @@ ebfs_builtin_t pr_ebfs_builtins[] =
 	{ 429, "te_lightning2", PF_... },
 	{ 430, "te_lightning3", PF_... },
 	{ 431, "te_beam", PF_... },
-	{ 432, "vectorvectors", PF_... },
-*/
+	{ 432, "vectorvectors", PF_... },*/
+  { 441, "tokenize", PF_tokenize },
+  { 442, "argv", PF_ArgV },
+
 // 2001-11-15 DarkPlaces general builtin functions by Lord Havoc  end
+
 };
 
 int pr_ebfs_numbuiltins = sizeof(pr_ebfs_builtins)/sizeof(pr_ebfs_builtins[0]);
