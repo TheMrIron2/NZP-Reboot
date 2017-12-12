@@ -200,7 +200,7 @@ void Key_Console (int key)
 	}
 
 	if (key == K_JOY3 || key == K_ENTER)
-	{
+	{		
 		Cbuf_AddText (key_lines[edit_line]+1);	// skip the >
 		Cbuf_AddText ("\n");
 		Con_Printf ("%s\n",key_lines[edit_line]);
@@ -211,6 +211,11 @@ void Key_Console (int key)
 		if (cls.state == ca_disconnected)
 			SCR_UpdateScreen ();	// force an update, because the command
 									// may take some time
+		// for clientside cmds							
+		if (cls.state == ca_connected){
+			pr_global_struct->CMD_STRING = (key_lines[edit_line-1]+1 - pr_strings);
+			PR_ExecuteProgram (pr_global_struct->ParseClientCommand);
+		}
 		return;
 	}
 

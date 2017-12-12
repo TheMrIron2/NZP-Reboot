@@ -53,6 +53,8 @@ void() 		PutClientInServer;		// call after setting the parm1... parms
 void()		ClientDisconnect;
 void()		SetNewParms;			// called when a client first connects to
 void()		SetChangeParms;			// call to set parms for self so they can
+void()		ParseClientCommand;		// special command calls
+string 		CMD_STRING;
 void		end_sys_globals;		// flag for structure dumping
 
 .float		modelindex;		// *** model index in the precached list
@@ -515,3 +517,5 @@ float MOVE_HITMODEL = 0;	// must be different for this engine!
 .vector rendercolor;
 .string mapversion;
 .float ammo;
+
+void(string com) SV_ParseClientCommand;

@@ -453,9 +453,10 @@ void() SetChangeParms =
 {
 };
 
-
 void(string com) SV_ParseClientCommand =
-{	
+{		
+	localcmd(com);
+	
 	if(com == "joingame")
 	{
 		if(self.isspec)
@@ -498,8 +499,14 @@ void(string com) SV_ParseClientCommand =
 			self.movetype = MOVETYPE_WALK;
 	}
 	else
-	{
+	{		
 		tokenize(com);
+		
+		#ifdef PSP
+		entity tempe = self;
+		other = find(world, classname, "player");
+		self = other;
+		#endif
 
 		switch(argv(0))
 		{

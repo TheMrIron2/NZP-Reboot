@@ -3155,7 +3155,7 @@ float tokenize (string) = #441
 // refined to work on psp on 2017-DEC-09
 void PF_tokenize (void)
 {
-  char *m = G_STRING(OFS_PARM0);
+	char *m = G_STRING(OFS_PARM0);
 	Cmd_TokenizeString(m);
 	G_FLOAT(OFS_RETURN) = Cmd_Argc();
 };
@@ -3169,9 +3169,9 @@ string argv (float num) = #442
 */
 void PF_ArgV  (void)
 {
-	char *dest = "";
-	strcpy(dest, Cmd_Argv(G_FLOAT(OFS_PARM0)));
-	G_INT(OFS_RETURN) = dest - pr_strings;
+	char tempc[256];
+	strcpy(tempc, Cmd_Argv(G_FLOAT(OFS_PARM0)));
+	G_INT(OFS_RETURN) = tempc - pr_strings;
 }
 
 

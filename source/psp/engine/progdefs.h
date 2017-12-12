@@ -56,6 +56,8 @@ typedef struct
 	func_t	ClientDisconnect;
 	func_t	SetNewParms;
 	func_t	SetChangeParms;
+	func_t	ParseClientCommand;
+	string_t CMD_STRING;
 } globalvars_t;
 
 typedef struct
@@ -155,4 +157,4 @@ typedef struct
 	float	insta_icon;
 } entvars_t;
 
-#define PROGHEADER_CRC 44555
+#define PROGHEADER_CRC 14116

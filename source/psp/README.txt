@@ -1,5 +1,4 @@
-QC is a temp directory until the psp and pc qc is the same.
+QC is a practically a temp directory but stil has a few necessary things
 
-Right now, the compiler will just point to the old qc files.
 
 // naievil -- 11/30/2017

@@ -19,3 +19,5 @@ void () CL_SendWeaponFire =
 }
 
 void() trigger_activator = {};
+
+void() ParseClientCommand = {SV_ParseClientCommand(CMD_STRING);}
