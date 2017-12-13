@@ -11,7 +11,11 @@ void() EndGame_Restart =
 void() EndGame_FadePrompt =
 {
 	PromptLevelChange(time + 6, 2, self);
+	#ifndef PSP
 	self.think = EndGame_Restart;
+	#else
+	self.think = Soft_Restart;
+	#endif
 	self.nextthink = time + 5;
 }
 

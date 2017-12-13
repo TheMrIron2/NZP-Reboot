@@ -21,3 +21,32 @@ void () CL_SendWeaponFire =
 void() trigger_activator = {};
 
 void() ParseClientCommand = {SV_ParseClientCommand(CMD_STRING);}
+
+void() PutClientInServer;
+void() InitRounds;
+void() Soft_Restart = 
+{
+	entity who, oldself;
+	oldself = self;
+	
+	who = find(world,classname,"ai_zombie");
+	while(who != world)
+	{
+		if(who.health)
+		{
+			self = who;
+			self.th_die();
+			self = oldself;
+		}
+		
+		who = find(who,classname,"ai_zombie");
+	}
+	self = oldself;
+	self.downed = 0;
+	game_over = false;
+	rounds = 0;
+	self.points = 0;
+	InitRounds();
+	self.isspec = false;
+	PutClientInServer();
+}

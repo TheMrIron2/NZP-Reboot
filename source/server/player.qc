@@ -544,6 +544,16 @@ void(string com) SV_ParseClientCommand =
 					else
 						self.flags = self.flags & (~FL_GODMODE);
 					break;
+			case "nextround":
+					rounds++;
+					break;
+			case "prevround":
+					rounds--;
+					break;
+			default: 
+				#ifdef PSP
+					sprint(self, 1, "Command not found in QC\n");
+				#endif
 		}
 	}
 };
