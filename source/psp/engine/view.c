@@ -1137,7 +1137,9 @@ void V_CalcRefdef (void)
 	vec2_t ADSOffset;
 	if(cl.stats[STAT_ZOOM] == 1 || cl.stats[STAT_ZOOM] == 2)
 	{
-		GetWeaponADSOfs(ADSOffset);
+		ADSOffset[0] = sv_player->v.ADS_Offset[0];
+		ADSOffset[1] = sv_player->v.ADS_Offset[1];
+		ADSOffset[2] = sv_player->v.ADS_Offset[2];
 	}
 	else
 	{

@@ -143,9 +143,10 @@ void		end_sys_globals;		// flag for structure dumping
 .vector		movedir;	// mostly for doors, but also used for waterjump
 .string		message;		// trigger messages
 .float		sounds;		// either a cd track number or sound number
-.string         noise, noise1, noise2, noise3;  // contains names of wavs to play
+.string     noise, noise1, noise2, noise3;  // contains names of wavs to play
 .float		x2_icon;			// double points icon
 .float 		insta_icon;
+.vector		ADS_Offset;
 
 void		end_sys_fields;			// flag for structure dumping
 // End. Lines below this MAY be altered, to some extent

@@ -1078,6 +1078,87 @@ vector GetWeaponADSPos(float wep) {
 	}
 }
 
+/*
+===========================
+Weapon PSP ADS Declarations
+===========================
+*/
+vector GetWeaponADSOfs_PSP(float wep) = 
+{
+		
+	switch(wep)
+	{
+		case W_COLT:
+		case W_BIATCH:
+			return [-5.4792, 1.6500, 0];
+		case W_KAR:
+		case W_ARMAGEDDON:
+			return [-5.4959, 3.1869, 0];
+		case W_KAR_SCOPE:
+		case W_HEADCRACKER:
+			return [-5.2860, 0.7061, 0];
+		case W_THOMPSON:
+		case W_GIBS:
+			return [-6.0693, 3.0076, 0]; 
+		case W_TRENCH:
+		case W_GUT:
+			return [-5.5271, 2.8803, 0];
+		case W_357:
+		case W_KILLU:
+			return [-8.3065, 0.8792, 0];
+		case W_MG:
+		case W_BARRACUDA:
+			return [-6.6437, 3.5092, 0];
+		case W_DB:
+		case W_BORE:
+		case W_SAWNOFF:
+			return [-5.8017, 2.9121, 0];
+		case W_M1A1:
+		case W_WIDDER:
+			return [-5.3878, 3.6719, 0];
+		case W_BAR:
+		case W_WIDOW:
+			return [-3.8833, 2.6745, 0];
+		case W_FG:
+		case W_IMPELLER:
+			return [-14.800, 6.0000, 0];
+		case W_RAY:
+		case W_PORTER:
+			return [0.0000, -2.7000, 0];
+		case W_GEWEHR:
+		case W_COMPRESSOR:
+			return [-6.5500, 4.4000, 0];
+		case W_PPSH:
+		case W_REAPER:
+			return [-11.000, 3.7000, 0];
+		case W_MP40:
+		case W_AFTERBURNER:
+			return [-12.320, 7.6000, 0];
+		case W_TYPE:
+		case W_SAMURAI:
+			return [-0.4000, -0.200, 0];
+		case W_STG:
+		case W_SPATZ:
+			return [-14.534, 8.9200, 0];
+		case W_M1:
+		case W_M1000:
+			return [-2.8600, 2.0000, 0];
+		case W_BROWNING:
+		case W_ACCELERATOR:
+			return [-15.200, 11.620, 0];
+		case W_PTRS:
+		case W_PENETRATOR:
+			return [-14.000, 5.3869, 0];
+		case W_PANZER:
+		case W_LONGINUS:
+			return [-3.4792, -0.650, 0];
+		default:
+			//Large values > 20ish cause weapon to flicker, scale model down if we encounter!
+			//Scale better be 4.3, or else viewbobbing is going to be inaccurate.
+			return [-5.4792, 1.6500, 0];
+	}
+};
+
 float(float wep, float frametype) GetFrame =
 {
 	switch (wep)

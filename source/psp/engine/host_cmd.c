@@ -1037,7 +1037,6 @@ void Host_Spawn_f (void)
 	MSG_WriteByte (&host_client->message, STAT_INSTA);
 	MSG_WriteByte (&host_client->message, sv_player->v.insta_icon);
 
-
 //
 // send a fixangle
 // Never send a roll angle, because savegames can catch the server

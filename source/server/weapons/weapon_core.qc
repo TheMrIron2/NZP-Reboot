@@ -14,7 +14,7 @@ void() ReturnWeaponModel =
 }
 
 void() W_AimIn =
-{	
+{
 	if (IsDualWeapon(self.weapon) ||
 		self.zoom ||
 		self.reload_delay > time ||
@@ -22,6 +22,10 @@ void() W_AimIn =
 		self.new_anim_stop) {
 		return;
 	}
+	#ifdef PSP
+	self.ADS_Offset = GetWeaponADSOfs_PSP(self.weapon);
+	#endif
+	
 	if (self.weapon == 11 || self.weapon == 19 ||
 	    self.weapon == 49 || self.weapon == 51)
 	{

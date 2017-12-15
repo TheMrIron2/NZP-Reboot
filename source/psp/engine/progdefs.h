@@ -155,6 +155,7 @@ typedef struct
 	string_t	noise3;
 	float	x2_icon;
 	float	insta_icon;
+	vec3_t  ADS_Offset;
 } entvars_t;
 
 #define PROGHEADER_CRC 14116
