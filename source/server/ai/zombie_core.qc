@@ -1010,6 +1010,8 @@ void(entity where) spawn_a_zombieB =
 	local float tex;
 	tex = random();
 	szombie.skin = 0;
+	
+	#ifndef PSP		// TEMPORARY: does not draw skin on PSP if not 0
 	if(tex < 0.25)
 		szombie.skin = 0;
 	else if(tex < 0.5)
@@ -1018,6 +1020,8 @@ void(entity where) spawn_a_zombieB =
 		szombie.skin = 2;
 	else if(tex <= 1)
 		szombie.skin = 3;
+	#endif
+	
 	//====================================
 	
 	if(pointcontents(szombie.origin - '0 0 36') == -2)

@@ -1956,7 +1956,7 @@ void R_DrawZombieLimb (entity_t *e,int which)
 		limb_ent = &cl_entities[e->z_rarm];
 	else
 		return;
-
+	
 	clmodel = limb_ent->model;
 	if(clmodel == NULL)
 		return;

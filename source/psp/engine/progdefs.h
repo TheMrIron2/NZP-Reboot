@@ -58,6 +58,7 @@ typedef struct
 	func_t	SetChangeParms;
 	func_t	ParseClientCommand;
 	string_t CMD_STRING;
+	func_t  Soft_Restart;
 } globalvars_t;
 
 typedef struct

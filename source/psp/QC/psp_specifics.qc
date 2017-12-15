@@ -27,6 +27,7 @@ void() InitRounds;
 void() Soft_Restart = 
 {
 	entity who, oldself;
+	self = find(world,classname,"player");
 	oldself = self;
 	
 	who = find(world,classname,"ai_zombie");

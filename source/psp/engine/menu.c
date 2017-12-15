@@ -670,7 +670,8 @@ void M_Restart_Key (int key)
 	case K_ENTER:
 		key_dest = key_game;
 		m_state = m_none;
-		Cbuf_AddText ("restart\n");
+		// Cbuf_AddText ("restart\n"); // nai -- old, now do soft reset
+		PR_ExecuteProgram (pr_global_struct->Soft_Restart);
 		break;
 
 	default:
