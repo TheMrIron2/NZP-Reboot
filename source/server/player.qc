@@ -104,6 +104,8 @@ void() PlayerJump =
 	self.flags = self.flags - (self.flags & FL_JUMPRELEASED);
 	sound(self, CHAN_VOICE, "sounds/player/jump.wav", 1, 1.75);
 	self.button2 = 0;
+	
+	self.oldz = self.origin_z;
 }
 
 void() PlayerPreThink =

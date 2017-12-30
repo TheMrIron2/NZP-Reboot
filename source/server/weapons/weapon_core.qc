@@ -1366,6 +1366,7 @@ void() CheckPlayer =
 	CheckPowerups(self);
 	CheckRevive(self);
 	
+	/* Check player push start */
 	entity ent;
 	ent = findradius(self.origin, 70);
 		
@@ -1426,6 +1427,15 @@ void() CheckPlayer =
 			ent.velocity += push;
 		}
 		ent = ent.chain;
+	}
+	/* Check for player push end */
+	
+	if (!self.button2 && self.flags & FL_ONGROUND) {
+		if (fabs(self.oldz - self.origin_z) > 90) {
+			DamageHandler (self, other, 50, S_ZOMBIE);		
+		}
+		
+		self.oldz = self.origin_z;		
 	}
 }
 
@@ -1504,5 +1514,5 @@ void () Weapon_Logic =
 		self.semiknife = false;
 	
 	CheckImpulses();
-	CheckPlayer();
+	CheckPlayer();		
 }

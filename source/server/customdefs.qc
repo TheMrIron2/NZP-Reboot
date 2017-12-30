@@ -337,3 +337,5 @@ waypoint_ai waypoints[MAX_WAYPOINTS];
 
 //Misc patch definitions
 .string teddyremovetarget;
+
+.float oldz;
