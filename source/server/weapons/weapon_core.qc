@@ -169,6 +169,7 @@ void() W_Switch =
 		
 		#ifdef PSP
 		self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
+		self.Flash_Size = GetWeaponFlash_Size(self.weapon);
 		#endif
 	}
 }
@@ -491,19 +492,16 @@ SpawnBlood
 */
 void(vector org, vector vel, float damage) SpawnBlood =
 {
-  local entity f;
+	local entity f;
   
-  #ifndef PSP
-  te_blood(org, vel, 1);
-  #endif
-
-  
-	//particle (org, vel*0.1, 73, damage*2);
-	//below is for gib testing.
-	//particle (org, org, 225, 1);
+	#ifndef PSP
+	te_blood(org, vel, 1);
+	#else
+	particle (org, vel*0.1, 73, damage*2);
+	#endif
 	
 	f = find (world, classname, "player");
-  f.hitcount = f.hitcount + 1;
+	f.hitcount = f.hitcount + 1;
 };
 
 
@@ -934,25 +932,25 @@ void () W_Knife =
 		
 		/* naievil (FIXME) add weapon decal here */
 	
-	#ifndef PSP
-	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
-	WriteByte(MSG_MULTICAST, EVENT_PISTOLFIRE);
-	WriteEntity(MSG_MULTICAST, self);
-	WriteCoord(MSG_MULTICAST, org_x);
-	WriteCoord(MSG_MULTICAST, org_y);
-	WriteCoord(MSG_MULTICAST, org_z);
-	WriteCoord(MSG_MULTICAST, trace_plane_normal_x);
-	WriteCoord(MSG_MULTICAST, trace_plane_normal_y);
-	WriteCoord(MSG_MULTICAST, trace_plane_normal_z);
-	WriteEntity(MSG_MULTICAST, hit_ent);
-	multicast(trace_endpos, MULTICAST_PHS);
-	#else
-	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-	WriteByte (MSG_BROADCAST, TE_GUNSHOT);
-	WriteCoord (MSG_BROADCAST, org_x);
-	WriteCoord (MSG_BROADCAST, org_y);
-	WriteCoord (MSG_BROADCAST, org_z);
-	#endif
+		#ifndef PSP
+		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+		WriteByte(MSG_MULTICAST, EVENT_PISTOLFIRE);
+		WriteEntity(MSG_MULTICAST, self);
+		WriteCoord(MSG_MULTICAST, org_x);
+		WriteCoord(MSG_MULTICAST, org_y);
+		WriteCoord(MSG_MULTICAST, org_z);
+		WriteCoord(MSG_MULTICAST, trace_plane_normal_x);
+		WriteCoord(MSG_MULTICAST, trace_plane_normal_y);
+		WriteCoord(MSG_MULTICAST, trace_plane_normal_z);
+		WriteEntity(MSG_MULTICAST, hit_ent);
+		multicast(trace_endpos, MULTICAST_PHS);
+		#else
+		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+		WriteByte (MSG_BROADCAST, TE_GUNSHOT);
+		WriteCoord (MSG_BROADCAST, org_x);
+		WriteCoord (MSG_BROADCAST, org_y);
+		WriteCoord (MSG_BROADCAST, org_z);
+		#endif
 	}
 
 	if (r > 40 && hit)//lunge
@@ -971,6 +969,8 @@ void () W_Knife =
 		}
 		else
 		{
+			self.punchangle_x = -5;
+			self.punchangle_y = -10;
 			Set_W_Frame (4, 12, 0.7, 0, KNIFE, ReturnWeaponModel, "progs/VModels/v_knife.mdl", false, S_RIGHT);
 			self.fire_delay = time + 0.8;
 			self.knife_delay = time + 1;

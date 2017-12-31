@@ -306,7 +306,6 @@ void() PollPlayerPoints =
 	}
 }
 
-//TODO: organize conditional flags
 void() PlayerSpawn =
 {	
 	local entity spawnpoint;
@@ -352,6 +351,7 @@ void() PlayerSpawn =
 	self.fixangle = TRUE;
 	setsize(self, [-16, -16, -24], [16, 16, 32]);
 	self.view_ofs = VEC_VIEW_OFS; // naievil -- set view_ofs to 32 to maintain half life (64) sizes
+	self.oldz = self.origin_z;
 
 	self.currentammo = 32;
 	self.currentmag = 8;
@@ -367,27 +367,12 @@ void() PlayerSpawn =
 	self.pri_grenade_state = 0; 		// defines that frag grenades are for player first, not betty
 	self.secondary_grenades = -1;		// shows that we both don't have betties AND shouldn't draw the image onscreen
 
-	/*self.secondaryweapon = W_KAR_SCOPE;
-	self.secondaryammo = getWeaponAmmo(self.secondaryweapon);
-	self.secondarymag = getWeaponMag(self.secondaryweapon);*/
-	//self.secondarymag2 = getWeaponMag(self.secondaryweapon);
-
 	if (!self.points)
 		addmoney(self, 500, 0);
 
 	self.weaponmodel = GetWeaponModel(self.weapon, 0);// Give weapon model
 
 	SwitchWeapon(self.weapon);
-	
-	#ifndef PSP
-	UpdateV2model("", 0);
-	stuffcmd(self, "cl_gunx 8;cl_guny 16;cl_gunz 25\n");
-	#endif
-
-	//TEMPORARY
-	#ifndef PSP
-	SetRound(self, rounds);
-	#endif
 
 	self.stamina = 3;
 	self.reviving = 0;
@@ -399,16 +384,19 @@ void() PlayerSpawn =
 	if (rounds < 1) {
 		sound (self, CHAN_AUTO, "sounds/rounds/splash.wav", 1, ATTN_NONE);//temporarily here.
 	}
-	
-	//TEMPORARY
-	#ifndef PSP
-	PollPlayerPoints();
-	#endif
+
 	PromptLevelChange(self.nextthink + 3, 1, self);	
 	
-	#ifdef PSP
+	#ifndef PSP
+	PollPlayerPoints();
+	UpdateV2model("", 0);
+	stuffcmd(self, "cl_gunx 8;cl_guny 16;cl_gunz 25\n");
+	SetRound(self, rounds);
+	#else 
 	self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
+	self.Flash_Size = GetWeaponFlash_Size(self.weapon);
 	#endif
+	
 };
 
 void() SpectatorSpawn =

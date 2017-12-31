@@ -3583,3 +3583,68 @@ vector (float wep) GetWeaponFlash_Offset =
 				return [5488, -2742, 35300];
 		}
 }
+
+float (float wep) GetWeaponFlash_Size = {
+
+	switch(wep) {
+		case W_COLT:
+		case W_BIATCH:
+			return 5;
+		case W_KAR:
+		case W_KAR_SCOPE:
+		case W_HEADCRACKER:
+		case W_ARMAGEDDON:
+			return 15;
+		case W_THOMPSON:
+		case W_GIBS:
+			return 8;
+		case W_TRENCH:
+		case W_GUT:
+			return 19;
+		case W_357:
+		case W_KILLU:
+			return 7;
+		case W_MG:
+		case W_BARRACUDA:
+			return 16;
+		case W_DB: 
+		case W_BORE:
+			return 18;
+		case W_SAWNOFF:
+			return 20;
+		case W_M1A1:
+		case W_WIDDER:
+			return 14;
+		case W_BAR:
+		case W_WIDOW:
+			return 16;
+		case W_FG:
+		case W_IMPELLER:
+			return 18;
+		case W_GEWEHR:
+		case W_COMPRESSOR:
+			return 12;
+		case W_PPSH:
+			return 14;
+		case W_MP40:
+		case W_AFTERBURNER:
+			return 14;
+		case W_STG:
+		case W_SPATZ:
+			return 16;
+		case W_M1:
+		case W_M1000:
+			return 5;
+		case W_BROWNING:
+		case W_ACCELERATOR:
+			return 27;
+		case W_PTRS:
+		case W_PENETRATOR:
+			return 30;
+		case W_TYPE:
+		case W_SAMURAI:
+			return 5;
+		default:
+			return 5;
+	}
+}

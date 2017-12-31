@@ -377,6 +377,7 @@ void () buy_weapon_touch =
 		
 		#ifdef PSP
 		self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
+		self.Flash_Size = GetWeaponFlash_Size(self.weapon);
 		#endif
 		
 		self = tempe;

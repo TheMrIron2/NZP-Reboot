@@ -2432,45 +2432,8 @@ void QMB_MuzzleFlash(vec3_t org)
 
 	if(!(ISUNDERWATER(TruePointContents(org))))
 	{
-		switch(cl.stats[STAT_ACTIVEWEAPON])
-		{
-			case W_COLT:
-				size = 5;
-				break;
-			case W_KAR:
-				size = 15;
-				break;
-			case W_KAR_SCOPE:
-				size = 15;
-				break;
-			case W_THOMPSON:
-				size = 8;
-				break;
-			case W_TRENCH:
-				size = 19;
-				break;
-			case W_357:
-				size = 7;
-				break;
-			case W_MG:
-				size = 16;
-				break;
-			case W_DB:
-				size = 18;
-				break;
-			case W_SAWNOFF:
-				size = 20;
-				break;
-			case W_M1A1:
-				size = 14;
-				break;
-			case W_BAR:
-				size = 16;
-				break;
-			default:
-				size = 5;
-				break;
-		}
+		size = sv_player->v.Flash_Size;
+		
 		if(size == 0 || cl.stats[STAT_ZOOM] == 2)
 			return;
         switch(rand() % 3 + 1)

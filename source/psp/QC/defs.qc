@@ -149,6 +149,7 @@ void		end_sys_globals;		// flag for structure dumping
 .float 		insta_icon;
 .vector		ADS_Offset;
 .vector		Flash_Offset;
+.float 		Flash_Size;
 
 void		end_sys_fields;			// flag for structure dumping
 // End. Lines below this MAY be altered, to some extent

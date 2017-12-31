@@ -158,6 +158,7 @@ typedef struct
 	float	insta_icon;
 	vec3_t  ADS_Offset;
 	vec3_t  Flash_Offset;
+	float   Flash_Size;
 } entvars_t;
 
 #define PROGHEADER_CRC 14116
