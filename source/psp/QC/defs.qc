@@ -522,3 +522,6 @@ float MOVE_HITMODEL = 0;	// must be different for this engine!
 .float ammo;
 
 void(string com) SV_ParseClientCommand;
+
+.float currentHitBoxSetup;
+.vector		bbmins, bbmaxs;		// Used for zombie hitboxes

@@ -327,7 +327,9 @@ typedef struct
 #define SET_OPEN	1
 #define SET_CLOSED	2
 
+#ifndef PSP
 waypoint_ai waypoints[MAX_WAYPOINTS];
+#endif
 
 #define UT_HUD 				1
 #define UT_ROUNDS_CHANGE 	2

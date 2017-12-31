@@ -63,8 +63,8 @@ void() change_frame =
 	self.nextthink = time + 1;
 }
 
-// PSP Exclusives
-//
 #ifdef PSP
-void() EndFrame = {};
+float () spawn_a_dogA = {return 1;};
+void() Waypoint_Logic = {};
+void() LoadWaypointData = {};
 #endif

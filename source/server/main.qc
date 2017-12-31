@@ -225,3 +225,59 @@ void() SpectatorConnect =
 	bprint(PRINT_HIGH, self.netname);
 	bprint(PRINT_HIGH, " has joined the spectators.\n");
 }
+
+#ifdef PSP
+void() RelinkZombies =
+{
+	entity ent,ent2;
+	local float i;
+	local vector min, max;
+	while ((ent = find (ent, classname, "ai_zombie")))
+	{
+		if(ent.currentHitBoxSetup == 0)//empty bbox, we don't care to update
+			continue;
+		
+		makevectors (ent.angles);
+		
+		for(i = 0; i < 3; i++)
+		{
+			if(i == 0)
+				ent2 = ent.head;
+			if(i == 1)
+				ent2 = ent.larm;
+			if(i == 2)
+				ent2 = ent.rarm;
+				
+			
+			if (ent2)
+			{
+				//setorigin (ent.head, ent.origin + v_right * ent.head.view_ofs_x + v_forward * ent.head.view_ofs_y + v_up * ent.head.view_ofs_z);
+				setorigin (ent2, ent.origin);
+				//fixme, move angles set and frame set to below the continue, we only want to update origin (maybe angles too?)
+				ent2.angles = ent.angles;
+				
+				if(ent2.deadflag)
+					ent2.frame = ent.frame; 
+				
+				//if(OnlyOrigin)
+				//	continue;
+					
+				min = ent2.bbmins + (v_right * ent2.view_ofs_x) + (v_forward * ent2.view_ofs_y) + (v_up * ent2.view_ofs_z);
+				max = ent2.bbmaxs + (v_right * ent2.view_ofs_x) + (v_forward * ent2.view_ofs_y) + (v_up * ent2.view_ofs_z);
+				
+				if(min_x > max_x) { min_x += max_x; max_x = min_x - max_x; min_x -= max_x; }
+				if(min_y > max_y) { min_y += max_y; max_y = min_y - max_y; min_y -= max_y; }
+				if(min_z > max_z) { min_z += max_z; max_z = min_z - max_z; min_z -= max_z; }
+				
+				setsize(ent2,min,max);
+			}
+
+		}
+	}
+}
+
+void() EndFrame =
+{
+	RelinkZombies();
+};
+#endif
