@@ -679,69 +679,14 @@ void CL_RelinkEntities (void)
 				smokeorg[2] += 32;
 				VectorCopy(smokeorg,start);
 
-				switch(cl.stats[STAT_ACTIVEWEAPON])
-				{
-					case W_COLT:
-						right_offset = 5.488;
-						up_offset = -2.742;
-						forward_offset = 35.3;
-						break;
-					case W_KAR:
-						right_offset = 5.560;
-						up_offset = -4.582;
-						forward_offset = 75.833;
-						break;
-					case W_KAR_SCOPE:
-						right_offset = 5.560;
-						up_offset = -4.582;
-						forward_offset = 75.833;
-						break;
-					case W_THOMPSON:
-						right_offset = 6.203;
-						up_offset = -5.740;
-						forward_offset = 57.670;
-						break;
-					case W_TRENCH:
-						right_offset = 5.550;
-						up_offset = -4.188;
-						forward_offset = 62.364;
-						break;
-					case W_357:
-						right_offset = 8.193;
-						up_offset = -2.353;
-						forward_offset = 50.527;
-						break;
-					case W_MG:
-						right_offset = 6.806;
-						up_offset = -9.375;
-						forward_offset = 81.713;
-						break;
-					case W_DB:
-						right_offset = 5.801;
-						up_offset = -4.300;
-						forward_offset = 83.174;
-						break;
-					case W_SAWNOFF:
-						right_offset = 5.801;
-						up_offset = -4.414;
-						forward_offset = 44.820;
-						break;
-					case W_M1A1:
-						right_offset = 5.317;
-						up_offset = -5.331;
-						forward_offset = 70.583;
-						break;
-					case W_BAR:
-						right_offset = 3.899;
-						up_offset = -5.021;
-						forward_offset = 78.199;
-						break;
-					default:
-						right_offset = 5.488;
-						up_offset = -2.742;
-						forward_offset = 35.3;
-						break;
-				}
+				right_offset	 = sv_player->v.Flash_Offset[0];
+				up_offset		 = sv_player->v.Flash_Offset[1];
+				forward_offset 	 = sv_player->v.Flash_Offset[2];
+				
+				right_offset	= right_offset/1000;
+				up_offset		= up_offset/1000;
+				forward_offset  = forward_offset/1000;
+				
 				VectorMA (start, forward_offset, v_forward ,smokeorg);
 				VectorMA (smokeorg, up_offset, v_up ,smokeorg);
 				VectorMA (smokeorg, right_offset, v_right ,smokeorg);

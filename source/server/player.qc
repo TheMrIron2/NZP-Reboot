@@ -306,6 +306,7 @@ void() PollPlayerPoints =
 	}
 }
 
+//TODO: organize conditional flags
 void() PlayerSpawn =
 {	
 	local entity spawnpoint;
@@ -403,7 +404,11 @@ void() PlayerSpawn =
 	#ifndef PSP
 	PollPlayerPoints();
 	#endif
-	PromptLevelChange(self.nextthink + 3, 1, self);
+	PromptLevelChange(self.nextthink + 3, 1, self);	
+	
+	#ifdef PSP
+	self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
+	#endif
 };
 
 void() SpectatorSpawn =
@@ -551,6 +556,9 @@ void(string com) SV_ParseClientCommand =
 					break;
 			case "prevround":
 					rounds--;
+					break;
+			case "addmoney":
+					addmoney(self, stof(argv(1)), 1);
 					break;
 			default: 
 				#ifdef PSP

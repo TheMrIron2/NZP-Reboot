@@ -374,6 +374,11 @@ void () buy_weapon_touch =
 		modelname = GetWeaponModel(self.weapon, 0);
 		SwitchWeapon(self.weapon);
 		Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
+		
+		#ifdef PSP
+		self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
+		#endif
+		
 		self = tempe;
 	}
 };

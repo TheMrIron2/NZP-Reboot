@@ -1083,6 +1083,7 @@ vector GetWeaponADSPos(float wep) {
 Weapon PSP ADS Declarations
 ===========================
 */
+
 vector GetWeaponADSOfs_PSP(float wep) = 
 {
 		
@@ -1090,68 +1091,68 @@ vector GetWeaponADSOfs_PSP(float wep) =
 	{
 		case W_COLT:
 		case W_BIATCH:
-			return [-5.4792, 1.6500, 0];
+			return [-5479.2, 1650, 0];
 		case W_KAR:
 		case W_ARMAGEDDON:
-			return [-5.4959, 3.1869, 0];
+			return [-5495.9, 3186.9, 0];
 		case W_KAR_SCOPE:
 		case W_HEADCRACKER:
-			return [-5.2860, 0.7061, 0];
+			return [-5286, 706.1, 0];
 		case W_THOMPSON:
 		case W_GIBS:
-			return [-6.0693, 3.0076, 0]; 
+			return [-6069.3, 3007.6, 0]; 
 		case W_TRENCH:
 		case W_GUT:
-			return [-5.5271, 2.8803, 0];
+			return [-5527.1, 2880.3, 0];
 		case W_357:
 		case W_KILLU:
-			return [-8.3065, 0.8792, 0];
+			return [-8306.5, 879.2, 0];
 		case W_MG:
 		case W_BARRACUDA:
-			return [-6.6437, 3.5092, 0];
+			return [-6643.7, 3509.2, 0];
 		case W_DB:
 		case W_BORE:
 		case W_SAWNOFF:
-			return [-5.8017, 2.9121, 0];
+			return [-5801.7, 2912.1, 0];
 		case W_M1A1:
 		case W_WIDDER:
-			return [-5.3878, 3.6719, 0];
+			return [-5387.8, 3671.9, 0];
 		case W_BAR:
 		case W_WIDOW:
-			return [-3.8833, 2.6745, 0];
+			return [-3883.3, 2674.5, 0];
 		case W_FG:
 		case W_IMPELLER:
-			return [-14.800, 6.0000, 0];
+			return [-14800, 6000, 0];
 		case W_RAY:
 		case W_PORTER:
-			return [0.0000, -2.7000, 0];
+			return [0, -2700, 0];
 		case W_GEWEHR:
 		case W_COMPRESSOR:
-			return [-6.5500, 4.4000, 0];
+			return [-6550, 4400, 0];
 		case W_PPSH:
 		case W_REAPER:
-			return [-11.000, 3.7000, 0];
+			return [-11000, 3700, 0];
 		case W_MP40:
 		case W_AFTERBURNER:
-			return [-12.320, 7.6000, 0];
+			return [-12320, 7600, 0];
 		case W_TYPE:
 		case W_SAMURAI:
-			return [-0.4000, -0.200, 0];
+			return [-0400, -200, 0];
 		case W_STG:
 		case W_SPATZ:
-			return [-14.534, 8.9200, 0];
+			return [-14534, 8920, 0];
 		case W_M1:
 		case W_M1000:
-			return [-2.8600, 2.0000, 0];
+			return [-2860, 2000, 0];
 		case W_BROWNING:
 		case W_ACCELERATOR:
-			return [-15.200, 11.620, 0];
+			return [-15200, 11620, 0];
 		case W_PTRS:
 		case W_PENETRATOR:
-			return [-14.000, 5.3869, 0];
+			return [-14000, 5386.9, 0];
 		case W_PANZER:
 		case W_LONGINUS:
-			return [-3.4792, -0.650, 0];
+			return [-3479.2, -650, 0];
 		default:
 			//Large values > 20ish cause weapon to flicker, scale model down if we encounter!
 			//Scale better be 4.3, or else viewbobbing is going to be inaccurate.
@@ -3515,4 +3516,70 @@ vector(float wep) GetWeaponRecoil =
 	//bprint	(vtos(final_kick));
 	//bprint	("\n");
 	return final_kick;
+}
+
+// Flash offset is multiplied because vectors have limited precision within qc
+vector (float wep) GetWeaponFlash_Offset = 
+{
+		switch(wep) {
+			case W_COLT:
+			case W_BIATCH:
+				return [5488, -2742, 35300];
+			case W_KAR:
+			case W_KAR_SCOPE:
+			case W_HEADCRACKER:
+			case W_ARMAGEDDON:
+				return [5560, -4582, 75833];
+			case W_THOMPSON:
+			case W_GIBS:
+				return [6203, -5740, 57670];
+			case W_TRENCH:
+			case W_GUT:
+				return [5550, -4118, 62364];
+			case W_357:
+			case W_KILLU:
+				return [8193, -2353, 50527];
+			case W_MG:
+			case W_BARRACUDA:
+				return [6806, -9375, 81713];
+			case W_DB: 
+			case W_BORE:
+				return [5801, -4300, 83174];
+			case W_SAWNOFF:
+				return [5801, -4414, 44820];
+			case W_M1A1:
+			case W_WIDDER:
+				return [5317, -5331, 70583];
+			case W_BAR:
+			case W_WIDOW:
+				return [3899, -5021, 78199];
+			case W_FG:
+			case W_IMPELLER:
+				return [14000, -12000, 110000];
+			case W_GEWEHR:
+			case W_COMPRESSOR:
+				return [6500, -8500, 65000];
+			case W_PPSH:
+				return [11100, -9000, 86300];
+			case W_MP40:
+			case W_AFTERBURNER:
+				return [11300, -11300, 80000];
+			case W_STG:
+			case W_SPATZ:
+				return [14300, -16230, 100000];
+			case W_M1:
+			case W_M1000:
+				return [2896, -4142, 28300];
+			case W_BROWNING:
+			case W_ACCELERATOR:
+				return [15726, -23375, 170713];
+			case W_PTRS:
+			case W_PENETRATOR:
+				return [10988, -14242, 180300];
+			case W_TYPE:
+			case W_SAMURAI:
+				return [488, -2300, 25300];
+			default:
+				return [5488, -2742, 35300];
+		}
 }

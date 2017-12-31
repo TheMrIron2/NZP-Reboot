@@ -166,6 +166,10 @@ void() W_Switch =
 		Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
 		
 		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0; 
+		
+		#ifdef PSP
+		self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
+		#endif
 	}
 }
 
@@ -869,6 +873,11 @@ void(float side) W_Fire =
 	
 	SetUpdate(self, UT_HUD, 6, 0, 0);
 	SetUpdate(self, UT_CROSSHAIR, 5, 0, 0);
+	
+	//TEMPORARY
+	#ifdef PSP
+	self.effects = self.effects | EF_MUZZLEFLASH;
+	#endif
 }
 
 
@@ -1468,14 +1477,10 @@ void () Weapon_Logic =
 		if (self.button8 && !self.zoom) {
 			W_AimIn();
 		} else if (!self.button8 && self.zoom) {
-
 			W_AimOut();
-			
-
 		}
 	}
 
-	
 	if (!self.button7) {
 		self.semiuse = false;
 	}
@@ -1514,5 +1519,5 @@ void () Weapon_Logic =
 		self.semiknife = false;
 	
 	CheckImpulses();
-	CheckPlayer();		
+	CheckPlayer();	
 }

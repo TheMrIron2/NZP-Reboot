@@ -1140,6 +1140,10 @@ void V_CalcRefdef (void)
 		ADSOffset[0] = sv_player->v.ADS_Offset[0];
 		ADSOffset[1] = sv_player->v.ADS_Offset[1];
 		ADSOffset[2] = sv_player->v.ADS_Offset[2];
+		
+		ADSOffset[0] = ADSOffset[0]/1000;
+		ADSOffset[1] = ADSOffset[1]/1000;
+		ADSOffset[2] = ADSOffset[2]/1000;
 	}
 	else
 	{
