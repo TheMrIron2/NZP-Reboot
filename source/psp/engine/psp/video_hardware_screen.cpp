@@ -336,69 +336,6 @@ char *GetUseButtonL ()
 	return " ";
 }
 
-char *GetWeaponName (int weapon)
-{
-	switch (weapon)
-	{
-		case W_COLT:
-			return "Colt M1911";
-		case W_KAR:
-			return "Kar 98k";
-		case W_THOMPSON:
-			return "Thompson";
-		case W_357:
-			return ".357 Magnum";
-		case W_BAR:
-			return "BAR";
-		case W_BK:
-			return "Ballistic Knife";
-		case W_BROWNING:
-			return "Browning M1818";
-		case W_DB:
-			return "Double-Barreled Shotgun";
-		case W_FG:
-			return "FG42";
-		case W_GEWEHR:
-			return "Gewehr 43";
-		case W_KAR_SCOPE:
-			return "Scoped Kar 98k";
-		case W_M1:
-			return "M1 Garand";
-			break;
-		case W_M1A1:
-			return "M1A1 Carbine";
-		case W_M2:
-			return "M2 Flamethrower";
-		case W_MP40:
-			return "MP40";
-		case W_MG:
-			return "MG42";
-		case W_PANZER:
-			return "Panzerschrek";
-		case W_PPSH:
-			return "PPSh-41";
-		case W_PTRS:
-			return "PTRS-41";
-		case W_RAY:
-			return "Ray Gun";
-		case W_SAWNOFF:
-			return "Sawnoff shotgun";
-		case W_STG:
-			return "STG-44";
-		case W_TRENCH:
-			return "M1897 Trench Gun";
-		case W_TYPE:
-			return "Type 100";
-		case 25:
-			return "Bowie Knife";
-		case 26:
-			return "Grenades";
-		case 27:
-			return "Bouncing Betty";
-		default:
-			return "NULL";
-	}
-}
 char *GetPerkName (int perk)
 {
 	switch (perk)
@@ -438,11 +375,11 @@ void SCR_UsePrint (int type, int cost, int weapon)
 			button_pic_x = 5;
 			break;
 		case 3://ammo
-			strcpy(s, va("Hold %s to buy ammo for %s [Cost:%i]\n", GetUseButtonL(), GetWeaponName(weapon), cost));
+			strcpy(s, va("Hold %s to buy ammo for %s [Cost:%i]\n", GetUseButtonL(), pr_strings+sv_player->v.Weapon_Name_Touch, cost));
 			button_pic_x = 5;
 			break;
 		case 4://weapon
-			strcpy(s, va("Hold %s to buy %s [Cost:%i]\n", GetUseButtonL(), GetWeaponName(weapon), cost));
+			strcpy(s, va("Hold %s to buy %s [Cost:%i]\n", GetUseButtonL(), pr_strings+sv_player->v.Weapon_Name_Touch, cost));
 			button_pic_x = 5;
 			break;
 		case 5://window

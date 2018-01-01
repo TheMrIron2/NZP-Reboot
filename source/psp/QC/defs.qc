@@ -150,6 +150,8 @@ void		end_sys_globals;		// flag for structure dumping
 .vector		ADS_Offset;
 .vector		Flash_Offset;
 .float 		Flash_Size;
+.string 	Weapon_Name;
+.string		Weapon_Name_Touch;
 
 void		end_sys_fields;			// flag for structure dumping
 // End. Lines below this MAY be altered, to some extent

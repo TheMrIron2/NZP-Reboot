@@ -393,6 +393,7 @@ void() PlayerSpawn =
 	stuffcmd(self, "cl_gunx 8;cl_guny 16;cl_gunz 25\n");
 	SetRound(self, rounds);
 	#else 
+	self.Weapon_Name = GetWeaponName(self.weapon);
 	self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
 	self.Flash_Size = GetWeaponFlash_Size(self.weapon);
 	#endif

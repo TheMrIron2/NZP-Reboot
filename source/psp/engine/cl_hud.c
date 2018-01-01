@@ -1157,7 +1157,7 @@ void HUD_Weapon (void)
 	x_value = vid.width;
 	y_value = vid.height - 16 - fragpic->height - 4 - 16;
 
-	strcpy(str, GetWeaponName(cl.stats[STAT_ACTIVEWEAPON]));
+	strcpy(str, pr_strings+sv_player->v.Weapon_Name);
 	l = strlen(str);
 
 	x_value = vid.width - 8 - l*8;

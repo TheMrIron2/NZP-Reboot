@@ -29,7 +29,6 @@ void SCR_SizeDown (void);
 void SCR_BringDownConsole (void);
 void SCR_CenterPrint (char *str);
 void SCR_UsePrint (int type, int cost, int weapon);
-char *GetWeaponName (int weapon);
 qpic_t *GetButtonIcon (char *buttonname);
 
 void SCR_BeginLoadingPlaque (void);

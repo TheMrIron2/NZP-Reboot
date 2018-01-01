@@ -204,6 +204,10 @@ void () buy_weapon_touch =
 		return;
 	}
 	
+	#ifdef PSP
+	other.Weapon_Name_Touch = GetWeaponName(self.weapon);
+	#endif
+	
 	if (self.weapon == other.weapon || self.weapon == other.secondaryweapon 
 	|| self.weapon == EqualNonPapWeapon(other.weapon) 
 	|| self.weapon == EqualNonPapWeapon(other.secondaryweapon)) {
@@ -378,6 +382,7 @@ void () buy_weapon_touch =
 		#ifdef PSP
 		self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
 		self.Flash_Size = GetWeaponFlash_Size(self.weapon);
+		self.Weapon_Name = GetWeaponName(self.weapon);
 		#endif
 		
 		self = tempe;

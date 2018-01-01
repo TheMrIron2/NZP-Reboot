@@ -159,6 +159,8 @@ typedef struct
 	vec3_t  ADS_Offset;
 	vec3_t  Flash_Offset;
 	float   Flash_Size;
+	string_t	Weapon_Name;
+	string_t 	Weapon_Name_Touch;
 } entvars_t;
 
 #define PROGHEADER_CRC 14116
