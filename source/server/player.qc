@@ -309,6 +309,7 @@ void() PollPlayerPoints =
 void() PlayerSpawn =
 {	
 	local entity spawnpoint;
+	local_client = self;
 	
 	spawnpoint = find(world, classname, "info_player_start");
 	
@@ -481,32 +482,40 @@ void(string com) SV_ParseClientCommand =
 	}
 	else if(com == "pause")
 	{
-		#ifndef PSP
 		static float paused;
 		paused = !paused;
+		#ifndef PSP
 		setpause(paused);
 		#endif
 	}
 	else if (com == "noclip")
 	{
+		#ifdef PSP
+		entity benis = self;
+		other = find(world, classname, "player");
+		self = other;
+		#endif 
+		
 		if (self.movetype == MOVETYPE_WALK)
 			self.movetype = MOVETYPE_NOCLIP;
 		else
 			self.movetype = MOVETYPE_WALK;
+			
+		#ifdef PSP
+		self = benis;
+		#endif
 	}
 	else
 	{		
 		tokenize(com);
-		
-		#ifdef PSP
-		entity tempe = self;
-		other = find(world, classname, "player");
-		self = other;
-		#endif
 
 		switch(argv(0))
 		{
 			case "give":
+				entity tempe = self;
+				other = find(world, classname, "player");
+				self = other;
+				
 				float wep = stof(argv(1));
 
 				if (wep) {
@@ -532,6 +541,10 @@ void(string com) SV_ParseClientCommand =
 					Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);
 					
 					self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
+					
+					#ifdef PSP
+					self.Weapon_Name = GetWeaponName(self.weapon);
+					#endif
 				}
 			break;
 			case "god":
@@ -547,12 +560,18 @@ void(string com) SV_ParseClientCommand =
 					rounds--;
 					break;
 			case "addmoney":
+					entity tempe1 = self;
+					other = find(world, classname, "player");
+					self = other;
+					
 					addmoney(self, stof(argv(1)), 1);
+					
+					self = tempe1;
 					break;
 			default: 
-				#ifdef PSP
-					sprint(self, 1, "Command not found in QC\n");
-				#endif
+					#ifdef PSP
+					bprint(PRINT_HIGH, "Command not found in QC\n");
+					#endif
 		}
 	}
 };

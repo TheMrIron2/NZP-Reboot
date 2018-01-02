@@ -103,8 +103,6 @@ string(float wep) GetWeaponName =
 			return "Grenades";
 		case W_BETTY:
 			return "Bouncing Betty";
-    	case W_MP5:
-      		return "MP5K";
     	case W_TESLA:
       		return "Wunderwaffe DG-2";
 		default:

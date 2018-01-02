@@ -699,7 +699,7 @@ void(float width, float height) HUD_Useprint =
 			case 10://turn on power
 				usestring = strcat("Hold ",usebutton, " to turn on the power");
 				break;
-			case 11://turn on power
+			case 11://turn on trap
 				usestring = strcat("Hold ",usebutton, " to active the electric barrier [Cost:", ftos(useprint_cost), "]");
 				break;
 			case 12://packapunch

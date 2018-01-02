@@ -383,11 +383,11 @@ void SCR_UsePrint (int type, int cost, int weapon)
 			button_pic_x = 5;
 			break;
 		case 5://window
-			strcpy(s, va("hold %s to Rebuild Barrier\n", GetUseButtonL()));
+			strcpy(s, va("Hold %s to Rebuild Barrier\n", GetUseButtonL()));
 			button_pic_x = 5;
 			break;
 		case 6://box
-			strcpy(s, va("hold %s to buy a random weapon [cost:%i]\n", GetUseButtonL(), cost));
+			strcpy(s, va("Hold %s to buy a random weapon [cost:%i]\n", GetUseButtonL(), cost));
 			button_pic_x = 5;
 			break;
 		case 7://box take
@@ -396,6 +396,7 @@ void SCR_UsePrint (int type, int cost, int weapon)
 			break;
 		case 8://power
 			strcpy(s, "The power must be activated first\n");
+			button_pic_x = 100;
 			break;
 		case 9://perk
 			strcpy(s, va("Hold %s to buy %s [Cost:%i]\n", GetUseButtonL(), GetPerkName(weapon), cost));
@@ -403,6 +404,14 @@ void SCR_UsePrint (int type, int cost, int weapon)
 			break;
 		case 10://turn on power
 			strcpy(s, va("Hold %s to turn on the power\n", GetUseButtonL()));
+			button_pic_x = 5;
+			break;
+		case 11://turn on trap
+			strcpy(s, va("Hold %s to activate the electric barrier [Cost:%i]\n", GetUseButtonL(), cost));
+			button_pic_x = 5;
+			break;
+		case 12://PAP
+			strcpy(s, va("Hold %s to Pack a Punch [Cost:%i]\n", GetUseButtonL(), cost));
 			button_pic_x = 5;
 			break;
 		default:

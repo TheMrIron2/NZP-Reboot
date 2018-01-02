@@ -625,7 +625,7 @@ void zapper_start(string zapper) {
 void zapper_touch () {
 	if (other.classname != "player") {
 		return;
-	}	
+	}
     
 	if (self.requirespower == true && !isPowerOn) {
 		useprint (other, 8, 0, 0);
@@ -650,7 +650,6 @@ void zapper_touch () {
 	}
 }
 
-
 void() zapper_switch = 
 {
 	precache_model ("models/machines/zapper/z_switch.mdl");
@@ -669,7 +668,6 @@ void() zapper_node =
 	precache_model ("models/machines/zapper/z_zap.mdl");
 	self.movetype = MOVETYPE_NONE;
 	self.solid = SOLID_TRIGGER;
-	//self.touch = switch_touch;
 	self.classname = "zapper_node";
 	setmodel(self, "models/machines/zapper/z_zap.mdl");
 	setsize (self, '-4 -4 -4', '4 4 4');
@@ -701,7 +699,7 @@ void() trigger_electro =
 
 void() teddy_spawn = 
 {
-  precache_model ("progs/Props/teddy.mdl");
+	precache_model ("progs/Props/teddy.mdl");
 
 	self.movetype = MOVETYPE_NONE;	// so it doesn't get pushed by anything
 	self.solid=SOLID_BBOX;
