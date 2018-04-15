@@ -1,0 +1,6 @@
+map ndu
+map ndu
+map ndu
+map ndu
+restart
+addmoney 12345
