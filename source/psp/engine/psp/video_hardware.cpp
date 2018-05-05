@@ -129,6 +129,12 @@ void VID_SetPaletteTX()
 	reloaded_pallete = 1;
 }
 
+void VID_SetPalette4(unsigned char* clut4pal) {
+	sceGuClutMode(GU_PSM_8888, 0, 0xFF, 0);
+	sceKernelDcacheWritebackRange(clut4pal, sizeof(clut4pal));
+	sceGuClutLoad(2, clut4pal);
+}
+
 void VID_SetPalette(unsigned char* palette)
 {
 	// Convert the palette to PSP format.

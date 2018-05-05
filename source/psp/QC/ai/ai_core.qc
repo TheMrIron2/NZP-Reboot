@@ -561,7 +561,7 @@ void() PathfindToEnemy =
 	}
 	else
 	{
-		bprint(PRINT_HIGH, "FirstPathfind Failure\n");
+		//bprint(PRINT_HIGH, "FirstPathfind Failure\n");		// this lags like hell
 	}
 }
 
@@ -583,7 +583,7 @@ void() NextPathfindToEnemy =
 	}
 	else
 	{
-		bprint(PRINT_HIGH, "NextPathfind Failure\n");
+		//bprint(PRINT_HIGH, "NextPathfind Failure\n");		// this lags like hell
 	}
 }
 

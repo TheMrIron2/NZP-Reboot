@@ -71,6 +71,7 @@ COMMON_OBJS = \
 HARDWARE_VIDEO_ONLY_OBJS = \
     wad3.o \
 	clipping.o \
+	vram.o \
     video_hardware.o \
     video_hardware_resample.o \
     video_hardware_images.o \

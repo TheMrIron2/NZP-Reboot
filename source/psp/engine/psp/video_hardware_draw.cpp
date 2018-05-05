@@ -39,7 +39,8 @@ extern "C"
 #include "video_hardware_dxtn.h"
 #include "video_hardware_resample.h"
 
-#include <vram.h>
+#include "vram.hpp"
+#include <vram.hpp>
 
 byte		*draw_chars;				// 8*8 graphic characters
 qpic_t		*sniper_scope;
@@ -61,7 +62,7 @@ float 	loading_cur_step;
 char	loading_name[32];
 float 	loading_num_step;
 
-//#define STATIC_PAL
+#define CLUT4
 
 typedef struct
 {
@@ -80,8 +81,8 @@ typedef struct
 	int     bpp;
 	int     swizzle;
 	qboolean islmp;
-#ifdef STATIC_PAL
-	ScePspRGBA8888 __attribute__((aligned(16))) palette[256];
+#ifdef CLUT4
+	unsigned char *palette;
 #else
     ScePspRGBA8888 *palette;
 #endif
@@ -93,6 +94,8 @@ typedef struct
 } gltexture_t;
 
 int loadtextureimage (char* filename, int matchwidth, int matchheight, qboolean complain, int filter);
+void VID_SetPalette4(unsigned char* clut4pal);
+int vid_palmode;
 
 #define	MAX_GLTEXTURES	1024
 gltexture_t	gltextures[MAX_GLTEXTURES];
@@ -107,6 +110,18 @@ typedef struct
 //cvar_t	png_compression_level = {"png_compression_level", "1"};
 //cvar_t	jpeg_compression_level = {"jpeg_compression_level", "75"};
 
+void GL_Bind4Part(int texture_index)
+{
+	const gltexture_t& texture = gltextures[texture_index];
+	VID_SetPalette4(texture.palette);
+	vid_palmode = GU_PSM_T4;
+
+	sceGuTexMode(texture.format, 0, 0, GU_FALSE);
+	sceGuTexFilter(texture.filter, texture.filter);
+
+	const void* const texture_memory = texture.vram ? texture.vram : texture.ram;
+	sceGuTexImage(0, texture.width, texture.height, texture.width, texture_memory);
+}
 
 void GL_InitTextureUsage ()
 {
@@ -169,7 +184,6 @@ void GL_Copy(int texture_index, int dx, int dy, int sx, int sy, int w, int h)
 void VID_SetPaletteTX();
 void GL_Bind (int texture_index)
 {
-	int tex_m = (int)r_mipmaps_func.value;
 	// Binding the currently bound texture?
 	if (currenttexture == texture_index)
 	{
@@ -183,67 +197,60 @@ void GL_Bind (int texture_index)
 	// Which texture is it?
 	const gltexture_t& texture = gltextures[texture_index];
 
-	if(texture.format == GU_PSM_T8) //only for 8 bit textures
-	{
-		if(texture.palette_active == qtrue)
+	
+	if (texture.format == GU_PSM_T4) {
+		VID_SetPalette4(texture.palette);
+		vid_palmode = GU_PSM_T4;
+
+		sceGuTexMode(texture.format, 0, 0, GU_TRUE);
+		sceGuTexFilter(texture.filter, texture.filter);
+
+		const void* const texture_memory = texture.vram ? texture.vram : texture.ram;
+		sceGuTexImage(0, texture.width, texture.height, texture.width, texture_memory);
+	} else {
+		if (vid_palmode != GU_PSM_T8)
 		{
-	       // Upload the palette.
-			sceGuClutMode(GU_PSM_8888, 0, 255, 0);
-#ifdef STATIC_PAL
-			sceKernelDcacheWritebackRange(texture.palette, sizeof(texture.palette));
-#else
-			sceKernelDcacheWritebackRange(texture.palette, 256);
-#endif
-			sceGuClutLoad(256 /8 , texture.palette);
-			reloaded_pallete = 0;
+			VID_SetPaletteTX();
+			vid_palmode = GU_PSM_T8;
 		}
-		else
+		// Set the texture mode.
+		sceGuTexMode(texture.format, texture.mipmaps , 0, texture.swizzle);
+
+		if (texture.mipmaps > 0 && r_mipmaps.value > 0)
 		{
-			if(!reloaded_pallete)
-			{
-				VID_SetPaletteTX(); //Restore old palette for bars and models
+			//Con_Printf("asd\n");
+			float slope = 0.4f;
+			sceGuTexSlope(slope); // the near from 0 slope is the lower (=best detailed) mipmap it uses
+			sceGuTexFilter(GU_LINEAR_MIPMAP_LINEAR, GU_LINEAR_MIPMAP_LINEAR);
+			sceGuTexLevelMode(int(r_mipmaps_func.value), r_mipmaps_bias.value);
+		}
+		else {
+			// dr_mabuse1981: "retro filter" start.
+			if (r_retro.value)	
+				sceGuTexFilter(GU_NEAREST, GU_NEAREST);
+			else
+				sceGuTexFilter(texture.filter, texture.filter);
+			// dr_mabuse1981: "retro filter" end.
+		}
+		
+		// Set the texture image.
+		const void* const texture_memory = texture.vram ? texture.vram : texture.ram;
+		sceGuTexImage(0, texture.width, texture.height, texture.width, texture_memory);
+
+		if (texture.mipmaps > 0 && r_mipmaps.value > 0) {
+			int size = (texture.width * texture.height);
+			int offset = size;
+			int div = 2;
+
+			for (int i = 1; i <= texture.mipmaps; i++) {
+				void* const texture_memory2 = ((byte*)texture_memory) + offset;
+				sceGuTexImage(i, texture.width / div, texture.height / div, texture.width / div, texture_memory2);
+				offset += size / (div*div);
+				div *= 2;
 			}
 		}
 	}
 
-	// Set the texture mode.
-	sceGuTexMode(texture.format, texture.mipmaps , 0, texture.swizzle);
-
-	if (texture.mipmaps > 0 && r_mipmaps.value > 0)
-	{
-        float slope = 0.4f;
-		sceGuTexSlope(slope); // the near from 0 slope is the lower (=best detailed) mipmap it uses
-		sceGuTexFilter(GU_LINEAR_MIPMAP_LINEAR, GU_LINEAR_MIPMAP_LINEAR);
-		sceGuTexLevelMode(tex_m, r_mipmaps_bias.value); // manual slope setting
-	}
-	else
-// dr_mabuse1981: "retro filter" start.
-	if (r_retro.value)	
-	sceGuTexFilter(GU_NEAREST, GU_NEAREST);
-	else
-	sceGuTexFilter(texture.filter, texture.filter);
-// dr_mabuse1981: "retro filter" end.
-
-
-	// Set the texture image.
-	const void* const texture_memory = texture.vram ? texture.vram : texture.ram;
-	sceGuTexImage(0, texture.width, texture.height, texture.width, texture_memory);
-
-
-	if (texture.mipmaps > 0 && r_mipmaps.value > 0)
-	{
-		int size = (texture.width * texture.height * texture.bpp);
-		int offset = size;
-		int div = 2;
-
-		for (int i = 1; i <= texture.mipmaps; i++)
-		{
-			void* const texture_memory2 = ((byte*) texture_memory)+offset;
-            sceGuTexImage(i, texture.width/div, texture.height/div, texture.width/div, texture_memory2);
-			offset += size/(div*div);
-			div *=2;
-		}
-	}
 
 }
 
@@ -2317,6 +2324,8 @@ GL_UnloadTexture
 */
 void GL_UnloadTexture(int texture_index)
 {
+#ifndef CLUT4
+
 	if (gltextures_used[texture_index] == true)
 	{
 		gltexture_t& texture = gltextures[texture_index];
@@ -2369,6 +2378,8 @@ void GL_UnloadTexture(int texture_index)
 
 	gltextures_used[texture_index] = false;
 	numgltextures--;
+	
+#endif
 }
 
 /*
@@ -2502,6 +2513,8 @@ GL_LoadPalTex
 */
 int GL_LoadPalTex (const char *identifier, int width, int height, const byte *data, qboolean stretch_to_power_of_two, int filter, int mipmap_level, byte *palette, int paltype)
 {
+	
+#ifndef CLUT4	
 	int texture_index = -1;
 
 	tex_scale_down = r_tex_scale_down.value == qtrue;
@@ -2561,7 +2574,7 @@ int GL_LoadPalTex (const char *identifier, int width, int height, const byte *da
 	   (paltype == PAL_Q2   && palette == NULL) ||
 	   (paltype == PAL_H2   && palette == NULL) )
     {
-#ifndef STATIC_PAL
+#ifndef CLUT4
         if(paltype == PAL_Q2)
 	    {
               texture.palette = d_8to24tableQ2; //hard coded palette
@@ -2675,6 +2688,10 @@ int GL_LoadPalTex (const char *identifier, int width, int height, const byte *da
 	}
 	// Done.
 	return texture_index;
+	
+#endif 	//#infdef CLUT4
+	Sys_Error("Returned wrong tex type, should be CLUT4");
+	return 0;
 }
 
 
@@ -3149,4 +3166,118 @@ int GL_LoadTexture8Pal24 (char *identifier, int width, int height, byte *data, b
 	return index;
 }
 
+void GL_Upload4(int texture_index, const byte *data, int width, int height)
+{
+	if ((texture_index < 0) || (texture_index >= MAX_GLTEXTURES) || gltextures_used[texture_index] == false)
+	{
+		Sys_Error("Invalid texture index %d", texture_index);
+	}
 
+	const gltexture_t& texture = gltextures[texture_index];
+
+	// Check that the texture matches.
+	if ((width != texture.original_width) != (height != texture.original_height))
+	{
+		Sys_Error("Attempting to upload a texture which doesn't match the destination");
+	}
+
+	// Create a temporary buffer to use as a source for swizzling.
+	std::size_t buffer_size = (width * height) / 2;
+
+	memcpy(texture.ram, data, buffer_size);
+	memcpy(texture.palette, data + buffer_size, 16 * 4);
+	int i;
+
+	// Copy to VRAM?
+	/*if (texture.vram)
+	{
+		// Copy.
+		memcpy(texture.vram, texture.ram, buffer_size);
+
+		// Flush the data cache.
+		sceKernelDcacheWritebackRange(texture.vram, buffer_size);
+	}*/
+
+	// Flush the data cache.
+	sceKernelDcacheWritebackRange(texture.ram, buffer_size);
+}
+
+int GL_LoadTexture4(const char *identifier, unsigned int width, unsigned int height, const byte *data, int filter)
+{
+	int texture_index = -1;
+
+	tex_scale_down = r_tex_scale_down.value == qtrue;
+	
+	if (identifier[0])
+	{
+		for (int i = 0; i < MAX_GLTEXTURES; ++i)
+		{
+			if (gltextures_used[i] == true)
+			{
+				const gltexture_t& texture = gltextures[i];
+				if (!strcmp(identifier, texture.identifier))
+				{
+					return i;
+				}
+			}
+		}
+	}
+
+	// Out of textures?
+	if (numgltextures == MAX_GLTEXTURES)
+	{
+		Sys_Error("Out of OpenGL textures");
+	}
+
+	// Use the next available texture.
+	numgltextures++;
+	texture_index = numgltextures;
+
+	for (int i = 0; i < MAX_GLTEXTURES; ++i)
+	{
+		if (gltextures_used[i] == false) {
+			texture_index = i;
+			break;
+		}
+	}
+	gltexture_t& texture = gltextures[texture_index];
+	gltextures_used[texture_index] = true;
+
+	// Fill in the source data.
+	strcpy(texture.identifier, identifier);
+	texture.original_width = texture.width = width;
+	texture.original_height = texture.height = height;
+	texture.stretch_to_power_of_two = qfalse;
+
+	// Fill in the texture description.
+	texture.format = GU_PSM_T4;
+	texture.filter = filter;
+	texture.mipmaps = 0; // mipmap_level;
+
+
+	Con_DPrintf("Loading: %s [%dx%d](%0.2f KB)\n", texture.identifier, texture.width, texture.height, (float)(texture.width*texture.height) / 1024);
+
+	// Allocate the RAM.
+	std::size_t buffer_size = (texture.width * texture.height) / 2; // 4bpp
+
+	texture.ram = static_cast<texel*>(memalign(16, buffer_size));
+	texture.palette = static_cast<unsigned char*>(memalign(16, 16 * 4));
+
+	if (!texture.ram || !texture.palette)
+	{
+		Sys_Error("Out of RAM for textures.");
+	}
+
+	// Allocate the VRAM.
+	//texture.vram = static_cast<texel*>(quake::vram::allocate(buffer_size));
+
+	// Upload the texture.
+	GL_Upload4(texture_index, data, width, height);
+
+	if (texture.vram && texture.ram) {
+		free(texture.ram);
+		texture.ram = NULL;
+	}
+	// Done.
+	return texture_index;	
+}

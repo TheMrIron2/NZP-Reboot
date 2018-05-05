@@ -33,6 +33,9 @@ byte* GL_EndTarget (void);
 void GL_Upload8(int texture_index, const byte *data, int width, int height);
 void GL_Upload16(int texture_index, const byte *data, int width, int height);
 int  GL_LoadTexture(const char *identifier, int width, int height, const byte *data, qboolean stretch_to_power_of_two, int filter, int mipmap_level);
+// CLUT4
+int GL_LoadTexture4(const char *identifier, unsigned int width, unsigned int height, const byte *data, int filter);
+
 int GL_LoadTextureLM (const char *identifier, int width, int height, const byte *data, int bpp, int filter, qboolean update, int forcopy);
 int GL_LoadImages (const char *identifier, int width, int height, const byte *data, qboolean stretch_to_power_of_two, int filter, int mipmap_level, int bpp);
 int GL_LoadTexturePixels (byte *data, char *identifier, int width, int height, int mode);

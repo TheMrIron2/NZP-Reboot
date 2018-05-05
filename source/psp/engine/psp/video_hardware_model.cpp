@@ -546,11 +546,11 @@ void Mod_LoadTextures (lump_t *l)
 		memcpy ( tx_pixels, mt+1, pixels);
 
 		int level = 0;
-			if (r_mipmaps.value > 0)
-				level = 3;
+		if (r_mipmaps.value > 0)
+			level = 3;
 
-        //if (loadmodel->isworldmodel && loadmodel->bspversion != HL_BSPVERSION && ISSKYTEX(tx->name))
-        if (loadmodel->bspversion != HL_BSPVERSION && loadmodel->bspversion != NZP_BSPVERSION && ISSKYTEX(tx->name))
+    //if (loadmodel->isworldmodel && loadmodel->bspversion != HL_BSPVERSION && ISSKYTEX(tx->name))
+    if (loadmodel->bspversion != HL_BSPVERSION && loadmodel->bspversion != NZP_BSPVERSION && ISSKYTEX(tx->name))
 	{
 		R_InitSky (tx_pixels);
 		mapTextureNameList.push_back(solidskytexture);
@@ -560,6 +560,33 @@ void Mod_LoadTextures (lump_t *l)
 	{
 		if (loadmodel->bspversion == HL_BSPVERSION || loadmodel->bspversion == NZP_BSPVERSION)
 		{
+			
+			char filename[64];		// Filename to check r4w file
+			byte *f;
+			sprintf(filename, "textures/maps/%s/%s.r4w", sv.name, mt->name);		// search in textures/maps/MAPNAME/TEXNAME
+			f = static_cast<byte*>(COM_LoadHunkFile(filename));
+			
+			if (!f) {
+				Con_Printf("Texture not found: %s\n", mt->name);		// didn't find the texture in the folder
+				tx->gl_texturenum = NULL;
+			} else {
+				
+				int w, h;
+				
+				unsigned int magic = *((unsigned int*)(f));
+				if (magic == 0x65663463)								// what the fuck? 
+				{
+					w = *((int*)(f + 4));
+					h = *((int*)(f + 8));
+
+					tx->gl_texturenum = GL_LoadTexture4(mt->name, w, h, (byte*)(f + 16), GU_LINEAR);
+					mapTextureNameList.push_back(tx->gl_texturenum);
+				}
+	
+			}
+
+			// naievil -- wad3 is out, time to use clut4 
+			/*
 			int index = WAD3_LoadTexture(mt);
 			if(index)
 			{
@@ -568,21 +595,22 @@ void Mod_LoadTextures (lump_t *l)
 				tx->fullbright = -1;
 				mapTextureNameList.push_back(tx->gl_texturenum);
 				tx->dt_texturenum = 0;
-/*
-				if(tx_pixels = WAD3_LoadTexture(mt))
-				{
-					com_netpath[0] = 0;
-					tx->gl_texturenum = GL_LoadPalletedTexture (tx_pixels, tx->name, tx->width, tx->height, 0);
-					tx->fullbright = -1;
-					mapTextureNameList.push_back(tx->gl_texturenum);
-					tx->dt_texturenum = 0;
-*/
+
+//				if(tx_pixels = WAD3_LoadTexture(mt))
+//				{
+//					com_netpath[0] = 0;
+//					tx->gl_texturenum = GL_LoadPalletedTexture (tx_pixels, tx->name, tx->width, tx->height, 0);
+//					tx->fullbright = -1;
+//					mapTextureNameList.push_back(tx->gl_texturenum);
+//					tx->dt_texturenum = 0;
+
 			}
 			else
 			{
 				com_netpath[0] = 0;
 				tx->gl_texturenum = nonetexture;
 			}
+			*/
 		}
 		else
 		{
