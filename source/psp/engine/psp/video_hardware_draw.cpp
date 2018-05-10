@@ -83,7 +83,8 @@ typedef struct
 	qboolean islmp;
 #ifdef CLUT4
 	unsigned char *palette;
-#else
+	ScePspRGBA8888 *palette_2;
+ #else
     ScePspRGBA8888 *palette;
 #endif
     qboolean	palette_active;
@@ -196,7 +197,6 @@ void GL_Bind (int texture_index)
 
 	// Which texture is it?
 	const gltexture_t& texture = gltextures[texture_index];
-
 	
 	if (texture.format == GU_PSM_T4) {
 		VID_SetPalette4(texture.palette);
@@ -208,11 +208,21 @@ void GL_Bind (int texture_index)
 		const void* const texture_memory = texture.vram ? texture.vram : texture.ram;
 		sceGuTexImage(0, texture.width, texture.height, texture.width, texture_memory);
 	} else {
-		if (vid_palmode != GU_PSM_T8)
+				
+		if(texture.palette_active == qtrue)
 		{
+			// Used for wad3 textures with their own palette
+			// 	Upload the palette.
+			sceGuClutMode(GU_PSM_8888, 0, 255, 0);
+			sceKernelDcacheWritebackRange(texture.palette_2, 256);
+			sceGuClutLoad(256 /8 , texture.palette_2);
+			reloaded_pallete = 0;
+		} else {
+			// Used for wad2 textures
 			VID_SetPaletteTX();
 			vid_palmode = GU_PSM_T8;
 		}
+		
 		// Set the texture mode.
 		sceGuTexMode(texture.format, texture.mipmaps , 0, texture.swizzle);
 
@@ -2324,7 +2334,6 @@ GL_UnloadTexture
 */
 void GL_UnloadTexture(int texture_index)
 {
-#ifndef CLUT4
 
 	if (gltextures_used[texture_index] == true)
 	{
@@ -2336,7 +2345,6 @@ void GL_UnloadTexture(int texture_index)
 		texture.original_width = 0;
 		texture.original_height = 0;
 		texture.stretch_to_power_of_two = qfalse;
-
 
         // Fill in the texture description.
 		texture.format  = GU_PSM_T8;
@@ -2354,12 +2362,22 @@ void GL_UnloadTexture(int texture_index)
             free(texture.palette);
             texture.palette = NULL;
         }
+		if (texture.palette_2 != NULL)
+		{
+            free(texture.palette_2);
+            texture.palette_2 = NULL;
+        }
 #endif
 		texture.palette_active = qfalse;
 		if (texture.palette != NULL)
 		{
 			free(texture.palette);
 			texture.palette = NULL;
+		}
+		if (texture.palette_2 != NULL)
+		{
+			free(texture.palette_2);
+			texture.palette_2 = NULL;
 		}
 		
 		// Buffers.
@@ -2368,18 +2386,17 @@ void GL_UnloadTexture(int texture_index)
 			free(texture.ram);
 			texture.ram = NULL;
 		}
-		if (texture.vram != NULL)
+		/*if (texture.vram != NULL)
 		{
 			vfree(texture.vram);
 			texture.vram = NULL;
-		}
+		} */
 
 	}
 
 	gltextures_used[texture_index] = false;
 	numgltextures--;
 	
-#endif
 }
 
 /*
@@ -2514,7 +2531,6 @@ GL_LoadPalTex
 int GL_LoadPalTex (const char *identifier, int width, int height, const byte *data, qboolean stretch_to_power_of_two, int filter, int mipmap_level, byte *palette, int paltype)
 {
 	
-#ifndef CLUT4	
 	int texture_index = -1;
 
 	tex_scale_down = r_tex_scale_down.value == qtrue;
@@ -2574,19 +2590,19 @@ int GL_LoadPalTex (const char *identifier, int width, int height, const byte *da
 	   (paltype == PAL_Q2   && palette == NULL) ||
 	   (paltype == PAL_H2   && palette == NULL) )
     {
-#ifndef CLUT4
+#ifndef STATIC_PAL
         if(paltype == PAL_Q2)
 	    {
-              texture.palette = d_8to24tableQ2; //hard coded palette
+              texture.palette_2 = d_8to24tableQ2; //hard coded palette
 		}
 	    else if(paltype == PAL_H2)
 	    {
-              texture.palette = d_8to24tableH2; //hard coded palette
+              texture.palette_2 = d_8to24tableH2; //hard coded palette
 		}
 		else
 		{
-			texture.palette = static_cast<ScePspRGBA8888*>(memalign(16, sizeof(ScePspRGBA8888) * 256));
-			if(!texture.palette)
+			texture.palette_2 = static_cast<ScePspRGBA8888*>(memalign(16, sizeof(ScePspRGBA8888) * 256));
+			if(!texture.palette_2)
 			{
 	            Sys_Error("Out of RAM for palettes.");
 			}
@@ -2594,7 +2610,7 @@ int GL_LoadPalTex (const char *identifier, int width, int height, const byte *da
 			if(paltype == PAL_RGBA)
 			{
 				  // Convert the palette to PSP format.
-			      for (ScePspRGBA8888* color = &texture.palette[0]; color < &texture.palette[256]; ++color)
+			      for (ScePspRGBA8888* color = &texture.palette_2[0]; color < &texture.palette_2[256]; ++color)
 				  {
 					const unsigned int r = gammatable[*palette++];
 					const unsigned int g = gammatable[*palette++];
@@ -2606,7 +2622,7 @@ int GL_LoadPalTex (const char *identifier, int width, int height, const byte *da
 			else if(paltype == PAL_RGB)
 			{
 				  // Convert the palette to PSP format.
-			      for (ScePspRGBA8888* color = &texture.palette[0]; color < &texture.palette[256]; ++color)
+			      for (ScePspRGBA8888* color = &texture.palette_2[0]; color < &texture.palette_2[256]; ++color)
 				  {
 					const unsigned int r = gammatable[*palette++];
 					const unsigned int g = gammatable[*palette++];
@@ -2617,7 +2633,7 @@ int GL_LoadPalTex (const char *identifier, int width, int height, const byte *da
 #ifndef STATIC_PAL
 		}
 #endif
-		texture.palette[255] = 0;  //alpha color
+		texture.palette_2[255] = 0;  //alpha color
 		texture.palette_active  = qtrue;
 	}
 	else
@@ -2688,10 +2704,6 @@ int GL_LoadPalTex (const char *identifier, int width, int height, const byte *da
 	}
 	// Done.
 	return texture_index;
-	
-#endif 	//#infdef CLUT4
-	Sys_Error("Returned wrong tex type, should be CLUT4");
-	return 0;
 }
 
 
