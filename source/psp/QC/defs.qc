@@ -280,22 +280,22 @@ string(float num) argv = #442;
 // constants
 //
 
-float	FALSE					= 0;
-float 	TRUE					= 1;
+#define		FALSE					0
+#define 	TRUE					1
 
 // edict.flags
-float	FL_FLY					= 1;
-float	FL_SWIM					= 2;
-float	FL_CLIENT				= 8;	// set for all client edicts
-float	FL_INWATER				= 16;	// for enter / leave water splash
-float	FL_MONSTER				= 32;
-float	FL_GODMODE				= 64;	// player cheat
-float	FL_NOTARGET				= 128;	// player cheat
-float	FL_ITEM					= 256;	// extra wide size for bonus items
-float	FL_ONGROUND				= 512;	// standing on something
-float	FL_PARTIALGROUND		= 1024;	// not all corners are valid
-float	FL_WATERJUMP			= 2048;	// player jumping out of water
-float	FL_JUMPRELEASED			= 4096;	// for jump debouncing
+#define	FL_FLY					  1
+#define	FL_SWIM					  2
+#define	FL_CLIENT				  8		// set for all client edicts
+#define	FL_INWATER				  16	// for enter / leave water splash
+#define	FL_MONSTER				  32
+#define	FL_GODMODE				  64	// player cheat
+#define	FL_NOTARGET				  128	// player cheat
+#define	FL_ITEM					  256	// extra wide size for bonus items
+#define	FL_ONGROUND				  512	// standing on something
+#define	FL_PARTIALGROUND		  1024	// not all corners are valid
+#define	FL_WATERJUMP			  2048	// player jumping out of water
+//#define	FL_JUMPRELEASED			  4096	// for jump debouncing
 
 // edict.movetype values
 #define		MOVETYPE_NONE				0	// never moves
@@ -313,32 +313,32 @@ float	FL_JUMPRELEASED			= 4096;	// for jump debouncing
 #define		MOVETYPE_FOLLOW				12	
 
 // edict.solid values
-float	SOLID_NOT				= 0;	// no interaction with other objects
-float	SOLID_TRIGGER			= 1;	// touch on edge, but not blocking
-float	SOLID_BBOX				= 2;	// touch on edge, block
-float	SOLID_SLIDEBOX			= 3;	// touch on edge, but not an onground
-float	SOLID_BSP				= 4;	// bsp clip, touch on edge, block
-float	SOLID_CORPSE			= 5;	// bsp clip, touch on edge, block
+#define	SOLID_NOT				  0	// no interaction with other objects
+#define	SOLID_TRIGGER			  1	// touch on edge, but not blocking
+#define	SOLID_BBOX				  2	// touch on edge, block
+#define	SOLID_SLIDEBOX			  3	// touch on edge, but not an onground
+#define	SOLID_BSP				  4	// bsp clip, touch on edge, block
+#define	SOLID_CORPSE			  5	// bsp clip, touch on edge, block
 
 // range values
-float	RANGE_MELEE				= 0;
-float	RANGE_NEAR				= 1;
-float	RANGE_MID				= 2;
-float	RANGE_FAR				= 3;
+#define	RANGE_MELEE				  0
+#define	RANGE_NEAR				  1
+#define	RANGE_MID				  2
+#define	RANGE_FAR				  3
 
 // deadflag values
 
-float	DEAD_NO					= 0;
-float	DEAD_DYING				= 1;
-float	DEAD_DEAD				= 2;
-float	DEAD_RESPAWNABLE		= 3;
+#define	DEAD_NO					  0
+#define	DEAD_DYING				  1
+#define	DEAD_DEAD				  2
+#define	DEAD_RESPAWNABLE		  3
 
 // takedamage values
 
-float	DAMAGE_NO				= 0;
-float	DAMAGE_YES				= 1;
-float	DAMAGE_AIM				= 2;
-float	DAMAGE_NOMARKER			= 3;
+#define	DAMAGE_NO				  0
+#define	DAMAGE_YES				  1
+#define	DAMAGE_AIM				  2
+#define	DAMAGE_NOMARKER			  3
 
 /*.void()		th_stand;
 .void()		th_walk;
@@ -350,15 +350,15 @@ float	DAMAGE_NOMARKER			= 3;
 
 // point content values
 
-float	CONTENT_EMPTY			= -1;
-float	CONTENT_SOLID			= -2;
-float	CONTENT_WATER			= -3;
-float	CONTENT_SLIME			= -4;
-float	CONTENT_LAVA			= -5;
-float   CONTENT_SKY                     = -6;
+#define		CONTENT_EMPTY				 -1
+#define		CONTENT_SOLID				 -2
+#define		CONTENT_WATER				 -3
+#define		CONTENT_SLIME				 -4
+#define		CONTENT_LAVA				 -5
+#define   	CONTENT_SKY                  -6
 
 
-vector	VEC_ORIGIN = '0 0 0';
+#define	VEC_ORIGIN 	 '0 0 0'
 
 //Standard Quake View Offset
 //vector VEC_VIEW_OFS = '0 0 22';
@@ -372,83 +372,83 @@ vector VEC_VIEW_OFS = '0 0 32';
 //vector	VEC_HULL_MAX = '16 16 32';
 
 //Half Life 1 Hull Sizes ADDED BY BLUBS, COMMENTED ORIGINAL QUAKE BBOX SIZS OUT
-vector	VEC_HULL_MIN = '-16 -16 -32';
-vector	VEC_HULL_MAX = '16 16 40';
+#define	VEC_HULL_MIN  '-16 -16 -32'
+#define	VEC_HULL_MAX  '16 16 40'
 
-vector	VEC_HULL2_MIN = '-32 -32 -24';
-vector	VEC_HULL2_MAX = '32 32 64';
+#define	VEC_HULL2_MIN  '-32 -32 -24'
+#define	VEC_HULL2_MAX  '32 32 64'
 
 // protocol bytes
-float	SVC_BAD					= 0;
-float	SVC_NOP					= 1;
-float	SVC_DISCONNECT			= 2;
-float	SVC_UPDATESTAT			= 3;
-float	SVC_VERSION				= 4;
-float	SVC_SETVIEW				= 5;
-float	SVC_SOUND				= 6;
-float	SVC_TIME				= 7;
-float	SVC_PRINT				= 8;
-float	SVC_STUFFTEXT			= 9;
-float	SVC_SETANGLE			= 10;
-float	SVC_SERVERINFO			= 11;
-float	SVC_LIGHTSTYLE			= 12;
-float	SVC_UPDATENAME			= 13;
-float	SVC_UPDATEPOINTS		= 14;
-float	SVC_CLIENTDATA			= 15;
-float	SVC_STOPSOUND			= 16;
-float	SVC_PARTICLE			= 18;
-float	SVC_DAMAGE				= 19;
-float	SVC_SPAWNSTATIC			= 20;
-float	SVC_SPAWNBINARY			= 21;
-float	SVC_SPAWNBASELINE		= 22;
-float	SVC_TEMPENTITY			= 23;
-float	SVC_SETPAUSE			= 24;
-float	SVC_SIGNONNUM			= 25;
-float	SVC_CENTERPRINT			= 26;
-float	SVC_SPAWNSTATICSOUND	= 29;	// 1998-08-08 Complete SVC list by Zhenga
-float	SVC_INTERMISSION		= 30;
-float	SVC_FINALE				= 31;
-float	SVC_CDTRACK				= 32;
-float	SVC_SELLSCREEN			= 33;
-float	SVC_CUTSCENE			= 34;	// 1998-08-08 Complete SVC list by Zhenga
-float	SVC_WEAPONFIRE			= 35;
-float	SVC_HITMARK				= 36;
-float	SVC_USEPRINT			= 38;
+#define	SVC_BAD					 0
+#define	SVC_NOP					 1
+#define	SVC_DISCONNECT			 2
+#define	SVC_UPDATESTAT			 3
+#define	SVC_VERSION				 4
+#define	SVC_SETVIEW				 5
+#define	SVC_SOUND				 6
+#define	SVC_TIME				 7
+#define	SVC_PRINT				 8
+#define	SVC_STUFFTEXT			 9
+#define	SVC_SETANGLE			 10
+#define	SVC_SERVERINFO			 11
+#define	SVC_LIGHTSTYLE			 12
+#define	SVC_UPDATENAME			 13
+#define	SVC_UPDATEPOINTS		 14
+#define	SVC_CLIENTDATA			 15
+#define	SVC_STOPSOUND			 16
+#define	SVC_PARTICLE			 18
+#define	SVC_DAMAGE				 19
+#define	SVC_SPAWNSTATIC			 20
+#define	SVC_SPAWNBINARY			 21
+#define	SVC_SPAWNBASELINE		 22
+#define	SVC_TEMPENTITY			 23
+#define	SVC_SETPAUSE			 24
+#define	SVC_SIGNONNUM			 25
+#define	SVC_CENTERPRINT			 26
+#define	SVC_SPAWNSTATICSOUND	 29	// 1998-08-08 Complete SVC list by Zhenga
+#define	SVC_INTERMISSION		 30
+#define	SVC_FINALE				 31
+#define	SVC_CDTRACK				 32
+#define	SVC_SELLSCREEN			 33
+#define	SVC_CUTSCENE			 34	// 1998-08-08 Complete SVC list by Zhenga
+#define	SVC_WEAPONFIRE			 35
+#define	SVC_HITMARK				 36
+#define	SVC_USEPRINT			 38
 
-float	TE_SPIKE		= 0;
-float	TE_SUPERSPIKE	= 1;
-float	TE_GUNSHOT		= 2;
-float	TE_EXPLOSION	= 3;
-float	TE_TAREXPLOSION	= 4;
-float	TE_LIGHTNING1	= 5;
-float	TE_LIGHTNING2	= 6;
-float	TE_WIZSPIKE		= 7;
-float	TE_KNIGHTSPIKE	= 8;
-float	TE_LIGHTNING3	= 9;
-float	TE_LAVASPLASH	= 10;
-float	TE_TELEPORT		= 11;
+#define	TE_SPIKE		 0
+#define	TE_SUPERSPIKE	 1
+#define	TE_GUNSHOT		 2
+#define	TE_EXPLOSION	 3
+#define	TE_TAREXPLOSION	 4
+#define	TE_LIGHTNING1	 5
+#define	TE_LIGHTNING2	 6
+#define	TE_WIZSPIKE		 7
+#define	TE_KNIGHTSPIKE	 8
+#define	TE_LIGHTNING3	 9
+#define	TE_LAVASPLASH	 10
+#define	TE_TELEPORT		 11
 
 // sound channels
 // channel 0 never willingly overrides
 // other channels (1-7) allways override a playing sound on that channel
-float	CHAN_AUTO		= 0;
-float	CHAN_WEAPON		= 1;
-float	CHAN_VOICE		= 2;
-float	CHAN_ITEM		= 3;
-float	CHAN_BODY		= 4;
+#define	CHAN_AUTO		 0
+#define	CHAN_WEAPON		 1
+#define	CHAN_VOICE		 2
+#define	CHAN_ITEM		 3
+#define	CHAN_BODY		 4
 //Player uses channel 5 for all weapon reload sfx
 
-float	ATTN_NONE		= 0;
-float	ATTN_NORM		= 1;
-float	ATTN_IDLE		= 2;
-float	ATTN_STATIC		= 3;
+#define	ATTN_NONE		 0
+#define	ATTN_NORM		 1
+#define	ATTN_IDLE		 2
+#define	ATTN_STATIC		 3
 
 // update types
 
-float	UPDATE_GENERAL	= 0;
-float	UPDATE_STATIC	= 1;
-float	UPDATE_BINARY	= 2;
-float	UPDATE_TEMP		= 3;
+#define	UPDATE_GENERAL	 0
+#define	UPDATE_STATIC	 1
+#define	UPDATE_BINARY	 2
+#define	UPDATE_TEMP		 3
 
 // entity effects
 
@@ -467,15 +467,15 @@ float	UPDATE_TEMP		= 3;
 
 
 // messages
-float	MSG_BROADCAST	= 0;		// unreliable to all
-float	MSG_ONE			= 1;		// reliable to one (msg_entity)
-float	MSG_ALL			= 2;		// reliable to all
-float	MSG_INIT		= 3;		// write to the init string
+#define	MSG_BROADCAST	 0		// unreliable to all
+#define	MSG_ONE			 1		// reliable to one (msg_entity)
+#define	MSG_ALL			 2		// reliable to all
+#define	MSG_INIT		 3		// write to the init string
 
-float	AS_STRAIGHT		= 1;
-float	AS_SLIDING		= 2;
-float	AS_MELEE		= 3;
-float	AS_MISSILE		= 4;
+#define	AS_STRAIGHT		 1
+#define	AS_SLIDING		 2
+#define	AS_MELEE		 3
+#define	AS_MISSILE		 4
 
 // Quake assumes these are defined.
 
@@ -498,22 +498,22 @@ void(string s) print = {bprint_psp(s);};
 
 //doors
 .float		state;
-float	STATE_TOP		= 0;
-float	STATE_BOTTOM	= 1;
-float	STATE_UP		= 2;
-float	STATE_DOWN		= 3;
+#define 	STATE_TOP		0
+#define		STATE_BOTTOM	1
+#define		STATE_UP		2
+#define		STATE_DOWN		3
 
 string mappath;
-float PRINT_HIGH = 0;
+#define PRINT_HIGH  	0
 
 .float isspec;
 .float maxspeed;
 
-float FILE_READ = 0;
-float FILE_APPEND = 1;
-float FILE_WRITE = 2;
+#define		FILE_READ 	 	0
+#define		FILE_APPEND 	1
+#define		FILE_WRITE 		2
 
-float MOVE_HITMODEL = 0;	// must be different for this engine!
+#define 	MOVE_HITMODEL   0 // must be different for this engine!
 
 .float recoil_delay;
 .float gravity;

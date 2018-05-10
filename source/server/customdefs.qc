@@ -7,7 +7,7 @@
 #define true 1
 #define false 0
 
-const float FL_JUMPRELEASED = 4096;
+#define FL_JUMPRELEASED  4096
 
 float framecount;
 float deathmatch;
@@ -30,10 +30,10 @@ void(entity person, float expamt , float doublepoint) addmoney;
 
 //doors
 .float state;
-float STATE_TOP		= 0;
-float STATE_BOTTOM	= 1;
-float STATE_UP		= 2;
-float STATE_DOWN		= 3;
+#define STATE_TOP		0
+#define STATE_BOTTOM	1
+#define STATE_UP		2
+#define STATE_DOWN		3
 .float /*worldtype,*/ delay, wait, lip, /*light_lev,*/ speed, style/*, skill*/;
 
 entity activator;
@@ -131,15 +131,15 @@ void Set_W_Frame (float startframe, float endframe, float duration, float funcca
 void() SUB_Null = {};
 void() SUB_Null2 = {};
 
-vector	VEC_HULL_MIN = '-16 -16 -32';
-vector	VEC_HULL_MAX = '16 16 40';
-vector	VEC_HULL2_MIN = '-32 -32 -24';
-vector	VEC_HULL2_MAX = '32 32 64';
+#define 	VEC_HULL_MIN  		'-16 -16 -32'
+#define 	VEC_HULL_MAX  		'16 16 40'
+#define 	VEC_HULL2_MIN   	'-32 -32 -24'
+#define 	VEC_HULL2_MAX  		'32 32 64'
 
 #ifdef PSP
-vector  VEC_VIEW_OFS  = '0 0 32';
+#define  	VEC_VIEW_OFS  '0 0 32'
 #else
-vector  VEC_VIEW_OFS  = '0 0 40';
+#define     VEC_VIEW_OFS  '0 0 40'
 #endif
 
 vector	trace_plane_normal;
@@ -157,11 +157,11 @@ entity lastzombie;
 .vector goalorigin;
 float crawler_num;
 //==== Reference Vars ====
-const float WWINDOW = 1; 
-const float WBOX1 = 2;
-const float WBOX2 = 4;
-const float WBOX3 = 8;
-const float WIDLEBOX = 16;
+#define 	WWINDOW		1
+#define 	WBOX1 		2
+#define 	WBOX2 		4
+#define 	WBOX3 		8
+#define		WIDLEBOX 	16
 //========================
 
 //we're using usedent for who is currently hopping the window
