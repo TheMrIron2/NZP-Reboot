@@ -451,8 +451,7 @@ void() SetChangeParms =
 };
 
 void(string com) SV_ParseClientCommand =
-{		
-	localcmd(com);
+{	
 	
 	if(com == "joingame")
 	{
@@ -489,7 +488,7 @@ void(string com) SV_ParseClientCommand =
 		#endif
 	}
 	else if (com == "noclip")
-	{
+	{		
 		#ifdef PSP
 		entity benis = self;
 		other = find(world, classname, "player");
@@ -502,6 +501,7 @@ void(string com) SV_ParseClientCommand =
 			self.movetype = MOVETYPE_WALK;
 			
 		#ifdef PSP
+		localcmd(com);
 		self = benis;
 		#endif
 	}
