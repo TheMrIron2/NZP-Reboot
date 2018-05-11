@@ -49,6 +49,7 @@ m*_t structures are in-memory
 #define EF_FULLBRIGHT			512
 #define EF_DARKLIGHT			1024
 #define EF_DARKFIELD			2048
+#define EF_PURPLELIGHT    		4096
 
 /*
 ==============================================================================

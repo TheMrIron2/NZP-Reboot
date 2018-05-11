@@ -222,21 +222,26 @@ void() setup_perk =
 			case "perk_revive": 
 				self.effects = EF_BLUE;
 				break;
-			case "perk_flopper":
-				//self.effects = EF_PURPLELIGHT;
-				break;
 			case "perk_juggernog":
 				self.effects = EF_RED;
-				break;
-			case "perk_staminup":
-				//self.effects = EF_ORANGELIGHT;
 				break;
 			case "perk_speed":
 				self.effects = EF_GREEN;
 				break;
-			case "perk_double":
-				//self.effects = EF_ORANGELIGHT;
+			
+			#ifdef PSP
+			case "perk_flopper":
+				self.effects = EF_PURPLELIGHT;
 				break;
+			case "perk_staminup":
+				self.effects = EF_ORANGELIGHT;
+				break;
+			case "perk_double":
+				self.effects = EF_ORANGELIGHT;
+				break;
+			#endif
+				
+			default: break;
 		
 		}
 	} 
@@ -349,18 +354,31 @@ void() Turn_Lights =
 	entity tempe = findfloat (world, requirespower, 1);// trigger all paired doors
 	while (tempe)
 	{
-		if (tempe.classname == "perk_revive")
-			tempe.effects = EF_BLUE;
-		/*else if (tempe.classname == "perk_flopper")
-			tempe.effects = EF_PURPLELIGHT;*/
-		else if (tempe.classname == "perk_juggernog")
-			tempe.effects = EF_RED;
-		/*else if (tempe.classname == "perk_staminup")
-			tempe.effects = EF_ORANGELIGHT;*/
-		else if (tempe.classname == "perk_speed")
-			tempe.effects = EF_GREEN;
-		/*else if (tempe.classname == "perk_double")
-			tempe.effects = EF_ORANGELIGHT;*/
+		switch(tempe.classname) {
+			case "perk_revive":
+				tempe.effects = EF_BLUE;
+				break;
+			case "perk_juggernog":
+				tempe.effects = EF_RED;
+				break;
+			case "perk_speed": 
+				tempe.effects = EF_GREEN;
+				break;
+		
+			#ifdef PSP
+			case "perk_flopper":
+				tempe.effects = EF_PURPLELIGHT;
+				break;
+			case "perk_staminup":
+				tempe.effects = EF_ORANGELIGHT;
+				break;
+			case "perk_double":
+				tempe.effects = EF_ORANGELIGHT;
+				break;
+			#endif
+		
+			default: break;
+		}
       
 		tempe = findfloat (tempe, requirespower, 1);// trigger all paired doors
 	}  // naievil (FIXME) redo light effects 
@@ -960,6 +978,12 @@ void() mystery_touch =
           			other.currentammo = getWeaponAmmo(self.boxweapon.weapon);
 					other.currentmag = getWeaponMag(self.boxweapon.weapon);
 					other.weaponskin = 0;
+					
+					#ifdef PSP
+					other.Flash_Offset = GetWeaponFlash_Offset(self.boxweapon.weapon);
+					other.Flash_Size = GetWeaponFlash_Size(self.boxweapon.weapon);
+					other.Weapon_Name = GetWeaponName(self.boxweapon.weapon);
+					#endif
 				}
 				else if (other.weapon == self.boxweapon.weapon)
 				{
@@ -978,6 +1002,11 @@ void() mystery_touch =
 					other.currentammo = getWeaponAmmo(self.boxweapon.weapon);
 					other.currentmag = getWeaponMag(self.boxweapon.weapon);
 					other.weaponskin = GetWepSkin(self.boxweapon.weapon);
+					#ifdef PSP
+					other.Flash_Offset = GetWeaponFlash_Offset(self.boxweapon.weapon);
+					other.Flash_Size = GetWeaponFlash_Size(self.boxweapon.weapon);
+					other.Weapon_Name = GetWeaponName(self.boxweapon.weapon);
+					#endif
 				}
 				sound(self, 0,"sounds/misc/ching.wav", 1, 1);
 				tempe = self;

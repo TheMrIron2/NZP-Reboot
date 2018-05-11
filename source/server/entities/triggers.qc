@@ -76,9 +76,7 @@ void() teddy_react =
 	{
 		t = find (world, teddyremovetarget, self.target);
     
-		if (!t)
-			bprint (PRINT_HIGH, "couldn't find target\n");
-		else
+		if (t)
 			remove(t); 
 	}
  /* if (self.noise)

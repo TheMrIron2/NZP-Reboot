@@ -464,7 +464,7 @@ vector VEC_VIEW_OFS = '0 0 32';
 #define EF_FULLBRIGHT 			512
 #define EF_DARKLIGHT			1024
 #define EF_DARKFIELD			2048
-
+#define EF_PURPLELIGHT    		4096
 
 // messages
 #define	MSG_BROADCAST	 0		// unreliable to all

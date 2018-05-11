@@ -108,7 +108,7 @@ half-life Render Modes. Crow_bar
 //#ifdef SLIM
 //#define MAX_LIGHTMAPS       128
 //#else
-#define MAX_LIGHTMAPS       64
+#define MAX_LIGHTMAPS       16
 //#endif
 
 
