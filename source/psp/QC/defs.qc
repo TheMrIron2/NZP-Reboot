@@ -16,7 +16,7 @@
 #define PSP 
 
 // These lines CANNOT be altered/moved
-entity          self;
+entity      self;
 entity		other;
 entity		world;
 float		time;
@@ -152,7 +152,6 @@ void		end_sys_globals;		// flag for structure dumping
 .float 		Flash_Size;
 .string 	Weapon_Name;
 .string		Weapon_Name_Touch;
-
 void		end_sys_fields;			// flag for structure dumping
 // End. Lines below this MAY be altered, to some extent
 

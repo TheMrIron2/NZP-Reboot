@@ -27,6 +27,12 @@ void () W2_Frame_Update =
 	if (self.anim_weapon2_time > time)
 		return; //don't call every frame, if it is the animations will play too fast
 
+	#ifdef PSP
+	if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER) {
+		self.weapon2frame = self.weaponframe;
+		return;
+	}
+	#endif
 	
 	self.anim_weapon2_time = time + self.weapon2_animduration;
 
@@ -71,7 +77,6 @@ void () W2_Frame_Update =
 };
 void () W_Frame_Update =
 {
-	W2_Frame_Update();
 	local void temp(optional float t);
 
 // note: call whenever weapon frames are called!
@@ -131,6 +136,8 @@ void () W_Frame_Update =
 		if (temp)
 			temp(S_RIGHT);
 	}
+	
+	W2_Frame_Update();
 };
 
 void Set_W_Frame (float startframe, float endframe, float duration, float funccalledin, float animtype, void(optional float t) endanimfunc, string set_model, float dontstartnew, float side) =

@@ -106,9 +106,9 @@ half-life Render Modes. Crow_bar
 #define BACKFACE_EPSILON	0.01
 
 //#ifdef SLIM
-//#define MAX_LIGHTMAPS       128
+#define MAX_LIGHTMAPS       64
 //#else
-#define MAX_LIGHTMAPS       16
+//#define MAX_LIGHTMAPS       16
 //#endif
 
 

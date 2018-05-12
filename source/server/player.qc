@@ -358,8 +358,6 @@ void() PlayerSpawn =
 	self.currentmag = 8;
 	self.weapon = W_COLT;
 	
-	self.secondaryweapon = W_KAR_SCOPE;
-	
 	self.grenades = self.grenades | 1;  // add frag grenades to player inventory
 	
 	if (rounds)
@@ -380,6 +378,8 @@ void() PlayerSpawn =
 	self.stamina = 3;
 	self.reviving = 0;
 	self.weaponnum = 0;
+	
+	self.zoom = 1;			// This is to fix an aimin bug for the kar scope
 	
 	if (!self.playernum)
 		self.playernum = player_count + 1;

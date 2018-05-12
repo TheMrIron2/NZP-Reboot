@@ -13,6 +13,7 @@ void() ReturnWeaponModel =
 	UpdateVmodel(self.weaponmodel, GetWepSkin(self.weapon));
 }
 
+.float scopetime;
 void() W_AimIn =
 {
 	if (IsDualWeapon(self.weapon) ||
@@ -35,6 +36,9 @@ void() W_AimIn =
 		#ifndef PSP
 		self.zoom = 2;
 		self.viewzoom = 0.5;
+		#else 
+		self.zoom = 1;
+		self.scopetime = time + 0.3;
 		#endif
 	}
 	else
@@ -58,9 +62,10 @@ void() W_AimOut =
 		self.sprinting) {
 		return;
 	}
-	if (self.weapon == 11 || self.weapon == 19 ||
-	    self.weapon == 49 || self.weapon == 51)
+	if (self.weapon == W_KAR_SCOPE || self.weapon == W_PTRS ||
+	    self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR) {
 		ReturnWeaponModel();
+	}
 		
 	self.zoom = 0;
 	
@@ -1461,6 +1466,16 @@ void () Weapon_Logic =
 {
 	W_Frame_Update ();
 	Impulse_Functions();
+			
+	#ifdef PSP
+	// For PSP only to tell our engine to display the scope 
+	if ((self.scopetime < time) && self.scopetime) {
+		self.scopetime = 0;
+		self.zoom = 2;
+		self.weapon2model = "";
+		self.weaponmodel = "";
+	}
+	#endif
 	
 	if (IsDualWeapon(self.weapon)) { 
 		if (self.button0) {
