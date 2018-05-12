@@ -103,15 +103,13 @@ void(string to, float skin) UpdateVmodel =
 void(string to, float skin) UpdateV2model =
 {
 	#ifndef PSP
-	
 	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 	WriteByte(MSG_MULTICAST, EVENT_UPDATEV2MODEL);
 	WriteString(MSG_MULTICAST, to);
 	WriteByte(MSG_MULTICAST, skin);
 	msg_entity = self;
 	multicast('0 0 0', MULTICAST_ONE);
-	
-	#endif
+	#endif	
 }
 
 void(float broadcast_time, float type) BroadcastMessage =

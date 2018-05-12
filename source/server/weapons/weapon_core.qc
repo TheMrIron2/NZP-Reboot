@@ -4,7 +4,7 @@ void() ReturnWeaponModel =
 {
 	self.weaponmodel = GetWeaponModel(self.weapon, 0);
 	if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER) {
-		self.weapon2model = "progs/VModels/v_karscope.mdl";
+		self.weapon2model = "models/weapons/kar/v_karscope.mdl";
 		UpdateV2model(self.weapon2model, 0);
 	} else {
 		UpdateV2model(self.weapon2model, GetWepSkin(self.weapon));
@@ -19,20 +19,21 @@ void() W_AimIn =
 		self.zoom ||
 		self.reload_delay > time ||
 		self.sprinting ||
-		self.new_anim_stop) {
+		self.new_anim_stop) {		
 		return;
 	}
+		
 	#ifdef PSP
 	self.ADS_Offset = GetWeaponADSOfs_PSP(self.weapon);
 	#endif
 	
-	if (self.weapon == 11 || self.weapon == 19 ||
-	    self.weapon == 49 || self.weapon == 51)
+	if (self.weapon == W_KAR_SCOPE || self.weapon == W_PTRS ||
+	    self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR)
 	{
-		self.zoom = 2;
 		SetUpdate(self, UT_ZOOM2, 0, 0, 0);
 		//TEMPORARY
 		#ifndef PSP
+		self.zoom = 2;
 		self.viewzoom = 0.5;
 		#endif
 	}
@@ -60,6 +61,7 @@ void() W_AimOut =
 	if (self.weapon == 11 || self.weapon == 19 ||
 	    self.weapon == 49 || self.weapon == 51)
 		ReturnWeaponModel();
+		
 	self.zoom = 0;
 	
 	//TEMPORARY
@@ -167,9 +169,16 @@ void() W_Switch =
 		
 		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0; 
 		
+		
 		#ifdef PSP
+		self.Weapon_Name = GetWeaponName(self.weapon);
 		self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
 		self.Flash_Size = GetWeaponFlash_Size(self.weapon);
+		
+		if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER)
+			self.weapon2model = "models/weapons/kar/v_karscope.mdl";
+		else 
+			self.weapon2model = "";
 		#endif
 	}
 }
@@ -1452,7 +1461,7 @@ void () Weapon_Logic =
 {
 	W_Frame_Update ();
 	Impulse_Functions();
-
+	
 	if (IsDualWeapon(self.weapon)) { 
 		if (self.button0) {
 			W_Fire(S_LEFT);

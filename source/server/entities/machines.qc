@@ -481,57 +481,86 @@ float colt, kar, db,bar, mg, ray, thomp, flame, ppsh, sawn, tesla, m1a1, ptrs, p
 
 float (float r) Getweaponid =
 {	
-	if (r == 1)
-		return W_RAY;
-	else if (r == 2)
-		return W_COLT;
-	else if (r == 3)
-		return W_KAR;
-	else if (r== 4)
-		return W_M1A1;
-	else if (r== 5)
-		return W_THOMPSON;
-	else if (r== 6)
-		return W_M2;
-	else if (r== 7)
-		return W_PPSH;
-	else if (r== 8)
-		return W_SAWNOFF;
-	else if (r==9)
-		return W_TESLA;//W_TESLA;
-	else if (r==10)
-		return W_FG;
-	else if (r==11)
-		return W_TRENCH;
-	else if (r==12)
-		return W_MG;
-	else if (r==13)
-		return W_DB;
-	else if (r==14)
-		return W_BAR;
-	else if (r==15)
-		return W_GEWEHR;
-	else if (r==16)
-		return W_BROWNING;
-	else if (r==17)
-		return W_357;
-	else if (r==18)
-		return W_TYPE;
-	else if (r==19)
-		return W_KAR_SCOPE;
-	else if (r == 20)
-		return W_PANZER;
-	else if (r==21)
-		return W_PTRS;
-	else if (r==22)
-		return W_MP40;
-	else if (r==23)
-		return W_STG;
-	else if (r==24)
-		return W_BK;
-	else if (r==25)
-		return W_M1;
 
+	switch (r) {
+	case 1: 
+		return W_RAY;
+		break;
+	case 2:
+		return W_COLT;
+		break;
+	case 3:
+		return W_KAR;
+		break;
+	case 4:
+		return W_M1A1;
+		break;
+	case 5:
+		return W_THOMPSON;
+		break;
+	case 6:
+		return W_M2;
+		break;
+	case 7:
+		return W_PPSH;
+		break;
+	case 8:
+		return W_SAWNOFF;
+		break;
+	case 9:
+		return W_TESLA;
+		break;
+	case 10:
+		return W_FG;
+		break;
+	case 11:
+		return W_TRENCH;
+		break;
+	case 12:
+		return W_MG;
+		break;
+	case 13:
+		return W_DB;
+		break;
+	case 14:
+		return W_BAR;
+		break;
+	case 15:
+		return W_GEWEHR;
+		break;
+	case 16:
+		return W_BROWNING;
+		break;
+	case 17:
+		return W_357;
+		break;
+	case 18:
+		return W_TYPE;
+		break;
+	case 19:
+		return W_KAR_SCOPE;
+		break;
+	case 20:
+		return W_PANZER;
+		break;
+	case 21:
+		return W_PTRS;
+		break;
+	case 22:
+		return W_MP40;
+		break;
+	case 23:
+		return W_STG;
+		break;
+	case 24:
+		return W_BK;
+		break;
+	case 25:
+		return W_M1;
+		break;
+	
+	}
+	
 	return r;
 }
 float() randomweapon = //this function is for making random box weapon system, currently it acts as just random thing
