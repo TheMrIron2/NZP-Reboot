@@ -1020,7 +1020,7 @@ void () W_Knife =
 	
 	LungeKnifeHit();
 
-	};
+};
 
 
 
@@ -1115,8 +1115,12 @@ void() W_ThrowGrenade =
 
 		makevectors (self.v_angle);
 
+		#ifndef PSP
 		nade.velocity = v_forward*500;
-
+		#else
+		nade.velocity = v_forward*800;	// on PSP, we need more OOMFPH
+		#endif
+		
 		nade.avelocity = '400 -400 400';
 
 		//nade.angles = vectoangles(nade.velocity);

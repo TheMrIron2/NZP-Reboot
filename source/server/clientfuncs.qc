@@ -162,6 +162,21 @@ void(float newtime, float newtype, entity change) PromptLevelChange =
 	#endif
 }
 
+// naievil -- NOT WORKING!!!
+void(entity who) UpdatePunchangle =		// not working 
+{
+	#ifndef PSP
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_PUNCHANGLE);
+	WriteCoord(MSG_MULTICAST, who.punchangle_x);
+	WriteCoord(MSG_MULTICAST, who.punchangle_y);
+	WriteCoord(MSG_MULTICAST, who.punchangle_z);
+	msg_entity = who;
+	multicast('0 0 0', MULTICAST_ONE);
+	#endif
+}
+// NOT WORKING ^
+
 // *****************************************
 // Unrelated to engine, but custom functions
 // *****************************************

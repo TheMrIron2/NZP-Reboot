@@ -157,7 +157,10 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 	clearscene();
 	g_width = width;
 	g_height = height;
-
+	
+	// camang is controlled by our punchangles
+	camang = getproperty(VF_ANGLES);
+	
 	//disable quake status bar and quake crosshair
 	setviewprop(VF_DRAWENGINESBAR, 0);	
 	setviewprop(VF_DRAWCROSSHAIR, 0);
@@ -657,6 +660,18 @@ noref void() CSQC_Parse_Event =
 		case EVENT_BLACKOUT:
 			fade_time = readbyte();
 			fade_type = readbyte();
+			break;
+		case EVENT_PUNCHANGLE:			
+			vector changetest;
+			changetest_x = readcoord();
+			changetest_y = readcoord();
+			changetest_z = readcoord();
+			
+			camang_x += changetest_x;
+			camang_y += changetest_y;
+			camang_z += changetest_z;
+			setproperty(VF_ANGLES_X, camang_x);
+			cprint(vtos(getproperty(VF_ANGLES)));
 			break;
 	}
 }

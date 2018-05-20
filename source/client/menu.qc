@@ -98,6 +98,7 @@ void() game_spec =
 
 void() menu_resume =
 {
+	localcmd("pause");
 	in_menu = MENU_NONE;
 	setcursormode(FALSE);
 };

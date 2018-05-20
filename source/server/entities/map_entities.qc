@@ -623,6 +623,7 @@ void zapper_start(string zapper) {
 
 
 void zapper_touch () {
+
 	if (other.classname != "player") {
 		return;
 	}

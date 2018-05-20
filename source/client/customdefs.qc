@@ -91,3 +91,5 @@ vector TEXT_GREEN     = [0, (230/255), (34/255)];
 
 float fade_time;
 float fade_type;
+
+vector camang;		// used for punches
