@@ -1470,7 +1470,7 @@ void () Weapon_Logic =
 {
 	W_Frame_Update ();
 	Impulse_Functions();
-			
+				
 	#ifdef PSP
 	// For PSP only to tell our engine to display the scope 
 	if ((self.scopetime < time) && self.scopetime) {

@@ -152,7 +152,7 @@ void() rec_downed =
 	
 	float gotalive = PollPlayersAlive();
 	
-	if (!gotalive) {
+	if (!gotalive && !self.progress_bar) {
 		EndGameSetup();
 		return;
 	}
@@ -177,23 +177,20 @@ void() GetDown =
 	
 	float gotalive = PollPlayersAlive();	
 	
-	if ((!deathmatch && !coop && !(self.perks & P_REVIVE)) || !gotalive)
-	{
+	if ((coop && !gotalive) || (!coop && !(self.perks & P_REVIVE))) {
 		EndGameSetup();
 		return;
-	}
-	else if (coop) {
-	self.health = 19; 
-	self.downed = true;
 	} else {
-		self.health = 19;
+		self.health = 19; 
 	}
 	
-	if (self.perks && P_REVIVE && !coop) {	
+	if ((self.perks & P_REVIVE) && !coop) {	
 		self.progress_bar = 10 + time;     
 		self.progress_bar_time = 10;
 		self.progress_bar_percent = 1;
+		self.downed = true;
 	}
+	
 	self.points = 10*rint((self.points*0.95)/10);
 	addmoney(self, 0, true);						// used to call a broadcast
 	BroadcastMessage(time + 3, 2);
