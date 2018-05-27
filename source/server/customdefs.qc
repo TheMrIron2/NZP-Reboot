@@ -331,6 +331,9 @@ typedef struct
 
 #ifndef PSP
 waypoint_ai waypoints[MAX_WAYPOINTS];
+
+// fog
+string world_fog;
 #endif
 
 #define UT_HUD 				1

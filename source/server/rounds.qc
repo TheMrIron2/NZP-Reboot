@@ -129,7 +129,11 @@ void() NewRound =
 		roundtype = 1;
 		
 		if (world.fog) {
+			#ifdef PSP
 			localcmd(strcat("fog ", world.fog));
+			#else 
+			localcmd(strcat("fog ", world_fog));
+			#endif
 		}
 	}
 }

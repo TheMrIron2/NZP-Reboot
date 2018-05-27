@@ -15,6 +15,9 @@ pc/conhistory.txt
 
 pc/nzp/iplog.txt
 
+pc/nzp/ssqccore.txt
+
+
 *.dat
 
 # Map ignores

@@ -276,9 +276,29 @@ void() ClientKill = {};
 void() ClientConnect =
 {
 	#ifndef PSP
+	// Maintain old FGD values and just convert them to new ones
+	// 
+	if (world.fog) {
+		string fog_start_end, fog_R, fog_B, fog_G;
+		
+		// Tokenize our fog
+		tokenize(world.fog);
+		
+		// Get values and transmute it a bit if necessary
+		//	Originally: start | end | R | G | B
+		fog_start_end = ftos(((stof(argv(0))) / stof(argv(1))) / 3.5);
+		
+		fog_R = ftos(stof(argv(2))/255);
+		fog_G = ftos(stof(argv(3))/255);
+		fog_B = ftos(stof(argv(4))/255);
+
+		// Restore into our world.fog
+		world_fog = strcat(fog_start_end, " ", fog_R, " ", fog_G, " ", fog_B);
+		localcmd(strcat("fog ", world_fog));
+	}
+	
 	if (mapname == "ndu")	{			// the only one we REALLY need to fix is NDU since I don't want to edit the file
 		stuffcmd(self, "sky sky\n");
-		stuffcmd(self, "fog 0.075\n"); // naievil -- temp reliable fog
 	}
 	#endif
 	
