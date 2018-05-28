@@ -833,11 +833,22 @@ float crosshair_offset_step;
 
 void() Draw_Crosshair =
 {
-	if (K_BACKDOWN || K_FORWARDDOWN || K_LEFTDOWN || K_RIGHTDOWN)
+	if (K_BACKDOWN || K_FORWARDDOWN || K_LEFTDOWN || K_RIGHTDOWN) {
 		croshhairmoving = 1;
-	else
+		
+		if (cur_spread >= CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON))) {
+			cur_spread = CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON));
+		} else {
+			cur_spread += 0.5;
+		}	
+	} else {
 		croshhairmoving = 0;
-	
+		
+		if (cur_spread > 0)
+			cur_spread -= 0.5;
+		else 
+			cur_spread = 0;
+	}	
 
 	if (getstatf(STAT_WEAPONZOOM) == 2 && zoom_2_time < time)
     {
@@ -862,7 +873,7 @@ void() Draw_Crosshair =
     }
     else if (crosshair_spread_time < time && crosshair_spread_time)
     {
-        cur_spread = cur_spread - 4;
+        cur_spread = cur_spread - 0.25;
 		if (cur_spread <= 0)
 		{
 			cur_spread = 0;
@@ -884,7 +895,7 @@ void() Draw_Crosshair =
         else*/
          crosshair_offset = CrossHairWeapon(getstatf(STAT_ACTIVEWEAPON)) + cur_spread;
         
-		if (CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON)) < crosshair_offset || croshhairmoving)
+		if (CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON)) < crosshair_offset)
 			crosshair_offset = CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON));
 
 		crosshair_offset_step += (crosshair_offset - crosshair_offset_step) * 0.5;
