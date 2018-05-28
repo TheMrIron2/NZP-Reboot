@@ -79,9 +79,7 @@ void() W_SprintStop =
 		return;
 	
 	//TEMPORARY
-	#ifndef PSP
-	self.viewzoom = 1;
-	#else 
+	#ifdef PSP
 	self.zoom = 0;
 	#endif
 
@@ -111,10 +109,7 @@ void W_SprintStart () {
 	float endframe = GetFrame(self.weapon,SPRINT_IN_END);
 	string modelname = GetWeaponModel(self.weapon, 0);
 
-	//TEMPORARY
-	#ifndef PSP
-	self.viewzoom = 0.9;
-	#else 
+	#ifdef PSP 
 	self.zoom = 3;
 	#endif
 	
@@ -1522,13 +1517,13 @@ void () Weapon_Logic =
 				if (self.viewzoom == 0.5) {
 					W_AimOut();
 				} else  {
-					self.viewzoom += 0.05;
+					self.viewzoom += 0.055;
 					}
 			} else {
 				if (self.viewzoom == 0.9) {
 					W_AimOut();
 				} else {
-					self.viewzoom += 0.01;
+					self.viewzoom += 0.015;
 				}
 			}
 			

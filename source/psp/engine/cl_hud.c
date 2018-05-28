@@ -333,8 +333,6 @@ void HUD_Parse_Point_Change (int points, int negative, int x_start, int y_start)
 	point_change[i].move_y = ((rand ()&0x7fff) / ((float)0x7fff)) - 0.5;
 
 	point_change[i].alive_time = Sys_FloatTime() + 0.4;
-
-
 }
 
 void HUD_Points (void)

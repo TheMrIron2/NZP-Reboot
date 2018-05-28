@@ -116,8 +116,21 @@ void() PlayerPreThink =
 	} else {
 		self.maxspeed = 175;
 		if (self.sprinting) {
+		#ifndef PSP
+			if (self.viewzoom > 0.9)
+				self.viewzoom -= 0.015;
+			else if (self.viewzoom < 0.9)
+				self.viewzoom = 0.9;
+		#endif		
 			playrun1();
 			self.maxspeed *= 1.66;
+		} else if (!self.sprinting && !self.zoom) {
+		#ifndef PSP
+			if (self.viewzoom < 1)
+				self.viewzoom += 0.015;
+			else 
+				self.viewzoom = 1;
+		#endif
 		} else if (self.zoom == 1) {
 			self.maxspeed *= 0.5;
 		} if (self.damagetimer > time) {
