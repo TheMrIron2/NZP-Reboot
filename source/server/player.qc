@@ -415,6 +415,8 @@ void() PlayerSpawn =
 	UpdateV2model("", 0);
 	stuffcmd(self, "cl_gunx 8;cl_guny 16;cl_gunz 25\n");
 	SetRound(self, rounds);
+	self.viewzoom = 1;
+
 	#else 
 	self.Weapon_Name = GetWeaponName(self.weapon);
 	self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);

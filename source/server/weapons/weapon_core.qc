@@ -32,10 +32,8 @@ void() W_AimIn =
 	    self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR)
 	{
 		SetUpdate(self, UT_ZOOM2, 0, 0, 0);
-		//TEMPORARY
 		#ifndef PSP
 		self.zoom = 2;
-		self.viewzoom = 0.5;
 		#else 
 		self.zoom = 1;
 		self.scopetime = time + 0.3;
@@ -44,10 +42,6 @@ void() W_AimIn =
 	else
 	{
 		self.zoom = 1;
-		//TEMPORARY
-		#ifndef PSP
-		self.viewzoom = 0.9;
-		#endif
 	}
 	
 	if (!self.downed)	
@@ -66,12 +60,9 @@ void() W_AimOut =
 	    self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR) {
 		ReturnWeaponModel();
 	}
-		
-	self.zoom = 0;
 	
-	//TEMPORARY
-	#ifndef PSP	
-	self.viewzoom = 1;
+	#ifdef PSP
+	self.zoom = 0;
 	#endif
 	
 	if (!self.downed)
@@ -1502,10 +1493,52 @@ void () Weapon_Logic =
 		} else {
 			self.semi = FALSE;
 		}
-		if (self.button8 && !self.zoom) {
-			W_AimIn();
+		if (self.button8) {
+			if (!self.zoom) {
+				W_AimIn();
+			} 
+			#ifndef PSP
+			else {
+			
+				if (self.weapon == W_KAR_SCOPE || self.weapon == W_PTRS ||
+					self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR) {
+					if (self.viewzoom > 0.5)
+						self.viewzoom -= 0.05;
+					else 
+						self.viewzoom = 0.5;
+				} else {
+					if (self.viewzoom > 0.9)
+						self.viewzoom -= 0.01;
+					else
+						self.viewzoom = 0.89999;
+				}
+			}
+			#endif
 		} else if (!self.button8 && self.zoom) {
+		
+			#ifndef PSP
+			if (self.weapon == W_KAR_SCOPE   || self.weapon == W_PTRS ||
+				self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR) {
+				if (self.viewzoom == 0.5) {
+					W_AimOut();
+				} else  {
+					self.viewzoom += 0.05;
+					}
+			} else {
+				if (self.viewzoom == 0.9) {
+					W_AimOut();
+				} else {
+					self.viewzoom += 0.01;
+				}
+			}
+			
+			if (self.viewzoom >= 1) {
+				self.viewzoom = 1;
+				self.zoom = 0;
+			}
+			#else
 			W_AimOut();
+			#endif	
 		}
 	}
 
