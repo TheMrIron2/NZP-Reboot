@@ -74,6 +74,7 @@ noref void() CSQC_WorldLoaded =
 	
 };
 
+// This is from COW lol!
 #define ADS_THOMPSON    '-3 +5.80 +4.52'
 
 /*vector adsOffset;
@@ -84,10 +85,11 @@ void() Update_Vmodel =
 	local vector offset, adsoffset;
 	local vector dir;
     local float ads;
-		
-	offset_x = 0.6 * sin(time * 1.2);
-	offset_y = 0.4 * cos(time * 1.5);
-	offset_z = 0.7 * sin(1.1*time + 0.5);
+	
+	// Motolegacy's Requiem idle bob
+	offset_x = 0.2 * sin(time * 1.2);
+	offset_y = 0.2 * cos(time * 1.5);
+	offset_z = 0.1 * sin(1.1*time + 0.5);
 	
 	dir = vmodel_targetpos - vmodel_currentpos;
 	if(vlen(dir) < (0.15 * 128 * frametime))
@@ -114,11 +116,13 @@ void() Update_Vmodel =
     if(ads == 1)
     {  
         vmodel_currentpos += (adsoffset * 0.15 * 128) * frametime;
+		vmodel_currentpos += offset*0.025;
         vmodel.origin = vmodel_currentpos + adsoffset;    
     }
 	else if (ads == 2)
 	{
 		vmodel_currentpos += (adsoffset * 0.15 * 128) * frametime;
+		vmodel_currentpos += offset*0.025;
         vmodel.origin = vmodel_currentpos + adsoffset;    
 	}
     else
