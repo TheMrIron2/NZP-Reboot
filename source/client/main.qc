@@ -61,12 +61,11 @@ noref void() CSQC_WorldLoaded =
 	v2model.origin = vmodel.origin = '24 -12 -18';
 	v2model_targetpos = v2model_currentpos = v2model.origin = vmodel_targetpos = vmodel_currentpos = vmodel.origin;
 	v2model_velocity = vmodel_velocity = '0 0 0';
-	v2model_muzzleoffset = vmodel_muzzleoffset = '48 -1 2';
+	//v2model_muzzleoffset = vmodel_muzzleoffset = '48 -1 2';
 	setmodel(vmodel,"");
 	setmodel(v2model,"");
 	mzlflash.renderflags = vmodel.renderflags;
 	mzlflash.origin = vmodel.origin + vmodel_muzzleoffset;
-	//setmodel(mzlflash,"models/weapons/mg/mzl.iqm");
 	
 	playerpoints[1] = -1;
 	playerpoints[2] = -1;
@@ -514,19 +513,32 @@ noref void() CSQC_Parse_Event =
 
 			if(entnum == player_localentnum)
 			{
+				makevectors(view_angles);
+				local vector offset = vmodel.origin + vmodel_muzzleoffset;
+				local vector muzzlepos;
+				muzzlepos = getviewprop(VF_ORIGIN);
+				
+				local vector muzzle_offset = GetWeaponFlash_Offset(getstatf(STAT_ACTIVEWEAPON))/1000;
+				
+				muzzlepos += v_forward * muzzle_offset_z;
+				muzzlepos += v_right * muzzle_offset_x;
+				muzzlepos += v_up * muzzle_offset_y;			
+				mzlflash.alpha = 1;
+				
+				float ads = getstatf(STAT_WEAPONZOOM); //get the zoomtoggle value 
+				if(ads == 1)
+				{  
+					// FIXME: naievil -- need ADS fix!!!
+					//local vector adsoffset = GetWeaponADSPos(weapon);
+					//muzzlepos += adsoffset;
+				}
+								
+				pointparticles(particleeffectnum("muzzle.muzzle_part0"), muzzlepos, norm*24, 1);
+				
 				tracercounter += 1;
 				if(tracercounter == 3)
 				{
-					tracercounter = 0;
-					makevectors(view_angles);
-					local vector offset = vmodel.origin + vmodel_muzzleoffset;
-					local vector muzzlepos;
-					muzzlepos = getviewprop(VF_ORIGIN);
-					muzzlepos += v_forward * offset_x;
-					muzzlepos -= v_right * offset_y;
-					muzzlepos += v_up * offset_z;
-
-					local entity tracer = spawn();
+					//local entity tracer = spawn();
 					/*tracer.alpha = 1;
 					tracer.origin = muzzlepos;
 					tracer.targetpos = pos;
@@ -536,10 +548,6 @@ noref void() CSQC_Parse_Event =
 					tracer.drawmask = 1;*/
 				}
 
-				
-				//mzlflash.alpha = 1;
-
-				mzlflash.angles_z = random() * 360;
 			}
 			
 			if(traceent == 0)
@@ -675,7 +683,7 @@ noref void() CSQC_Parse_Event =
 			camang_y += changetest_y;
 			camang_z += changetest_z;
 			setproperty(VF_ANGLES_X, camang_x);
-			cprint(vtos(getproperty(VF_ANGLES)));
+			//cprint(vtos(getproperty(VF_ANGLES)));
 			break;
 	}
 }
