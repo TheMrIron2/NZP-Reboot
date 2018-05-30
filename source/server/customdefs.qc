@@ -47,6 +47,7 @@ entity activator;
 void() W_SprintStop;
 .float into_sprint;
 .float damagetimer;
+.vector movement;
 
 //Weaponsystem defines
 void SwitchWeapon(float to);

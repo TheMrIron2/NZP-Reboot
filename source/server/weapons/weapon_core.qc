@@ -1260,6 +1260,45 @@ void() W_Grenade =
 void() CheckButtonOne = {if (self.weaponnum == 1){W_PutOut();}}		// weapon switch to two if 1
 void() CheckButtonTwo = {if (self.weaponnum == 0) {W_PutOut();}}	// weapon switch to one if 2
 
+//moto -- we should move this (start)
+#ifndef PSP
+#define forward 	0
+#define backward 	1
+#define left 		2
+#define right 		3
+float(float dir) checkMovement =
+{
+	string a = vtos(self.movement);
+	float x, y;
+
+	tokenize(a);
+	x = stof(argv(0));
+	y = stof(argv(1));
+	
+	switch(dir) {
+		case forward:
+			if (x > 0)
+				return 1;
+		break;
+		case backward:
+			if (x < 0)
+				return 1;
+		break;
+		case right:
+			if (y > 0)
+				return 1;
+		break;
+		case left:
+			if (y < 0)
+				return 1;
+		break;
+		default:
+			return 0;
+	}
+}
+#endif
+//moto -- we should move this (end)
+
 void () Impulse_Functions =
 {
 	if (!self.impulse)
@@ -1272,7 +1311,10 @@ void () Impulse_Functions =
 			rounds += 4;
 			break;
 		case 23:
-			W_SprintStart();
+			#ifndef PSP
+			if (checkMovement(forward))
+			#endif
+				W_SprintStart();
 			break;
 		case 24:
 			W_SprintStop();
