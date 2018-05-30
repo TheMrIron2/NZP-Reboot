@@ -92,6 +92,43 @@ void() playgetup8		=[	9,		playgetup9		] {self.frame = 46;}
 void() playgetup9		=[	10,		playgetup10		] {self.frame = 47;}
 void() playgetup10		=[	11,		playgetup10		] {self.frame = 48;}
 
+#ifndef PSP
+#define forward 	0
+#define backward 	1
+#define left 		2
+#define right 		3
+float(float dir) checkMovement =
+{
+	string a = vtos(self.movement);
+	float x, y;
+
+	tokenize(a);
+	x = stof(argv(0));
+	y = stof(argv(1));
+	
+	switch(dir) {
+		case forward:
+			if (x > 0)
+				return 1;
+		break;
+		case backward:
+			if (x < 0)
+				return 1;
+		break;
+		case right:
+			if (y > 0)
+				return 1;
+		break;
+		case left:
+			if (y < 0)
+				return 1;
+		break;
+		default:
+			return 0;
+	}
+}
+#endif
+
 
 void() PlayerJump =
 {
@@ -251,9 +288,15 @@ void() PlayerPostThink =
 
 
 	if (self.sprinting) {
+		#ifdef PSP
 		if (!self.velocity) {
 			W_SprintStop();
 		}
+		#else
+		if (!self.velocity || !checkMovement(0)) { //moto (FIXME) -- move me!
+			W_SprintStop();
+		}
+		#endif
 		
 		// Have to choose from PSP and PC here since frametime is a lot different...
 		#ifndef PSP
