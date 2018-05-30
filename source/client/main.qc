@@ -86,9 +86,17 @@ void() Update_Vmodel =
     local float ads;
 	
 	// Motolegacy's Requiem idle bob
-	offset_x = 0.2 * sin(time * 1.2);
-	offset_y = 0.2 * cos(time * 1.5);
-	offset_z = 0.1 * sin(1.1*time + 0.5);
+
+	//Walk bob
+	if (K_FORWARDDOWN || K_BACKDOWN || K_LEFTDOWN || K_RIGHTDOWN && !getstatf(STAT_WEAPONZOOM)) {
+		offset_x = 0.2 * sin(time * 8);
+		offset_y = 0.2 * cos(time * 8);
+		offset_z = 0.2 * sin(13.4*time + 0.5);
+	} else { //Still & ADS bob
+		offset_x = 0.2 * sin(time * 1.2);
+		offset_y = 0.2 * cos(time * 1.5);
+		offset_z = 0.1 * sin(1.1*time + 0.5);
+	}
 	
 	dir = vmodel_targetpos - vmodel_currentpos;
 	if(vlen(dir) < (0.15 * 128 * frametime))
