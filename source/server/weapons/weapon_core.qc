@@ -1447,7 +1447,7 @@ void() CheckPlayer =
 	/* Check for player push end */
 	
 	if (!self.button2 && self.flags & FL_ONGROUND) {
-		if (fabs(self.oldz - self.origin_z) > 90) {
+		if (fabs(self.oldz - self.origin_z) > 90 && !(self.perks & P_FLOP)) {
 			DamageHandler (self, other, 50, S_ZOMBIE);		
 		}
 		
