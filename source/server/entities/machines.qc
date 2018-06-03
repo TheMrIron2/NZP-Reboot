@@ -239,6 +239,17 @@ void() setup_perk =
 			case "perk_double":
 				self.effects = EF_ORANGELIGHT;
 				break;
+			#else
+
+			case "perk_flopper": //purple
+				self.effects = EF_RED;
+				self.effects = self.effects | EF_BLUE;
+				break;
+			case "perk_staminup":
+			case "perk_double": //yellow (can't do orange because no found method to tune down intensity on an effect)
+				self.effects = EF_RED;
+				self.effects = self.effects | EF_GREEN;
+				break;
 			#endif
 				
 			default: break;

@@ -324,7 +324,6 @@ void() PlayerPostThink =
 	}
 
 	self.oldvelocity = self.velocity;
-	centerprint(self, ftos(frametime));
 };
 
 void() ClientKill = {};
