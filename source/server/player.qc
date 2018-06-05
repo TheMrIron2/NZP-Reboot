@@ -173,6 +173,15 @@ void() PlayerPreThink =
 		} if (self.damagetimer > time) {
 			self.maxspeed *= 0.5;
 		}
+		
+		switch(self.stance) {
+			case 1:
+				self.maxspeed *= 0.5;
+				break;
+			case 0:
+				self.maxspeed *= 0.25;
+				break;		
+		}
 
 		self.maxspeed *= GetWeaponWalkSpeed(self.weapon);
 	}

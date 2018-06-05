@@ -21,6 +21,8 @@ float player_count;
 .string fog;		// used for hacking in changing fog from world.fog for legacy maps
 
 entity local_client;
+.float stance;
+vector new_ofs;
 
 //money
 .float points;

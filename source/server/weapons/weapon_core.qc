@@ -1260,6 +1260,23 @@ void() W_Grenade =
 void() CheckButtonOne = {if (self.weaponnum == 1){W_PutOut();}}		// weapon switch to two if 1
 void() CheckButtonTwo = {if (self.weaponnum == 0) {W_PutOut();}}	// weapon switch to one if 2
 
+void() Change_Stance = {
+
+	switch(self.stance) {
+		case 2: 
+			new_ofs_z = self.view_ofs_z - 24;
+			self.stance = 1;
+			break;
+		case 1:
+			new_ofs_z = self.view_ofs_z - 18;
+			self.stance = 0;
+			break;
+		
+		default: break;
+	}
+
+}
+
 void () Impulse_Functions =
 {
 	if (!self.impulse)
@@ -1282,6 +1299,9 @@ void () Impulse_Functions =
 			break;
 		case 25:
 			switch_nade();
+			break;
+		case 30:
+			Change_Stance();
 			break;
 		case 110:
 			CheckButtonOne();
@@ -1381,6 +1401,12 @@ void() CheckPlayer =
 {
 	CheckPowerups(self);
 	CheckRevive(self);
+	
+	if (self.view_ofs_z > new_ofs_z) {
+			self.view_ofs_z = self.view_ofs_z - 1.5;
+	} else if (self.view_ofs_z < new_ofs_z) {
+			self.view_ofs_z = self.view_ofs_z + 1.5;
+	}
 	
 	/* Check player push start */
 	entity ent;
