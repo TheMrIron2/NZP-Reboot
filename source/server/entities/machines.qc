@@ -386,6 +386,16 @@ void() Turn_Lights =
 			case "perk_double":
 				tempe.effects = EF_ORANGELIGHT;
 				break;
+			#else
+			case "perk_flopper": //purple
+				tempe.effects = EF_RED;
+				tempe.effects = tempe.effects | EF_BLUE;
+				break;
+			case "perk_staminup":
+			case "perk_double": //yellow
+				self.effects = EF_RED;
+				self.effects = self.effects | EF_GREEN;
+				break;
 			#endif
 		
 			default: break;
