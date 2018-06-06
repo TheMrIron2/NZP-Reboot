@@ -1285,6 +1285,46 @@ void() Change_Stance = {
 
 }
 
+void() dolphin_dive =		//naievil
+{    
+	if (self.stance != 2)
+		return;
+ 	if (self.flags & FL_WATERJUMP)
+		return;
+
+	if (self.waterlevel >= 2)
+	{
+		if (self.watertype == CONTENT_WATER)
+			self.velocity_z = 100;
+		else if (self.watertype == CONTENT_SLIME)
+			self.velocity_z = 80;
+		else
+			self.velocity_z = 50;
+	}
+
+	if (!(self.flags & FL_ONGROUND))
+		return;
+		
+	if ( !(self.flags & FL_JUMPRELEASED) )
+		return;		// don't pogo stick
+		
+  
+	self.flags = self.flags - (self.flags & FL_JUMPRELEASED);
+	self.flags = self.flags - FL_ONGROUND;	// don't stairwalk
+	makevectors (self.v_angle);
+    self.velocity = self.velocity * 1.2;		
+	self.velocity_z = self.velocity_z + 270;
+	
+	new_ofs_z = self.view_ofs_z - 42;
+	self.stance = 0;
+
+	self.button2 = 0;
+	W_SprintStop();
+
+	//self.oldz = self.origin_z;
+}
+
+
 void () Impulse_Functions =
 {
 	if (!self.impulse)
@@ -1321,7 +1361,10 @@ void () Impulse_Functions =
 			switch_nade();
 			break;
 		case 30:
-			Change_Stance();
+			if (self.sprinting)
+				dolphin_dive();
+			else
+				Change_Stance();
 			break;
 		case 110:
 			CheckButtonOne();
