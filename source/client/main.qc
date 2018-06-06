@@ -110,7 +110,6 @@ void() Update_Vmodel =
 	else
 		vmodel.angles += (-vmodel.angles * 0.2 * 128) * frametime;
 
-		
 	vmodel_currentpos += (vmodel_velocity * 128) * frametime;
 	vmodel_velocity *= 1 - frametime * 30;
 	
@@ -134,8 +133,18 @@ void() Update_Vmodel =
 	}
     else
     {
-        //setviewprop(VF_DRAWCROSSHAIR, 0);    
-        vmodel.origin = vmodel_currentpos + offset;
+        switch(getstatf(STAT_PLAYERSTANCE)) {
+			case 2:
+				break;
+			case 1:
+				vmodel_currentpos = '0 0.6 -0.3';
+				break;
+			case 0:
+				vmodel_currentpos = '1.5 0.6 -0.3';
+				break;
+			default: break;
+		}
+		vmodel.origin = vmodel_currentpos + offset;
     }
 
 	if(weapon == 1)

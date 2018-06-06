@@ -1261,17 +1261,25 @@ void() CheckButtonOne = {if (self.weaponnum == 1){W_PutOut();}}		// weapon switc
 void() CheckButtonTwo = {if (self.weaponnum == 0) {W_PutOut();}}	// weapon switch to one if 2
 
 void() Change_Stance = {
-
 	switch(self.stance) {
 		case 2: 
 			new_ofs_z = self.view_ofs_z - 24;
 			self.stance = 1;
 			break;
 		case 1:
-			new_ofs_z = self.view_ofs_z - 18;
-			self.stance = 0;
+			if (!self.stancereset) {
+				new_ofs_z = self.view_ofs_z - 18;
+				self.stance = 0;
+			} else {
+				new_ofs_z = self.view_ofs_z + 24;
+				self.stance = 2;
+				self.stancereset = 0;
+			}
 			break;
-		
+		case 0:
+			new_ofs_z = self.view_ofs_z + 18;
+			self.stance = self.stancereset = 1;
+			break;
 		default: break;
 	}
 
@@ -1290,9 +1298,21 @@ void () Impulse_Functions =
 			break;
 		case 23:
 			#ifndef PSP
-			if (checkMovement(forward))
+			if (!checkMovement(forward))
+				return;
 			#endif
-				W_SprintStart();
+			switch(self.stance) {
+				case 0:
+					new_ofs_z = self.view_ofs_z + 42;
+					self.stance = 2;
+					break;
+				case 1:
+					new_ofs_z = self.view_ofs_z + 24;
+					self.stance = 2;
+					break;
+				default: break;
+			}
+			W_SprintStart();
 			break;
 		case 24:
 			W_SprintStop();

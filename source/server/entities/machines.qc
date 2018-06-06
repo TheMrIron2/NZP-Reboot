@@ -211,7 +211,7 @@ void() setup_perk =
 	if (find (world, classname, "power_switch"))
 	{
 		if (self.classname == "perk_revive" && !coop && !deathmatch)
-			self.effects = EF_BLUE;
+			self.effects = self.effects | EF_BLUE;
 		else
 			self.requirespower = true;
 	}

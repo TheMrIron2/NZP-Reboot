@@ -298,11 +298,11 @@ void() PlayerPostThink =
 
 	if (self.sprinting) {
 		#ifdef PSP
-		if (!self.velocity) {
+		if (!self.velocity || self.stance != 2) {
 			W_SprintStop();
 		}
 		#else
-		if (!self.velocity || !checkMovement(0)) { //moto (FIXME) -- move me!
+		if (!self.velocity || !checkMovement(0) || self.stance != 2) { //moto (FIXME) -- move me!
 			W_SprintStop();
 		}
 		#endif
