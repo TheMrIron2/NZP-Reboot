@@ -79,6 +79,9 @@ noref void() CSQC_WorldLoaded =
 /*vector adsOffset;
 float adsAmount;
 float adsDir;*/
+vector weapon_bob_factor;
+float weapon_bob_factor_z_coef;
+vector dampening_factor;
 void() Update_Vmodel =
 {
 	local vector offset, adsoffset;
@@ -89,15 +92,122 @@ void() Update_Vmodel =
 
 	//Walk bob
 	if (K_FORWARDDOWN || K_BACKDOWN || K_LEFTDOWN || K_RIGHTDOWN && !getstatf(STAT_WEAPONZOOM)) {
-		offset_x = 0.2 * sin(time * 8);
-		offset_y = 0.2 * cos(time * 8);
-		offset_z = 0.2 * sin(13.4*time + 0.5);
-	} else { //Still & ADS bob
-		offset_x = 0.2 * sin(time * 1.2);
-		offset_y = 0.2 * cos(time * 1.5);
-		offset_z = 0.1 * sin(1.1*time + 0.5);
-	}
 	
+		// if (weapon_bob_factor_x < 8) {
+			// weapon_bob_factor_x += fabs(0.68* sin(time*weapon_bob_factor_x));
+		// } else {
+			// weapon_bob_factor_x = 8;
+		// }
+			
+		// if (weapon_bob_factor_y < 8) {
+			// weapon_bob_factor_y += fabs(0.65* cos(time*weapon_bob_factor_y));
+		// } else {
+			// weapon_bob_factor_y = 8;
+		// }
+		
+		// if (weapon_bob_factor_z < 13.4) {
+			// weapon_bob_factor_z += fabs(1.23* sin(time*weapon_bob_factor_z));
+		// } else {
+			// weapon_bob_factor_z = 13.4;
+		// }
+		
+		// if (weapon_bob_factor_z_coef > 0.2)
+			// weapon_bob_factor_z_coef = 0.2;
+		// else 
+			// weapon_bob_factor_z_coef += 0.00001;
+			
+			
+		weapon_bob_factor_x = 8;
+		weapon_bob_factor_y = 8;
+		weapon_bob_factor_z = 13.4;
+		weapon_bob_factor_z_coef = 0.2;
+		
+		dampening_factor_x = 0.2*sin(time*weapon_bob_factor_x);
+		dampening_factor_y = 0.2*cos(time*weapon_bob_factor_y);
+		dampening_factor_z = 0.2*sin(time*weapon_bob_factor_z);
+	} else { //Still & ADS bob
+
+		// Naievil -- stupid ass calcs...
+		// Basically we have a dampening factor per offset and we have to decrease it back down to zero
+		// Problem is that we may be going in postive OR negative direction? 
+		// Better solution: use fabs() lol 
+		if (dampening_factor_x > 0 && sin(time*weapon_bob_factor_x) > 0) {
+			if ((dampening_factor_x - 0.00000068* sin(time*weapon_bob_factor_x)) < 0)
+				dampening_factor_x -= (0.00000068 - dampening_factor_x*sin(time*weapon_bob_factor_x));
+			else 
+				dampening_factor_x -= 0.00000068* sin(time*weapon_bob_factor_x);
+				
+		} else if (dampening_factor_x < 0 && sin(time*weapon_bob_factor_x) < 0) {
+			if ((dampening_factor_x + 0.00000068* sin(time*weapon_bob_factor_x)) > 0)
+				dampening_factor_x += (0.00000068 - dampening_factor_x*sin(time*weapon_bob_factor_x));
+			else 
+				dampening_factor_x += 0.00000068* sin(time*weapon_bob_factor_x);
+		} else {
+			weapon_bob_factor_x = 1.2;
+		}
+					
+		if (weapon_bob_factor_x - 0.00000068 < 1.2)
+			weapon_bob_factor_x = 1.2;
+		else 
+			weapon_bob_factor_x -= 0.00000068;
+	
+		
+		if (dampening_factor_y > 0 && cos(time*weapon_bob_factor_y) > 0) {
+			if ((dampening_factor_y - 0.00000065* cos(time*weapon_bob_factor_y)) < 0)
+				dampening_factor_y -= (0.00000065 - dampening_factor_y*cos(time*weapon_bob_factor_y));
+			else 
+				dampening_factor_y -= 0.00000065* cos(time*weapon_bob_factor_y);		
+				
+		} else if (dampening_factor_y < 0 && cos(time*weapon_bob_factor_y) < 0) {
+			if ((dampening_factor_y + 0.00000065* cos(time*weapon_bob_factor_y)) > 0)
+				dampening_factor_y += (0.00000065 - dampening_factor_y*cos(time*weapon_bob_factor_y));
+			else 
+				dampening_factor_y += 0.00000065* cos(time*weapon_bob_factor_y);		
+		} else {
+			weapon_bob_factor_y = 1.5;
+		}
+		
+		
+		if (weapon_bob_factor_y - 0.00000065 < 1.5)
+			weapon_bob_factor_y = 1.5;
+		else 
+			weapon_bob_factor_y -= 0.00000065;	
+		
+		if (dampening_factor_z > 0 && sin(time*weapon_bob_factor_z) > 0) {
+			if ((dampening_factor_z - 0.00000123* sin(time*weapon_bob_factor_z)) < 0)
+				dampening_factor_z -= (0.00000123 - dampening_factor_z*sin(time*weapon_bob_factor_z));
+			else 
+				dampening_factor_z -= 0.00000123* sin(time*weapon_bob_factor_z);	
+				
+		} else if (dampening_factor_z <= 0 && sin(time*weapon_bob_factor_z) < 0) {
+			if ((dampening_factor_z + 0.00000123* sin(time*weapon_bob_factor_z)) > 0)
+				dampening_factor_z += (0.00000123 - dampening_factor_z*sin(time*weapon_bob_factor_z));
+			else 
+				dampening_factor_z += 0.00000123* sin(time*weapon_bob_factor_z);
+		} else  {
+			weapon_bob_factor_z = 1.1;
+		}
+		
+		if (weapon_bob_factor_z - 0.00000123 < 1.1)
+			weapon_bob_factor_z = 1.1;
+		else 
+			weapon_bob_factor_z -= 0.00000123;	
+		
+		if (weapon_bob_factor_z_coef <= 0.1)
+			weapon_bob_factor_z_coef = 0.1;
+		else 
+			weapon_bob_factor_z_coef -= 0.0000001*sin(time*weapon_bob_factor_z);
+	}
+			
+	offset_x = 0.2 * (sin(time * weapon_bob_factor_x) + dampening_factor_x);
+	offset_y = 0.2 * (cos(time * weapon_bob_factor_y) + dampening_factor_y);
+	offset_z = weapon_bob_factor_z_coef * (sin(weapon_bob_factor_z*time + 0.5) + dampening_factor_z);
+	
+	vector tempv; 
+	tempv_x = 0.2 * (sin(time * weapon_bob_factor_x));
+	tempv_y = 0.2 * (cos(time * weapon_bob_factor_y));
+	tempv_z = weapon_bob_factor_z_coef * (sin(weapon_bob_factor_z*time + 0.5));
+		
 	dir = vmodel_targetpos - vmodel_currentpos;
 	if(vlen(dir) < (0.15 * 128 * frametime))
 		vmodel_currentpos = vmodel_targetpos;
