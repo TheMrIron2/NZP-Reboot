@@ -142,6 +142,7 @@ const float EVENT_PUNCHANGLE = 27;
 #define STAT_X2		        	62
 #define STAT_SPECTATING			63
 #define STAT_PLAYERNUM			64
+#define STAT_PLAYERSTANCE 		65
 
 //
 // invert float takes in float value between 0 and 1, inverts position
