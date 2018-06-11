@@ -338,6 +338,9 @@ waypoint_ai waypoints[MAX_WAYPOINTS];
 
 // fog
 string world_fog;
+
+// lights 
+#define EF_PURPLELIGHT		256		// fte already has some effect styles defined...
 #endif
 
 #define UT_HUD 				1

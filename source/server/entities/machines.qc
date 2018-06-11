@@ -228,36 +228,21 @@ void() setup_perk =
 			case "perk_speed":
 				self.effects = EF_GREEN;
 				break;
-			
-			#ifdef PSP
 			case "perk_flopper":
 				self.effects = EF_PURPLELIGHT;
 				break;
 			case "perk_staminup":
-				self.effects = EF_ORANGELIGHT;
-				break;
 			case "perk_double":
+			#ifdef PSP
 				self.effects = EF_ORANGELIGHT;
-				break;
-			#else
-
-			case "perk_flopper": //purple
-				self.effects = EF_RED;
-				self.effects = self.effects | EF_BLUE;
-				break;
-			case "perk_staminup":
-			case "perk_double": //yellow (can't do orange because no found method to tune down intensity on an effect)
-				self.effects = EF_RED;
-				self.effects = self.effects | EF_GREEN;
-				break;
+			#else 
+				self.effects = EF_ORANGE;
 			#endif
-				
+				break;
 			default: break;
 		
 		}
 	} 
-	
-		// naievil (FIXME) light effects 
 }
 void() perk_revive =
 {
@@ -366,43 +351,31 @@ void() Turn_Lights =
 	while (tempe)
 	{
 		switch(tempe.classname) {
-			case "perk_revive":
+			case "perk_revive": 
 				tempe.effects = EF_BLUE;
 				break;
 			case "perk_juggernog":
 				tempe.effects = EF_RED;
 				break;
-			case "perk_speed": 
+			case "perk_speed":
 				tempe.effects = EF_GREEN;
 				break;
-		
-			#ifdef PSP
 			case "perk_flopper":
 				tempe.effects = EF_PURPLELIGHT;
 				break;
 			case "perk_staminup":
-				tempe.effects = EF_ORANGELIGHT;
-				break;
 			case "perk_double":
+			#ifdef PSP
 				tempe.effects = EF_ORANGELIGHT;
-				break;
-			#else
-			case "perk_flopper": //purple
-				tempe.effects = EF_RED;
-				tempe.effects = tempe.effects | EF_BLUE;
-				break;
-			case "perk_staminup":
-			case "perk_double": //yellow
-				self.effects = EF_RED;
-				self.effects = self.effects | EF_GREEN;
-				break;
+			#else 
+				tempe.effects = EF_ORANGE;
 			#endif
-		
+				break;
 			default: break;
 		}
       
 		tempe = findfloat (tempe, requirespower, 1);// trigger all paired doors
-	}  // naievil (FIXME) redo light effects 
+	}
 } 
 
 void() touch_power_Switch =
