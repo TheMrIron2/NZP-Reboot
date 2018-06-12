@@ -503,8 +503,6 @@ void() PlayerSpawn =
 	self.Flash_Size = GetWeaponFlash_Size(self.weapon);
 	#endif
 
-	self.perks = P_FLOP;
-	
 };
 
 void() SpectatorSpawn =

@@ -208,10 +208,6 @@ void() touch_perk =
 
 void() setup_perk =
 {
-	#ifndef PSP
-	self.effects = EF_FULLBRIGHT; //motolegacy -- perk models look better in fullbright
-	#endif
-
 	if (find (world, classname, "power_switch"))
 	{
 		if (self.classname == "perk_revive" && !coop && !deathmatch) {
@@ -221,6 +217,7 @@ void() setup_perk =
 	}
 	else
 	{
+		self.effects = self.effects | EF_FULLBRIGHT;
 		switch(self.classname)
 		{
 			case "perk_revive": 
