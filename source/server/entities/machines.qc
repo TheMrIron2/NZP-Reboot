@@ -353,20 +353,25 @@ void() Turn_Lights =
 	{
 		switch(tempe.classname) {
 			case "perk_revive": 
+				tempe.effects = self.effects |  EF_FULLBRIGHT;
 				tempe.effects = self.effects |  EF_BLUE;
 				break;
 			case "perk_juggernog":
+				tempe.effects = self.effects |  EF_FULLBRIGHT;
 				tempe.effects = self.effects |  EF_RED;
 				break;
 			case "perk_speed":
+				tempe.effects = self.effects |  EF_FULLBRIGHT;
 				tempe.effects = self.effects |  EF_GREEN;
 				break;
 			case "perk_flopper":
+				tempe.effects = self.effects |  EF_FULLBRIGHT;
 				tempe.effects = self.effects |  EF_PURPLELIGHT;
 				break;
 			case "perk_staminup":
 			case "perk_double":
 			#ifdef PSP
+				tempe.effects = self.effects |  EF_FULLBRIGHT;
 				tempe.effects = self.effects |  EF_ORANGELIGHT;
 			#else 
 				tempe.effects = self.effects |  EF_ORANGE;
