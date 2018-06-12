@@ -49,6 +49,7 @@ entity activator;
 .float stamina;
 void() W_SprintStop;
 .float into_sprint;
+.float dive;
 .float damagetimer;
 .vector movement;
 

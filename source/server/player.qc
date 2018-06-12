@@ -134,7 +134,8 @@ void() PlayerJump =
 {
 	if (!(self.flags & FL_ONGROUND) 
 	    || !(self.flags & FL_JUMPRELEASED)
-		|| self.downed) {
+		|| self.downed 
+		|| self.dive ) {
 		return;
 	}
 			
@@ -222,11 +223,23 @@ void() PlayerPreThink =
 	}
 	
 
-	if(self.button2)
-	{
-		PlayerJump ();
-	}
-	else
+	if(self.button2) { //motolegacy (FIXME) -- prevent jumping unless standing
+		if (self.stance == 2)
+			PlayerJump();
+		else {
+			switch(self.stance) {
+				case 0:
+					new_ofs_z = self.view_ofs_z + 42;
+					self.stance = 2;
+					break;
+				case 1:
+					new_ofs_z = self.view_ofs_z + 24;
+					self.stance = 2;
+					break;
+				default: break;
+			}
+		}
+	} else
 		self.flags = self.flags | FL_JUMPRELEASED;
 };
 
@@ -489,6 +502,8 @@ void() PlayerSpawn =
 	self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
 	self.Flash_Size = GetWeaponFlash_Size(self.weapon);
 	#endif
+
+	self.perks = P_FLOP;
 	
 };
 

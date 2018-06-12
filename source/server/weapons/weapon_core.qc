@@ -1319,9 +1319,10 @@ void() dolphin_dive =		//naievil
 	self.stance = 0;
 
 	self.button2 = 0;
+	self.dive = 1;
 	W_SprintStop();
 
-	//self.oldz = self.origin_z;
+	self.oldz = self.origin_z;
 }
 
 
@@ -1341,6 +1342,8 @@ void () Impulse_Functions =
 			if (!checkMovement(forward))
 				return;
 			#endif
+			if (self.dive)
+				return;
 			switch(self.stance) {
 				case 0:
 					new_ofs_z = self.view_ofs_z + 42;
@@ -1536,6 +1539,17 @@ void() CheckPlayer =
 	/* Check for player push end */
 	
 	if (!self.button2 && self.flags & FL_ONGROUND) {
+		if (self.dive) {
+			if (self.perks & P_FLOP && fabs(self.oldz - self.origin_z) > 90) {
+				sound (self, CHAN_WEAPON, "sounds/weapons/grenade/explode.wav", 1, ATTN_NORM);	
+				DamgageExplode (self, self, 225, 75, 128);
+				#ifndef PSP
+				te_explosionquad(self.origin);
+				#endif
+			}
+			self.dive = 0;
+		}
+
 		if (fabs(self.oldz - self.origin_z) > 90 && !(self.perks & P_FLOP)) {
 			DamageHandler (self, other, 50, S_ZOMBIE);		
 		}
