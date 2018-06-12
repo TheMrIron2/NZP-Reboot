@@ -208,11 +208,15 @@ void() touch_perk =
 
 void() setup_perk =
 {
+	#ifndef PSP
+	self.effects = EF_FULLBRIGHT; //motolegacy -- perk models look better in fullbright
+	#endif
+
 	if (find (world, classname, "power_switch"))
 	{
-		if (self.classname == "perk_revive" && !coop && !deathmatch)
+		if (self.classname == "perk_revive" && !coop && !deathmatch) {
 			self.effects = self.effects | EF_BLUE;
-		else
+		} else
 			self.requirespower = true;
 	}
 	else
@@ -220,23 +224,23 @@ void() setup_perk =
 		switch(self.classname)
 		{
 			case "perk_revive": 
-				self.effects = EF_BLUE;
+				self.effects = self.effects |  EF_BLUE;
 				break;
 			case "perk_juggernog":
-				self.effects = EF_RED;
+				self.effects = self.effects |  EF_RED;
 				break;
 			case "perk_speed":
-				self.effects = EF_GREEN;
+				self.effects = self.effects |  EF_GREEN;
 				break;
 			case "perk_flopper":
-				self.effects = EF_PURPLELIGHT;
+				self.effects = self.effects |  EF_PURPLELIGHT;
 				break;
 			case "perk_staminup":
 			case "perk_double":
 			#ifdef PSP
-				self.effects = EF_ORANGELIGHT;
+				self.effects = self.effects |  EF_ORANGELIGHT;
 			#else 
-				self.effects = EF_ORANGE;
+				self.effects = self.effects |  EF_ORANGE;
 			#endif
 				break;
 			default: break;
@@ -352,23 +356,23 @@ void() Turn_Lights =
 	{
 		switch(tempe.classname) {
 			case "perk_revive": 
-				tempe.effects = EF_BLUE;
+				tempe.effects = self.effects |  EF_BLUE;
 				break;
 			case "perk_juggernog":
-				tempe.effects = EF_RED;
+				tempe.effects = self.effects |  EF_RED;
 				break;
 			case "perk_speed":
-				tempe.effects = EF_GREEN;
+				tempe.effects = self.effects |  EF_GREEN;
 				break;
 			case "perk_flopper":
-				tempe.effects = EF_PURPLELIGHT;
+				tempe.effects = self.effects |  EF_PURPLELIGHT;
 				break;
 			case "perk_staminup":
 			case "perk_double":
 			#ifdef PSP
-				tempe.effects = EF_ORANGELIGHT;
+				tempe.effects = self.effects |  EF_ORANGELIGHT;
 			#else 
-				tempe.effects = EF_ORANGE;
+				tempe.effects = self.effects |  EF_ORANGE;
 			#endif
 				break;
 			default: break;
