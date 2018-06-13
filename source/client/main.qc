@@ -656,8 +656,8 @@ noref void() CSQC_Parse_Event =
 				if(ads == 1)
 				{  
 					// FIXME: naievil -- need ADS fix!!!
-					//local vector adsoffset = GetWeaponADSPos(weapon);
-					//muzzlepos += adsoffset;
+					local vector adsoffset = GetWeaponADSPos(weapon);
+					muzzlepos = vmodel_currentpos;
 				}
 
 				if (IsPapWeapon(getstatf(STAT_ACTIVEWEAPON)))				

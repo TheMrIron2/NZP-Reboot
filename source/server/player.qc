@@ -224,6 +224,9 @@ void() PlayerPreThink =
 	
 
 	if(self.button2) { //motolegacy (FIXME) -- prevent jumping unless standing
+		if (self.downed)
+			return;
+			
 		if (self.stance == 2)
 			PlayerJump();
 		else {

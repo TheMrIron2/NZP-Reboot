@@ -169,7 +169,18 @@ void() GetDown =
 	
 	playdown();
 	
-	self.view_ofs = '0 0 -15';
+	switch(self.stance) {
+		case 2:
+			new_ofs_z = self.view_ofs_z - 42;
+			self.stance = 0;
+			break;
+		case 1:
+			new_ofs_z = self.view_ofs_z - 24;
+			self.stance = 0;
+			break;
+		default: break;
+	}
+
 	self.velocity = '-80 0 -80';           			// Stop any old movement
 	self.zoom = 0;
 	self.downed = true;
@@ -247,7 +258,8 @@ void () GetUp =
 	
 	playgetup();				// animation
 	
-	self.view_ofs = VEC_VIEW_OFS;
+	new_ofs_z = self.view_ofs_z + 42;
+	self.stance = 2;
 	self.health = 100;
 	self.downedloop = 0;		// used for death timing vs endgame
 	self.downed = 0;
