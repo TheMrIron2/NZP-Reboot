@@ -659,8 +659,11 @@ noref void() CSQC_Parse_Event =
 					//local vector adsoffset = GetWeaponADSPos(weapon);
 					//muzzlepos += adsoffset;
 				}
-								
-				pointparticles(particleeffectnum("muzzle.muzzle_part0"), muzzlepos, norm*24, 1);
+
+				if (IsPapWeapon(getstatf(STAT_ACTIVEWEAPON)))				
+					pointparticles(particleeffectnum("muzzle.muzzle_pap_part0"), muzzlepos, norm*24, 1);
+				else
+					pointparticles(particleeffectnum("muzzle.muzzle_part0"), muzzlepos, norm*24, 1);
 				
 				tracercounter += 1;
 				if(tracercounter == 3)
