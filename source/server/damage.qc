@@ -136,7 +136,9 @@ void() EndGameSetup =
 	self.perks = 0;
 	self.isspec = true;
 	SetPerk(self, self.perks);
-	SwitchWeapon(0);		
+	SwitchWeapon(0);	
+	addmoney(self, -self.points, 0);
+	addmoney(self, self.score, 0);	
     return;
 }
 

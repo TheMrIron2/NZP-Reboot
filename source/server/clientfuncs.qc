@@ -216,10 +216,14 @@ void(entity person, float expamt , float doublepoint) addmoney =
 	if (person.classname != "player")
 		return;
 
-	if (expamt > 0 && doublepoint == TRUE && x2_finished> time)
+	if (expamt > 0 && doublepoint == TRUE && x2_finished> time) {
 		person.points = person.points + expamt*2;
-	else
+		person.score += expamt*2;
+	} else {
+		if (expamt > 0)
+			person.score += expamt;
 		person.points = person.points + expamt;
+	}
 		
 	UpdatePlayerPoints(person.playernum, person.points, person.netname, person);
 };
