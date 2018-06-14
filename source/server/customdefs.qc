@@ -27,10 +27,13 @@ vector new_ofs;
 
 //money
 .float points;
-.float score;
 .float cost;
 .float cost2;
 void(entity person, float expamt , float doublepoint) addmoney;
+
+//stats
+.float score;
+.float kills;
 
 //doors
 .float state;

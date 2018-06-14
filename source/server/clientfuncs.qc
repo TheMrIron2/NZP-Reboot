@@ -124,7 +124,7 @@ void(float broadcast_time, float type) BroadcastMessage =
 	#endif
 }
 
-void(float playernum, float points, string name, entity person) UpdatePlayerPoints =
+void(float playernum, float points, float kills, string name, entity person) UpdatePlayerPoints =
 {
 	#ifndef PSP
 	
@@ -133,6 +133,7 @@ void(float playernum, float points, string name, entity person) UpdatePlayerPoin
 		WriteByte(MSG_MULTICAST, EVENT_POINTUPDATE);
 		WriteByte(MSG_MULTICAST, playernum);
 		WriteLong(MSG_MULTICAST, points);
+		WriteLong(MSG_MULTICAST, kills);
 		WriteString(MSG_MULTICAST, name);
 		msg_entity = person;
 		multicast('0 0 0', MULTICAST_ONE);
@@ -142,6 +143,7 @@ void(float playernum, float points, string name, entity person) UpdatePlayerPoin
 		WriteByte(MSG_ALL, EVENT_POINTUPDATE);
 		WriteByte(MSG_ALL, playernum);
 		WriteLong(MSG_ALL, points);
+		WriteLong(MSG_ALL, kills);
 		WriteString(MSG_ALL, name);
 	}
 	
@@ -225,5 +227,5 @@ void(entity person, float expamt , float doublepoint) addmoney =
 		person.points = person.points + expamt;
 	}
 		
-	UpdatePlayerPoints(person.playernum, person.points, person.netname, person);
+	UpdatePlayerPoints(person.playernum, person.points, person.kills, person.netname, person);
 };

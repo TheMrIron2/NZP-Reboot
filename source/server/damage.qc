@@ -304,6 +304,7 @@ void(entity attacker, float d_style) DieHandler =
     }
 
     if (attacker.classname == "player") {
+		attacker.kills++;
         if (d_style == S_NORMAL) {
             addmoney(attacker, 60, true);
             total_powerup_points = total_powerup_points + 60;

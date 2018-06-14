@@ -946,7 +946,7 @@ void() HUD_Broadcast = {
 
 void() HUD_Scores =
 {
-	string subtext = "Name                             Score";
+	string subtext = "Name                Kills        Score";
 	float xback, i, x;
 	vector TEXTCOLOR = [1, 1, 1];
 	
@@ -972,7 +972,8 @@ void() HUD_Scores =
 			
 			print_width = stringwidth(ftos(playerpoints[i]), 0, [0.015*g_width, 0.015*g_width, 0]);
 			x = (g_width + (0.5*g_width) - print_width)/2;
-			drawstring([x,g_height*(5.75/12)+(i*g_width*0.03), 0], ftos(playerpoints[i]), [0.015*g_width, 0.015*g_width, 0], TEXTCOLOR, 1, 1); 
+			drawstring([x,g_height*(5.75/12)+(i*g_width*0.03), 0], ftos(playerpoints[i]), [0.015*g_width, 0.015*g_width, 0], TEXTCOLOR, 1, 1);
+			drawstring([x/1.36,g_height*(5.75/12)+(i*g_width*0.03), 0], ftos(playerkills[i]), [0.015*g_width, 0.015*g_width, 0], TEXTCOLOR, 1, 1); 
 			drawstring([xback,g_height*(5.75/12)+(i*g_width*0.03), 0], playernames[i], [0.015*g_width, 0.015*g_width, 0], TEXTCOLOR, 1, 1); 
 		}
 	}

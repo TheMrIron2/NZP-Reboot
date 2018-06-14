@@ -403,7 +403,7 @@ void() PollPlayerPoints =
 		}
 		
 		
-		UpdatePlayerPoints(i, pollent.points, pollent.netname, pollent);
+		UpdatePlayerPoints(i, pollent.points, pollent.kills, pollent.netname, pollent);
 	}
 }
 
