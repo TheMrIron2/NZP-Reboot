@@ -1,7 +1,7 @@
 //
 //	Player.qc - Various stuff done for the player, including per-frame functions like PlayerPreThink and PlayerPostThink, also client specific stuff like PutClientInServer etc.
 //
-
+void(vector where, float type) Spawn_Powerup;
 
 // player animations
 
@@ -506,6 +506,7 @@ void() PlayerSpawn =
 	self.Flash_Size = GetWeaponFlash_Size(self.weapon);
 	#endif
 
+	Spawn_Powerup(self.origin + '50 50 50', 1);
 };
 
 void() SpectatorSpawn =

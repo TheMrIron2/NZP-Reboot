@@ -50,6 +50,11 @@ float useprint_weapon;
 float useprint_cost;
 float useprint_time;
 
+string scrolltext;
+float stext;
+float scrollopacity;
+float scrollheight;
+
 float HUD_Change_time; 
 float Hitmark_time;
 float crosshair_spread_time;

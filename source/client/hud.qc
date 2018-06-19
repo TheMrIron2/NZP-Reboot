@@ -1023,6 +1023,20 @@ void() HUD_Fade =
 	}
 }
 
+void(float width, float height) HUD_ScrollText = {
+	local float print_width = stringwidth (scrolltext, 0, [0.015*width, 0.015*width, 0]);
+	local float x = (width - print_width)/2;
+
+	drawstring([x, scrollheight*height, 0], scrolltext, [0.015*width, 0.015*width, 0], [1, 1, 1], scrollopacity, 1); //low
+	if (scrollheight > 0.70) {
+		scrollheight -= 0.0002;
+		if (scrollopacity > 0)
+			scrollopacity -= 0.002;
+	} else {
+		stext = 0;
+	}
+}
+
 /*******************
 *     HUD Draw     *
 *******************/
@@ -1052,6 +1066,13 @@ void(float width, float height) HUD_Draw =
 		
 		if (Hitmark_time > time)
 			HUD_Hitmark();
+
+		if (stext) {
+			HUD_ScrollText(width, height);
+		} else {
+			scrollopacity = 1;
+			scrollheight = 0.80;
+		}
 	}
 	
 	// Only keep broadcast messages outside in case they are important

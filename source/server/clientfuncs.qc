@@ -179,6 +179,22 @@ void(entity who) UpdatePunchangle =		// not working
 }
 // NOT WORKING ^
 
+#ifndef PSP
+void(string msg, entity who) ScrollText = {
+	if (player_count == 0) {
+		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+		WriteByte(MSG_MULTICAST, EVENT_SCROLLTEXT);
+		WriteString(MSG_MULTICAST, msg);
+		msg_entity = who;
+		multicast('0 0 0', MULTICAST_ONE);
+	} else {
+		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
+		WriteByte(MSG_ALL, EVENT_SCROLLTEXT);
+		WriteString(MSG_ALL, msg);
+	}
+}
+#endif
+
 // *****************************************
 // Unrelated to engine, but custom functions
 // *****************************************

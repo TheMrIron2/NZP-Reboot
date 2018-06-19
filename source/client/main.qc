@@ -816,5 +816,9 @@ noref void() CSQC_Parse_Event =
 			setproperty(VF_ANGLES_X, camang_x);
 			//cprint(vtos(getproperty(VF_ANGLES)));
 			break;
+		case EVENT_SCROLLTEXT:
+			scrolltext = readstring();
+			stext = TRUE;
+			break;
 	}
 }
