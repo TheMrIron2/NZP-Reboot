@@ -505,8 +505,6 @@ void() PlayerSpawn =
 	self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
 	self.Flash_Size = GetWeaponFlash_Size(self.weapon);
 	#endif
-
-	Spawn_Powerup(self.origin + '50 50 50', 1);
 };
 
 void() SpectatorSpawn =
