@@ -799,7 +799,7 @@ float(float wep, float delaytype) getWeaponDelay =
 			if (delaytype == RELOAD)
 				return 2.5;
 			else if (delaytype == FIRE)
-				return 0.075;
+				return 0.2;
 		case W_BIATCH:
 			if (delaytype == RELOAD)
 				return 2.5;
@@ -1166,7 +1166,11 @@ float(float wep, float frametype) GetFrame =
 			switch (frametype)
 			{
 				case FIRE_START:
+				#ifdef PSP
 					return 1;
+				#else 
+					return 0;
+				#endif
 				case FIRE_END:
 					return 2;
 				case RELOAD_START:
