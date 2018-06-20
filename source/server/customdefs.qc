@@ -358,3 +358,5 @@ string world_fog;
 .string teddyremovetarget;
 
 .float oldz;		// used for fall damage that does not truly work correctly
+
+.float sprint_delay;

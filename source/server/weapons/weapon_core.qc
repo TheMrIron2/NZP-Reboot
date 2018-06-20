@@ -101,7 +101,8 @@ void W_SprintStart () {
 		self.new_anim2_stop ||
 		self.isBuying || 
 		self.downed ||
-		!(self.flags & FL_ONGROUND)) {
+		!(self.flags & FL_ONGROUND) || 
+		self.sprint_delay > time) {
 		return;
 	}
 		
@@ -117,6 +118,7 @@ void W_SprintStart () {
 		Set_W_Frame (startframe, endframe, 0, 0, SPRINT, ContinueRun, modelname, false, S_BOTH);
 	}
 
+	self.sprint_delay = time + 1;
 	self.sprinting = true;
 	self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
 }
