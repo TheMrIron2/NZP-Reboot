@@ -402,7 +402,6 @@ void() PollPlayerPoints =
 			break;
 		}
 		
-		
 		UpdatePlayerPoints(i, pollent.points, pollent.kills, pollent.netname, pollent);
 	}
 }
@@ -499,7 +498,7 @@ void() PlayerSpawn =
 	stuffcmd(self, "cl_gunx 8;cl_guny 16;cl_gunz 25\n");
 	SetRound(self, rounds);
 	self.viewzoom = 1;
-
+	self.weapon_animduration = getWeaponDelay(self.weapon, FIRE);
 	#else 
 	self.Weapon_Name = GetWeaponName(self.weapon);
 	self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);

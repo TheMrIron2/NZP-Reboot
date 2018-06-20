@@ -26,6 +26,115 @@ void() InitTrigger =
 	self.model = "";
 };
 
+#ifndef PSP
+entity last_act_trigger;
+void() trigger_activator_touch =
+{
+	other.cost = other.cost +1; //hack, we can only touch one of thease at the time
+	if (other.classname != "player" || last_act_trigger == self || other.cost > 1)
+		return;
+	last_act_trigger = self;
+
+	entity t;
+	float tempcount, temptotal,breakthis;
+	string tempstring;
+	temptotal = 0;
+	breakthis = 0;
+	tempcount = 1;
+	tempstring = "";
+	t = world;
+	do
+	{
+		t = find (t, classname, "spawn_zombie");
+		if (!t)
+		{
+			breakthis = 1;
+		}
+		if (t.classname == "spawn_zombie")
+		{
+			t.classname = "spawn_zombie_away";
+			/*if (cvar("developer"))
+				setmodel(t, "progs/player.mdl");*/
+		}
+	} while (!breakthis);
+	
+	if (self.target2)
+		tempcount =+ 1;
+	if (self.target3)
+		tempcount =+ 1;
+	if (self.target4)
+		tempcount =+ 1;
+	if (self.target5)
+		tempcount =+ 1;
+	if (self.target6)
+		tempcount =+ 1;
+	if (self.target7)
+		tempcount =+ 1;
+	if (self.target8)
+		tempcount =+ 1;
+	if (self.target2)
+		tempcount = tempcount + 1;
+	if (self.target3)
+		tempcount = tempcount + 1;
+	if (self.target4)
+		tempcount = tempcount + 1;
+	if (self.target5)
+		tempcount = tempcount + 1;
+	if (self.target6)
+		tempcount = tempcount + 1;
+	if (self.target7)
+		tempcount = tempcount + 1;
+	if (self.target8)
+		tempcount = tempcount + 1;
+
+	while(tempcount > temptotal)
+	{
+		temptotal = temptotal + 1;
+		if (temptotal == 1)
+			tempstring = self.target;
+		if (temptotal == 2)
+			tempstring = self.target2;
+		if (temptotal == 3)
+			tempstring = self.target3;
+		if (temptotal == 4)
+			tempstring = self.target4;
+		if (temptotal == 5)
+			tempstring = self.target5;
+		if (temptotal == 6)
+			tempstring = self.target6;
+		if (temptotal == 7)
+			tempstring = self.target7;
+		if (temptotal == 8)
+			tempstring = self.target8;
+		if (tempstring)
+		{
+			t = find (world, targetname, tempstring);
+			breakthis = 0;
+			while (!breakthis)
+			{
+				if (!t)
+				{
+					breakthis = true;
+				}
+				if (t.classname == "spawn_zombie_away")
+				{
+					t.classname = "spawn_zombie";
+					/*if (cvar("developer"))
+						setmodel(t, "progs/ai/zfull.mdl");*/
+				}
+				t = find (t, targetname, tempstring);
+			} 
+		}
+	}
+}
+
+void() trigger_activator =
+{
+	InitTrigger ();
+	self.touch = trigger_activator_touch;
+}
+#endif
+
 void() use_wall_weapon =
 {
 	if (self.enemy)

@@ -71,6 +71,9 @@ noref void() CSQC_WorldLoaded =
 	playerpoints[2] = -1;
 	playerpoints[3] = -1;
 	
+	// Dummy so that our other point particles work!
+	pointparticles(particleeffectnum("weapons.impact_decal"), '0 0 0', '0 0 0', 1);
+	pointparticles(particleeffectnum("muzzle.muzzle_part0"), '0 0 0', '0 0 0', 1);
 };
 
 // This is from COW lol!
@@ -624,7 +627,7 @@ noref void() CSQC_Parse_Event =
 	local float first = readbyte();
 
 	switch (first) {
-		case EVENT_PISTOLFIRE:
+		case EVENT_PISTOLFIRE:			
 			local float entnum, traceent;
 			local vector pos, norm;
 			entnum = readentitynum();
@@ -664,20 +667,6 @@ noref void() CSQC_Parse_Event =
 					pointparticles(particleeffectnum("muzzle.muzzle_pap_part0"), muzzlepos, norm*24, 1);
 				else
 					pointparticles(particleeffectnum("muzzle.muzzle_part0"), muzzlepos, norm*24, 1);
-				
-				tracercounter += 1;
-				if(tracercounter == 3)
-				{
-					//local entity tracer = spawn();
-					/*tracer.alpha = 1;
-					tracer.origin = muzzlepos;
-					tracer.targetpos = pos;
-					tracer.rate = 1/0.05;
-					tracer.angles = view_angles;
-					tracer.predraw = tracerthink;
-					tracer.drawmask = 1;*/
-				}
-
 			}
 			
 			if(traceent == 0)

@@ -799,7 +799,7 @@ float(float wep, float delaytype) getWeaponDelay =
 			if (delaytype == RELOAD)
 				return 2.5;
 			else if (delaytype == FIRE)
-				return 0.2;
+				return 0.185;
 		case W_BIATCH:
 			if (delaytype == RELOAD)
 				return 2.5;
