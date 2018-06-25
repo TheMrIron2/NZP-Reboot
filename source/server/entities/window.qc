@@ -23,9 +23,13 @@ void() screen_shake =
   else
     zoom_factor = 1;
 	
+	#ifdef PSP
     self.enemy.punchangle_y = r * 8 * zoom_factor;
     self.enemy.punchangle_x = (4 + (s * 4)) * zoom_factor;
-
+	#else
+	self.enemy.punchangle_y = r * 4 * zoom_factor;
+    self.enemy.punchangle_x = (4 + (s * 2)) * zoom_factor;
+	#endif
 };
 
 void() Window_repaired =

@@ -164,20 +164,51 @@ void(float newtime, float newtype, entity change) PromptLevelChange =
 	#endif
 }
 
-// naievil -- NOT WORKING!!!
-void(entity who) UpdatePunchangle =		// not working 
-{
+void(entity who) UpdatePunchangle =	
+{		
+
+	// naievil -- shit logic lol...but result looks clean as fuck...
 	#ifndef PSP
-	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
-	WriteByte(MSG_MULTICAST, EVENT_PUNCHANGLE);
-	WriteCoord(MSG_MULTICAST, who.punchangle_x);
-	WriteCoord(MSG_MULTICAST, who.punchangle_y);
-	WriteCoord(MSG_MULTICAST, who.punchangle_z);
-	msg_entity = who;
-	multicast('0 0 0', MULTICAST_ONE);
+	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
+	WriteByte(MSG_ONE, EVENT_PUNCHANGLE);
+	WriteCoord(MSG_ONE, who.punchangle_x);
+	WriteCoord(MSG_ONE, who.punchangle_y);
+	WriteCoord(MSG_ONE, who.punchangle_z);
+	
+	vector tempv = who.punchangle;
+		
+	if (fabs(who.punchangle_x) > 0.01) {
+		if (who.punchangle_x >= 0.05*tempv_x)
+			who.punchangle_x -= 0.05*tempv_x;
+		else if (who.punchangle_x <= -0.05*tempv_x)
+			who.punchangle_x -= 0.05*tempv_x;
+		else
+			who.punchangle_x = 0;
+	} else 
+		who.punchangle_x = 0;
+		
+	if (fabs(who.punchangle_y) > 0.01) {
+		if (who.punchangle_y >= 0.05*tempv_y)
+			who.punchangle_y -= 0.05*tempv_y;
+		else if (who.punchangle_y <= -0.05*tempv_y)
+			who.punchangle_y -= 0.05*tempv_y;
+		else 
+			who.punchangle_y = 0;
+	} else 
+		who.punchangle_y = 0;
+		
+	if (fabs(who.punchangle_z) > 0.01) {
+		if (who.punchangle_z >= 0.05*tempv_z)
+			who.punchangle_z -= 0.05*tempv_z;
+		else if (who.punchangle_z <= -0.05*tempv_z)
+			who.punchangle_z -= 0.05*tempv_z;
+		else 
+			who.punchangle_z = 0;
+	} else 
+		who.punchangle_z = 0;
+		
 	#endif
 }
-// NOT WORKING ^
 
 #ifndef PSP
 void(string msg, entity who) ScrollText = {

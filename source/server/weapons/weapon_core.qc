@@ -877,6 +877,13 @@ void(float side) W_Fire =
 	//TEMPORARY
 	#ifdef PSP
 	self.effects = self.effects | EF_MUZZLEFLASH;
+	#else 
+	// psp takes care of this in engine
+	vector Wep_Recoil;
+	Wep_Recoil = GetWeaponRecoil(self.weapon)*0.5;
+	self.punchangle_x = Wep_Recoil_x;
+	self.punchangle_y = Wep_Recoil_y;
+	self.punchangle_z = Wep_Recoil_z;
 	#endif
 }
 
@@ -898,7 +905,7 @@ void () W_Knife =
 	float	r;
 	vector	org;
 	float hit = false;
-	
+		
 	if (self.sprinting) {
 		W_SprintStop();
 	}
@@ -1575,8 +1582,10 @@ void () Weapon_Logic =
 		self.weapon2model = "";
 		self.weaponmodel = "";
 	}
+	#else 
+	UpdatePunchangle(self);
 	#endif
-	
+		
 	if (IsDualWeapon(self.weapon)) { 
 		if (self.button0) {
 			W_Fire(S_LEFT);

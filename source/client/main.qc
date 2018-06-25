@@ -798,12 +798,6 @@ noref void() CSQC_Parse_Event =
 			changetest_x = readcoord();
 			changetest_y = readcoord();
 			changetest_z = readcoord();
-			
-			camang_x += changetest_x;
-			camang_y += changetest_y;
-			camang_z += changetest_z;
-			setproperty(VF_ANGLES_X, camang_x);
-			//cprint(vtos(getproperty(VF_ANGLES)));
 			break;
 		case EVENT_SCROLLTEXT:
 			scrolltext = readstring();
