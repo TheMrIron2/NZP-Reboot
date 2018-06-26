@@ -70,7 +70,7 @@ void() playrun31 		=[	31,		playrun32		] {self.frame = 29;}
 void() playrun32 		=[	32,		playrun33		] {self.frame = 30;}
 void() playrun33 		=[	33,		playrun33		] {self.frame = 31;}
 //
-void() playwalk		=[   1,     playwalk1		] {if (self.velocity) { self.frame = 0; }}
+void() playwalk		    =[   1,     playwalk1		] {if (self.velocity) { self.frame = 0; }}
 void() playwalk1		=[   2,     playwalk2		] {if (self.velocity) { self.frame = 1; }}
 void() playwalk2		=[   3,     playwalk3		] {if (self.velocity) { self.frame = 2; }}
 void() playwalk3		=[   4,     playwalk4		] {if (self.velocity) { self.frame = 3; }}
@@ -159,6 +159,9 @@ void() PlayerPreThink =
 				self.viewzoom -= 0.015;
 			else if (self.viewzoom < 0.9)
 				self.viewzoom = 0.9;
+				
+			// viewbob when running 
+			self.punchangle_x = 1*sin(time*15);
 		#endif		
 			playrun1();
 			self.maxspeed *= 1.66;
