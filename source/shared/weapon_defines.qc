@@ -2386,6 +2386,15 @@ float(float wep)  EqualPapWeapon =
 
 void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeaponSound =
 {
+	if (anim_style == KNIFE) {
+		if (curweaponframe == 6) {
+			self.punchangle_x = -2;
+			self.punchangle_y = -5;	
+		} else if (curweaponframe == 7) {
+			self.punchangle_x = 5;
+			self.punchangle_y = 10;
+		}
+	}
 	if (anim_style == FIRE)
 	{
 		if (wep == W_KAR || wep == W_ARMAGEDDON || wep == W_KAR_SCOPE || wep == W_HEADCRACKER)
