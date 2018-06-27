@@ -97,6 +97,7 @@ void() playgetup10		=[	11,		playgetup10		] {self.frame = 48;}
 #define backward 	1
 #define left 		2
 #define right 		3
+#define all_move    -1
 float(float dir) checkMovement =
 {
 	string a = vtos(self.movement);
@@ -121,6 +122,10 @@ float(float dir) checkMovement =
 		break;
 		case left:
 			if (y < 0)
+				return 1;
+		break;
+		case all_move:
+			if (x || y)
 				return 1;
 		break;
 		default:
@@ -148,7 +153,6 @@ void() PlayerJump =
 
 void() PlayerPreThink =
 {
-
 	if (self.downed) {
 		self.maxspeed = 30;
 	} else {
@@ -171,6 +175,9 @@ void() PlayerPreThink =
 				self.viewzoom += 0.015;
 			else 
 				self.viewzoom = 1;
+				
+			if (checkMovement(-1))
+				self.punchangle_x = 0.25*sin(time*15);		
 		#endif
 		} else if (self.zoom == 1) {
 			self.maxspeed *= 0.5;
@@ -253,7 +260,7 @@ void() PlayerPostThink =
 {
 	if(self.isspec)
 		return;
-	
+			
 	//landsound
 	if((self.oldvelocity_z < -10) && (self.flags & FL_ONGROUND))
 	{
