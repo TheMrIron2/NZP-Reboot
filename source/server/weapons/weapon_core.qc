@@ -1585,7 +1585,7 @@ void () Weapon_Logic =
 	#else 
 	UpdatePunchangle(self);
 	#endif
-		
+			
 	if (IsDualWeapon(self.weapon)) { 
 		if (self.button0) {
 			W_Fire(S_LEFT);
