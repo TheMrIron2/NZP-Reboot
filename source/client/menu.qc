@@ -34,12 +34,14 @@ void() menu_settings =
 {
 	in_menu = MENU_SETTINGS;
 	time_in_menu = 0;
+	localcmd("menu_options\n");
 };
 
 void() menu_settings2 =
 {
 	in_menu = MENU_IGS;
 	time_in_menu = 0;
+	localcmd("menu_options\n");
 }
 
 void() menu_about =
