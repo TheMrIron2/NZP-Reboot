@@ -100,11 +100,17 @@ void() HUD_AmmoString =
 /*******************
 *    HUD_Points    *
 *******************/
+float changeam[10];
+string finalam[10];
+void(float amount) RegisterPointChange = //FIXME
+{
+	changeam[1] = amount;
+}
 
 void(float width, float height) HUD_Points =
 {
 	local float pointlength = 0, increm = 10, i = 0;
-	vector TEXTCOLOR;
+	vector TEXTCOLOR, POINTCOLOR;
 	
 	for (i = 3; i >= 0; i = i - 1)
 	{
@@ -122,6 +128,15 @@ void(float width, float height) HUD_Points =
 			pointlength = strlen(ftos(playerpoints[i]));
 			drawpic([0.8*width,0.70*height - (.061*height*i),0], "gfx/hud/moneyback.tga", [0.2*width, 0.07*height, 0], [1,1,1], 1); 
 			drawstring([.9414*width - pointlength*20*width/1024, 0.715*height - 0.06*height*i, 0], ftos(playerpoints[i]), [0.022*width, 0.022*width, 0], TEXTCOLOR, 1, 1); 
+			if (changeam[1] > 0) {
+				POINTCOLOR = TEXT_ORANGE;
+				finalam[1] = strcat("+", ftos(changeam[1]));
+			} else {
+				POINTCOLOR = [1, 0, 0];
+				finalam[1] = ftos(changeam[1]);
+			}
+			//if (changeam[1] != 0)
+				//drawstring([.2*width - pointlength*20*width/1024, 0.715*height - 0.06*height*i, 0], finalam[1], [0.015*width, 0.015*width, 0], POINTCOLOR, 1, 1); 
 		}
 		else {
 			pointlength = strlen(ftos(playerpoints[i]));
