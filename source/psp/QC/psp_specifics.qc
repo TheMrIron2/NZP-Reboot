@@ -1,4 +1,5 @@
 void() Do_Zombie_A = {};
+void() func_door_nzp;
 
 void () CL_SendWeaponFire =
 {
@@ -26,7 +27,7 @@ void() PutClientInServer;
 void() InitRounds;
 void() Soft_Restart = 
 {
-	entity who, oldself;
+	entity who, oldself, doors;
 	self = find(world,classname,"player");
 	oldself = self;
 	
@@ -42,6 +43,17 @@ void() Soft_Restart =
 		
 		who = find(who,classname,"ai_zombie");
 	}
+
+	doors = find(world, classname, "door_open");
+	while (doors != world) {
+		doors.state = doors.oldstate;
+		doors.origin = doors.oldorigin;
+		setmodel(doors, doors.oldmodel);
+		doors.think = func_door_nzp;
+		doors.nextthink = time + 0.1;
+		doors = find(world, classname, "door_open");
+	}
+
 	self = oldself;
 	self.downed = 0;
 	game_over = false;

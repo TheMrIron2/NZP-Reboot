@@ -224,6 +224,26 @@ void(string msg, entity who) ScrollText = {
 		WriteString(MSG_ALL, msg);
 	}
 }
+
+void(string chaptertitle, string location, string date, string person, entity who) WorldText = {
+	if (player_count == 0) {
+		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+		WriteByte(MSG_MULTICAST, EVENT_WORLDDATA);
+		WriteString(MSG_MULTICAST, chaptertitle);
+		WriteString(MSG_MULTICAST, location);
+		WriteString(MSG_MULTICAST, date);
+		WriteString(MSG_MULTICAST, person);
+		msg_entity = who;
+		multicast('0 0 0', MULTICAST_ONE);
+	} else {
+		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
+		WriteByte(MSG_ALL, EVENT_WORLDDATA);
+		WriteString(MSG_ALL, chaptertitle);
+		WriteString(MSG_ALL, location);
+		WriteString(MSG_ALL, date);
+		WriteString(MSG_ALL, person);
+	}
+}
 #endif
 
 // *****************************************

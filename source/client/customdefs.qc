@@ -98,3 +98,9 @@ float fade_time;
 float fade_type;
 
 vector camang;		// used for punches
+
+//world text
+string chaptertitle;
+string location;
+string date;
+string person;

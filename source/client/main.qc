@@ -803,5 +803,14 @@ noref void() CSQC_Parse_Event =
 			scrolltext = readstring();
 			stext = TRUE;
 			break;
+		case EVENT_WORLDDATA:
+			chaptertitle = readstring();
+			location = readstring();
+			date = readstring();
+			person = readstring();
+
+			if (chaptertitle == "")
+				chaptertitle = "'Nazi Zombies'";
+			break;
 	}
 }

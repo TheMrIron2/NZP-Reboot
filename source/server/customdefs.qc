@@ -360,3 +360,14 @@ string world_fog;
 .float oldz;		// used for fall damage that does not truly work correctly
 
 .float sprint_delay;
+
+//soft restart stuff for doors
+.string oldmodel;
+.float oldstate;
+.float state;
+
+//world
+.string chaptertitle;
+.string location;
+.string date;
+.string person;

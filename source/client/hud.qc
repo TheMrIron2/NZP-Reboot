@@ -166,6 +166,9 @@ int alphabling;
 float endroundchange;
 float round_center_x;
 float round_center_y;
+//motolegacy -- 'round' text
+float pwidth;
+float rcolor, rinit, ralpha, localpha;
 
 void(float width, float height) HUD_Rounds =
 {	
@@ -202,9 +205,41 @@ void(float width, float height) HUD_Rounds =
 	sb_round_num[8] = "gfx/hud/r_num8.tga";
 	sb_round_num[9] = "gfx/hud/r_num9.tga";
 
+	if (rounds_change == 1 || rounds_change == 2) {
+		if (!rinit) {
+			rcolor = rinit = 1;
+			ralpha = 1;
+		}
+
+		pwidth = (width - stringwidth("Round", 0, [0.030*width, 0.030*width, 0]))/2;
+		drawstring([pwidth, 0.35*height, 0], "Round", [0.030*width, 0.030*width, 0], [1, rcolor, rcolor], ralpha, 1);
+
+		rcolor -= 0.0008;
+		if (rcolor < 0) {
+			rcolor = 0;
+			ralpha -= 0.0008;
+			if (ralpha > 0) {
+				localpha += 0.005;
+				if (localpha > 1)
+					localpha = 1;
+			}
+			if (ralpha < 0) {
+				ralpha = 0;
+				localpha -= 0.005;
+				if (localpha < 0)
+					localpha = 0;
+			}
+		}
+
+		drawstring([0.01*width, 0.66*height, 0], chaptertitle, [0.015*width, 0.015*width, 0], [1, 1, 1], localpha, 1);
+		drawstring([0.01*width, 0.69*height, 0], location, [0.015*width, 0.015*width, 0], [1, 1, 1], localpha, 1);
+		drawstring([0.01*width, 0.72*height, 0], date, [0.015*width, 0.015*width, 0], [1, 1, 1], localpha, 1);
+		drawstring([0.01*width, 0.75*height, 0], person, [0.015*width, 0.015*width, 0], [1, 1, 1], localpha, 1);
+	}
+
 	if (rounds_change == 1)//this is the rounds icon at the middle of the screen
-	{		
-		alphabling = alphabling + 15;
+	{
+		alphabling = alphabling + 1;
 
 		if (alphabling < 0)
 			alphabling = 0;
@@ -215,7 +250,6 @@ void(float width, float height) HUD_Rounds =
 		round_center_y = (g_height - (48*g_height/272)) /2;
 		
 		drawpic([round_center_x,round_center_y,0], sb_round[0], [roundwidth, roundheight, 1], [107/255,1/255,0], alphabling/255);
-
 	}
 	else if (rounds_change == 2)//this is the rounds icon moving from middle
 	{

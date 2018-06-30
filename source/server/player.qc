@@ -514,6 +514,7 @@ void() PlayerSpawn =
 	SetRound(self, rounds);
 	self.viewzoom = 1;
 	self.weapon_animduration = getWeaponDelay(self.weapon, FIRE);
+	WorldText(world.chaptertitle, world.location, world.date, world.person, self);
 	#else 
 	self.Weapon_Name = GetWeaponName(self.weapon);
 	self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);

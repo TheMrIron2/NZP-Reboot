@@ -36,8 +36,6 @@ string string_null;
 .float attack_delay;
 .float lip;
 
-.float		state;
-
 void() print_need_power =
 {
 	if(other.classname == "player" && !other.downed)
@@ -83,8 +81,8 @@ void() door_hit_top =
 	self.state = STATE_TOP;
 	if ((self.classname == "door_nzp_cost" || self.classname == "door_nzp" || self.classname == "door_open") && (!(self.spawnflags & 128)))
 	{
-		remove (self.owner.trigger_field);
-		remove(self);
+		//remove (self.owner.trigger_field); //moto - what does this do lol
+		setmodel(self, "");
 		return;//so we dont have to reopen doors
 	}
 	if (self.spawnflags & DOOR_TOGGLE)
@@ -102,7 +100,7 @@ void() door_go_down =
 {
 	if ((self.classname == "door_nzp_cost" || self.classname == "door_nzp" || self.classname == "door_open") && (!(self.spawnflags & 128)))
 	{
-		remove(self);
+		setmodel(self, "");
 		return;//so we dont have to reopen doors
 	}
 	if (self.max_health)
@@ -395,7 +393,6 @@ float (entity e1, entity e2) EntitiesTouching =
 	return TRUE;
 };
 
-
 /*
 =============
 LinkDoors
@@ -475,7 +472,6 @@ void() LinkDoors =
 				cmaxs_z = t.maxs_z;
 		}
 	} while (1 );
-
 };
 
 /*
@@ -573,7 +569,10 @@ void() func_door_nzp =
 	self.max_health = self.health;
 	self.solid = SOLID_BSP;
 	self.movetype = MOVETYPE_PUSH;
-	setorigin (self, self.origin);	
+	self.oldmodel = self.model;
+	self.oldorigin = self.origin;
+	self.oldstate = self.state;
+	setorigin (self, self.origin);
 	setmodel (self, self.model);
 
 	self.blocked = door_blocked;
