@@ -23,6 +23,7 @@ float player_count;
 entity local_client;
 .float stance;
 .float stancereset;
+.float changestance;
 vector new_ofs;
 
 //money

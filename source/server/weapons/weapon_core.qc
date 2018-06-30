@@ -1270,7 +1270,7 @@ void() CheckButtonOne = {if (self.weaponnum == 1){W_PutOut();}}		// weapon switc
 void() CheckButtonTwo = {if (self.weaponnum == 0) {W_PutOut();}}	// weapon switch to one if 2
 
 void() Change_Stance = {
-	if (self.downed)
+	if (self.downed || !(self.flags & FL_ONGROUND) || self.changestance == true)
 		return;
 	switch(self.stance) {
 		case 2: 
@@ -1480,9 +1480,13 @@ void() CheckPlayer =
 	CheckRevive(self);
 	
 	if (self.view_ofs_z > new_ofs_z) {
+			self.changestance = true;
 			self.view_ofs_z = self.view_ofs_z - 1.5;
 	} else if (self.view_ofs_z < new_ofs_z) {
+			self.changestance = true;
 			self.view_ofs_z = self.view_ofs_z + 1.5;
+	} else {
+		self.changestance = false;
 	}
 	
 	/* Check player push start */
