@@ -60,7 +60,7 @@ void() W_AimOut =
 	    self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR) {
 		ReturnWeaponModel();
 	}
-	
+		
 	#ifdef PSP
 	self.zoom = 0;
 	#endif
@@ -1634,10 +1634,13 @@ void () Weapon_Logic =
 			if (self.weapon == W_KAR_SCOPE   || self.weapon == W_PTRS ||
 				self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR) {
 				if (self.viewzoom == 0.5) {
-					W_AimOut();
-				} else  {
-					self.viewzoom += 0.055;
-					}
+					self.viewzoom += 0.05;
+					ReturnWeaponModel();
+				} else {
+					UpdateVmodel(self.weaponmodel, GetWepSkin(self.weapon));
+					UpdateV2model(self.weapon2model, 0);
+					self.viewzoom += 0.05;
+				}
 			} else {
 				if (self.viewzoom == 0.9) {
 					W_AimOut();
