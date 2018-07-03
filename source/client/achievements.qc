@@ -14,6 +14,9 @@ void() Achievement_Init = {
     achievementname[2] = "Go? Hell No...";
     achievementdesc[2] = "Reach Round 15.";
     achievementimg[2] = strcat(achievementdir, "go.tga");
+    achievementname[3] = "Where Did Legs Go?";
+    achievementdesc[3] = "Turn a zombie into a crawler.";
+    achievementimg[3] = strcat(achievementdir, "legs.tga");
 
     //unlock the achievements that we already have
     local float file;
@@ -25,6 +28,8 @@ void() Achievement_Init = {
     achievementunlocked[1] = stof(val);
     val = fgets(file);
     achievementunlocked[2] = stof(val);
+    val = fgets(file);
+    achievementunlocked[3] = stof(val);
     fclose(file);
 }
 
@@ -44,6 +49,10 @@ void(float ach) Unlock_Achievement = {
     else
         fputs(file, "0\n");
     if (achievementunlocked[2])
+        fputs(file, "1\n");
+    else
+        fputs(file, "0\n");
+    if (achievementunlocked[3])
         fputs(file, "1\n");
     else
         fputs(file, "0\n");

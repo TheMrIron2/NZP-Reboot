@@ -247,8 +247,9 @@ void(string chaptertitle, string location, string date, string person, entity wh
 	}
 }
 
-void(float ach, entity who) GiveAchievement= {
-	if (player_count == 0) {
+//singe = only given to the player who did the action
+void(float ach, entity who, optional float single) GiveAchievement= {
+	if (player_count == 0 || single) {
 		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 		WriteByte(MSG_MULTICAST, EVENT_ACHIEVEMENT);
 		WriteByte(MSG_MULTICAST, ach);

@@ -81,7 +81,7 @@ float playerkills[4];           // player kill holders, player 1 points are inde
 string playernames[4]; 			// player name holders, player 1 name at index 0, player 2 at 1...
 float score_show;
 
-#define MAX_ACHIEVEMENTS    3
+#define MAX_ACHIEVEMENTS    4
 
 float activeachievement;
 float achievementunlocked[MAX_ACHIEVEMENTS];

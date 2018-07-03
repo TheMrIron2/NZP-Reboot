@@ -1,6 +1,9 @@
 //
 // damage.qc -- used for any sort of down, hit, etc that the player or entity experiences
 //
+#ifndef PSP
+void(float ach, entity who, optional float single) GiveAchievement;
+#endif
 
 void() EndGame_Restart = 
 {
@@ -331,7 +334,10 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 			{
 				if (victim.crawling != TRUE && !(victim.health <= 0) && crawler_num < 5 && victim.classname != "ai_dog")
 				{
-					makeCrawler(victim);	
+					makeCrawler(victim);
+					#ifndef PSP
+					GiveAchievement(3, attacker, 1);
+					#endif
 				}
 				else
 				{
