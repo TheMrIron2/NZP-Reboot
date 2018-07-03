@@ -246,6 +246,20 @@ void(string chaptertitle, string location, string date, string person, entity wh
 		WriteString(MSG_ALL, person);
 	}
 }
+
+void(float ach, entity who) GiveAchievement= {
+	if (player_count == 0) {
+		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+		WriteByte(MSG_MULTICAST, EVENT_ACHIEVEMENT);
+		WriteByte(MSG_MULTICAST, ach);
+		msg_entity = who;
+		multicast('0 0 0', MULTICAST_ONE);
+	} else {
+		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
+		WriteByte(MSG_ALL, EVENT_ACHIEVEMENT);
+		WriteByte(MSG_ALL, ach);
+	}
+}
 #endif
 
 // *****************************************

@@ -15,6 +15,7 @@ const float EVENT_BLACKOUT = 26;
 const float EVENT_PUNCHANGLE = 27;
 const float EVENT_SCROLLTEXT = 28;
 const float EVENT_WORLDDATA = 29;
+const float EVENT_ACHIEVEMENT = 30;
 
 //nzp weapon defines
 //id list

@@ -70,6 +70,8 @@ noref void() CSQC_WorldLoaded =
 	playerpoints[1] = -1;
 	playerpoints[2] = -1;
 	playerpoints[3] = -1;
+
+	Achievement_Init();
 	
 	// Dummy so that our other point particles work!
 	pointparticles(particleeffectnum("weapons.impact_decal"), '0 0 0', '0 0 0', 1);
@@ -812,6 +814,12 @@ noref void() CSQC_Parse_Event =
 
 			if (chaptertitle == "")
 				chaptertitle = "'Nazi Zombies'";
+			break;
+		case EVENT_ACHIEVEMENT:
+			local float ach = readbyte();
+			if (achievementunlocked[ach])
+				return;
+			Unlock_Achievement(ach);
 			break;
 	}
 }

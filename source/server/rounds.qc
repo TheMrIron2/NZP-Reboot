@@ -136,6 +136,30 @@ void() NewRound =
 			#endif
 		}
 	}
+	#ifdef PSP
+	//MotoLegacy -- achievements crash on psp..
+	/*if (rounds == 5)
+	{
+		WriteByte (MSG_ALL, 43);
+		WriteByte (MSG_ALL, 0);
+	}
+	if (rounds == 10)
+	{
+		WriteByte (MSG_ALL, 43);
+		WriteByte (MSG_ALL, 1);
+	}
+	if (rounds == 15)
+	{
+		WriteByte (MSG_ALL, 43);
+		WriteByte (MSG_ALL, 2);
+	}*/
+	#else
+	switch(rounds) {
+		case 5: GiveAchievement(0, pl1); break;
+		case 10: GiveAchievement(1, pl1); break;
+		case 15: GiveAchievement(2, pl1); break;
+	}
+	#endif
 }
 void() Round_Core =
 {

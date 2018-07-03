@@ -18,6 +18,7 @@ float coop;
 string mappath;
 .float playernum;
 float player_count;
+entity pl1;
 .string fog;		// used for hacking in changing fog from world.fog for legacy maps
 
 entity local_client;

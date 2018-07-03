@@ -498,8 +498,11 @@ void() PlayerSpawn =
 	
 	self.zoom = 1;			// This is to fix an aimin bug for the kar scope
 	
-	if (!self.playernum)
+	if (!self.playernum) {
 		self.playernum = player_count + 1;
+		if (self.playernum == 1)
+			pl1 = self;
+	}
 
 	if (rounds < 1) {
 		sound (self, CHAN_AUTO, "sounds/rounds/splash.wav", 1, ATTN_NONE);//temporarily here.
@@ -515,6 +518,7 @@ void() PlayerSpawn =
 	self.viewzoom = 1;
 	self.weapon_animduration = getWeaponDelay(self.weapon, FIRE);
 	WorldText(world.chaptertitle, world.location, world.date, world.person, self);
+	GiveAchievement(1, pl1);
 	#else 
 	self.Weapon_Name = GetWeaponName(self.weapon);
 	self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);

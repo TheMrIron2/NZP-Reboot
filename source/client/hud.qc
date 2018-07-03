@@ -1086,6 +1086,52 @@ void(float width, float height) HUD_ScrollText = {
 	}
 }
 
+float achinit;
+float achheight;
+float achdheight;
+float achimgheight;
+float achtime;
+void(float width, float height) HUD_Achievements = {
+	if (activeachievement == -1)
+		return;
+
+	if (!achinit) {
+		achtime = 0;
+		achheight = -0.16;
+		achdheight = -0.13;
+		achimgheight = -0.164;
+		achinit = 1;
+	}
+
+	drawstring([0.2*width, achheight*height, 0], achievementname[activeachievement], [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+	drawstring([0.2*width, achdheight*height, 0], achievementdesc[activeachievement], [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+	drawpic([0.005*width,achimgheight*height,0], achievementimg[activeachievement], [150, 75, 0], [1,1,1], 1);
+
+	if (achtime <= 120) {
+		achheight += 0.0003;
+		achdheight += 0.0003;
+		achimgheight += 0.0003;
+	} else {
+		achheight -= 0.0003;
+		achdheight -= 0.0003;
+		achimgheight -= 0.0003;
+		if (achdheight <= -0.13) {
+			achinit = 0;
+			activeachievement = -1;
+		}
+	}
+
+	if (achdheight > 0.045) {
+		if (achtime <= 120) {
+			achheight = 0.015;
+			achdheight = 0.045;
+			achimgheight = 0.01;
+		}
+
+		achtime += 0.05;
+	}
+}
+
 /*******************
 *     HUD Draw     *
 *******************/
@@ -1102,6 +1148,7 @@ void(float width, float height) HUD_Draw =
 		HUD_Progressbar(width, height);
 		HUD_Powerups();
 		HUD_AmmoString();
+		HUD_Achievements(width, height);
 	
 		if (HUD_Change_time > time)
 		{

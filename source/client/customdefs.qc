@@ -81,6 +81,17 @@ float playerkills[4];           // player kill holders, player 1 points are inde
 string playernames[4]; 			// player name holders, player 1 name at index 0, player 2 at 1...
 float score_show;
 
+#define MAX_ACHIEVEMENTS    3
+
+float activeachievement;
+float achievementunlocked[MAX_ACHIEVEMENTS];
+string achievementdir = "gfx/hud/ach/";
+float achievementid[MAX_ACHIEVEMENTS];
+string achievementname[MAX_ACHIEVEMENTS];
+string achievementdesc[MAX_ACHIEVEMENTS];
+string achievementimg[MAX_ACHIEVEMENTS];
+
+
 float K_LEFTDOWN, K_RIGHTDOWN, K_BACKDOWN, K_FORWARDDOWN;
 
 #define 	P_JUG		1

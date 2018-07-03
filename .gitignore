@@ -17,6 +17,12 @@ pc/nzp/iplog.txt
 
 pc/nzp/ssqccore.txt
 
+pc/nzp/data/ach.dat
+
+psp/nzportable/nzp/progs.dat
+
+psp/nzportable/nzp/progs\.lno
+
 
 *.dat
 
