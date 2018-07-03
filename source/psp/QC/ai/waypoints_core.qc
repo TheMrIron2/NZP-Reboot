@@ -28,7 +28,7 @@ void () Waypoint_Functions =
 			break;
 	}
 	
-	if(self.button7 && !self.semi)
+	if(self.button8 && !self.semi)
 	{
 		self.semi = true;
 		Dual_Link_Waypoints();
@@ -39,7 +39,7 @@ void () Waypoint_Functions =
 		self.semi = true;
 	}
 	
-	if (self.button1 && !self.semiuse)
+	if (self.button7 && !self.semiuse)
 	{
 		Select_Waypoint();
 		self.semiuse = true;
@@ -61,7 +61,7 @@ void () Waypoint_Functions =
 		self.semiuse = true;
 	}
 	
-	if(!self.button0 && !self.button1 && !self.button4 && !self.button5 && !self.button6 && !self.button7)
+	if(!self.button0 && !self.button7 && !self.button4 && !self.button5 && !self.button6 && !self.button8)
 	{
 		self.semiuse = false;
 		self.semi = false;
@@ -70,7 +70,7 @@ void () Waypoint_Functions =
 	self.impulse = 0;
 };
 
-void () Waypoint_logic =
+void () Waypoint_Logic =
 {
 	Waypoint_Functions();
 };

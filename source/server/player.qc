@@ -693,6 +693,7 @@ void(string com) SV_ParseClientCommand =
 					#ifdef PSP
 					bprint(PRINT_HIGH, "Command not found in QC\n");
 					#endif
+					break;
 		}
 	}
 };

@@ -65,6 +65,5 @@ void() change_frame =
 
 #ifdef PSP
 float () spawn_a_dogA = {return 1;};
-void() Waypoint_Logic = {};
-void() LoadWaypointData = {};
+void LoadWaypointData() = {};
 #endif

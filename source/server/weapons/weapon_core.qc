@@ -1386,6 +1386,25 @@ void () Impulse_Functions =
 		case 111:
 			CheckButtonTwo();
 			break;		
+		case 100:
+			cvar_set("waypoint_mode", "1");
+			
+			local entity d;
+			d = find(world,classname,"door_nzp_cost");
+			while(d != world)
+			{
+				d.classname = "door_nzp";
+				d = find(d,classname,"door_nzp_cost");
+			}
+			d = find(world,classname,"door_open");
+			while(d != world)
+			{
+				d.classname = "door_nzp";
+				d = find(d,classname,"door_open");
+			}
+			
+			waypoint_mode = 1;
+			break;
 		default:
 			#ifndef PSP
 			bprint(PRINT_HIGH, "Unknown impulse: ", ftos(self.impulse));

@@ -10,6 +10,7 @@ void() main =
 }
 
 //called for each frame that QC runs
+float zombie_cleaned_w;
 void() StartFrame =
 {
 	deathmatch = cvar("deathmatch");
@@ -17,8 +18,58 @@ void() StartFrame =
 	framecount = framecount + 1;
 
 	if (waypoint_mode) {
-		return;
-	}
+		if (!zombie_cleaned_w) {
+				entity zent;
+				zent = find (world, classname, "ai_zombie");
+				while (zent)
+				{
+					/*
+					if (zent.head)
+						remove (zent.head);
+					if (zent.larm)
+						remove (zent.larm);
+					if (zent.rarm)
+						remove (zent.rarm);
+					*/
+					remove (zent);
+					zent = find (zent, classname, "ai_zombie");
+				}
+				zombie_cleaned_w = true;
+				
+				zent = find (world, classname, "waypoint");
+				while (zent)
+				{
+					if (zent.targetname)
+						setmodel(zent, "models/way/normal_way_door.spr");
+					else
+						setmodel(zent, "models/way/normal_way.spr");
+					zent = find (zent, classname, "waypoint");
+				}
+				zent = find (world, classname, "door_nzp_cost");
+				while (zent)
+				{
+					zent.solid = SOLID_NOT;
+					zent.touch = SUB_Null;
+					zent = find (zent, classname, "door_nzp_cost");
+				}
+				zent = find (world, classname, "door_nzp");
+				while (zent)
+				{
+					zent.solid = SOLID_NOT;
+					zent.touch = SUB_Null;
+					zent.solid = SOLID_NOT;
+					zent = find (zent, classname, "door_nzp");
+				}
+				zent = find (world, classname, "window");
+				while (zent)
+				{
+					zent.solid = SOLID_NOT;
+					zent.touch = SUB_Null;
+					zent = find (zent, classname, "window");
+				}
+			}
+			return;
+		}
 	
 	if (roundinit) {
 		Round_Core();
