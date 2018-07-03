@@ -518,7 +518,7 @@ void() PlayerSpawn =
 	self.viewzoom = 1;
 	self.weapon_animduration = getWeaponDelay(self.weapon, FIRE);
 	WorldText(world.chaptertitle, world.location, world.date, world.person, self);
-	GiveAchievement(1, pl1);
+	GiveAchievement(4, pl1);
 	#else 
 	self.Weapon_Name = GetWeaponName(self.weapon);
 	self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);

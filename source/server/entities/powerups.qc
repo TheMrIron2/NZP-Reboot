@@ -43,8 +43,10 @@ void() nuke =
 {
 	local entity oldself;
 	local entity who;
+	local float killcount;
 	oldself = self;
 	
+	killcount = 0;
 	
 	who = find(world,classname,"ai_zombie");
 	while(who != world)
@@ -54,10 +56,17 @@ void() nuke =
 			self = who;
 			self.th_die();
 			self = oldself;
+			killcount++;
 		}
 		
 		who = find(who,classname,"ai_zombie");
 	}
+
+	#ifndef PSP
+	if (killcount == 1) {
+		GiveAchievement(4, pl1);
+	}
+	#endif
 	
 	who = find(world,classname,"player");
 	while(who)
