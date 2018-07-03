@@ -18,7 +18,7 @@ void() StartFrame =
 	framecount = framecount + 1;
 
 	if (waypoint_mode) {
-		if (!zombie_cleaned_w) {
+		if (zombie_cleaned_w) {
 				entity zent;
 				zent = find (world, classname, "ai_zombie");
 				while (zent)
