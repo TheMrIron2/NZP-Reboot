@@ -127,7 +127,9 @@ void() door_go_up =
 	self.state = STATE_UP;
 	SUB_CalcMove (self.pos2, self.speed, door_hit_top);
 	
-	//Open_Waypoint(self.wayTarget);  // naievil (FIXME) waypoint system
+	#ifdef PSP
+	Open_Waypoint(self.wayTarget);
+	#endif
 	SUB_UseTargets();
 };
 
@@ -285,7 +287,7 @@ void() door_trigger_touch =
 		if(other.active_door != self.owner)
 		{
 			bprint(PRINT_HIGH, "Current Door for special waypoints set to ");
-			//bprint(PRINT_HIGH, self.owner.wayTarget);      // naiveil (FIXME)
+			bprint(PRINT_HIGH, self.owner.wayTarget);
 			bprint(PRINT_HIGH, "\n");                                          
 			other.active_door = self.owner;
 		}
