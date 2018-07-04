@@ -1,3 +1,5 @@
+float waypoint_action;
+
 void () Waypoint_Functions =
 {
 	switch (self.impulse)
@@ -32,32 +34,38 @@ void () Waypoint_Functions =
 	{
 		self.semi = true;
 		Dual_Link_Waypoints();
+		waypoint_action = waypoint_action + 1;
 	}
 	if (self.button0 && !self.semi)
 	{
 		Create_New_Waypoint();
+		waypoint_action = waypoint_action + 1;
 		self.semi = true;
 	}
 	
 	if (self.button7 && !self.semiuse)
 	{
 		Select_Waypoint();
+		waypoint_action = waypoint_action + 1;
 		self.semiuse = true;
 	}
 	
 	if(self.button4 && !self.semiuse)
 	{
 		self.semiuse = true;
+		waypoint_action = waypoint_action + 1;
 		Move_Waypoint();
 	}
 	if(self.button6 && !self.semiuse)
 	{
 		Remove_Waypoint ();
+		waypoint_action = waypoint_action + 1;
 		self.semiuse = true;
 	}
 	if(self.button5 && !self.semiuse)
 	{
 		Make_Special_Waypoint();
+		waypoint_action = waypoint_action + 1;
 		self.semiuse = true;
 	}
 	
@@ -72,5 +80,13 @@ void () Waypoint_Functions =
 
 void () Waypoint_Logic =
 {
+	if (waypoint_action > 20) {
+		if (cvar("autosave_waypoint"))
+			Save_Waypoints();
+		waypoint_action = 0;
+	}
+	
+	centerprint(self, ftos(waypoint_action));
+	
 	Waypoint_Functions();
 };

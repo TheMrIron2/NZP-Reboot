@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // these two are not intended to be set directly
 cvar_t	waypoint_mode = {"waypoint_mode", "0", false};// waypoint mode active
+cvar_t	autosave_waypoint = {"autosave_waypoint", "0", false};// waypoint mode active
 cvar_t	cl_name = {"_cl_name", "player", true};
 cvar_t  cl_truelightning = {"cl_truelightning", "1", true};
 cvar_t	cl_shownet = {"cl_shownet","0"};	// can be 0, 1, or 2
@@ -1026,6 +1027,7 @@ void CL_Init (void)
 //
 	Cvar_RegisterVariable (&cl_name);
 	Cvar_RegisterVariable (&waypoint_mode);
+	Cvar_RegisterVariable (&autosave_waypoint);
 	Cvar_RegisterVariable (&cl_upspeed);
 	Cvar_RegisterVariable (&cl_movespeedkey);
 	Cvar_RegisterVariable (&cl_yawspeed);
