@@ -85,8 +85,6 @@ void () Waypoint_Logic =
 			Save_Waypoints();
 		waypoint_action = 0;
 	}
-	
-	centerprint(self, ftos(waypoint_action));
-	
+		
 	Waypoint_Functions();
 };
