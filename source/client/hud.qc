@@ -1105,7 +1105,7 @@ void(float width, float height) HUD_Achievements = {
 
 	drawstring([0.2*width, achheight*height, 0], achievementname[activeachievement], [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
 	drawstring([0.2*width, achdheight*height, 0], achievementdesc[activeachievement], [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
-	drawpic([0.005*width,achimgheight*height,0], achievementimg[activeachievement], [150, 75, 0], [1,1,1], 1);
+	drawpic([0.005*width,achimgheight*height,0], achievementimg[activeachievement], [0.16*width, 0.08*width, 0], [1,1,1], 1);
 
 	if (achtime <= 120) {
 		achheight += 0.0003;

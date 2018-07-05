@@ -22,19 +22,27 @@ void() Achievement_Init = {
     achievementimg[4] = strcat(achievementdir, "nuke.tga");
 
     //unlock the achievements that we already have
-    local float file;
+    local float file, i;
     local string val;
     file = fopen("ach.dat", FILE_READ);
-    val = fgets(file);
-    achievementunlocked[0] = stof(val);
-    val = fgets(file);
-    achievementunlocked[1] = stof(val);
-    val = fgets(file);
-    achievementunlocked[2] = stof(val);
-    val = fgets(file);
-    achievementunlocked[3] = stof(val);
-    val = fgets(file);
-    achievementunlocked[4] = stof(val);
+
+    if (file == -1) {
+        fclose(file);
+        file = fopen("ach.dat", FILE_WRITE);
+
+        for (i = 0; i < MAX_ACHIEVEMENTS; i++) {
+            fputs(file, "0\n");
+        }
+
+        fclose(file);
+        file = fopen("ach.dat", FILE_READ);
+    }
+
+    for (i = 0; i < MAX_ACHIEVEMENTS; i++) {
+        val = fgets(file);
+        achievementunlocked[i] = stof(val);
+    }
+
     fclose(file);
 }
 
