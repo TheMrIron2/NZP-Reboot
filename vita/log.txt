@@ -1,0 +1,4 @@
+SV_ModelIndex: model progs/player.mdl not precached
+SZ_GetSpace: overflow without allowoverflow set (1 > 0)
+SZ_GetSpace: 1 is > full buffer size
+Couldn't load gfx/palette.lmp

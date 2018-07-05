@@ -1,6 +1,8 @@
 # Compiled Object files
 *conhistory.txt
 
+*.o
+
 pc/nzp/source/fteqcc\.log
 
 pc/nzp/qwprogs.lno
