@@ -815,8 +815,10 @@ void(float side) W_Fire =
 			} else {
 				spread = spread * 0.1;
 			}
-	} else if (self.zoom == 2)
+	} else if (self.zoom == 2) {
 		spread = spread * 0.05;
+	} else if (self.velocity || !(self.flags & FL_ONGROUND))
+		spread *= 2;
 
 	if (self.downed)
 		playdownfire();

@@ -882,7 +882,7 @@ float crosshair_offset_step;
 
 void() Draw_Crosshair =
 {
-	if (K_BACKDOWN || K_FORWARDDOWN || K_LEFTDOWN || K_RIGHTDOWN) {
+	if (K_BACKDOWN || K_FORWARDDOWN || K_LEFTDOWN || K_RIGHTDOWN || input_buttons == 2) {
 		croshhairmoving = 1;
 		
 		if (cur_spread >= CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON))) {
