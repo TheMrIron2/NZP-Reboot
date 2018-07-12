@@ -18,7 +18,7 @@ stacktrace {
 	}
 }
 globals 0 {
-"cltime" "164.288010"
+"cltime" "4.790000"
 "player_localentnum" "1"
 "maxclients" "32"
 "mapname" "unknown"

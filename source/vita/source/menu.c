@@ -483,7 +483,7 @@ void M_SinglePlayer_Key (int key)
 			key_dest = key_game;
 			Cbuf_AddText ("disconnect\n");	// Ch0wW: Disconnect all the time to reset original NetQuake behaviour.
 			Cbuf_AddText ("maxplayers 1\n");
-			Cbuf_AddText ("map ndu\n");
+			Cbuf_AddText ("map start\n");
 			break;
 
 		case 1:

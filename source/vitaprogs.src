@@ -3,3 +3,11 @@
 vita/QC/defs.qc
 vita/QC/main.qc
 vita/QC/dummys.qc
+
+shared/customdefs.qc
+shared/weapon_defines.qc
+server/customdefs.qc
+server/clientfuncs.qc
+
+psp/QC/ai/waypoints_func.qc
+psp/QC/ai/waypoints_core.qc

@@ -201,15 +201,16 @@ byte *W_ConvertWAD3Texture(miptex_t *tex)
 {
 	byte	*in, *data, *out, *pal;
 	int		d, p;
+	int image_width, image_height;
 
 	in		= (byte *)((int) tex + tex->offsets[0]);
-	data	= out = (byte *)malloc(tex->width * tex->height * 4);
+	data	= out = malloc(tex->width * tex->height * 4);
 
 	if (!data)
 		return NULL;
 
-	int image_width		= tex->width;
-	int image_height	= tex->height;
+	image_width		= tex->width;
+	image_height	= tex->height;
 	pal				= in + (((image_width * image_height) * 85) >> 6);
 	pal				+= 2;
 

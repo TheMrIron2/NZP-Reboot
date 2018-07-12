@@ -13,5 +13,4 @@ exec autoexec.cfg
 //
 stuffcmds
 
-// start demos if not allready running a server
-startdemos demo1 demo2 demo3
+map ndu

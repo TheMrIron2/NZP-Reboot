@@ -299,35 +299,6 @@ float	DAMAGE_NO				= 0;
 float	DAMAGE_YES				= 1;
 float	DAMAGE_AIM				= 2;
 
-// items
-float	IT_AXE					= 4096;
-float	IT_SHOTGUN				= 1;
-float	IT_SUPER_SHOTGUN		= 2;
-float	IT_NAILGUN				= 4;
-float	IT_SUPER_NAILGUN		= 8;
-float	IT_GRENADE_LAUNCHER		= 16;
-float	IT_ROCKET_LAUNCHER		= 32;
-float	IT_LIGHTNING			= 64;
-float	IT_EXTRA_WEAPON			= 128;
-
-float	IT_SHELLS				= 256;
-float	IT_NAILS				= 512;
-float	IT_ROCKETS				= 1024;
-float	IT_CELLS				= 2048;
-
-float	IT_ARMOR1				= 8192;
-float	IT_ARMOR2				= 16384;
-float	IT_ARMOR3				= 32768;
-float	IT_SUPERHEALTH			= 65536;
-
-float	IT_KEY1					= 131072;
-float	IT_KEY2					= 262144;
-
-float	IT_INVISIBILITY			= 524288;
-float	IT_INVULNERABILITY		= 1048576;
-float	IT_SUIT					= 2097152;
-float	IT_QUAD					= 4194304;
-
 // point content values
 
 float	CONTENT_EMPTY			= -1;
@@ -357,20 +328,6 @@ float	SVC_INTERMISSION	= 30;
 float	SVC_FINALE			= 31;
 float	SVC_CDTRACK			= 32;
 float	SVC_SELLSCREEN		= 33;
-
-
-float	TE_SPIKE		= 0;
-float	TE_SUPERSPIKE	= 1;
-float	TE_GUNSHOT		= 2;
-float	TE_EXPLOSION	= 3;
-float	TE_TAREXPLOSION	= 4;
-float	TE_LIGHTNING1	= 5;
-float	TE_LIGHTNING2	= 6;
-float	TE_WIZSPIKE		= 7;
-float	TE_KNIGHTSPIKE	= 8;
-float	TE_LIGHTNING3	= 9;
-float	TE_LAVASPLASH	= 10;
-float	TE_TELEPORT		= 11;
 
 // sound channels
 // channel 0 never willingly overrides
@@ -410,170 +367,6 @@ float	MSG_INIT		= 3;		// write to the init string
 //================================================
 
 //
-// globals
-//
-float	movedist;
-float	gameover;		// set when a rule exits
-
-string	string_null;	// null string, nothing should be held here
-float	empty_float;
-
-entity	newmis;			// launch_spike sets this after spawning it
-
-entity	activator;		// the entity that activated a trigger or brush
-
-entity	damage_attacker;	// set by T_Damage
-float	framecount;
-
-float		skill;
-
-//================================================
-
-//
-// world fields (FIXME: make globals)
-//
-.string		wad;
-.string 	map;
-.float		worldtype;	// 0=medieval 1=metal 2=base
-
-//================================================
-
-.string		killtarget;
-
-//
-// quakeed fields
-//
-.float		light_lev;		// not used by game, but parsed by light util
-.float		style;
-
-
-//
-// monster ai
-//
-.void()		th_stand;
-.void()		th_walk;
-.void()		th_run;
-.void()		th_missile;
-.void()		th_melee;
-.void(entity attacker, float damage)		th_pain;
-.void()		th_die;
-
-.entity		oldenemy;		// mad at this player before taking damage
-
-.float		speed;
-
-.float	lefty;
-
-.float	search_time;
-.float	attack_state;
-
-float	AS_STRAIGHT		= 1;
-float	AS_SLIDING		= 2;
-float	AS_MELEE		= 3;
-float	AS_MISSILE		= 4;
-
-//
-// player only fields
-//
-.float		walkframe;
-
-.float 		attack_finished;
-.float		pain_finished;
-
-.float		invincible_finished;
-.float		invisible_finished;
-.float		super_damage_finished;
-.float		radsuit_finished;
-
-.float		invincible_time, invincible_sound;
-.float		invisible_time, invisible_sound;
-.float		super_time, super_sound;
-.float		rad_time;
-.float		fly_sound;
-
-.float		axhitme;
-
-.float		show_hostile;	// set to time+0.2 whenever a client fires a
-							// weapon or takes damage.  Used to alert
-							// monsters that otherwise would let the player go
-.float		jump_flag;		// player jump flag
-.float		swim_flag;		// player swimming sound flag
-.float		air_finished;	// when time > air_finished, start drowning
-.float		bubble_count;	// keeps track of the number of bubbles
-.string		deathtype;		// keeps track of how the player died
-
-//
-// object stuff
-//
-.string		mdl;
-.vector		mangle;			// angle at start
-
-.vector		oldorigin;		// only used by secret door
-
-.float		t_length, t_width;
-
-
-//
-// doors, etc
-//
-.vector		dest, dest1, dest2;
-.float		wait;			// time from firing to restarting
-.float		delay;			// time from activation to firing
-.entity		trigger_field;	// door's trigger entity
-.string		noise4;
-
-//
-// monsters
-//
-.float 		pausetime;
-.entity 	movetarget;
-
-
-//
-// doors
-//
-.float		aflag;
-.float		dmg;			// damage done by door when hit
-	
-//
-// misc
-//
-.float		cnt; 			// misc flag
-	
-//
-// subs
-//
-.void()		think1;
-.vector		finaldest, finalangle;
-
-//
-// triggers
-//
-.float		count;			// for counting triggers
-
-
-//
-// plats / doors / buttons
-//
-.float		lip;
-.float		state;
-.vector		pos1, pos2;		// top and bottom positions
-.float		height;
-
-//
-// sounds
-//
-.float		waitmin, waitmax;
-.float		distance;
-.float		volume;
-
-
-
-
-//===========================================================================
-	
-
-//
 // builtin functions
 //
 
@@ -606,7 +399,7 @@ string(string s) precache_sound		= #19;
 string(string s) precache_model		= #20;
 void(entity client, string s)stuffcmd = #21;
 entity(vector org, float rad) findradius = #22;
-void(string s) bprint				= #23;
+void(string s) vitabprint				= #23;
 void(entity client, string s) sprint = #24;
 void(string s) dprint				= #25;
 string(float f) ftos				= #26;
@@ -648,20 +441,6 @@ void(float to, float f) WriteCoord		= #56;
 void(float to, float f) WriteAngle		= #57;
 void(float to, string s) WriteString	= #58;
 void(float to, entity s) WriteEntity	= #59;
-
-//
-// broadcast client message generation
-//
-
-// void(float f) bWriteByte		= #59;
-// void(float f) bWriteChar		= #60;
-// void(float f) bWriteShort		= #61;
-// void(float f) bWriteLong		= #62;
-// void(float f) bWriteCoord		= #63;
-// void(float f) bWriteAngle		= #64;
-// void(string s) bWriteString	= #65;
-// void(entity e) bWriteEntity = #66;
-
 void(float step) movetogoal				= #67;
 
 string(string s) precache_file		= #68;	// no effect except for -copy
@@ -682,30 +461,40 @@ string(string s) precache_file2		= #77;		// registered version only
 
 void(entity e) setspawnparms		= #78;		// set parm1... to the
 												// values at level start
-												// for coop respawn
+												// for coop 
+												
+float(string s) stof = #81;	// 2001-09-20 QuakeC string manipulation by FrikaC
+
+#define		FILE_READ 	 	0
+#define		FILE_APPEND 	1
+#define		FILE_WRITE 		2
+
+// 2001-09-20 QuakeC file access by FrikaC  start
+float(string filename, float mode) fopen = #110;
+void(float fhandle) fclose = #111;
+string(float fhandle) fgets = #112;
+void(float fhandle, string s) fputs = #113;
+// 2001-09-20 QuakeC file access by FrikaC  end
+
+// 2001-09-20 QuakeC string manipulation by FrikaC  start
+float(string s) strlen = #114;
+string(string s1, string s2) strcat = #115;
+string(string s, float start, float length) substring = #116;
+vector(string s) stov = #117;
+string(string s) strzone = #118;
+string(string s) strunzone = #119;
+string(string s) strtrim = #120;
+// 2001-09-20 QuakeC string manipulation by FrikaC  end
 
 //============================================================================
 
-//
-// subs.qc
-//
-void(vector tdest, float tspeed, void() func) SUB_CalcMove;
-void(entity ent, vector tdest, float tspeed, void() func) SUB_CalcMoveEnt;
-void(vector destangle, float tspeed, void() func) SUB_CalcAngleMove;
-void()  SUB_CalcMoveDone;
-void() SUB_CalcAngleMoveDone;
-void() SUB_Null;
-void() SUB_UseTargets;
-void() SUB_Remove;
+#define PRINT_HIGH 0
+void(float r, string s) bprint = {vitabprint(s);};
 
-//
-//	combat.qc
-//
-void(entity targ, entity inflictor, entity attacker, float damage) T_Damage;
+.float button5;
+.float button6;
+.float button7;
+.float button8;
+.float button4;
 
-
-float (entity e, float healamount, float ignore) T_Heal; // health function
-
-float(entity targ, entity inflictor) CanDamage;
-
-
+#define PSP

@@ -12,11 +12,14 @@ void() StartFrame = {};
 
 void() precaches = {
 	precache_model("progs/player.mdl");
+	precache_model("progs/Vmodels/v_colt.mdl");
 }
 
 void() info_player_start = {};
 
 void() PutClientInServer = {
+	cvar_set ("sv_gravity", "800");
+
 	local entity spawn_spot;             // This holds where we want to spawn
 	spawn_spot = find (world, classname, "info_player_start"); // Find it :)
 	
@@ -36,4 +39,6 @@ void() PutClientInServer = {
 
 	self.view_ofs = '0 0 22';            // Center my view
 	self.velocity = '0 0 0';             // Stop any old movement
+	
+	self.weaponmodel = "progs/Vmodels/v_colt.mdl";
 };

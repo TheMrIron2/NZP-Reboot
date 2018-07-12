@@ -334,6 +334,9 @@ byte	*mod_base;
 Mod_LoadTextures
 =================
 */
+byte *W_ConvertWAD3Texture(miptex_t *tex);
+byte BestColor (int r, int g, int b, int start, int stop);
+
 void Mod_LoadTextures (lump_t *l)
 {
 	int		i, j, pixels, num, max, altmax;
@@ -369,32 +372,16 @@ void Mod_LoadTextures (lump_t *l)
 		if ( (mt->width & 15) || (mt->height & 15) )
 			Sys_Error ("Texture %s is not 16 aligned", mt->name);
 		
-		if (!mt->offsets[0]) {
-			int pb = 1;
-			pixels = mt->width*mt->height/64*85;
-			tx = (texture_t*)Hunk_AllocName (sizeof(texture_t), loadname );
-			loadmodel->textures[i] = tx;
+		pixels = mt->width*mt->height/64*85;
+		tx = (texture_t*)Hunk_AllocName (sizeof(texture_t), loadname );
+		loadmodel->textures[i] = tx;
 
-			memcpy (tx->name, mt->name, sizeof(tx->name));
-			tx->width = mt->width;
-			tx->height = mt->height;
-			for (j=0 ; j<MIPLEVELS ; j++)
-				tx->offsets[j] = 0;
-			memset(tx + 1, 7, pixels);
-			continue; 
-		} else {
-			
-			pixels = mt->width*mt->height/64*85;
-			tx = (texture_t*)Hunk_AllocName (sizeof(texture_t), loadname );
-			loadmodel->textures[i] = tx;
-
-			memcpy (tx->name, mt->name, sizeof(tx->name));
-			tx->width = mt->width;
-			tx->height = mt->height;
-			for (j=0 ; j<MIPLEVELS ; j++)
-				tx->offsets[j] = mt->offsets[j] + sizeof(texture_t) - sizeof(miptex_t);
-			// Pixels follow the structures
-		}
+		memcpy (tx->name, mt->name, sizeof(tx->name));
+		tx->width = mt->width;
+		tx->height = mt->height;
+		for (j=0 ; j<MIPLEVELS ; j++)
+			tx->offsets[j] = mt->offsets[j] + sizeof(texture_t) - sizeof(miptex_t);
+		// Pixels follow the structures
 
 		if (!Q_strncmp(mt->name,"sky",3))	
 			R_InitSky (mt);
@@ -415,19 +402,6 @@ void Mod_LoadTextures (lump_t *l)
 					tx->fullbright = GL_LoadTexture (fbr_mask_name, tx->width, tx->height, (byte *)(mt + 1), true, true);
 				}
 				else tx->fullbright = -1; // because 0 is a potentially valid texture number
-			} else {	
-				int k;
-				byte *in;
-				byte *out;
-				out = (byte *)(tx+1);
-				in = W_ConvertWAD3Texture(mt);
-				tx->offsets[0] = (char *)out - (char *)tx;for (j = 0; j < mt->width*mt->height; j++, in+=4)
-			
-				{if (in[3] == 0)	*out++ = 255;	else *out++ = BestColor(in[0],in[1],in[2], 0, 239);	}
-				in = out-mt->width*mt->height;	//shrink mips.
-				tx->offsets[1] = (char *)out - (char *)tx;for (j = 0; j < tx->height; j+=2)	for (k = 0; k < tx->width; k+=2) *out++ = in[k + tx->width*j];
-				tx->offsets[2] = (char *)out - (char *)tx;for (j = 0; j < tx->height; j+=4)	for (k = 0; k < tx->width; k+=4) *out++ = in[k + tx->width*j];
-				tx->offsets[3] = (char *)out - (char *)tx;for (j = 0; j < tx->height; j+=8)	for (k = 0; k < tx->width; k+=8) *out++ = in[k + tx->width*j];
 			}
 		}
 	}
@@ -524,6 +498,30 @@ void Mod_LoadTextures (lump_t *l)
 				tx2->alternate_anims = anims[0];
 		}
 	}
+}
+
+short LIGHTMAP_BYTES;
+
+void Mod_HL_LoadLighting (lump_t *l)
+{
+	/*if (COM_CheckParm ("-lm_1"))
+		LIGHTMAP_BYTES = 1;
+	else if (COM_CheckParm ("-lm_2"))
+		LIGHTMAP_BYTES = 2;
+	else if (COM_CheckParm ("-lm_3"))
+		LIGHTMAP_BYTES = 3;
+	else
+	*/
+    LIGHTMAP_BYTES = 1;
+
+	if (!l->filelen)
+	{
+		loadmodel->lightdata = NULL;
+		return;
+	}
+
+	loadmodel->lightdata = (byte*)(Hunk_AllocName ( l->filelen, loadname));
+	memcpy (loadmodel->lightdata, mod_base + l->fileofs, l->filelen);
 }
 
 void Mod_LoadLighting (lump_t *l)
@@ -1098,7 +1096,7 @@ void Mod_LoadClipnodes (lump_t *l)
 	loadmodel->clipnodes = out;
 	loadmodel->numclipnodes = count;
 	
-	/*if (loadmodel->bspversion == HL_BSPVERSION)
+	if (loadmodel->bspversion == HL_BSPVERSION)
 	{
 		hull = &loadmodel->hulls[1];
 		hull->clipnodes = out;
@@ -1136,7 +1134,7 @@ void Mod_LoadClipnodes (lump_t *l)
 		hull->clip_maxs[1] = 16;
 		hull->clip_maxs[2] = 18;
 	} else {
-	*/
+	
 		hull = &loadmodel->hulls[1];
 		hull->clipnodes = out;
 		hull->firstclipnode = 0;
@@ -1160,7 +1158,7 @@ void Mod_LoadClipnodes (lump_t *l)
 		hull->clip_maxs[0] = 32;
 		hull->clip_maxs[1] = 32;
 		hull->clip_maxs[2] = 64;
-	//}
+	}
 
 	for (i=0 ; i<count ; i++, out++, in++)
 	{
@@ -1345,22 +1343,57 @@ void Mod_LoadBrushModel (model_t *mod, void *buffer)
 
 // load into heap
 	
+	Con_Printf("Loading Vertexes\n");
 	Mod_LoadVertexes (&header->lumps[LUMP_VERTEXES]);
+	
+	Con_Printf("Loading Edges\n");
 	Mod_LoadEdges (&header->lumps[LUMP_EDGES]);
+	
+	Con_Printf("Loading Surface Edges\n");
 	Mod_LoadSurfedges (&header->lumps[LUMP_SURFEDGES]);
+	
+	Con_Printf("Loading Textures\n");
 	Mod_LoadTextures (&header->lumps[LUMP_TEXTURES]);
-	Mod_LoadLighting (&header->lumps[LUMP_LIGHTING]);
+	
+	//if (loadmodel->bspversion == HL_BSPVERSION) {
+	//	Con_Printf("Loading Half-Life Lighting\n");
+	//	Mod_HL_LoadLighting (&header->lumps[LUMP_LIGHTING]);
+	//} else {
+		Con_Printf("Loading Lighting\n");
+		Mod_LoadLighting (&header->lumps[LUMP_LIGHTING]);
+	//}
+	
+	Con_Printf("Loading Planes\n");
 	Mod_LoadPlanes (&header->lumps[LUMP_PLANES]);
+	
+	Con_Printf("Loading Texture Information\n");
 	Mod_LoadTexinfo (&header->lumps[LUMP_TEXINFO]);
+	
+	Con_Printf("Loading Faces\n");
 	Mod_LoadFaces (&header->lumps[LUMP_FACES]);
+	
+	Con_Printf("Loading Surfaces\n");
 	Mod_LoadMarksurfaces (&header->lumps[LUMP_MARKSURFACES]);
+	
+	Con_Printf("Loading Visibility\n");
 	Mod_LoadVisibility (&header->lumps[LUMP_VISIBILITY]);
+	
+	Con_Printf("Loading Leafs\n");
 	Mod_LoadLeafs (&header->lumps[LUMP_LEAFS]);
+	
+	Con_Printf("Loading Nodes\n");
 	Mod_LoadNodes (&header->lumps[LUMP_NODES]);
+	
+	Con_Printf("Loading Clipnodes\n");
 	Mod_LoadClipnodes (&header->lumps[LUMP_CLIPNODES]);
+	
+	Con_Printf("Loading Entities\n");
 	Mod_LoadEntities (&header->lumps[LUMP_ENTITIES]);
+	
+	Con_Printf("Loading Submodels\n");
 	Mod_LoadSubmodels (&header->lumps[LUMP_MODELS]);
 
+	Con_Printf("Creating Hull0\n");
 	Mod_MakeHull0 ();
 	
 	mod->numframes = 2;		// regular and alternate animation

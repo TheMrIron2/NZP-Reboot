@@ -45,7 +45,7 @@ qpic_t	*sb_face_quad;
 qpic_t	*sb_face_invuln;
 qpic_t	*sb_face_invis_invuln;
 
-bool	sb_showscores;
+bool	sb_showscores = 0;
 
 int			sb_lines;			// scan lines to draw
 
@@ -77,7 +77,6 @@ void Sbar_ShowScores (void)
 {
 	if (sb_showscores)
 		return;
-	sb_showscores = true;
 	sb_updates = 0;
 }
 
@@ -90,7 +89,6 @@ Tab key up
 */
 void Sbar_DontShowScores (void)
 {
-	sb_showscores = false;
 	sb_updates = 0;
 }
 
@@ -501,9 +499,10 @@ Sbar_DrawScoreboard
 */
 void Sbar_DrawScoreboard (void)
 {
-	Sbar_SoloScoreboard ();
+	/*Sbar_SoloScoreboard ();
 	if (cl.gametype == GAME_DEATHMATCH)
 		Sbar_DeathmatchOverlay ();
+	*/
 }
 
 //=============================================================================

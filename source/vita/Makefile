@@ -65,7 +65,7 @@ COMMON_OBJS =	source/chase.o \
 	source/gl_vidpsp2.o \
 	source/neon_mathfun.o
 
-CPPSOURCES	:= source/audiodec
+CPPSOURCES	:= source/cpp
 
 CFILES	:= $(COMMON_OBJS)
 CPPFILES   := $(foreach dir,$(CPPSOURCES), $(wildcard $(dir)/*.cpp))
