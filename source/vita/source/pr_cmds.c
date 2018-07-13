@@ -2150,6 +2150,38 @@ void PF_fputs (void)
 }
 // 2001-09-20 QuakeC file access by FrikaC/Maddes  end
 
+// entity (entity start, .float field, float match) findfloat = #98;
+void PF_FindFloat (void)
+{
+	int		e;
+	int		f;
+	float	s, t;
+	edict_t	*ed;
+
+	e = G_EDICTNUM(OFS_PARM0);
+	f = G_INT(OFS_PARM1);
+	s = G_FLOAT(OFS_PARM2);
+	if (!s)
+		PR_RunError ("PF_FindFloat: bad search float");
+
+	for (e++ ; e < sv.num_edicts ; e++)
+	{
+		ed = EDICT_NUM(e);
+		if (ed->free)
+			continue;
+		t = E_FLOAT(ed,f);
+		if (!t)
+			continue;
+		if (t == s)
+		{
+			RETURN_EDICT(ed);
+			return;
+		}
+	}
+
+	RETURN_EDICT(sv.edicts);
+}
+
 void PF_Fixme(void)
 {
 	PR_RunError("unimplemented bulitin");
@@ -2275,7 +2307,7 @@ builtin_t pr_builtin[] =
 	PF_Fixme,
 	PF_Fixme,
 	PF_Fixme,
-	PF_Fixme,
+	PF_FindFloat,
 	PF_Fixme,
 	PF_Fixme, // #100
 	PF_Fixme,

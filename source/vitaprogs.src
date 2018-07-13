@@ -1,13 +1,24 @@
 ./../vita/nzportable/nzp/progs.dat
+#pragma warning disable Q208
 
 vita/QC/defs.qc
-vita/QC/main.qc
 vita/QC/dummys.qc
 
 shared/customdefs.qc
 shared/weapon_defines.qc
 server/customdefs.qc
 server/clientfuncs.qc
+
+server/dummys.qc                                           // Null spawn functions
+server/rounds.qc
+server/main.qc                                             // Main subroutines
+server/player.qc                                           // Client subroutines
+server/damage.qc
+
+server/entities/sub_functions.qc
+//server/entities/triggers.qc
+//server/entities/map_entities.qc
+
 
 psp/QC/ai/waypoints_func.qc
 psp/QC/ai/waypoints_core.qc

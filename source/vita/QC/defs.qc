@@ -25,6 +25,8 @@
 ==============================================================================
 */
 
+#define PSP
+
 //
 // system globals
 //
@@ -406,7 +408,7 @@ string(string s) precache_model		= #20;
 void(entity client, string s)stuffcmd = #21;
 entity(vector org, float rad) findradius = #22;
 void(string s) vitabprint				= #23;
-void(entity client, string s) sprint = #24;
+void(entity client, string s) vitasprint = #24;
 void(string s) dprint				= #25;
 string(float f) ftos				= #26;
 string(vector v) vtos				= #27;
@@ -470,6 +472,7 @@ void(entity e) setspawnparms		= #78;		// set parm1... to the
 												// for coop 
 												
 float(string s) stof = #81;	// 2001-09-20 QuakeC string manipulation by FrikaC
+entity (entity start, .float field, float match) findfloat = #98;
 
 #define		FILE_READ 	 	0
 #define		FILE_APPEND 	1
@@ -495,6 +498,53 @@ string(string s) strtrim = #120;
 //============================================================================
 
 #define PRINT_HIGH 0
-void(float r, string s) bprint = {vitabprint(s);};
+void(float r, string s) bprint = {
+	vitabprint(s);
+};
 
-#define PSP
+void(entity e, float r, string s) sprint = {
+	vitasprint(e, s);
+}
+
+.entity larm;
+.entity rarm;
+.entity head;
+.float currentHitBoxSetup;
+.vector		bbmins, bbmaxs;		// Used for zombie hitboxes
+
+.float maxspeed;
+
+.string Weapon_Name;
+.string Weapon_Name_Touch;
+
+.vector Flash_Offset;
+.float Flash_Size;
+
+// entity effects
+
+#define	EF_BLUE					1
+#define	EF_MUZZLEFLASH 			2
+#define	EF_BRIGHTLIGHT 			4
+#define	EF_RED		 			8
+#define	EF_ORANGELIGHT			16
+#define	EF_GREEN				32
+#define	EF_LIGHT				64
+#define	EF_NODRAW				128
+#define EF_BRIGHTFIELD			256
+#define EF_FULLBRIGHT 			512
+#define EF_DARKLIGHT			1024
+#define EF_DARKFIELD			2048
+#define EF_PURPLELIGHT    		4096
+
+#define	TE_SPIKE		 0
+#define	TE_SUPERSPIKE	 1
+#define	TE_GUNSHOT		 2
+#define	TE_EXPLOSION	 3
+#define	TE_TAREXPLOSION	 4
+#define	TE_LIGHTNING1	 5
+#define	TE_LIGHTNING2	 6
+#define	TE_WIZSPIKE		 7
+#define	TE_KNIGHTSPIKE	 8
+#define	TE_LIGHTNING3	 9
+#define	TE_LAVASPLASH	 10
+#define	TE_TELEPORT		 11

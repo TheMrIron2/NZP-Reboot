@@ -1,50 +1,5 @@
-void() precaches;
-
-void() main = {
-
-	if (self.button0) {
-		bprint(0, "BUTTON0: Fire");
-	}
-	if (self.button1) {
-		bprint(0, "BUTTON1: Unused LOLLLL");
-	}
-	if (self.button2) {
-		bprint(0, "BUTTON2: Jump");
-	}
-	if (self.button3) {
-		bprint(0, "BUTTON3: Grenade?");
-	}
-	if (self.button4) {
-		bprint(0, "BUTTON4: Switch");
-	}
-	if (self.button5) {
-		bprint(0, "BUTTON5: Reload");
-	}
-	if (self.button6) {
-		bprint(0, "BUTTON6: Knife");
-	}
-	if (self.button7) {
-		bprint(0, "BUTTON7: Use");
-	}
-	if (self.button8) {
-		bprint(0, "BUTTON8: Aim in");
-	}
-};
-
-void() worldspawn = {
-	precaches();
-};
-
 void() SetNewParms = {};
 void() SetChangeParms = {};
-void() StartFrame = {};
-
-void() precaches = {
-	precache_model("progs/player.mdl");
-	precache_model("progs/Vmodels/v_colt.mdl");
-}
-
-void() info_player_start = {};
 
 void() PutClientInServer = {
 	cvar_set ("sv_gravity", "800");

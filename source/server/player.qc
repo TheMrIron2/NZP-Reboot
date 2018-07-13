@@ -146,8 +146,31 @@ void() PlayerJump =
 			
 	self.flags = self.flags - (self.flags & FL_JUMPRELEASED);
 	sound(self, CHAN_VOICE, "sounds/player/jump.wav", 1, 1.75);
-	self.button2 = 0;
 	
+	#ifdef PSP 
+	if (self.flags & FL_WATERJUMP)
+		return;
+		
+	if (self.view_ofs != VEC_VIEW_OFS)
+		return;
+	
+	if (self.waterlevel >= 2)
+	{
+		if (self.watertype == CONTENT_WATER)
+			self.velocity_z = 100;
+		else if (self.watertype == CONTENT_SLIME)
+			self.velocity_z = 80;
+		else
+			self.velocity_z = 50;
+	}
+	
+	self.flags = self.flags - (self.flags & FL_JUMPRELEASED);
+
+	self.flags = self.flags - FL_ONGROUND;	// don't stairwalk
+	
+	#endif
+	self.button2 = 0;
+
 	self.oldz = self.origin_z;
 }
 

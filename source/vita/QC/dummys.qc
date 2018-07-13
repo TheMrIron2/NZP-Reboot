@@ -1,36 +1,32 @@
-void() PlayerPreThink = {};
-void() PlayerPostThink = {};
-void() ClientKill = {};
-void() ClientConnect = {};
-void() ClientDisconnect = {};
 void() light = {};
 void() light_torch_small_walltorch = {};
-void() place_model = {};
-void() explosive_barrel = {};
 void() func_door_nzp = {};
 void() spawn_zombie = {};
 void() item_barricade = {};
 void() mystery_box = {};
 void() path_corner = {};
 void() light_environment = {};
-void() func_wall = {};
-void() weapon_wall = {};
-void() buy_weapon = {};
-void() place_fire = {};
-void() info_player_doctor = {};
-void() info_player_tank = {};
-void() info_player_takeo = {};
-void() info_player_nikolai = {};
 
-void() LoadWaypointData = {};
-float() spawn_a_dogA = {return 0;};
 float() spawn_a_zombieA = {return 0;};
 void() set_z_health = {};
 void() W_SprintStop = {};
-void() GetUp = {};
 void() Weapon_Logic = {};
 void Set_W_Frame (float startframe, float endframe, float duration, float funccalledin, float animtype, void(optional float t) endanimfunc, string set_model, float dontstartnew, float side) = {};
 void() Do_Zombie_AI = {};
 float(vector start, vector min, vector max, vector end, float nomonsters, entity forent) tracemove = {return 0;};
 void(entity who) makeCrawler = {};
 void() spawnAllZombEnts = {};
+
+// Fixme: change these to pr cmds
+void(string com) tokenize = {};
+string(float num) argv = {return "";};
+
+
+void(vector where, float type) Spawn_Powerup = {};
+void() Soft_Restart = {};
+void(entity e, float type, float cost, float wep) useprint = {};
+void() ReturnWeaponModel = {};
+
+void() InitTrigger = {}
+void() SetMovedir = {};
+void() teddy_react = {};
