@@ -171,6 +171,12 @@ void		end_sys_globals;		// flag for structure dumping
 .float		button0;		// fire
 .float		button1;		// use
 .float		button2;		// jump
+.float		button3;
+.float		button4;
+.float		button5;
+.float		button6;
+.float		button7;
+.float		button8;
 
 .float		impulse;		// weapon changes
 
@@ -490,11 +496,5 @@ string(string s) strtrim = #120;
 
 #define PRINT_HIGH 0
 void(float r, string s) bprint = {vitabprint(s);};
-
-.float button5;
-.float button6;
-.float button7;
-.float button8;
-.float button4;
 
 #define PSP

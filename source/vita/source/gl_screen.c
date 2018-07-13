@@ -885,7 +885,7 @@ void SCR_UpdateScreen (void)
 
 	if (scr_drawdialog)
 	{
-		Sbar_Draw ();
+		//Sbar_Draw ();
 		Draw_FadeScreen ();
 		SCR_DrawNotifyString ();
 		scr_copyeverything = true;
@@ -893,7 +893,7 @@ void SCR_UpdateScreen (void)
 	else if (scr_drawloading)
 	{
 		SCR_DrawLoading ();
-		Sbar_Draw ();
+		//Sbar_Draw ();
 	}
 	else if (cl.intermission == 1 && key_dest == key_game)
 	{
@@ -914,7 +914,7 @@ void SCR_UpdateScreen (void)
 		SCR_DrawTurtle ();
 		SCR_DrawPause ();
 		SCR_CheckDrawCenterString ();
-		Sbar_Draw ();
+		//Sbar_Draw ();
 		SCR_DrawConsole ();	
 		M_Draw ();
 	}

@@ -62,7 +62,7 @@ CVAR(cl_fullpitch, 0, CVAR_NONE) // ProQuake - get rid of the "unknown command" 
 kbutton_t	in_mlook, in_klook;
 kbutton_t	in_left, in_right, in_forward, in_back;
 kbutton_t	in_lookup, in_lookdown, in_moveleft, in_moveright;
-kbutton_t	in_strafe, in_speed, in_use, in_jump, in_attack;
+kbutton_t	in_strafe, in_speed, in_use, in_jump, in_attack, in_grenade, in_reload, in_switch, in_knife, in_aim;
 kbutton_t	in_up, in_down;
 
 int			in_impulse;
@@ -168,6 +168,16 @@ void IN_UseDown (void) {KeyDown(&in_use);}
 void IN_UseUp (void) {KeyUp(&in_use);}
 void IN_JumpDown (void) {KeyDown(&in_jump);}
 void IN_JumpUp (void) {KeyUp(&in_jump);}
+void IN_GrenadeDown (void) {KeyDown(&in_grenade);}
+void IN_GrenadeUp (void) {KeyUp(&in_grenade);}
+void IN_SwitchDown (void) {KeyDown(&in_switch);}
+void IN_SwitchUp (void) {KeyUp(&in_switch);}
+void IN_ReloadDown (void) {KeyDown(&in_reload);}
+void IN_ReloadUp (void) {KeyUp(&in_reload);}
+void IN_KnifeDown (void) {KeyDown(&in_knife);}
+void IN_KnifeUp (void) {KeyUp(&in_knife);}
+void IN_AimDown (void) {KeyDown(&in_aim);}
+void IN_AimUp (void) {KeyUp(&in_aim);}
 
 void IN_Impulse (void) {in_impulse=Q_atoi(Cmd_Argv(1));}
 
@@ -371,15 +381,39 @@ void CL_SendMove(usercmd_t *cmd)
 //
 	bits = 0;
 
-	if ( in_attack.state & 3 )
+	if (in_attack.state & 3 )
 		bits |= 1;
 	in_attack.state &= ~2;
 
 	if (in_jump.state & 3)
 		bits |= 2;
 	in_jump.state &= ~2;
+	
+	if (in_grenade.state & 3)
+		bits |= 8;
+	in_grenade.state &= ~2;
 
-    MSG_WriteByte (&buf, bits);
+	if (in_switch.state & 3)
+		bits |= 16;
+	in_switch.state &= ~2;
+
+	if (in_reload.state & 3)
+		bits |= 32;
+	in_reload.state &= ~2;
+
+	if (in_knife.state & 3)
+		bits |= 64;
+	in_knife.state &= ~2;
+	
+	if (in_use.state & 3)
+		bits |= 128;
+	in_use.state &= ~2;
+	
+	if (in_aim.state & 3)
+		bits |= 256;
+	in_aim.state &= ~2; 
+
+    MSG_WriteLong (&buf, bits);
 
     MSG_WriteByte (&buf, in_impulse);
 	in_impulse = 0;
@@ -448,6 +482,16 @@ void CL_InitInput (void)
 	Cmd_AddCommand ("-use", IN_UseUp);
 	Cmd_AddCommand ("+jump", IN_JumpDown);
 	Cmd_AddCommand ("-jump", IN_JumpUp);
+	Cmd_AddCommand ("+grenade", IN_GrenadeDown);
+	Cmd_AddCommand ("-grenade", IN_GrenadeUp);
+	Cmd_AddCommand ("+switch", IN_SwitchDown);
+	Cmd_AddCommand ("-switch", IN_SwitchUp);
+	Cmd_AddCommand ("+reload", IN_ReloadDown);
+	Cmd_AddCommand ("-reload", IN_ReloadUp);
+	Cmd_AddCommand ("+knife", IN_KnifeDown);
+	Cmd_AddCommand ("-knife", IN_KnifeUp);
+	Cmd_AddCommand ("+aim", IN_AimDown);
+	Cmd_AddCommand ("-aim", IN_AimUp);
 	Cmd_AddCommand ("impulse", IN_Impulse);
 	Cmd_AddCommand ("+klook", IN_KLookDown);
 	Cmd_AddCommand ("-klook", IN_KLookUp);
