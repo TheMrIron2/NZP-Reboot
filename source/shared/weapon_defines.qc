@@ -1996,10 +1996,17 @@ string(float wep, float gorvmodel) GetWeaponModel =
 				return ("models/weapons/bar/v_bar.mdl");
 		case W_BROWNING:
     	case W_ACCELERATOR:
+		#ifndef VITA
 			if (gorvmodel)
 				return ("models/weapons/browning/g_browning.mdl");
 			else
 				return ("models/weapons/browning/v_browning.mdl");
+		#else 
+			if (gorvmodel)
+				return ("models/weapons/browning/g.mdl");
+			else
+				return ("models/weapons/browning/v.mdl");
+		#endif
 		case W_DB:
     	case W_BORE:
 			if (gorvmodel)
@@ -2039,9 +2046,9 @@ string(float wep, float gorvmodel) GetWeaponModel =
 				return ("models/weapons/m1carbine/v_m1a1.mdl");
 		#else
 			if (gorvmodel)
-				return ("models/weapons/m1911/g_colt.mdl");
+				return ("models/weapons/m1carbine/g.mdl");
 			else
-				return ("models/weapons/m1911/v_colt.mdl");
+				return ("models/weapons/m1carbine/v.mdl");
 		#endif
 		case W_M2:
 			if (gorvmodel)
@@ -2091,16 +2098,11 @@ string(float wep, float gorvmodel) GetWeaponModel =
 			else
 				return ("models/weapons/sawnoff/v_sawnoff.mdl");
 		#else
-		/*
+		// wtf vitaquake...
 			if (gorvmodel)
-				return ("models/weapons/m1911/g_colt.mdl");
+				return ("models/weapons/sawnoff/g_sawn.mdl");
 			else
-				return ("models/weapons/m1911/v_colt.mdl");
-		*/
-			if (gorvmodel)
-				return ("models/weapons/sawnoff/g_sawnoff.mdl");
-			else
-				return ("models/weapons/sawnoff/v_sawnoff.mdl");
+				return ("models/weapons/sawnoff/v_sawn.mdl");
 		#endif
     	case W_SNUFF:
 			if (gorvmodel)
@@ -2122,9 +2124,9 @@ string(float wep, float gorvmodel) GetWeaponModel =
 				return ("models/weapons/trench/v_trench.mdl");
 		#else
 			if (gorvmodel)
-				return ("models/weapons/m1911/g_colt.mdl");
+				return ("models/weapons/trench/g.mdl");
 			else
-				return ("models/weapons/m1911/v_colt.mdl");
+				return ("models/weapons/trench/v.mdl");
 		#endif
 		case W_TYPE:
     	case W_SAMURAI:
@@ -2136,10 +2138,7 @@ string(float wep, float gorvmodel) GetWeaponModel =
 			#ifndef VITA
 			return ("models/weapons/grenade/g_grenade.mdl");
 			#else
-			if (gorvmodel)
-				return ("models/weapons/m1911/g_colt.mdl");
-			else
-				return ("models/weapons/m1911/v_colt.mdl");
+			return ("models/weapons/grenade/g.mdl");
 			#endif
 		case W_BETTY:
 			return ("models/weapons/grenade/g_betty.mdl");
@@ -2153,8 +2152,6 @@ string(float wep, float gorvmodel) GetWeaponModel =
 				return ("models/weapons/bk/g_bk.mdl");
 			else
 				return ("models/weapons/bk/v_bk.mdl");
-		default: 
-			return ("models/weapons/m1911/v_colt.mdl");
     }
 
     return ("");

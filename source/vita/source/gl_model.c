@@ -287,7 +287,6 @@ model_t *Mod_LoadModel (model_t *mod, bool crash)
 	switch (LittleLong(*(unsigned *)buf))
 	{
 	case IDPOLYHEADER:
-		Con_Printf("Loading model %s as Quake 1 MDL\n", mod->name);
 		Mod_LoadAliasModel (mod, buf);
 		break;
 		
@@ -1764,7 +1763,7 @@ void Mod_LoadAliasModel (model_t *mod, void *buffer)
 	pheader->size = LittleFloat (pinmodel->size) * ALIAS_BASE_SIZE_RATIO;
 	mod->synctype = LittleLong (pinmodel->synctype);
 	mod->numframes = pheader->numframes;
-
+	
 	for (i=0 ; i<3 ; i++)
 	{
 		pheader->scale[i] = LittleFloat (pinmodel->scale[i]);
@@ -1776,6 +1775,7 @@ void Mod_LoadAliasModel (model_t *mod, void *buffer)
 //
 // load the skins
 //
+
 	pskintype = (daliasskintype_t *)&pinmodel[1];
 	pskintype = Mod_LoadAllSkins (pheader->numskins, pskintype);
 
@@ -1786,6 +1786,7 @@ void Mod_LoadAliasModel (model_t *mod, void *buffer)
 
 	for (i=0 ; i<pheader->numverts ; i++)
 	{
+//		Con_Printf("%d\n", i);
 		stverts[i].onseam = LittleLong (pinstverts[i].onseam);
 		stverts[i].s = LittleLong (pinstverts[i].s);
 		stverts[i].t = LittleLong (pinstverts[i].t);
