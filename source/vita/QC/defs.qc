@@ -26,6 +26,7 @@
 */
 
 #define PSP
+#define VITA
 
 //
 // system globals

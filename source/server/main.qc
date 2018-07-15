@@ -96,6 +96,10 @@ void() precaches =
 {
 	precache_model ("models/player.mdl");
 	
+	#ifdef VITA
+	precache_model ("progs/player.mdl");
+	#endif
+	
 	#ifndef PSP
 	precache_model ("models/v_morphine.mdl");
 	#endif

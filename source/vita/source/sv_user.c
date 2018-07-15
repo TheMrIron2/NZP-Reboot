@@ -27,7 +27,7 @@ CVAR(pq_fullpitch, 0, CVAR_ARCHIVE)
 CVAR(sv_idealpitchscale, 0.8, CVAR_NONE)
 CVAR(sv_edgefriction, 2, CVAR_NONE)
 
-CVAR(sv_maxspeed, 320, CVAR_SERVERINFO)
+CVAR(sv_maxspeed, 150, CVAR_SERVERINFO)
 CVAR(sv_accelerate, 10, CVAR_NONE)
 
 extern	cvar_t	sv_friction;

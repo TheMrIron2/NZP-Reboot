@@ -287,6 +287,7 @@ model_t *Mod_LoadModel (model_t *mod, bool crash)
 	switch (LittleLong(*(unsigned *)buf))
 	{
 	case IDPOLYHEADER:
+		Con_Printf("Loading model %s as Quake 1 MDL\n", mod->name);
 		Mod_LoadAliasModel (mod, buf);
 		break;
 		

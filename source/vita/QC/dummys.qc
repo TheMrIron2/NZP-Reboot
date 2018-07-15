@@ -26,7 +26,3 @@ void(vector where, float type) Spawn_Powerup = {};
 void() Soft_Restart = {};
 void(entity e, float type, float cost, float wep) useprint = {};
 void() ReturnWeaponModel = {};
-
-void() InitTrigger = {}
-void() SetMovedir = {};
-void() teddy_react = {};

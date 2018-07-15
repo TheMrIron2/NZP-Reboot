@@ -16,8 +16,8 @@ server/player.qc                                           // Client subroutines
 server/damage.qc
 
 server/entities/sub_functions.qc
-//server/entities/triggers.qc
-//server/entities/map_entities.qc
+server/entities/triggers.qc
+server/entities/map_entities.qc
 
 
 psp/QC/ai/waypoints_func.qc

@@ -42,7 +42,7 @@ CVAR(cl_rollspeed, 200, CVAR_NONE)
 CVAR(cl_rollangle, 2.0, CVAR_NONE)
 
 CVAR(cl_bob, 0.02, CVAR_NONE)
-CVAR(cl_bobcycle, 0.6, CVAR_NONE)
+CVAR(cl_bobcycle, 0, CVAR_NONE)
 CVAR(cl_bobup, 0, CVAR_NONE)
 
 CVAR(v_kicktime, 0.5, CVAR_NONE)

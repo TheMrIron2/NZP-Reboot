@@ -177,9 +177,9 @@ void() place_fire =
 };
 
 void() place_model =
-{  
-  precache_model (self.model);
-  setmodel (self, self.model);
+{
+	precache_model (self.model);
+	setmodel (self, self.model);
   
 	self.skin = 0;
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
@@ -419,14 +419,17 @@ void() buy_weapon =
 	local string weaponname;
 	InitTrigger ();
 	weaponname = GetWeaponModel (self.weapon, 0);
+	
+	//#ifndef VITA
 	if (weaponname != "")
 		precache_model (weaponname);
 	weaponname = GetWeaponModel(self.weapon, 1);
 	if (weaponname != "")
-		precache_model (weaponname);
-	
+		precache_model (weaponname);	
 	
 	precache_extra (self.weapon);
+	//#endif
+	
 	self.touch = buy_weapon_touch;
 	
 	self.think = buy_weapon_link_wall;
@@ -522,7 +525,6 @@ void() item_radio =
 {
 	precache_model ("models/props/radio.mdl");
 	precache_sound ("sounds/misc/radio.wav");
-
 	if(self.tune) {
 		precache_sound (self.tune);
 	}
@@ -530,6 +532,7 @@ void() item_radio =
 	self.movetype = MOVETYPE_NONE;	// so it doesn't get pushed by anything
 	self.solid=SOLID_BBOX;
 	self.classname = "item_radio";
+	
 	setmodel (self, "models/props/radio.mdl");
 	setsize (self, '-8 -8 -4', '8 8 4');
 

@@ -160,7 +160,10 @@ void() weapon_wall =
 	
 	precache_model ("models/misc/chalk.mdl");
 	temps = GetWeaponModel(self.sequence + 1, 1);
+	// naievil -- FIXME - fix the precaching lmao
+	#ifndef VITA
 	precache_model (temps);
+	#endif
 
 	setmodel (self, "models/misc/chalk.mdl");
 	self.skin = 0;
