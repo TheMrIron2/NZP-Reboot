@@ -387,10 +387,26 @@ void Mod_LoadTextures (lump_t *l)
 			R_InitSky (mt);
 		else
 		{
-			if (loadmodel->bspversion == BSPVERSION || loadmodel->bspversion == HL_BSPVERSION) {
+			// Regular quake texture loading
+			if (loadmodel->bspversion == BSPVERSION) {
 				texture_mode = GL_LINEAR;
 				tx->gl_texturenum = GL_LoadTexture (mt->name, tx->width, tx->height, (byte *)(mt+1), true, false);
 
+				// check for fullbright pixels in the texture - only if it ain't liquid, etc also
+				if ((tx->name[0] != '*') && (FindFullbrightTexture ((byte *)(mt+1), pixels)))
+				{
+					// convert any non fullbright pixel to fully transparent
+					ConvertPixels ((byte *)(mt + 1), pixels);
+					// get a new name for the fullbright mask to avoid cache mismatches
+					sprintf (fbr_mask_name, "fullbright_mask_%s", mt->name);
+					// load the fullbright pixels version of the texture
+					tx->fullbright = GL_LoadTexture (fbr_mask_name, tx->width, tx->height, (byte *)(mt + 1), true, true);
+				}
+				else tx->fullbright = -1; // because 0 is a potentially valid texture number
+			} else if (loadmodel->bspversion == HL_BSPVERSION) {
+				texture_mode = GL_LINEAR;
+				tx->gl_texturenum = GL_LoadTexture (mt->name, tx->width, tx->height, (byte *)(mt+1), true, false);
+				
 				// check for fullbright pixels in the texture - only if it ain't liquid, etc also
 				if ((tx->name[0] != '*') && (FindFullbrightTexture ((byte *)(mt+1), pixels)))
 				{
