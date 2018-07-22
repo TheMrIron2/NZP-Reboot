@@ -76,5 +76,5 @@ void SwapPic (qpic_t *pic);
 
 //Diabolickal HLBSP
 void WAD3_LoadTextureWadFile (char *filename);
-//byte *WAD3_LoadTexture(miptex_t *mt);
+byte *WAD3_LoadTexture(miptex_t *mt);
 //Diabolickal end

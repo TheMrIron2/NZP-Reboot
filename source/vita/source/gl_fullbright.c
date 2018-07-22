@@ -6,15 +6,17 @@ int FindFullbrightTexture (byte *pixels, int num_pix)
 	int i;
 	for (i = 0; i < num_pix; i++)
 	if (pixels[i] > 223)
-	return 1;
+		return 1;
+	
 	return 0;
 }
 void ConvertPixels (byte *pixels, int num_pixels)
 {
 	int i;
-	for (i = 0; i < num_pixels; i++)
-	if (pixels[i] < 224)
-	pixels[i] = 255;
+	for (i = 0; i < num_pixels; i++) {
+		if (pixels[i] < 224)
+			pixels[i] = 255;
+	}
 }
 void DrawFullBrightTextures (msurface_t *first_surf, int num_surfs)
 {
@@ -22,8 +24,10 @@ void DrawFullBrightTextures (msurface_t *first_surf, int num_surfs)
 	int i;
 	msurface_t *fa;
 	texture_t *t;
+	
 	if (r_fullbright.value)
-	return;
+		return;
+	
 	//if (mtexenabled)
 	//return;
 	//GL_DisableMultitexture ();

@@ -417,7 +417,9 @@ void Mod_LoadTextures (lump_t *l)
 						// get a new name for the fullbright mask to avoid cache mismatches
 						sprintf (fbr_mask_name, "fullbright_mask_%s", mt->name);
 						// load the fullbright pixels version of the texture
-						tx->fullbright = GL_LoadTexture (fbr_mask_name, tx->width, tx->height, (byte *)(mt + 1), true, true);
+						
+						Con_Printf("Loading texture %s as fullbright\n", mt->name);
+						tx->fullbright = -1;
 					}
 					else tx->fullbright = -1; // because 0 is a potentially valid texture number
 					
@@ -613,77 +615,6 @@ void Mod_LoadVisibility (lump_t *l)
 	}
 	loadmodel->visdata = (byte*)Hunk_AllocName ( l->filelen, loadname);	
 	memcpy (loadmodel->visdata, mod_base + l->fileofs, l->filelen);
-}
-
-/*
-=================
-Mod_ParseWadsFromEntityLump
-For Half-life maps
-=================
-*/
-static void Mod_ParseWadsFromEntityLump(char *data)
-{
-	char *s, key[1024], value[1024];
-	int i, j, k;
-
-	if (!data || !(data = COM_Parse(data)))
-		return;
-
-	if (com_token[0] != '{')
-		return; // error
-
-	while (1)
-	{
-		if (!(data = COM_Parse(data)))
-			return; // error
-
-		if (com_token[0] == '}')
-			break; // end of worldspawn
-
-		Q_strncpyz(key, (com_token[0] == '_') ? com_token + 1 : com_token, sizeof(key));
-
-		for (s = key + strlen(key) - 1; s >= key && *s == ' '; s--)		// remove trailing spaces
-			*s = 0;
-
-		if (!(data = COM_Parse(data)))
-			return; // error
-
-		Q_strncpyz(value, com_token, sizeof(value));
-
-		if (!strcmp("MaxRange", key))
-            Cvar_Set("r_maxrange", value);
-
-		if (!strcmp("wad", key))
-		{
-			j = 0;
-			for (i = 0; i < strlen(value); i++)
-			{
-				if (value[i] != ';' && value[i] != '\\' && value[i] != '/' && value[i] != ':')
-					break;
-			}
-			if (!value[i])
-				continue;
-			for ( ; i < sizeof(value); i++)
-			{
-				// ignore path - the \\ check is for HalfLife... stupid windoze 'programmers'...
-				if (value[i] == '\\' || value[i] == '/' || value[i] == ':')
-				{
-					j = i + 1;
-				}
-                else if (value[i] == ';' || value[i] == 0)
-				{
-					// naievil -- temp
-					/*k = value[i];
-					value[i] = 0;
-					if (value[j])
-						WAD3_LoadTextureWadFile (value + j);
-					j = i + 1;
-					if (!k)
-						break;*/
-				}
-			}
-		}
-    }
 }
 
 /*
