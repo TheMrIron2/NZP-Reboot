@@ -158,109 +158,160 @@ void SwapPic (qpic_t *pic)
 }
 
 /*
-===============
-BestColor
-===============
+=============================================================================
+WAD3 Texture Loading for BSP 3.0 Support From Baker		--Diabolickal HLBSP
+=============================================================================
 */
-byte BestColor (int r, int g, int b, int start, int stop)
-{
-	int	i;
-	int	dr, dg, db;
-	int	bestdistortion, distortion;
-	int	berstcolor;
-	byte	*pal;
 
-//
-// let any color go to 0 as a last resort
-//
-	bestdistortion = 256*256*4;
-	berstcolor = 0;
+#define TEXWAD_MAXIMAGES 16384
 
-	pal = host_basepal + start*3;
-	for (i=start ; i<= stop ; i++)
-	{
-		dr = r - (int)pal[0];
-		dg = g - (int)pal[1];
-		db = b - (int)pal[2];
-		pal += 3;
-		distortion = dr*dr + dg*dg + db*db;
-		if (distortion < bestdistortion)
-		{
-			if (!distortion)
-				return i;		// perfect match
+typedef struct {
+   char name[MAX_QPATH];
+   FILE *file;
+   int position;
+   int size;
+} texwadlump_t;
 
-			bestdistortion = distortion;
-			berstcolor = i;
-		}
-	}
+static texwadlump_t texwadlump[TEXWAD_MAXIMAGES];
 
-	return berstcolor;
+void WAD3_LoadTextureWadFile (char *filename) {
+   lumpinfo_t *lumps, *lump_p;
+   wadinfo_t header;
+   int i, j, infotableofs, numlumps, lowmark;
+   FILE *file;
+
+   if (COM_FOpenFile (va("textures/halflife/%s", filename), &file) != -1)
+      goto loaded;
+   if (COM_FOpenFile (va("textures/%s", filename), &file) != -1)
+      goto loaded;
+   if (COM_FOpenFile (filename, &file) != -1)
+      goto loaded;
+
+   Host_Error ("Couldn't load halflife wad \"%s\"\n", filename);
+
+loaded:
+   if (fread(&header, 1, sizeof(wadinfo_t), file) != sizeof(wadinfo_t)) {
+      Con_Printf ("WAD3_LoadTextureWadFile: unable to read wad header");
+      return;
+   }
+
+   if (memcmp(header.identification, "WAD3", 4)) {
+      Con_Printf ("WAD3_LoadTextureWadFile: Wad file %s doesn't have WAD3 id\n",filename);
+      return;
+   }
+
+   numlumps = LittleLong(header.numlumps);
+   if (numlumps < 1 || numlumps > TEXWAD_MAXIMAGES) {
+      Con_Printf ("WAD3_LoadTextureWadFile: invalid number of lumps (%i)\n", numlumps);
+      return;
+   }
+
+   infotableofs = LittleLong(header.infotableofs);
+   if (fseek(file, infotableofs, SEEK_SET)) {
+      Con_Printf ("WAD3_LoadTextureWadFile: unable to seek to lump table");
+      return;
+   }
+
+   lowmark = Hunk_LowMark();
+   if (!(lumps = Hunk_Alloc(sizeof(lumpinfo_t) * numlumps))) {
+      Con_Printf ("WAD3_LoadTextureWadFile: unable to allocate temporary memory for lump table");
+      return;
+   }
+
+   if (fread(lumps, 1, sizeof(lumpinfo_t) * numlumps, file) != sizeof(lumpinfo_t) * numlumps) {
+      Con_Printf ("WAD3_LoadTextureWadFile: unable to read lump table");
+      Hunk_FreeToLowMark(lowmark);
+      return;
+   }
+
+   for (i = 0, lump_p = lumps; i < numlumps; i++,lump_p++) {
+      W_CleanupName (lump_p->name, lump_p->name);
+      for (j = 0; j < TEXWAD_MAXIMAGES; j++) {
+         if (!texwadlump[j].name[0] || !strcmp(lump_p->name, texwadlump[j].name))
+            break;
+      }
+      if (j == TEXWAD_MAXIMAGES)
+         break; // we are full, don't load any more
+      if (!texwadlump[j].name[0])
+         Q_strncpyz (texwadlump[j].name, lump_p->name, sizeof(texwadlump[j].name));
+      texwadlump[j].file = file;
+      texwadlump[j].position = LittleLong(lump_p->filepos);
+      texwadlump[j].size = LittleLong(lump_p->disksize);
+   }
+
+   Hunk_FreeToLowMark(lowmark);
+   //leaves the file open
 }
 
-byte *W_ConvertWAD3Texture(miptex_t *tex)
-{
-	byte	*in, *data, *out, *pal;
-	int		d, p;
-	int image_width, image_height;
+//converts paletted to rgba
+static byte *ConvertWad3ToRGBA(miptex_t *tex) {
+   byte *in, *data, *pal;
+   int i, p, image_size;
 
-	in		= (byte *)((int) tex + tex->offsets[0]);
-	data	= out = malloc(tex->width * tex->height * 4);
+   if (!tex->offsets[0])
+      Sys_Error("ConvertWad3ToRGBA: tex->offsets[0] == 0");
 
-	if (!data)
-		return NULL;
+   image_size = tex->width * tex->height;
+   in = (byte *) ((byte *) tex + tex->offsets[0]);
+   data = malloc(image_size * 4); // Baker
 
-	image_width		= tex->width;
-	image_height	= tex->height;
-	pal				= in + (((image_width * image_height) * 85) >> 6);
-	pal				+= 2;
-
-	for (d = 0;d < image_width * image_height;d++)
-	{
-		p = *in++;
-		if (tex->name[0] == '{' && p == 255)
-			out[0] = out[1] = out[2] = out[3] = 0;
-		else
-		{
-			p *= 3;
-			out[0] = pal[p];
-			out[1] = pal[p+1];
-			out[2] = pal[p+2];
-			out[3] = 255;
-		}
-		out += 4;
-	}
-	return data;
+   pal = in + ((image_size * 85) >> 6) + 2;
+   for (i = 0; i < image_size; i++) {
+      p = *in++;
+      if (tex->name[0] == '{' && p == 255) {
+         ((int *) data)[i] = 0;
+      } else {
+         p *= 3;
+         data[i * 4 + 0] = pal[p];
+         data[i * 4 + 1] = pal[p + 1];
+         data[i * 4 + 2] = pal[p + 2];
+         data[i * 4 + 3] = 255;
+      }
+   }
+   return data;
 }
 
-extern byte *host_otherpal;
-extern int host_fullbrights;
+byte *WAD3_LoadTexture(miptex_t *mt) {
+   char texname[MAX_QPATH];
+   int i, j, lowmark = 0;
+   FILE *file;
+   miptex_t *tex;
+   byte *data;
 
-int FindOurColor(miptex_t *tex)
-{
-	byte	*in, *data, *out, *pal;
-	int		d, p, color;
+   if (mt->offsets[0])
+      return ConvertWad3ToRGBA(mt);
 
-	in		= (byte *)((int) tex + tex->offsets[0]);
-	data	= out = (byte *)malloc(tex->width * tex->height * 4);
+   texname[sizeof(texname) - 1] = 0;
+   W_CleanupName (mt->name, texname);
+   for (i = 0; i < TEXWAD_MAXIMAGES; i++) {
+      if (!texwadlump[i].name[0])
+         break;
+      if (strcmp(texname, texwadlump[i].name))
+         continue;
 
-	if (!data)
-		return 0;
-
-	int image_width		= tex->width;
-	int image_height	= tex->height;
-	pal				= host_otherpal;
-
-	for (d = 0;d < image_width * image_height;d++)
-	{
-		p = *in++;
-		{
-			if (p > host_fullbrights){
-				color = p;	// we got a fullbright so we can sue it.
-				return color;
-			} else
-			color = p;
-		}
-	}
-
-	return color;
+      file = texwadlump[i].file;
+      if (fseek(file, texwadlump[i].position, SEEK_SET)) {
+         Con_Printf("WAD3_LoadTexture: corrupt WAD3 file");
+         return NULL;
+      }
+      lowmark = Hunk_LowMark();
+      tex = Hunk_Alloc(texwadlump[i].size);
+      if (fread(tex, 1, texwadlump[i].size, file) < texwadlump[i].size) {
+         Con_Printf("WAD3_LoadTexture: corrupt WAD3 file");
+         Hunk_FreeToLowMark(lowmark);
+         return NULL;
+      }
+      tex->width = LittleLong(tex->width);
+      tex->height = LittleLong(tex->height);
+      if (tex->width != mt->width || tex->height != mt->height) {
+         Hunk_FreeToLowMark(lowmark);
+         return NULL;
+      }
+      for (j = 0;j < MIPLEVELS;j++)
+         tex->offsets[j] = LittleLong(tex->offsets[j]);
+      data = ConvertWad3ToRGBA(tex);
+      Hunk_FreeToLowMark(lowmark);
+      return data;
+   }
+   return NULL;
 }

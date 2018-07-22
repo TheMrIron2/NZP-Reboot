@@ -334,8 +334,6 @@ byte	*mod_base;
 Mod_LoadTextures
 =================
 */
-byte *W_ConvertWAD3Texture(miptex_t *tex);
-byte BestColor (int r, int g, int b, int start, int stop);
 
 void Mod_LoadTextures (lump_t *l)
 {
@@ -404,20 +402,43 @@ void Mod_LoadTextures (lump_t *l)
 				}
 				else tx->fullbright = -1; // because 0 is a potentially valid texture number
 			} else if (loadmodel->bspversion == HL_BSPVERSION) {
-				texture_mode = GL_LINEAR;
-				tx->gl_texturenum = GL_LoadTexture (mt->name, tx->width, tx->height, (byte *)(mt+1), true, false);
 				
-				// check for fullbright pixels in the texture - only if it ain't liquid, etc also
-				if ((tx->name[0] != '*') && (FindFullbrightTexture ((byte *)(mt+1), pixels)))
-				{
-					// convert any non fullbright pixel to fully transparent
-					ConvertPixels ((byte *)(mt + 1), pixels);
-					// get a new name for the fullbright mask to avoid cache mismatches
-					sprintf (fbr_mask_name, "fullbright_mask_%s", mt->name);
-					// load the fullbright pixels version of the texture
-					tx->fullbright = GL_LoadTexture (fbr_mask_name, tx->width, tx->height, (byte *)(mt + 1), true, true);
+				byte *data;
+				
+				if ((data = WAD3_LoadTexture(mt))) {
+					texture_mode = GL_LINEAR_MIPMAP_NEAREST;
+					tx->gl_texturenum = GL_LoadTexture32 (mt->name, tx->width, tx->height, (byte *)data, true, false);
+					
+					// check for fullbright pixels in the texture - only if it ain't liquid, etc also
+					if ((tx->name[0] != '*') && (FindFullbrightTexture ((byte *)(mt+1), pixels)))
+					{
+						// convert any non fullbright pixel to fully transparent
+						ConvertPixels ((byte *)(mt + 1), pixels);
+						// get a new name for the fullbright mask to avoid cache mismatches
+						sprintf (fbr_mask_name, "fullbright_mask_%s", mt->name);
+						// load the fullbright pixels version of the texture
+						tx->fullbright = GL_LoadTexture (fbr_mask_name, tx->width, tx->height, (byte *)(mt + 1), true, true);
+					}
+					else tx->fullbright = -1; // because 0 is a potentially valid texture number
+					
+					texture_mode = GL_LINEAR;
+				} else {
+				
+					texture_mode = GL_LINEAR;
+					tx->gl_texturenum = GL_LoadTexture (mt->name, tx->width, tx->height, (byte *)(mt+1), true, false);
+					
+					// check for fullbright pixels in the texture - only if it ain't liquid, etc also
+					if ((tx->name[0] != '*') && (FindFullbrightTexture ((byte *)(mt+1), pixels)))
+					{
+						// convert any non fullbright pixel to fully transparent
+						ConvertPixels ((byte *)(mt + 1), pixels);
+						// get a new name for the fullbright mask to avoid cache mismatches
+						sprintf (fbr_mask_name, "fullbright_mask_%s", mt->name);
+						// load the fullbright pixels version of the texture
+						tx->fullbright = GL_LoadTexture (fbr_mask_name, tx->width, tx->height, (byte *)(mt + 1), true, true);
+					}
+					else tx->fullbright = -1; // because 0 is a potentially valid texture number
 				}
-				else tx->fullbright = -1; // because 0 is a potentially valid texture number
 			}
 		}
 	}
@@ -516,30 +537,6 @@ void Mod_LoadTextures (lump_t *l)
 	}
 }
 
-short LIGHTMAP_BYTES;
-
-void Mod_HL_LoadLighting (lump_t *l)
-{
-	/*if (COM_CheckParm ("-lm_1"))
-		LIGHTMAP_BYTES = 1;
-	else if (COM_CheckParm ("-lm_2"))
-		LIGHTMAP_BYTES = 2;
-	else if (COM_CheckParm ("-lm_3"))
-		LIGHTMAP_BYTES = 3;
-	else
-	*/
-    LIGHTMAP_BYTES = 1;
-
-	if (!l->filelen)
-	{
-		loadmodel->lightdata = NULL;
-		return;
-	}
-
-	loadmodel->lightdata = (byte*)(Hunk_AllocName ( l->filelen, loadname));
-	memcpy (loadmodel->lightdata, mod_base + l->fileofs, l->filelen);
-}
-
 void Mod_LoadLighting (lump_t *l)
 {
 	// LordHavoc: .lit support begin
@@ -548,6 +545,18 @@ void Mod_LoadLighting (lump_t *l)
 	byte d;
 	char litfilename[1024];
 	loadmodel->lightdata = NULL;
+	
+	//Diabolickal HLBSP
+	if (loadmodel->bspversion == HL_BSPVERSION)
+	{
+        if (!l->filelen)
+	    {
+		  return;
+	    }
+	    loadmodel->lightdata = (Hunk_AllocName ( l->filelen, loadname));
+	    memcpy (loadmodel->lightdata, mod_base + l->fileofs, l->filelen);
+        return;
+	}
 
 	// LordHavoc: check for a .lit file
 	strcpy(litfilename, loadmodel->name);
@@ -691,9 +700,6 @@ void Mod_LoadEntities (lump_t *l)
 	}
 	loadmodel->entities = (signed char*)Hunk_AllocName ( l->filelen, loadname);	
 	memcpy (loadmodel->entities, mod_base + l->fileofs, l->filelen);
-	
-//if (loadmodel->bspversion == HL_BSPVERSION)
-//		Mod_ParseWadsFromEntityLump(loadmodel->entities);
 }
 
 
@@ -944,11 +950,15 @@ void Mod_LoadFaces (lump_t *l)
 
 		for (i=0 ; i<MAXLIGHTMAPS ; i++)
 			out->styles[i] = in->styles[i];
-		i = LittleLong(in->lightofs);
+		if (loadmodel->bspversion == HL_BSPVERSION)		//Diabolickal HLBSP
+			i = LittleLong(in->lightofs/3);
+		else
+			i = LittleLong(in->lightofs);
 		if (i == -1)
 			out->samples = NULL;
 		else
 			out->samples = loadmodel->lightdata + (i * 3); // LordHavoc
+		
 		
 	// set the drawing flags flag
 		
@@ -1371,13 +1381,8 @@ void Mod_LoadBrushModel (model_t *mod, void *buffer)
 	Con_Printf("Loading Textures\n");
 	Mod_LoadTextures (&header->lumps[LUMP_TEXTURES]);
 	
-	//if (loadmodel->bspversion == HL_BSPVERSION) {
-	//	Con_Printf("Loading Half-Life Lighting\n");
-	//	Mod_HL_LoadLighting (&header->lumps[LUMP_LIGHTING]);
-	//} else {
-		Con_Printf("Loading Lighting\n");
-		Mod_LoadLighting (&header->lumps[LUMP_LIGHTING]);
-	//}
+	Con_Printf("Loading Lighting\n");
+	Mod_LoadLighting (&header->lumps[LUMP_LIGHTING]);
 	
 	Con_Printf("Loading Planes\n");
 	Mod_LoadPlanes (&header->lumps[LUMP_PLANES]);

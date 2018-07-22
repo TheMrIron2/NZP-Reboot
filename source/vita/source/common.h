@@ -26,6 +26,8 @@ typedef unsigned char 		byte;
 #define BYTE_DEFINED 1
 #endif
 
+typedef enum {qfalse, qtrue}	qboolean;
+
 #ifndef min
 #define min(a, b) ((a) < (b) ? (a) : (b))
 #endif
@@ -200,3 +202,4 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 
 char *strltrim(char *s);
 char* strtolower(char* s);
+void Q_strncpyz (char *dest, char *src, size_t size);

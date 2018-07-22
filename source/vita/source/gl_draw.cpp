@@ -1407,3 +1407,89 @@ void GL_DrawFPS(void){
 	y = 8 ; //vid.height - (sb_lines * (vid.height/240) )- 16;
 	Draw_String(x, y, st);
 }
+
+//Diabolickal HLBSP start
+byte      vid_gamma_table[256];
+void Build_Gamma_Table (void) {
+   int      i;
+   float      inf;
+   float   in_gamma;
+
+   if ((i = COM_CheckParm("-gamma")) != 0 && i+1 < com_argc) {
+      in_gamma = Q_atof(com_argv[i+1]);
+      if (in_gamma < 0.3) in_gamma = 0.3;
+      if (in_gamma > 1) in_gamma = 1.0;
+   } else {
+      in_gamma = 1;
+   }
+
+   if (in_gamma != 1) {
+      for (i=0 ; i<256 ; i++) {
+         inf = min(255 * pow((i + 0.5) / 255.5, in_gamma) + 0.5, 255);
+         vid_gamma_table[i] = inf;
+      }
+   } else {
+      for (i=0 ; i<256 ; i++)
+         vid_gamma_table[i] = i;
+   }
+
+}
+
+/*
+================
+GL_LoadTexture32
+================
+*/
+int GL_LoadTexture32 (char *identifier, int width, int height, byte *data, qboolean mipmap, qboolean alpha)
+{
+   qboolean   noalpha;
+   int         i, p, s;
+   gltexture_t   *glt;
+   int image_size = width * height;
+
+   // see if the texture is already present
+   if (identifier[0])
+   {
+      for (i=0, glt=gltextures ; i<numgltextures ; i++, glt++)
+      {
+         if (!strcmp (identifier, glt->identifier))
+         {
+            if (width != glt->width || height != glt->height)
+               Sys_Error ("GL_LoadTexture: cache mismatch");
+            return gltextures[i].texnum;
+         }
+      }
+   }
+   else {
+      glt = &gltextures[numgltextures];
+      numgltextures++;
+   }
+
+   strcpy (glt->identifier, identifier);
+   glt->texnum = texture_extension_number;
+   glt->width = width;
+   glt->height = height;
+   glt->mipmap = mipmap;
+
+   GL_Bind(texture_extension_number );
+
+#if 1
+   // Baker: this applies our -gamma parameter table
+   if (1) {
+      //extern   byte   vid_gamma_table[256];
+      for (i = 0; i < image_size; i++){
+         data[4 * i] = vid_gamma_table[data[4 * i]];
+         data[4 * i + 1] = vid_gamma_table[data[4 * i + 1]];
+         data[4 * i + 2] = vid_gamma_table[data[4 * i + 2]];
+      }
+   }
+#endif
+
+   GL_Upload32 ((unsigned *)data, width, height, mipmap, alpha);
+
+   texture_extension_number++;
+
+   return texture_extension_number-1;
+}
+
+//Diabolickal 

@@ -432,3 +432,6 @@ mleaf_t *Mod_PointInLeaf (float *p, model_t *model);
 byte	*Mod_LeafPVS (mleaf_t *leaf, model_t *model);
 
 #endif	// __MODEL__
+
+int GL_LoadTexture32 (char *identifier, int width, int height, byte *data, qboolean mipmap, qboolean alpha);		//Diabolickal HLBSP
+void Build_Gamma_Table (void);	//Diabolickal HLBSP

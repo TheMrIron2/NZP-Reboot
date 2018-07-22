@@ -545,6 +545,8 @@ static void Check_Gamma (unsigned char *pal)
 	}
 
 	memcpy (pal, palette, sizeof(palette));
+	
+	Build_Gamma_Table ();		//Diabolickal HLBSP
 }
 
 void VID_Init(unsigned char *palette)
