@@ -160,20 +160,10 @@ void(float what) play_sound_z =
 
 void() set_z_health =
 {
-	if(rounds <= 10)
-	{
+	if(rounds < 10) {
 		z_health = 50 + (rounds * 100);
-	}
-	else
-	{	
-		local float i;
-		i = rounds - 10;
-		z_health = 1050;
-		while(i > 0)
-		{
-			z_health *= 1.1; 
-			i--;
-		}
+	} else {
+		z_health = 950 * pow(1.1, rounds-9);
 	}
 };
 

@@ -16,6 +16,27 @@ void() Spawn_Enemy =
 	}
 }
 
+float() getZombieTotal = {
+	if (rounds < 20) {
+		switch (player_count) {
+			case 0: float cnt[20] = {6, 8, 13, 18, 24, 27, 28, 28, 29, 33, 34, 36, 39, 41, 44, 47, 50, 53, 56}; return cnt[rounds - 1];
+			case 1: float cnt2[20] = {7, 9, 15, 21, 27, 31, 32, 33, 34, 42, 45, 49, 54, 59, 64, 70, 76, 82, 89}; return cnt2[rounds - 1];
+			case 2: float cnt3[20] = {11, 14, 23, 32, 41, 47, 48, 50, 51, 62, 68, 74, 81, 89, 97, 105, 114, 123, 133}; return cnt3[rounds - 1];
+			case 3: float cnt4[20] = {14, 18, 30, 42, 54, 62, 64, 66, 68, 83, 91, 99, 108, 118, 129, 140, 152, 164, 178}; return cnt4[rounds - 1];
+			default: return 0;
+		}
+	} else {
+		switch (player_count) {
+			case 0: return 0.09 * rounds * rounds - 0.0029 * rounds + 23.958;
+			case 1: return 0.1882 * rounds * rounds - 0.4313 * rounds + 29.212;
+			case 2: return 0.2637 * rounds * rounds + 0.1802 * rounds + 35.015;
+			case 3: return 0.35714 * rounds * rounds - 0.0714 * rounds + 50.4286;
+			default: return 0;
+		}
+	}
+	return 0;
+}
+
 void(string s) playSoundAtPlayers =
 {
 	local entity p;
@@ -83,36 +104,19 @@ void() NewRound =
 		tempe = find(tempe, classname, "player");
 	}
 	set_z_health();
-	if(rounds < 10)
-	{
-		if (rounds == 1)
-			Remaining_Zombies = Total_Zombies = 6;//6 jukkihere 1
-		else if (rounds == 2)
-			Remaining_Zombies = Total_Zombies = 8;//8 jukkihere 42
-		else if (rounds == 3)
-			Remaining_Zombies = Total_Zombies = 13;//13 jukkihere 42
-		else if (rounds == 4)
-			Remaining_Zombies = Total_Zombies = 18;//18 jukkihere 42
-		else if (rounds == 5 && !gotdog)
-			Remaining_Zombies = Total_Zombies = 24;
-		else if (rounds == 5 && gotdog)
-			Remaining_Zombies = Total_Zombies = 10; // naievil -- if we have dogs then we should have the true value
-		else if (rounds == 6)
-			Remaining_Zombies = Total_Zombies = 27;
-		else if (rounds == 7)
-			Remaining_Zombies = Total_Zombies = 28;
-		else if (rounds == 8)
-			Remaining_Zombies = Total_Zombies = 28;
-		else if (rounds == 9)
-			Remaining_Zombies = Total_Zombies = 29;
+	Remaining_Zombies = Total_Zombies = getZombieTotal();
+
+	//temp dog stuff
+	if (gotdog) {
+		switch(rounds) {
+			case 5:
+				Remaining_Zombies = Total_Zombies = 10; break;
+			case 10:
+			case 15:
+				Remaining_Zombies = Total_Zombies = 15; break;
+		}
 	}
-	else
-	{
-		if ((rounds == 10 || rounds == 15) && gotdog)
-			Remaining_Zombies = Total_Zombies = 15;
-		else
-			Remaining_Zombies = Total_Zombies = rint((0.0842 * rounds * rounds) + (0.1954 * rounds)+22.05);
-	}
+	
 	maxreward = 50 * rounds;
 	if (maxreward > 500)
 			maxreward = 500;
@@ -197,7 +201,7 @@ void() Round_Core =
 	{
 		Spawn_Enemy();
 	}
-	if (!Remaining_Zombies && !Delay_Time)
+	if (Remaining_Zombies < 1 && !Delay_Time)
 	{
 		Delay_Time = time + 2;
 		rounds_change = 3;
