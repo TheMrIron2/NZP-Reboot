@@ -2,6 +2,7 @@
 float backupWepSkin;
 float sound_perk_delay; 
 void() W_Switch;
+void() W_TakeOut;
 void() mystery_touch;
 
 void GivePerk(float perk) {
@@ -1443,7 +1444,6 @@ void PapUpgrade(entity pap, entity buyer) {
 	////////////////////////////////////////
 
 	self.fire_delay = self.reload_delay = 4.0 + time;
-	Set_W_Frame (0, 39, 0, 0, 0, SUB_Null, "models/machines/v_pap.mdl", true, S_BOTH);
 	sound(self,CHAN_WEAPON,"sounds/machines/papsound.wav",1,ATTN_NONE);
 
 	pap.weapon = self.weapon;
@@ -1456,6 +1456,8 @@ void PapUpgrade(entity pap, entity buyer) {
 	self.secondaryammo = 0;
 	self.secondarymag = 0;
 	self.secondarymag2 = 0;
+
+	Set_W_Frame (0, 39, 0, 0, 0, W_TakeOut, "models/machines/v_pap.mdl", true, S_BOTH);
 
 	self = tempe;
 
