@@ -149,8 +149,10 @@ void() SUB_Null2 = {};
 
 #ifdef PSP
 #define  	VEC_VIEW_OFS  '0 0 32'
+#define 	MAX_ZOMB 	  12
 #else
 #define     VEC_VIEW_OFS  '0 0 40'
+#define 	MAX_ZOMB 	  24
 #endif
 
 vector	trace_plane_normal;
