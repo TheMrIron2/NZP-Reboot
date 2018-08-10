@@ -76,6 +76,7 @@ void(float width, float height) HUD_Ammo =
 	}
 }
 
+float ammoopac, ammoloop;
 void() HUD_AmmoString =
 {
 	vector textcolor = [1, 1, 1];
@@ -93,7 +94,25 @@ void() HUD_AmmoString =
 			message = "NO AMMO";
 			textcolor = [215/255, 0, 0];
 		}
-		drawstring([g_width/2, g_height/2 + (30/272)*g_height, 0], message, [0.02*g_width, 0.02*g_width, 0], textcolor, 1, 1);
+
+		if (ammoloop == 0) {
+			ammoopac -= 0.003;
+			if (ammoopac < 0.5) {
+				ammoopac = 0.5;
+				ammoloop = 1;
+			}
+		} else {
+			ammoopac += 0.003;
+			if (ammoopac >= 1) {
+				ammoopac = 1;
+				ammoloop = 0;
+			}
+		}
+
+		drawstring([g_width/2, g_height/2 + (30/272)*g_height, 0], message, [0.02*g_width, 0.02*g_width, 0], textcolor, ammoopac, 1);
+	} else {
+		ammoopac = 1;
+		ammoloop = 0;
 	}
 }
 

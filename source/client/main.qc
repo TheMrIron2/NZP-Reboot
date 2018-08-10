@@ -87,6 +87,7 @@ float adsDir;*/
 vector weapon_bob_factor;
 float weapon_bob_factor_z_coef;
 vector dampening_factor;
+float vaccel;
 void() Update_Vmodel =
 {
 	local vector offset, adsoffset;
@@ -96,32 +97,16 @@ void() Update_Vmodel =
 	// Motolegacy's Requiem idle bob
 
 	//Walk bob
-	if (K_FORWARDDOWN || K_BACKDOWN || K_LEFTDOWN || K_RIGHTDOWN && !getstatf(STAT_WEAPONZOOM)) {
-	
-		// if (weapon_bob_factor_x < 8) {
-			// weapon_bob_factor_x += fabs(0.68* sin(time*weapon_bob_factor_x));
-		// } else {
-			// weapon_bob_factor_x = 8;
-		// }
-			
-		// if (weapon_bob_factor_y < 8) {
-			// weapon_bob_factor_y += fabs(0.65* cos(time*weapon_bob_factor_y));
-		// } else {
-			// weapon_bob_factor_y = 8;
-		// }
+	if (getstatf(STAT_WEAPONZOOM)) { //ADS bob
+		weapon_bob_factor_x = 0;
+		weapon_bob_factor_y = 0.8;
+		weapon_bob_factor_z = 0.4;
+		weapon_bob_factor_z_coef = 0.2;
 		
-		// if (weapon_bob_factor_z < 13.4) {
-			// weapon_bob_factor_z += fabs(1.23* sin(time*weapon_bob_factor_z));
-		// } else {
-			// weapon_bob_factor_z = 13.4;
-		// }
-		
-		// if (weapon_bob_factor_z_coef > 0.2)
-			// weapon_bob_factor_z_coef = 0.2;
-		// else 
-			// weapon_bob_factor_z_coef += 0.00001;
-			
-			
+		dampening_factor_x = 0.2*sin(time*weapon_bob_factor_x);
+		dampening_factor_y = 0.2*cos(time*weapon_bob_factor_y);
+		dampening_factor_z = 0.2*sin(time*weapon_bob_factor_z);
+	} else if (K_FORWARDDOWN || K_BACKDOWN || K_LEFTDOWN || K_RIGHTDOWN && !getstatf(STAT_WEAPONZOOM)) {	
 		weapon_bob_factor_x = 8;
 		weapon_bob_factor_y = 8;
 		weapon_bob_factor_z = 13.4;
@@ -130,7 +115,7 @@ void() Update_Vmodel =
 		dampening_factor_x = 0.2*sin(time*weapon_bob_factor_x);
 		dampening_factor_y = 0.2*cos(time*weapon_bob_factor_y);
 		dampening_factor_z = 0.2*sin(time*weapon_bob_factor_z);
-	} else { //Still & ADS bob
+	} else { //Still bob
 
 		// Naievil -- stupid ass calcs...
 		// Basically we have a dampening factor per offset and we have to decrease it back down to zero
@@ -260,7 +245,26 @@ void() Update_Vmodel =
 			default: break;
 		}
 		vmodel.origin = vmodel_currentpos + offset;
+
+		vmodel.origin_y += vaccel;
+
+		if (K_LEFTDOWN) {
+			vaccel -= 0.01;
+			if (vaccel < -0.8) 
+				vaccel = -0.8;
+		} else if (K_RIGHTDOWN) {
+			vaccel += 0.01;
+			if (vaccel > 0.8)
+				vaccel = 0.8;
+		} else if (vaccel != 0) {
+			if (vaccel > 0)
+				vaccel -= 0.01;
+			else
+				vaccel += 0.01;
+		}
+
     }
+
 
 	if(weapon == 1)
 	{
