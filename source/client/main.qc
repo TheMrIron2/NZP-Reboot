@@ -2,7 +2,8 @@ void() ToggleMenu =
 {
 	if(serverkey("constate") != "disconnected")
 	{
-		localcmd("cmd pause\n");
+		if (player_count == 0)
+			localcmd("cmd pause\n");
 		if(in_menu == MENU_NONE)
 		{
 			in_menu = MENU_PAUSE;
@@ -824,6 +825,9 @@ noref void() CSQC_Parse_Event =
 			if (achievementunlocked[ach])
 				return;
 			Unlock_Achievement(ach);
+			break;
+		case EVENT_PLAYERUPDATE:
+			player_count = readbyte();
 			break;
 	}
 }

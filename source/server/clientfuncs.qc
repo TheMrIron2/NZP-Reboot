@@ -152,6 +152,20 @@ void(float playernum, float points, float am, float kills, string name, entity p
 	#endif
 }
 
+void(float count) UpdatePlayerCount = {
+	#ifndef PSP
+
+	if (count == 0)
+		return;
+	else {
+		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
+		WriteByte(MSG_ALL, EVENT_PLAYERUPDATE);
+		WriteByte(MSG_ALL, count);
+	}
+
+	#endif
+}
+
 void(float newtime, float newtype, entity change) PromptLevelChange = 
 {
 	#ifndef PSP
@@ -247,7 +261,7 @@ void(string chaptertitle, string location, string date, string person, entity wh
 	}
 }
 
-//singe = only given to the player who did the action
+//single = only given to the player who did the action
 void(float ach, entity who, optional float single) GiveAchievement= {
 	if (player_count == 0 || single) {
 		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);

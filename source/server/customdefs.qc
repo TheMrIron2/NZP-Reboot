@@ -25,7 +25,7 @@ entity local_client;
 .float stance;
 .float stancereset;
 .float changestance;
-vector new_ofs;
+.vector new_ofs;
 
 //money
 .float points;

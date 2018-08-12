@@ -242,11 +242,11 @@ void() PlayerPreThink =
 		else {
 			switch(self.stance) {
 				case 0:
-					new_ofs_z = self.view_ofs_z + 42;
+					self.new_ofs_z = self.view_ofs_z + 42;
 					self.stance = 2;
 					break;
 				case 1:
-					new_ofs_z = self.view_ofs_z + 24;
+					self.new_ofs_z = self.view_ofs_z + 24;
 					self.stance = 2;
 					break;
 				default: break;
@@ -375,21 +375,23 @@ void() ClientConnect =
 	// Maintain old FGD values and just convert them to new ones
 	// 
 	if (world.fog) {
-		string fog_start_end, fog_R, fog_B, fog_G;
+		if (!world_fog) {
+			string fog_start_end, fog_R, fog_B, fog_G;
 		
-		// Tokenize our fog
-		tokenize(world.fog);
+			// Tokenize our fog
+			tokenize(world.fog);
 		
-		// Get values and transmute it a bit if necessary
-		//	Originally: start | end | R | G | B
-		fog_start_end = ftos(((stof(argv(0))) / stof(argv(1))) / 3.5);
+			// Get values and transmute it a bit if necessary
+			//	Originally: start | end | R | G | B
+			fog_start_end = ftos(((stof(argv(0))) / stof(argv(1))) / 3.5);
 		
-		fog_R = ftos(stof(argv(2))/255);
-		fog_G = ftos(stof(argv(3))/255);
-		fog_B = ftos(stof(argv(4))/255);
+			fog_R = ftos(stof(argv(2))/255);
+			fog_G = ftos(stof(argv(3))/255);
+			fog_B = ftos(stof(argv(4))/255);
 
-		// Restore into our world.fog
-		world_fog = strcat(fog_start_end, " ", fog_R, " ", fog_G, " ", fog_B);
+			// Restore into our world.fog
+			world_fog = strcat(fog_start_end, " ", fog_R, " ", fog_G, " ", fog_B);
+		}
 		localcmd(strcat("fog ", world_fog));
 	}
 	
@@ -468,7 +470,7 @@ void() PlayerSpawn =
 	setsize(self, [-16, -16, -24], [16, 16, 32]);
 	self.view_ofs = VEC_VIEW_OFS; // naievil -- set view_ofs to 32 to maintain half life (64) sizes
 	self.stance = 2;
-	new_ofs_z = self.view_ofs_z;
+	self.new_ofs_z = self.view_ofs_z;
 	self.oldz = self.origin_z;
 
 	self.currentammo = 32;
@@ -509,6 +511,7 @@ void() PlayerSpawn =
 	}
 
 	PromptLevelChange(self.nextthink + 3, 1, self);	
+	UpdatePlayerCount(player_count);
 	
 	#ifndef PSP
 	PollPlayerPoints();
@@ -563,6 +566,8 @@ void() ClientDisconnect =
 {
 	bprint(PRINT_HIGH, self.netname);
 	bprint(PRINT_HIGH, " has left the game.\n");
+	player_count--;
+	UpdatePlayerCount(player_count);
 	remove(self);
 };
 

@@ -1276,21 +1276,21 @@ void() Change_Stance = {
 		return;
 	switch(self.stance) {
 		case 2: 
-			new_ofs_z = self.view_ofs_z - 24;
+			self.new_ofs_z = self.view_ofs_z - 24;
 			self.stance = 1;
 			break;
 		case 1:
 			if (!self.stancereset) {
-				new_ofs_z = self.view_ofs_z - 18;
+				self.new_ofs_z = self.view_ofs_z - 18;
 				self.stance = 0;
 			} else {
-				new_ofs_z = self.view_ofs_z + 24;
+				self.new_ofs_z = self.view_ofs_z + 24;
 				self.stance = 2;
 				self.stancereset = 0;
 			}
 			break;
 		case 0:
-			new_ofs_z = self.view_ofs_z + 18;
+			self.new_ofs_z = self.view_ofs_z + 18;
 			self.stance = self.stancereset = 1;
 			break;
 		default: break;
@@ -1328,7 +1328,7 @@ void() dolphin_dive =		//naievil
     self.velocity = self.velocity * 1.2;		
 	self.velocity_z = self.velocity_z + 270;
 	
-	new_ofs_z = self.view_ofs_z - 42;
+	self.new_ofs_z = self.view_ofs_z - 42;
 	self.stance = 0;
 
 	self.button2 = 0;
@@ -1359,11 +1359,11 @@ void () Impulse_Functions =
 				return;
 			switch(self.stance) {
 				case 0:
-					new_ofs_z = self.view_ofs_z + 42;
+					self.new_ofs_z = self.view_ofs_z + 42;
 					self.stance = 2;
 					break;
 				case 1:
-					new_ofs_z = self.view_ofs_z + 24;
+					self.new_ofs_z = self.view_ofs_z + 24;
 					self.stance = 2;
 					break;
 				default: break;
@@ -1500,10 +1500,10 @@ void() CheckPlayer =
 	CheckPowerups(self);
 	CheckRevive(self);
 	
-	if (self.view_ofs_z > new_ofs_z) {
+	if (self.view_ofs_z > self.new_ofs_z) {
 			self.changestance = true;
 			self.view_ofs_z = self.view_ofs_z - 1.5;
-	} else if (self.view_ofs_z < new_ofs_z) {
+	} else if (self.view_ofs_z < self.new_ofs_z) {
 			self.changestance = true;
 			self.view_ofs_z = self.view_ofs_z + 1.5;
 	} else {

@@ -71,6 +71,7 @@ void() nuke =
 	who = find(world,classname,"player");
 	while(who)
 	{
+		addmoney(who, 400, 1);
 		who = find(who,classname,"player");
 	}
 }
@@ -246,7 +247,6 @@ void() powerup_touch =
 		else if(self.zombie_drop_id == 4)
 		{
 			sound(self,CHAN_VOICE,"sounds/pu/nuke.wav",1,ATTN_NONE);
-			addmoney(other, 400*exp, 0);
 			nuke();
 		}
 		else if(self.zombie_drop_id == 5)

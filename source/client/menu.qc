@@ -100,7 +100,8 @@ void() game_spec =
 
 void() menu_resume =
 {
-	localcmd("pause");
+	if (player_count == 0)
+		localcmd("pause");
 	in_menu = MENU_NONE;
 	setcursormode(FALSE);
 };

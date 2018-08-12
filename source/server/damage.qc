@@ -176,11 +176,11 @@ void() GetDown =
 	
 	switch(self.stance) {
 		case 2:
-			new_ofs_z = self.view_ofs_z - 42;
+			self.new_ofs_z = self.view_ofs_z - 42;
 			self.stance = 0;
 			break;
 		case 1:
-			new_ofs_z = self.view_ofs_z - 24;
+			self.new_ofs_z = self.view_ofs_z - 24;
 			self.stance = 0;
 			break;
 		default: break;
@@ -263,7 +263,7 @@ void () GetUp =
 	
 	playgetup();				// animation
 	
-	new_ofs_z = self.view_ofs_z + 42;
+	self.new_ofs_z = self.view_ofs_z + 42;
 	self.stance = 2;
 	self.health = 100;
 	self.downedloop = 0;		// used for death timing vs endgame
