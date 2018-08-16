@@ -1715,6 +1715,12 @@ void () Weapon_Logic =
 	
 	if (self.button6 && !self.semiknife)
 	{ 
+		#ifdef PSP
+		if (self.sprinting) {
+			dolphin_dive();
+			return;
+		}
+		#endif
 		W_Knife();
 		self.semiknife = true;
 	}
