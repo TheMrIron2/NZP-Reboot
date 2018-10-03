@@ -1012,6 +1012,16 @@ float GetWeaponWalkSpeed (float weapontype)
 	}
 }
 
+/* (FIXME) - we REALLY need a new type 100 model
+   https://vignette.wikia.nocookie.net/callofduty/images/1/15/Type_100_Iron_Sights_WaW.jpg/revision/latest/scale-to-width-down/185?cb=20120110220413
+   blubs' model wasn't made to zoom in that far,
+   plus it's overall just a pain in the ass for me
+   to position it.
+
+   life be hard sometimes
+   ~ moto
+*/
+
 vector GetWeaponADSPos(float wep) {
 	switch (wep) {
 		case W_COLT:
@@ -1068,9 +1078,9 @@ vector GetWeaponADSPos(float wep) {
 		case W_TRENCH:
 		case W_GUT:
 			return [0, 2.85, 1.4];
-		case W_TYPE:
+		case W_TYPE: //disgusting
 		case W_SAMURAI:
-			return [0.41, 2.8, 1.34];
+			return [-18, 2.57, 4.23];
 		default:
 			return [0, 0, 0];
 	}

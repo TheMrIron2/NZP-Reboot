@@ -201,7 +201,7 @@ void () buy_weapon_touch =
 	local float startframe,endframe;
 	local string modelname;
 
-	if (other.classname != "player" || other.downed) {
+	if (other.classname != "player" || other.downed || other.isBuying) {
 		return;
 	}
 	
@@ -219,7 +219,7 @@ void () buy_weapon_touch =
 		else
 			useprint (other, 3, self.cost2, self.weapon);
 
-		if (!other.button7 || other.semiuse) {
+		if (!other.button7 || other.semiuse || other.isBuying) {
 			return;
 		}
 		if ((self.weapon == other.weapon && other.currentammo >= getWeaponAmmo(self.weapon))
@@ -602,6 +602,7 @@ void zapper_stop() {
 			zents.think = SUB_Null;
 			zents.nextthink = 0;
 		}
+		zents.touch = SUB_Null;
 		zents = find(zents, zappername, self.zappername);
 	}
 
