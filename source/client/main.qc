@@ -89,6 +89,7 @@ vector weapon_bob_factor;
 float weapon_bob_factor_z_coef;
 vector dampening_factor;
 float vaccel;
+float vzaccel;
 void() Update_Vmodel =
 {
 	local vector offset, adsoffset;
@@ -248,6 +249,7 @@ void() Update_Vmodel =
 		vmodel.origin = vmodel_currentpos + offset;
 
 		vmodel.origin_y += vaccel;
+		vmodel.origin_z += vzaccel;
 
 		if (K_LEFTDOWN) {
 			vaccel -= 0.01;
@@ -262,6 +264,19 @@ void() Update_Vmodel =
 				vaccel -= 0.01;
 			else
 				vaccel += 0.01;
+		}
+
+		//black ops -0.01 till -0.6
+		if (K_BACKDOWN || K_FORWARDDOWN) {
+			vzaccel -= 0.02;
+
+			if (vzaccel < -1.4)
+				vzaccel = -1.4;
+		} else if (vzaccel != 0) {
+			if (vzaccel > 0)
+				vzaccel -= 0.02;
+			else
+				vzaccel += 0.02;
 		}
 
     }
