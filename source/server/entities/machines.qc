@@ -797,22 +797,20 @@ void() Float_Decrease =
 
 void() findboxspot =
 {	
-	entity newspot = findfloat(world, visited, 1); // we are LOOKING to visit
-	if (!newspot) {
-		newspot = findfloat(world, visited, 2);
-		while (newspot)
-		{
-			newspot.visited = 1;
-			newspot = findfloat(world, visited, 2);
-		}
+	entity newspot;
+	float box = random(boxCount);
+
+	newspot = boxLocations[box];
+
+	//make sure the box doesn't spawn in the same place
+	if (newspot == self.owner) {
+		newspot = boxLocations[box + 1];
 	}
-	newspot = findfloat(world, visited, 1);
 	
 	self.owner.model = "progs/Misc/teddy.mdl";
 	setmodel(self.owner, self.owner.model);
 	self.owner.classname = "mystery_box_tp_spot";
 	self.owner.touch = SUB_Null;
-	self.owner.visited = 2;		// we HAVE visited
 	self.owner.angles_y -= 90;
 	
 	newspot.angles_y += 90;
@@ -834,7 +832,6 @@ void() findboxspot =
 	newspot.solid=SOLID_TRIGGER;
 	newspot.classname = "mystery";
 	setorigin(newspot, newspot.origin);
-	newspot.visited = 2;
 	setmodel (newspot, "models/machines/mystery.mdl");
 	setsize (newspot, VEC_HULL2_MIN, VEC_HULL2_MAX);
 }
@@ -951,13 +948,15 @@ void() mystery_box_tp_spot =
 	
 	self.solid=SOLID_TRIGGER;
 	self.classname = "mystery_box_tp_spot";
-	self.visited = 1;
 	setorigin(self, self.origin);
 	setmodel (self, "progs/Misc/teddy.mdl");
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	
 	if (self.model == "progs/Misc/teddy.mdl")
 		self.angles_y -= 90;
+	
+	boxLocations[boxCount] = self;
+	boxCount++;
 };
 
 void() mystery_touch =
@@ -1351,6 +1350,9 @@ void() mystery_box =
 	}
 
 	self.touch = mystery_touch;
+
+	boxLocations[boxCount] = self;
+	boxCount++;
 }
 
 //PACK A PUNCH

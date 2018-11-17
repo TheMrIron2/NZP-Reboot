@@ -273,9 +273,10 @@ float isPowerOn;
 
 .float boxstatus;
 .entity boxweapon;
-.float visited; 		// 2 is we HAVE visited, 1 is we have the ability to visit
 .float spins;
 .float papState;
+entity boxLocations[32];
+float boxCount;
 
 #ifndef PSP
 //powerups
