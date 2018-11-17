@@ -364,7 +364,7 @@ string(float num) argv = #442;
 
 //Half Life View Offset is 64
 //64 units above ground, for our purposes it's, 64 - (how low bounding box goes)
-vector VEC_VIEW_OFS = '0 0 32';
+//vector VEC_VIEW_OFS = '0 0 32';
 
 //Standard Quake Hull
 //vector	VEC_HULL_MIN = '-16 -16 -24';

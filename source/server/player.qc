@@ -470,9 +470,6 @@ void() PlayerSpawn =
 	setsize(self, [-16, -16, -24], [16, 16, 32]);
 	self.view_ofs = VEC_VIEW_OFS; // naievil -- set view_ofs to 32 to maintain half life (64) sizes
 	self.stance = 2;
-	#ifdef PSP
-	self.view_ofs_z = 40;
-	#endif
 	self.new_ofs_z = self.view_ofs_z;
 	self.oldz = self.origin_z;
 
