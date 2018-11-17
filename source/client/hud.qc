@@ -119,18 +119,78 @@ void() HUD_AmmoString =
 /*******************
 *    HUD_Points    *
 *******************/
+
+//disgusting, find a way to store all of these changes into ONE array
 float changeam[10];
+float changew[10];
+float changeh[10];
+float pmwidth[10];
+float pmheight[10];
 string finalam[10];
-void(float amount) RegisterPointChange = //FIXME
+float lastchanged;
+
+void(float amount) RegisterPointChange =
 {
-	changeam[1] = amount;
+	if (lastchanged == 10)
+		lastchanged = 0;
+
+	changeam[lastchanged] = amount;
+
+	//tell each item how much to move and where it should start
+	float posneg = random();
+	float ch = random(10)/60;
+
+	if (posneg < 0.5) {
+		ch = -ch;
+	}
+
+	pmheight[lastchanged] = random(10);
+	pmwidth[lastchanged] = random(10);
+	changew[lastchanged] = 0.25;
+	changeh[lastchanged] = ch;
+
+	//move our way up
+	lastchanged++;
+}
+
+void(float pwidth, float width, float height) PointUpdate = 
+{
+	vector POINTCOLOR;
+
+	for (float i = 0; i < 10; i++) {
+		if (changeam[i] > 0) {
+			POINTCOLOR = TEXT_ORANGE;
+			finalam[i] = strcat("+", ftos(changeam[i]));
+		} else {
+			POINTCOLOR = TEXT_RED;
+			finalam[i] = ftos(changeam[i]);
+		}
+
+		if (changeam[i] != 0 && pmwidth[i] < g_width*0.05) {
+			drawstring([pwidth - pmwidth[i], 0.725*height - pmheight[i], 0], finalam[i], [0.015*width, 0.015*width, 0], POINTCOLOR, 1, 1);
+		}
+
+		/*if (pmwidth[i] > g_width*0.05) {
+			changeam[i] = 0;
+			return;
+		}*/
+
+		/*if (pmwidth[i] > pwidth*0.05) {
+			lastchanged = i;
+			changeam[i] = 0;
+			return;
+		}*/
+
+		pmwidth[i] += changew[i];
+		pmheight[i] += changeh[i];
+	}
 }
 
 void(float width, float height) HUD_Points =
 {
 	local float pointlength = 0, increm = 10, i = 0, pointwidth = 0, x = 0;
 	local float backwidth = 0.8*width;
-	vector TEXTCOLOR, POINTCOLOR;
+	vector TEXTCOLOR;
 	
 	for (i = 3; i >= 0; i = i - 1)
 	{
@@ -145,16 +205,18 @@ void(float width, float height) HUD_Points =
 		}
 		
 		if ((i+1) == getstatf(STAT_PLAYERNUM)) {
-			//pointlength = strlen(ftos(playerpoints[i]));
 			pointwidth = stringwidth(ftos(playerpoints[i]), 0, [0.022*width, 0.022*width, 0]);
 			x = ((width + backwidth) - pointwidth)/2;
 			drawpic([backwidth ,0.70*height - (.061*height*i),0], "gfx/hud/moneyback.tga", [0.2*width, 0.07*height, 0], [1,1,1], 1); 
 			drawstring([x, 0.715*height - 0.06*height*i, 0], ftos(playerpoints[i]), [0.022*width, 0.022*width, 0], TEXTCOLOR, 1, 1); 
+			PointUpdate(backwidth * 0.95, width, height); 
 		}
 		else {
-			pointlength = strlen(ftos(playerpoints[i]));
-			drawpic([0.85*width,0.70*height - (.071*height*i*0.8),0], "gfx/hud/moneyback.tga", [0.2*width*0.8, 0.07*height*0.8, 0], [1,1,1], 1); 
-			drawstring([.97*width - pointlength*20*width/1024, 0.715*height - 0.07*height*i*0.8, 0], ftos(playerpoints[i]), [0.022*width*0.8, 0.022*width*0.8, 0], TEXTCOLOR, 1, 1); 
+			backwidth = 0.85*width;
+			pointwidth = stringwidth(ftos(playerpoints[i]), 0, [0.022*width*0.8, 0.022*width*0.8, 0]);
+			x = ((width + backwidth) - pointwidth)/2;
+			drawpic([backwidth, 0.70*height - (.071*height*i*0.8),0], "gfx/hud/moneyback.tga", [0.2*width*0.8, 0.07*height*0.8, 0], [1,1,1], 1); 
+			drawstring([x, 0.715*height - 0.07*height*i*0.8, 0], ftos(playerpoints[i]), [0.022*width*0.8, 0.022*width*0.8, 0], TEXTCOLOR, 1, 1); 
 		}
 	}
 }
