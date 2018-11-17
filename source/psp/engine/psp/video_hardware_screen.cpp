@@ -771,10 +771,10 @@ char *ReturnLoadingtex (void)
     switch(StringNum)
     {
         case 1:
-            return  "The original Quake came out in 1996 (19 years ago as of 2015)";
+            return  "The original Quake came out in 1996 (22 years ago as of 2018!)";
             break;
         case 2:
-            return  "Use the Kar98-k to be the hero we ";
+            return  "Use the Kar98-k to be the hero we "; // need?
             break;
         case 3:
             return  "There is a huge number of modern engines based on the Quake engine";
@@ -786,13 +786,13 @@ char *ReturnLoadingtex (void)
             return  "The first release of NZ:P was released on December 25, 2010";
             break;
         case 6:
-            return  "The first release of NZ:P has a total of 73,145 downloads";
+            return  "The 1.1 release of NZ:P (original) has a total of about 90,000 downloads!";
             break;
         case 7:
             return  "NZ:P has been downloaded a total of 461,723 times as of December 25, 2014";
             break;
         case 8:
-            return  "This game was made primarily by 3 guys spanning continents";
+            return  "The original NZP was made primarily by 3 guys spanning continents";
             break;
         case 9:
             return  "Blubswillrule: known as \"blubs\", is from the USA";
@@ -813,7 +813,7 @@ char *ReturnLoadingtex (void)
             return  "You can make your own custom map, check out the readme file!";
             break;
         case 15:
-            return  "Retro mode is the way to go!(It's in the Graphics Settings)";
+            return  "Try Retro mode! (It's in the Graphics Settings)";
             break;
         case 16:
             return  "Tired of Nacht der Untoten? Make your own map!";
@@ -822,7 +822,7 @@ char *ReturnLoadingtex (void)
             return  "Slay zombies & be grateful";
             break;
         case 18:
-            return  "custom maps, CUSTOM MAPS!";
+            return  "Custom maps, CUSTOM MAPS!";
             break;
         case 19:
             return  "Go outside & build a snowman!";
@@ -843,7 +843,7 @@ char *ReturnLoadingtex (void)
             return  "You dead yet?";
             break;
         case 25:
-            return  "This game is now 21% Cooller";
+            return  "Now 21% cooler!";
             break;
         case 26:
             return  "your lg is nothink on the lan";
@@ -852,16 +852,17 @@ char *ReturnLoadingtex (void)
             return  "I'm not your chaotic on dm6";
             break;
         case 28:
-            return  "Shoot zombies to kill them";
+            return  "Shoot zombies to kill them. Or knife them. You choose.";
             break;
         case 29:
-            return  "Be sure to also check out \"Cause of War: 1944\" for the PSP!";
+            //return  "Be sure to also check out \"Cause of War: 1944\" for the PSP!"; // seems dead now unfortunately
+	    return "Be sure to also check out \"Perfect Dark: Reloaded\" for the PSP!"; 
             break;
         case 30:
             return  "ggnore";
             break;
         case 31:
-            return  "stop eating like a noob";
+            return  "Try this game on PC as well as PSP!";
             break;
         case 32:
             return  "Submerge your device in water for godmode";
@@ -873,10 +874,10 @@ char *ReturnLoadingtex (void)
             return  "Also check out \"No Bugs Allowed\" for the PSP!";
             break;
         case 35:
-            return  "ripperoni in pepperoni";
+            return  "Loading..."; // "ripperoni" made me think the game crashed while loading
             break;
         case 36:
-            return  "Zombies don't fart";
+            return  "Zombies don't like bullets.";
             break;
         case 37:
             return  "Thanks for being an awesome fan!";
