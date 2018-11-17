@@ -1,4 +1,5 @@
 void() W_PutOut;
+void() GrenadeExplode;
 
 void() ReturnWeaponModel =
 {
@@ -736,6 +737,32 @@ void (float shotcount, float sprd, float Damage/*, float headmulti, float legmul
 
 }
 
+void(float side) W_FireGrenade = 
+{
+	entity nade = spawn();
+	nade.owner = self;
+	nade.movetype = MOVETYPE_BOUNCE;
+	nade.solid = SOLID_BBOX;
+	nade.classname = "explosiveNade";
+
+	makevectors (self.v_angle);
+
+	nade.velocity = v_forward*5000;
+		
+	nade.avelocity = '400 -400 400';
+
+	nade.angles = vectoangles(v_forward);
+	nade.angles_z -= 15;
+
+	nade.touch = GrenadeExplode;
+	setmodel (nade, "progs/GModels/g_grenade.mdl");
+	setsize(nade, '0 0 0', '0 0 0');
+	nade.origin = self.origin + self.view_ofs;
+	nade.origin += v_forward * 50;
+
+	setorigin(nade, nade.origin);
+}
+
 
 void(float side) W_Fire =
 {
@@ -824,7 +851,7 @@ void(float side) W_Fire =
 		playdownfire();
 
 	//Fire weapons
-	if (firetype == 1)
+	if (firetype == 1 || firetype == 3)
 	{
 		if (side == S_RIGHT) {
 			if (self.semi) {
@@ -839,6 +866,9 @@ void(float side) W_Fire =
 		}
 	}
 
+	if (firetype == 3)
+		W_FireGrenade(side);
+		
 	FireTrace(shotcount, spread, damage/* , self.weaponslot1.headx, self.weaponslot1.legx */);
 
 
@@ -1049,7 +1079,11 @@ void() switch_nade =
 void() GrenadeExplode =
 {
 	sound (self, CHAN_WEAPON, "sounds/weapons/grenade/explode.wav", 1, ATTN_NORM);	
-	DamgageExplode (self, self.owner, 225, 75, 128);//was 256 inch radius, kicked it down to 128 because 21 feet exploding radius is... a bit overkill...	
+
+	if (self.classname == "grenade")
+		DamgageExplode (self, self.owner, 225, 75, 128);//was 256 inch radius, kicked it down to 128 because 21 feet exploding radius is... a bit overkill...	
+	else
+		DamgageExplode (self, self.owner, 125, 300, 128); //explosive weapons have a smaller radius but are more powerful :)
 	
 	#ifndef PSP
 	te_explosionquad(self.origin);
