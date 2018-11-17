@@ -303,7 +303,10 @@ void(vector where, float type) Spawn_Powerup =
 	
 	setsize (new_powerup, VEC_HULL_MIN, VEC_HULL_MAX);
 	new_powerup.movetype = MOVETYPE_NONE;
-	//new_powerup.effects = EF_GREENLIGHT;
+
+	#ifdef PSP
+	new_powerup.effects = EF_GREEN;
+	#endif
 	//new_powerup.effects = new_powerup.effects | EF_BRIGHTLIGHT;
 	
 	//=================== Sparkle Effects =====================
