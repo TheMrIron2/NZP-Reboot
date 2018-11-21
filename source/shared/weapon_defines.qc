@@ -1057,7 +1057,7 @@ vector GetWeaponADSPos(float wep) {
 			return [-2.19, 2.67, 0.42];
 		case W_M1:
 		case W_M1000:
-			return [-2.6, 2.46, 1.12];
+			return [-2.6, 1.46, 1.12];
 		case W_M1A1:
 		case W_WIDDER:
 			return [-0.6, 2.7, 1.94];
@@ -1082,6 +1082,9 @@ vector GetWeaponADSPos(float wep) {
 		case W_TYPE: //disgusting
 		case W_SAMURAI:
 			return [-18, 2.57, 4.23];
+		case W_M2:
+		case W_FIW:
+			return [0, 0.89, 0.82];
 		default:
 			return [0, 0, 0];
 	}

@@ -21,7 +21,8 @@ void() W_AimIn =
 		self.zoom ||
 		self.reload_delay > time ||
 		self.sprinting ||
-		self.new_anim_stop) {		
+		self.new_anim_stop ||
+		self.weapon == W_BK) {		
 		return;
 	}
 		
@@ -339,7 +340,7 @@ void(float side) W_Reload =
 	if (side == S_LEFT &&
 		(self.reload_delay2 > time ||
 		self.new_anim2_stop || 
-		!self.secondaryammo ||
+		!self.currentammo ||
 		self.currentmag2 >= getWeaponMag(self.weapon))) {
 		return;
 	}
