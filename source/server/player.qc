@@ -473,9 +473,9 @@ void() PlayerSpawn =
 	self.new_ofs_z = self.view_ofs_z;
 	self.oldz = self.origin_z;
 
-	self.currentammo = 32;
-	self.currentmag = 8;
-	self.weapon = W_COLT;
+	self.currentammo = G_STARTWEAPON[2];
+	self.currentmag = G_STARTWEAPON[1];
+	self.weapon = G_STARTWEAPON[0];
 	
 	self.grenades = self.grenades | 1;  // add frag grenades to player inventory
 	
@@ -488,7 +488,7 @@ void() PlayerSpawn =
 	self.secondary_grenades = -1;		// shows that we both don't have betties AND shouldn't draw the image onscreen
 
 	if (!self.points)
-		addmoney(self, 500, 0);
+		addmoney(self, G_STARTPOINTS, 0);
 
 	self.weaponmodel = GetWeaponModel(self.weapon, 0);// Give weapon model
 
@@ -517,16 +517,22 @@ void() PlayerSpawn =
 	PollPlayerPoints();
 	UpdateV2model("", 0);
 	stuffcmd(self, "cl_gunx 8;cl_guny 16;cl_gunz 25\n");
-	SetRound(self, rounds);
+	SetRound(self, G_STARTROUND);
 	self.viewzoom = 1;
 	self.weapon_animduration = getWeaponDelay(self.weapon, FIRE);
-	WorldText(world.chaptertitle, world.location, world.date, world.person, self);
-	GiveAchievement(4, pl1);
+
+	if (G_WORLDTEXT)
+		WorldText(world.chaptertitle, world.location, world.date, world.person, self);
+
 	#else 
 	self.Weapon_Name = GetWeaponName(self.weapon);
 	self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
 	self.Flash_Size = GetWeaponFlash_Size(self.weapon);
 	#endif
+
+	if (G_STARTROUND != 1) {
+		rounds = G_STARTROUND - 1;
+	}
 };
 
 void() SpectatorSpawn =

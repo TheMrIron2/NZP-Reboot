@@ -97,6 +97,12 @@ void() touch_perk =
 {  
 	if (other.classname != "player" || other.downed || other.isBuying == true)
 		return;
+
+	if (other.stance == 0 && self.collected == false && G_PRONEPOINTS != 0) {
+		self.collected = true;
+		addmoney(other, G_PRONEPOINTS, 0);
+		sound(self, 0,"sounds/misc/ching.wav", 1, 1);
+	}
 	  
 	if (self.requirespower == true && !isPowerOn)
 	{

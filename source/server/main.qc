@@ -248,7 +248,7 @@ void() worldspawn =
 {
 	precaches();
 
-#ifndef PSP
+	#ifndef PSP
 	clientstat(STAT_CURRENTMAG, EV_FLOAT, currentmag);
 	clientstat(STAT_CURRENTMAG2, EV_FLOAT, currentmag2);
 	clientstat(STAT_POINTS, EV_FLOAT, points);
@@ -265,12 +265,22 @@ void() worldspawn =
 	clientstat(STAT_SPECTATING, EV_FLOAT, isspec);
 	clientstat(STAT_PLAYERNUM, EV_FLOAT, playernum);		// literally useless but will be kept in case
 	clientstat(STAT_PLAYERSTANCE, EV_FLOAT, stance);
-#endif
+	#endif
 	
 	mappath = strcat("maps/", mapname);
 	mappath = strzone(mappath);
 
 	LoadWaypointData();
+
+	//set game elements
+	G_STARTPOINTS = 500;
+	G_STARTROUND = 1;
+	G_PRONEPOINTS = 0;
+	G_STARTWEAPON[0] = W_COLT;
+	G_STARTWEAPON[1] = 8;
+	G_STARTWEAPON[2] = 32;
+	G_WORLDTEXT = 1;
+	load_nzd();
 }
 
 void() SpectatorConnect =

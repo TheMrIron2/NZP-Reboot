@@ -270,6 +270,7 @@ float isPowerOn;
 .float perks;
 .float perk_delay;
 .float revivesoda;
+.float collected;
 
 .float boxstatus;
 .entity boxweapon;
@@ -376,3 +377,10 @@ string world_fog;
 .string location;
 .string date;
 .string person;
+
+//altered game elements
+float G_STARTPOINTS;
+float G_STARTROUND;
+float G_PRONEPOINTS;
+float G_STARTWEAPON[3];
+float G_WORLDTEXT;
