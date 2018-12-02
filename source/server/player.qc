@@ -436,6 +436,9 @@ void() PlayerSpawn =
 	setmodel(self, "models/player.mdl");
 	self.movetype = MOVETYPE_WALK;
 	self.max_health = self.health = 100;
+
+	//custom weapon stuff (we want to put this here so we can send the info to the client with an entity)
+	nzd_defineweapon(self);
 	
 	entity who = find(world,classname,"player");
 	while(who != self && !self.playernum)
@@ -658,6 +661,7 @@ void(string com) SV_ParseClientCommand =
 					if (!self.secondaryweapon) {
 						WeaponSwitch(self);
 					}
+					
 					float startframe, endframe;
 					string modelname;
 

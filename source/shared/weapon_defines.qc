@@ -105,6 +105,10 @@ string(float wep) GetWeaponName =
 			return "Bouncing Betty";
     	case W_TESLA:
       		return "Wunderwaffe DG-2";
+		case W_CUSTOM1:
+			return W_CUSTOMNAME[0];
+		case W_CUSTOM2:
+			return W_CUSTOMNAME[1];
 		default:
 			return " ";
 	}
@@ -209,6 +213,10 @@ float(float wep) GetFiretype =
 		case W_TYPE:
 		case W_SAMURAI:
 			return 0;
+		case W_CUSTOM1:
+			return W_CFIRETYPE[0];
+		case W_CUSTOM2:
+			return W_CFIRETYPE[1];
     }
 
     return 0;
@@ -308,6 +316,10 @@ float(float wep) getWeaponMag =
 			return 30;
 		case W_SAMURAI:
 			return 60;
+		case W_CUSTOM1:
+			return W_CMAG[0];
+		case W_CUSTOM2:
+			return W_CMAG[1];
 	}
 	return 0;
 }
@@ -408,6 +420,10 @@ float(float wep) getWeaponAmmo =
 			return 160;
 		case W_SAMURAI:
 			return 220;
+		case W_CUSTOM1:
+			return W_CRESERVE[0];
+		case W_CUSTOM2:
+			return W_CRESERVE[1];
 	}
 	return 0;
 }
@@ -506,6 +522,10 @@ float(float wep) getWeaponDamage =
 			return 100;
 		case W_SAMURAI:
 			return 200;
+		case W_CUSTOM1:
+			return W_CDMG[0];
+		case W_CUSTOM2:
+			return W_CDMG[1];
     }
 
     return 0;
@@ -526,6 +546,10 @@ float(float wep) GetWeaponShotcount =
 			return 8;
 		case W_GUT:
 			return 10;
+		case W_CUSTOM1:
+			return W_CSHOTCOUNT[0];
+		case W_CUSTOM2:
+			return W_CSHOTCOUNT[1];
 	}
 
     return 1;
@@ -639,6 +663,14 @@ float(float wep, float penetration_times) getWeaponPenetration =
 			if (penetration_times >= 2)
 				return 0;
 			return 0.8;
+		case W_CUSTOM1:
+			if (penetration_times >= W_CBODYPEN[0])
+				return 0;
+			return W_CPENETRATION[0];
+		case W_CUSTOM2:
+			if (penetration_times >= W_CBODYPEN[1])
+				return 0;
+			return W_CPENETRATION[1];
 		default:
 			return 0;
     }
@@ -784,6 +816,10 @@ float(float wep) GetWeaponSpread =
 			break;
 		case W_M14:
 			Weapon_Spread = 5;
+		case W_CUSTOM1:
+			Weapon_Spread = W_CSPREAD[0];
+		case W_CUSTOM2:
+			Weapon_Spread = W_CSPREAD[1];
 		break;
 	}
 
@@ -976,6 +1012,16 @@ float(float wep, float delaytype) getWeaponDelay =
 				return 2.3;
 			else if (delaytype == FIRE)
 				return 0.065;
+		case W_CUSTOM1:
+			if (delaytype == RELOAD)
+				return W_CRDELAY[0];
+			else if (delaytype == FIRE)
+				return W_CFDELAY[0];
+		case W_CUSTOM2:
+			if (delaytype == RELOAD)
+				return W_CRDELAY[1];
+			else if (delaytype == FIRE)
+				return W_CFDELAY[1];
     }
 
     return 0;
@@ -1010,6 +1056,10 @@ float GetWeaponWalkSpeed (float weapontype)
 			return 0.75;
 		case W_FIW:
 			return 0.85;
+		case W_CUSTOM1:
+			return W_CWALKSPD[0];
+		case W_CUSTOM2:
+			return W_CWALKSPD[1];
 	}
 }
 
@@ -1085,6 +1135,10 @@ vector GetWeaponADSPos(float wep) {
 		case W_M2:
 		case W_FIW:
 			return [0, 0.89, 0.82];
+		case W_CUSTOM1:
+			return W_CADS[0];
+		case W_CUSTOM2:
+			return W_CADS[1];
 		default:
 			return [0, 0, 0];
 	}
@@ -1965,6 +2019,76 @@ float(float wep, float frametype) GetFrame =
 					return 27;
 			}
 			break;
+		case W_CUSTOM1:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return W_C1FRAMES[0];
+				case FIRE_END:
+					return W_C1FRAMES[1];
+				case RELOAD_START:
+					return W_C1FRAMES[2];
+				case RELOAD_END:
+					return W_C1FRAMES[3];
+				case SPRINT_IN_START:
+					return W_C1FRAMES[4];
+				case SPRINT_IN_END:
+					return W_C1FRAMES[5];
+				case SPRINT_OUT_START:
+					return W_C1FRAMES[6];
+				case SPRINT_OUT_END:
+					return W_C1FRAMES[7];
+				case TAKE_OUT_START:
+					return W_C1FRAMES[8];
+				case TAKE_OUT_END:
+					return W_C1FRAMES[9];
+				case PUT_OUT_START:
+					return W_C1FRAMES[10];
+				case PUT_OUT_END:
+					return W_C1FRAMES[11];
+				case RELOAD_CANCEL:
+					return W_C1FRAMES[12];
+				case AIM_IN_END:
+					return W_C1FRAMES[13];
+				case AIM_IN_START:
+					return W_C1FRAMES[14];
+			}
+			break;
+		case W_CUSTOM2:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return W_C2FRAMES[0];
+				case FIRE_END:
+					return W_C2FRAMES[1];
+				case RELOAD_START:
+					return W_C2FRAMES[2];
+				case RELOAD_END:
+					return W_C2FRAMES[3];
+				case SPRINT_IN_START:
+					return W_C2FRAMES[4];
+				case SPRINT_IN_END:
+					return W_C2FRAMES[5];
+				case SPRINT_OUT_START:
+					return W_C2FRAMES[6];
+				case SPRINT_OUT_END:
+					return W_C2FRAMES[7];
+				case TAKE_OUT_START:
+					return W_C2FRAMES[8];
+				case TAKE_OUT_END:
+					return W_C2FRAMES[9];
+				case PUT_OUT_START:
+					return W_C2FRAMES[10];
+				case PUT_OUT_END:
+					return W_C2FRAMES[11];
+				case RELOAD_CANCEL:
+					return W_C2FRAMES[12];
+				case AIM_IN_END:
+					return W_C2FRAMES[13];
+				case AIM_IN_START:
+					return W_C2FRAMES[14];
+			}
+			break;
 	}
 
     return 0;
@@ -2133,6 +2257,16 @@ string(float wep, float gorvmodel) GetWeaponModel =
 				return ("models/weapons/bk/g_bk.mdl");
 			else
 				return ("models/weapons/bk/v_bk.mdl");
+		case W_CUSTOM1:
+			if (gorvmodel)
+				return W_CGMODEL[0];
+			else 
+				return W_CVMODEL[0];
+		case W_CUSTOM2:
+			if (gorvmodel)
+				return W_CGMODEL[1];
+			else 
+				return W_CVMODEL[1];
     }
 
     return ("");
@@ -2210,6 +2344,10 @@ string(float wep) GetWeaponSound =
 		case W_TYPE:
     	case W_SAMURAI:
 			return "sounds/weapons/type100/shoot.wav";
+		case W_CUSTOM1:
+			return W_CFIRESOUND[0];
+		case W_CUSTOM2:
+			return W_CFIRESOUND[1];
     }
 
     return "";
@@ -2261,6 +2399,7 @@ float(float wep) IsPapWeapon = {
 		case W_SPATZ:
 		case W_GUT:
 		case W_SAMURAI:
+		case W_CPAPWEP[0]:
 			return 1;
 		default:
 			return 0;
@@ -2335,6 +2474,8 @@ float(float wep)  EqualNonPapWeapon =
 			return W_MP5;
 		case W_M14:
 			return W_M14;
+		case W_CPAPWEP[0]:
+			return W_CUSTOM1;
 		default:
 			return 0;
 	}
@@ -2393,6 +2534,8 @@ float(float wep)  EqualPapWeapon =
 			return W_BIATCH;
 		case W_M14:
 			return W_M14;
+		case W_CUSTOM1:
+			return W_CPAPWEP[0];
 		default:
 			return wep;
 	}
@@ -2870,6 +3013,12 @@ void(float weptype) precache_extra =
 			precache_sound("sounds/weapons/type100/boltpull.wav");
 			precache_sound("sounds/weapons/type100/shoot.wav");
 			break;
+		case W_CUSTOM1:
+			precache_sound(W_CFIRESOUND[0]);
+			break;
+		case W_CUSTOM2:
+			precache_sound(W_CFIRESOUND[1]);
+			break;
 	}
 }
 
@@ -3014,6 +3163,12 @@ float(float wep) getWeaponRecoilReturn =
 			break;
 		case W_TESLA:
 			return 1813;
+			break;
+		case W_CUSTOM1:
+			return W_CRECOIL[0];
+			break;
+		case W_CUSTOM2:
+			return W_CRECOIL[1];
 			break;
 	}
 	return 0;
@@ -3160,6 +3315,12 @@ float(float weapon) CrossHairWeapon =
 			break;
 		case W_TESLA:
 			return 0;
+			break;
+		case W_CUSTOM1:
+			return W_CCROSSMIN[0];
+			break;
+		case W_CUSTOM2:
+			return W_CCROSSMIN[1];
 			break;
 	}
 	return 0;	
@@ -3308,6 +3469,12 @@ float(float weapon) CrossHairMaxSpread =
 		case W_TESLA:
 			return 0;
 			break;
+		case W_CUSTOM1:
+			return W_CCROSSMAX[0];
+			break;
+		case W_CUSTOM2:
+			return W_CCROSSMAX[1];
+			break;
 	}
 	return 0;
 }
@@ -3361,6 +3528,10 @@ int(int weapon, int type) GetLowAmmo = // determine what ammo value you should h
 		case W_WIDDER: if (type) return 4; else return 30;
 		case W_KILLU: if (type) return 2; else return 20;
 		case W_TESLA: if (type) return 1; else return 6;
+		#ifndef PSP //warnings on psp..?
+		case W_CUSTOM1: if (type) return W_CLOWMAG[0]; else return W_CLOWRES[0];
+		case W_CUSTOM2: if (type) return W_CLOWMAG[1]; else return W_CLOWRES[1];
+		#endif
 		case 0: if (type) return -1; else return -1;
 		default: return 0;
 	}

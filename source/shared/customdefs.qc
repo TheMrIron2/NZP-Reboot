@@ -17,6 +17,7 @@ const float EVENT_SCROLLTEXT = 28;
 const float EVENT_WORLDDATA = 29;
 const float EVENT_ACHIEVEMENT = 30;
 const float EVENT_PLAYERUPDATE = 31;
+const float EVENT_WEAPONUPDATE = 32;
 
 //nzp weapon defines
 //id list
@@ -78,6 +79,10 @@ const float EVENT_PLAYERUPDATE = 31;
 #define W_M14          55
 
 #define W_TESLA  56
+
+//custom
+#define W_CUSTOM1 	   70
+#define W_CUSTOM2	   71
 
 
 #define BASE_FRAME			1
@@ -158,3 +163,33 @@ float invertfloat(float input) {
 	
 	return (1 - input);	
 }
+
+//custom weapons
+//float CWEPNUM;
+float W_C1FRAMES[15];
+float W_C2FRAMES[15];
+string W_CUSTOMNAME[4];
+string W_CVMODEL[4];
+string W_CGMODEL[4];
+string W_CFIRESOUND[4];
+float W_CFIRETYPE[4];
+float W_CMAG[4];
+float W_CRESERVE[4];
+float W_CPAPWEP[4];
+float W_CDMG[4];
+float W_CSHOTCOUNT[4];
+float W_CPENETRATION[4];
+float W_CBODYPEN[4];
+float W_CSPREAD[4];
+float W_CRDELAY[4];
+float W_CFDELAY[4];
+float W_CWALKSPD[4];
+float W_CSKIN[4];
+float W_CRECOIL[4];
+float W_CCROSSMIN[4];
+float W_CCROSSMAX[4];
+float W_CLOWMAG[4];
+float W_CLOWRES[4];
+float W_CFLASHSIZE[4];
+vector W_CADS[4];
+vector W_CFLASH[4];

@@ -1526,6 +1526,7 @@ void touch_pap() {
 			other.weaponmodel = GetWeaponModel(other.weapon, 0);// Give weapon model
 
 			self = other;
+			SwitchWeapon(self.weapon);
 			Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, true, S_BOTH);//FIXME
 			self = tempe;
 			reset_pap();

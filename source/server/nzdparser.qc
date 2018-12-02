@@ -8,6 +8,177 @@
     in the game changes. FIXME.
 */
 
+//custom weapon search
+void(entity who) nzd_defineweapon = {
+	//W_CUSTOMNAME = "reee";
+	float f, p, l, fnum, wepnum;
+	string line;
+
+	line = strcat(mappath, ".cw");
+	f = fopen(line, FILE_READ);
+
+	if (f == -1) { //no custom weapons
+		return;
+	}
+	wepnum = -1;
+	p = 0;
+	l = 1;
+
+	while(l) {
+		string li;
+		li = fgets(f);
+
+		if not (li) {
+			l = 0;
+			break;
+		}
+
+		line = strtrim(li);
+
+		if (line == "")
+			continue;
+
+		switch(p) {
+			case 0:
+				wepnum += 1;
+				if (line == "weapon")
+					p = 1;
+				break;
+			case 1:
+				if (line == "{")
+					p = 2;
+				else
+					bprint(PRINT_HIGH, strcat("Error: unknown variable ", strcat(line, " expected {\n")));
+				break;
+			case 2:
+				tokenize(line);
+
+				string v, vari;
+				vari = strtrim(argv(0));
+				v = strtrim(argv(2));
+
+				switch (vari) {
+					case "name":
+						W_CUSTOMNAME[wepnum] = v;
+						break;
+					case "mag":
+						W_CMAG[wepnum] = stof(v);
+						break;
+					case "reserve":
+						W_CRESERVE[wepnum] = stof(v);
+						break;
+					case "vmodel":
+						W_CVMODEL[wepnum] = v;
+						break;
+					case "gmodel":
+						W_CGMODEL[wepnum] = v;
+						break;
+					case "firetype":
+						W_CFIRETYPE[wepnum] = stof(v);
+						break;
+					case "dmg":
+						W_CDMG[wepnum] = stof(v);
+						break;
+					case "shotcount":
+						W_CSHOTCOUNT[wepnum] = stof(v);
+						break;
+					case "bodypen":
+						W_CBODYPEN[wepnum] = stof(v);
+						break;
+					case "penetration":
+						W_CPENETRATION[wepnum] = stof(v);
+						break;
+					case "spread":
+						W_CSPREAD[wepnum] = stof(v);
+						break;
+					case "fdelay":
+						W_CFDELAY[wepnum] = stof(v);
+						break;
+					case "rdelay":
+						W_CRDELAY[wepnum] = stof(v);
+						break;
+					case "walkspeed":
+						W_CWALKSPD[wepnum] = stof(v);
+						break;
+					case "firesound":
+						W_CFIRESOUND[wepnum] = v;
+						break;
+					case "skin":
+						W_CSKIN[wepnum] = stof(v);
+						break;
+					case "recoil":
+						W_CRECOIL[wepnum] = stof(v);
+						break;
+					case "crossmin":
+						W_CCROSSMIN[wepnum] = stof(v);
+						break;
+					case "crossmax":
+						W_CCROSSMAX[wepnum] = stof(v);
+						break;
+					case "lowmag":
+						W_CLOWMAG[wepnum] = stof(v);
+						break;
+					case "lowreserve":
+						W_CLOWRES[wepnum] = stof(v);
+						break;
+					case "flash":
+						W_CFLASH[wepnum] = stov(v);
+					case "flashsize":
+						W_CFLASHSIZE[wepnum] = stof(v);
+						break;
+					case "pap":
+						W_CPAPWEP[wepnum] = stof(v);
+						break;
+					case "ads":
+						W_CADS[wepnum] = stov(v);
+						break;
+					case "frames":
+						p = 3;
+						break;
+                    case "}":
+						#ifndef PSP
+						sendCustomWeapon(wepnum, W_CUSTOMNAME[wepnum], W_CVMODEL[wepnum], W_CMAG[wepnum], W_CRESERVE[wepnum], vtos(W_CADS[wepnum]), W_CCROSSMIN[wepnum], W_CCROSSMAX[wepnum], vtos(W_CFLASH[wepnum]), W_CFLASHSIZE[wepnum], who);
+						#endif
+						if (wepnum == 1) {
+							l = 0;
+							break;
+						} else {
+							p = 0;
+							fnum = 0;
+						}
+                        break;
+					default:
+						bprint(PRINT_HIGH, strcat("Error: unknown variable ", strcat(line, " expected }\n")));
+						break;
+				}
+				break;
+			case 3:
+                if (line == "[") {
+                    p = 4;
+                } else {
+                    bprint(PRINT_HIGH, strcat("Error: unknown variable ", strcat(line, " expected [\n")));
+                }
+                break;
+            case 4:
+                if (line == "]") {
+                    p = 2;
+                } else {
+					switch(wepnum) {
+						case 0:
+							W_C1FRAMES[fnum] = stof(line);
+							break;
+						case 1:
+							W_C2FRAMES[fnum] = stof(line);
+							break;
+					}
+					fnum++;
+                }
+				break;
+		}
+	}
+	fclose(f);
+}
+
 //basically copying the waypoint code.. yikes
 void() load_nzd = {
     float file, point;
