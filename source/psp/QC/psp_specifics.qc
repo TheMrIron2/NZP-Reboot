@@ -1,5 +1,9 @@
 void() Do_Zombie_A = {};
 void() func_door_nzp;
+void() mystery_box;
+
+entity windows[32];
+float wincnt;
 
 void () CL_SendWeaponFire =
 {
@@ -25,12 +29,27 @@ void() ParseClientCommand = {SV_ParseClientCommand(CMD_STRING);}
 
 void() PutClientInServer;
 void() InitRounds;
-void() Soft_Restart = 
-{
-	entity who, oldself, doors;
+
+//moto -- put this here because it keeps soft_restart somewhat clean..
+void(entity door) reclose_door = {
+	entity  oldself;
+	oldself = self;
+
+	self = door;
+	setmodel(self, self.oldmodel);
+	setorigin(self, self.oldorigin);
+	self.isopen = 0;
+	func_door_nzp();
+
+	self = oldself;
+}
+
+void() Soft_Restart = {
+	entity who, oldself, doors, box, revive;
 	self = find(world,classname,"player");
 	oldself = self;
 	
+	//remove all zombies
 	who = find(world,classname,"ai_zombie");
 	while(who != world)
 	{
@@ -38,20 +57,51 @@ void() Soft_Restart =
 		{
 			self = who;
 			self.th_die();
+			remove(self); //so dead bodies don't remain
 			self = oldself;
 		}
 		
 		who = find(who,classname,"ai_zombie");
 	}
 
-	doors = find(world, classname, "door_open");
-	while (doors != world) {
-		doors.state = doors.oldstate;
-		doors.origin = doors.oldorigin;
-		setmodel(doors, doors.oldmodel);
-		doors.think = func_door_nzp;
-		doors.nextthink = time + 0.1;
-		doors = find(world, classname, "door_open");
+	//repair all windows
+	for(float i = 0; i < wincnt; i++) {
+		if (windows[i].health != -10) {
+			windows[i].health = 6;
+			windows[i].frame = 0;
+		}
+	}
+
+	//close doors
+	doors = findfloat(world, isopen, 1);
+	while (doors) {
+		if (doors.isopen)
+			reclose_door(doors);
+		doors = findfloat(world, isopen, 1);
+	}
+
+	//revert mystery box
+	box = find(world, classname, "mystery");
+	if (box) {
+		box.boxstatus = 0;
+		box.frame = 0;
+		box.goaldummy.frame = 0;
+		boxCount = 0;
+		box.origin = boxOrigin;
+		//self = box;
+
+		if (box.boxweapon)
+			remove(box.boxweapon);
+
+		//mystery_box();
+		//self = oldself;
+	}
+
+	//reset quick revive
+	revive = find(world, classname, "perk_revive");
+	if (revive) {
+		setmodel(revive, "models/machines/quick_revive.mdl");
+		oldself.revivesoda = 0;
 	}
 
 	self = oldself;
@@ -59,6 +109,7 @@ void() Soft_Restart =
 	game_over = false;
 	rounds = 0;
 	self.points = 0;
+	self.secondaryweapon = 0;
 	InitRounds();
 	self.isspec = false;
 	PutClientInServer();

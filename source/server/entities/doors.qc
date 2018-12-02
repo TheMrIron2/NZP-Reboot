@@ -83,6 +83,7 @@ void() door_hit_top =
 	{
 		//remove (self.owner.trigger_field); //moto - what does this do lol
 		setmodel(self, "");
+		self.isopen = 1;
 		return;//so we dont have to reopen doors
 	}
 	if (self.spawnflags & DOOR_TOGGLE)
@@ -101,6 +102,7 @@ void() door_go_down =
 	if ((self.classname == "door_nzp_cost" || self.classname == "door_nzp" || self.classname == "door_open") && (!(self.spawnflags & 128)))
 	{
 		setmodel(self, "");
+		self.isopen = 1;
 		return;//so we dont have to reopen doors
 	}
 	if (self.max_health)
@@ -185,6 +187,7 @@ void() door_fire =
 	do
 	{
 		door_go_up ();
+		//self.isopen = true;
 		self = self.enemy;
 	} while ( (self != starte) && (self != world) );
 	self = oself;

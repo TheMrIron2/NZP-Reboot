@@ -272,7 +272,13 @@ void() item_barricade =
 	setsize(self,'-20 -20 -64', '20 20 16');
 	setorigin(self,self.origin);
 	spawn_boxes();
+
+	#ifdef PSP
+	windows[wincnt] = self;
+	wincnt++;
+	#endif
 };
+
 void() item_cover =
 {
 	if(self.spawnflags & 1)
@@ -296,4 +302,9 @@ void() item_cover =
 	setsize(self,'-20 -20 -64', '20 20 16');
 	setorigin(self,self.origin + '0 0 32');
 	spawn_boxes();
+
+	#ifdef PSP
+	windows[wincnt] = self;
+	wincnt++;
+	#endif
 };

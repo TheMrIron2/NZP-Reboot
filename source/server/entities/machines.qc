@@ -133,8 +133,9 @@ void() touch_perk =
 			DrinkPerk(P_REVIVE);
 
 			other.revivesoda++;
-			if (other.revivesoda == 3)
-				remove (self);
+			if (other.revivesoda == 3) {
+				setmodel(self, ""); //we don't want to remove revive in case of soft_restart..
+			}
 		}
 		else if ((coop || deathmatch) && other.points >= 1500 && other.button7)
 		{
@@ -1356,6 +1357,7 @@ void() mystery_box =
 	}
 
 	self.touch = mystery_touch;
+	boxOrigin = self.origin;
 
 	boxLocations[boxCount] = self;
 	boxCount++;

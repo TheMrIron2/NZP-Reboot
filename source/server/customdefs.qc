@@ -278,6 +278,7 @@ float isPowerOn;
 .float papState;
 entity boxLocations[32];
 float boxCount;
+vector boxOrigin;
 
 #ifndef PSP
 //powerups
@@ -369,8 +370,10 @@ string world_fog;
 
 //soft restart stuff for doors
 .string oldmodel;
+.vector oldorigin;
 .float oldstate;
 .float state;
+.float isopen;
 
 //world
 .string chaptertitle;
