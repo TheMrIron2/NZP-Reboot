@@ -49,6 +49,13 @@ void() Barricade_hit_window =
 	sound(self, 0,"sounds/misc/barricade.wav", 1, 0);
 }
 
+void(void() next) checkForSpeed = {
+	if (!(other.perks & P_SPEED))
+		return;
+	
+	next();
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////  ANIMATIONS
 //0-6
 //7-13
@@ -104,6 +111,42 @@ void()	window_anim6_5		=[	5,		window_anim6_6	] 	{self.frame = 39;self.nextthink 
 void()	window_anim6_6		=[	6,		window_anim6_7	] 	{self.frame = 40;self.nextthink = time + 0.05;};
 void()	window_anim6_7		=[	7,		SUB_Null		] 	{self.frame = 41;self.nextthink = time + 0.05;};
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//speed cola repair
+//81-88
+void()	window_srepair1_1	=[	1,		window_srepair1_2 ]	{self.frame = 81;};
+void()	window_srepair1_2	=[	2,		window_srepair1_4 ]	{self.frame = 84;};
+void()	window_srepair1_4	=[	3,		window_srepair1_5 ]	{self.frame = 87;Barricade_hit_window();};
+void()	window_srepair1_5	=[	4,		SUB_Null 		  ]	{self.frame = 88; Window_repaired();};
+//73-80
+void()	window_srepair2_1	=[	1,		window_srepair2_2 ]	{self.frame = 73;};
+void()	window_srepair2_2	=[	2,		window_srepair2_4 ]	{self.frame = 75;};
+void()	window_srepair2_4	=[	3,		window_srepair2_5 ]	{self.frame = 79;Barricade_hit_window();};
+void()	window_srepair2_5	=[	4,		SUB_Null 		  ]	{self.frame = 80; Window_repaired();};
+//65-72
+void()	window_srepair3_1	=[	1,		window_srepair3_2 ]	{self.frame = 65;};
+void()	window_srepair3_2	=[	2,		window_srepair3_4 ]	{self.frame = 67;};
+void()	window_srepair3_4	=[	3,		window_srepair3_5 ]	{self.frame = 71;Barricade_hit_window();};
+void()	window_srepair3_5	=[	4,		SUB_Null 		  ]	{self.frame = 72; Window_repaired();};
+//57-64
+void()	window_srepair4_1	=[	1,		window_srepair4_2 ]	{self.frame = 57;};
+void()	window_srepair4_2	=[	2,		window_srepair4_4 ]	{self.frame = 69;};
+void()	window_srepair4_4	=[	3,		window_srepair4_5 ]	{self.frame = 63;Barricade_hit_window();};
+void()	window_srepair4_5	=[	4,		SUB_Null 		  ]	{self.frame = 64; Window_repaired();};
+//49-56
+void()	window_srepair5_1	=[	1,		window_srepair5_2 ]	{self.frame = 49;};
+void()	window_srepair5_2	=[	2,		window_srepair5_4 ]	{self.frame = 51;};
+void()	window_srepair5_4	=[	3,		window_srepair5_5 ]	{self.frame = 55;Barricade_hit_window();};
+void()	window_srepair5_5	=[	4,		SUB_Null 		  ]	{self.frame = 56; Window_repaired();};
+//41-48
+void()	window_srepair6_1	=[	1,		window_srepair6_2 ]	{self.frame = 41;};
+void()	window_srepair6_2	=[	2,		window_srepair6_4 ]	{self.frame = 43;};
+void()	window_srepair6_4	=[	3,		window_srepair6_5 ]	{self.frame = 47;Barricade_hit_window();};
+void()	window_srepair6_5	=[	4,		SUB_Null 		  ]	{self.frame = 48; Window_repaired();};
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void()	window_repair1_1	=[	1,		window_repair1_2 ]	{self.frame = 81;};
 void()	window_repair1_2	=[	2,		window_repair1_3 ]	{self.frame = 82;};
 void()	window_repair1_3	=[	3,		window_repair1_4 ]	{self.frame = 83;};
@@ -201,28 +244,47 @@ void() Rebuild_Anims =
 {
 	if(self.health == 5)
 	{
-		window_repair1_1();
+		if (other.perks & P_SPEED)
+			window_srepair1_1();
+		else
+			window_repair1_1();
+
 		total_windows_down = total_windows_down - 1;
 	}
 	else if(self.health == 4)
 	{
-		window_repair2_1();
+		if (other.perks & P_SPEED)
+			window_srepair2_1();
+		else
+			window_repair2_1();
 	}
 	else if(self.health == 3)
 	{
-		window_repair3_1();
+		if (other.perks & P_SPEED)
+			window_srepair3_1();
+		else
+			window_repair3_1();
 	}
 	else if(self.health == 2)
 	{
-		window_repair4_1();
+		if (other.perks & P_SPEED)
+			window_srepair4_1();
+		else
+			window_repair4_1();
 	}
 	else if(self.health == 1)
 	{
-		window_repair5_1();
+		if (other.perks & P_SPEED)
+			window_srepair5_1();
+		else
+			window_repair5_1();
 	}
 	else if(self.health == 0)
 	{
-		window_repair6_1();
+		if (other.perks & P_SPEED)
+			window_srepair6_1();
+		else
+			window_repair6_1();
 	}
 };
 void() window_touch =
