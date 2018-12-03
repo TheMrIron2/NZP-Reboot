@@ -173,6 +173,10 @@ string W_CVMODEL[4];
 string W_CVMODEL2[4];
 string W_CGMODEL[4];
 string W_CFIRESOUND[4];
+string W_C1XTRASND[4]; //don't see anyone using more than 4 "extra" sounds
+string W_C2XTRASND[4];
+float W_C1XSNDFRAME[4];
+float W_C2XSNDFRAME[4];
 float W_CDUAL[4];
 float W_CFIRETYPE[4];
 float W_CMAG[4];

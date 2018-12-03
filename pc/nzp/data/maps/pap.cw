@@ -44,6 +44,20 @@ weapon
         15
         16
     ]
+
+    framesnd
+    [
+        1
+        3
+        8
+    ]
+
+    snd
+    [
+        "sounds/pu/nuke.wav"
+        "sounds/pu/drop.wav"
+        "sounds/pu/pickup.wav"
+    ]
 }
 
 weapon
@@ -92,5 +106,19 @@ weapon
         12
         15
         16
+    ]
+
+    framesnd
+    [
+        6
+        12
+        16
+    ]
+
+    snd
+    [
+        "sounds/pu/nuke.wav"
+        "sounds/pu/drop.wav"
+        "sounds/pu/pickup.wav"
     ]
 }

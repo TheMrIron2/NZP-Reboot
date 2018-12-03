@@ -2420,6 +2420,10 @@ float(float wep) GetWepSkin = {
 			return 0;
 		case W_SNUFF:
 			return 0;
+		case W_CUSTOM1:
+			return W_CSKIN[0];
+		case W_CUSTOM2:
+			return W_CSKIN[1];
 		default:
 			if (IsPapWeapon(wep)) {
 				return 1;
@@ -2845,6 +2849,28 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 				sound (self ,5, "sounds/weapons/colt/magin.wav", 1, ATTN_NORM);
 			} else if(curweaponframe == 26) {
 				sound (self ,5, "sounds/weapons/colt/slide.wav", 1, ATTN_NORM);
+			}
+			break;
+		case W_CUSTOM1:
+			if (curweaponframe == W_C1XSNDFRAME[0]) {
+				sound (self ,5, W_C1XTRASND[0], 1, ATTN_NORM);
+			} else if (curweaponframe == W_C1XSNDFRAME[1]) {
+				sound (self ,5, W_C1XTRASND[1], 1, ATTN_NORM);
+			} else if (curweaponframe == W_C1XSNDFRAME[2]) {
+				sound (self ,5, W_C1XTRASND[2], 1, ATTN_NORM);
+			} else if (curweaponframe == W_C1XSNDFRAME[3]) {
+				sound (self ,5, W_C1XTRASND[3], 1, ATTN_NORM);
+			}
+			break;
+		case W_CUSTOM2:
+			if (curweaponframe == W_C2XSNDFRAME[0]) {
+				sound (self ,5, W_C2XTRASND[0], 1, ATTN_NORM);
+			} else if (curweaponframe == W_C2XSNDFRAME[1]) {
+				sound (self ,5, W_C2XTRASND[1], 1, ATTN_NORM);
+			} else if (curweaponframe == W_C2XSNDFRAME[2]) {
+				sound (self ,5, W_C2XTRASND[2], 1, ATTN_NORM);
+			} else if (curweaponframe == W_C2XSNDFRAME[3]) {
+				sound (self ,5, W_C2XTRASND[3], 1, ATTN_NORM);
 			}
 			break;
 	}

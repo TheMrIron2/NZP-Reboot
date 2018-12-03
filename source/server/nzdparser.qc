@@ -11,7 +11,7 @@
 //custom weapon search
 void(entity who) nzd_defineweapon = {
 	//W_CUSTOMNAME = "reee";
-	float f, p, l, fnum, wepnum;
+	float f, p, l, fnum, wepnum, framenum, fsnd;
 	string line;
 
 	line = strcat(mappath, ".cw");
@@ -141,6 +141,12 @@ void(entity who) nzd_defineweapon = {
 					case "frames":
 						p = 3;
 						break;
+					case "framesnd":
+						p = 5;
+						break;
+					case "snd":
+						p = 7;
+						break;
                     case "}":
 						#ifndef PSP
 						sendCustomWeapon(wepnum, W_CUSTOMNAME[wepnum], W_CVMODEL[wepnum], W_CMAG[wepnum], W_CRESERVE[wepnum], vtos(W_CADS[wepnum]), W_CCROSSMIN[wepnum], W_CCROSSMAX[wepnum], vtos(W_CFLASH[wepnum]), W_CFLASHSIZE[wepnum], W_CVMODEL2[wepnum], W_CDUAL[wepnum], who);
@@ -151,6 +157,8 @@ void(entity who) nzd_defineweapon = {
 						} else {
 							p = 0;
 							fnum = 0;
+							framenum = 0;
+							fsnd = 0;
 						}
                         break;
 					default:
@@ -178,6 +186,50 @@ void(entity who) nzd_defineweapon = {
 							break;
 					}
 					fnum++;
+                }
+				break;
+			case 5:
+                if (line == "[") {
+                    p = 6;
+                } else {
+                    bprint(PRINT_HIGH, strcat("Error: unknown variable ", strcat(line, " expected [\n")));
+                }
+                break;
+            case 6:
+                if (line == "]") {
+                    p = 2;
+                } else {
+					switch(wepnum) {
+						case 0:
+							W_C1XSNDFRAME[framenum] = stof(line);
+							break;
+						case 1:
+							W_C2XSNDFRAME[framenum] = stof(line);
+							break;
+					}
+					framenum++;
+                }
+				break;
+			case 7:
+                if (line == "[") {
+                    p = 8;
+                } else {
+                    bprint(PRINT_HIGH, strcat("Error: unknown variable ", strcat(line, " expected [\n")));
+                }
+                break;
+            case 8:
+                if (line == "]") {
+                    p = 2;
+                } else {
+					switch(wepnum) {
+						case 0:
+							W_C1XTRASND[fsnd] = line;
+							break;
+						case 1:
+							W_C2XTRASND[fsnd] = line;
+							break;
+					}
+					fsnd++;
                 }
 				break;
 		}
