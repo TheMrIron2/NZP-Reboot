@@ -8,22 +8,18 @@ progs 0 {
 }
 stacktrace {
 //0 qwprogs.dat
-	"0:nzd_defineweapon" //server/nzdparser.qc
+	"0:load_nzd" //server/nzdparser.qc
 	{
-		"who" "entity 1"
-		"f"	"1000"
-		"p"	"4"
-		"l"	"1"
-		"fnum"	"15"
-		"wepnum"	"1"
-		"line"	"1"
-		"li"	"        1"
-		"v"	""
-		"vari"	"frames"
-		ofs11263 15 // 0.000000
-		ofs11264 0 // 0.000000
-		ofs11265 0 // 0.000000
-		ofs11266 0 // 0.000000
+		"client" "entity 1"
+		"file"	"1000"
+		"point"	"4"
+		"h"	"1"
+		"loop"	"1"
+		"wepdata"	"3"
+		"line"	"        1"
+		"value"	""
+		"variable"	"perk"
+		ofs11394 3 // 0.000000
 	}
 	"0:PlayerSpawn" //server/player.qc
 	{
@@ -43,36 +39,6 @@ globals 0 {
 "v_up" "0 0 1"
 "v_right" "1 -2.65358e-017 0"
 "physics_mode" "2"
-"W_C1FRAMES[0]" "1"
-"W_C1FRAMES[1]" "3"
-"W_C1FRAMES[2]" "4"
-"W_C1FRAMES[3]" "8"
-"W_C1FRAMES[4]" "12"
-"W_C1FRAMES[5]" "15"
-"W_C1FRAMES[6]" "16"
-"W_C1FRAMES[7]" "17"
-"W_C1FRAMES[8]" "1"
-"W_C1FRAMES[9]" "3"
-"W_C1FRAMES[10]" "4"
-"W_C1FRAMES[11]" "8"
-"W_C1FRAMES[12]" "12"
-"W_C1FRAMES[13]" "15"
-"W_C1FRAMES[14]" "16"
-"W_CUSTOMNAME[0]" "Puppy Chow"
-"W_CUSTOMNAME[1]" "W01f'5 H0w1 DG-3"
-"W_CVMODEL[0]" "models/ai/dog.mdl"
-"W_CVMODEL[1]" "models/ai/dog.mdl"
-"W_CGMODEL[0]" "models/ai/dog.mdl"
-"W_CGMODEL[1]" "models/ai/dog.mdl"
-"W_CFIRETYPE[0]" "3"
-"W_CFIRETYPE[1]" "3"
-"W_CMAG[0]" "15"
-"W_CMAG[1]" "30"
-"W_CRESERVE[0]" "60"
-"W_CRESERVE[1]" "90"
-"W_CPAPWEP[0]" "71"
-"W_CADS[0]" "-4 0 -6.5"
-"W_CADS[1]" "-4 0 -6.5"
 "framecount" "3"
 "mappath" "maps/warehouse"
 "local_client" "1"
@@ -85,9 +51,9 @@ globals 0 {
 "boxOrigin" "-2087.54 -162.747 152"
 "G_STARTPOINTS" "500"
 "G_STARTROUND" "1"
-"G_STARTWEAPON[0]" "70"
-"G_STARTWEAPON[1]" "69"
-"G_STARTWEAPON[2]" "420"
+"G_STARTWEAPON[0]" "1"
+"G_STARTWEAPON[1]" "8"
+"G_STARTWEAPON[2]" "32"
 "G_WORLDTEXT" "1"
 "colt" "1"
 "kar" "1"

@@ -387,3 +387,5 @@ float G_STARTROUND;
 float G_PRONEPOINTS;
 float G_STARTWEAPON[3];
 float G_WORLDTEXT;
+float G_PERKS;
+float G_PERKPOWER;

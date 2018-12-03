@@ -500,6 +500,8 @@ void() PlayerSpawn =
 	self.stamina = 3;
 	self.reviving = 0;
 	self.weaponnum = 0;
+	self.perks = G_PERKS;
+	SetPerk(self, self.perks);
 	
 	self.zoom = 1;			// This is to fix an aimin bug for the kar scope
 	

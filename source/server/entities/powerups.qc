@@ -109,38 +109,26 @@ void() carpenter =
 
 void() give_perk =
 {
-  local float t;
+  	local float t;
   
-  t = random();
+  	t = random();
   	
-  if (t < 0.166 && !(other.perks & P_REVIVE))
-  {
-  other.perks = other.perks | 8;
-  }
-  else if (t < 0.333 && !(other.perks & P_JUG))
-  {
-  other.perks = other.perks | 1;
-  }
-  else if (t < 0.5 && !(other.perks & P_DOUBLE))
-  {
-  other.perks = other.perks | 2;
-  }
-  else if (t < 0.6666 && !(other.perks & P_SPEED))
-  {
-  other.perks = other.perks | 4;
-  }
-  else if (t < 0.8333 && !(other.perks & P_FLOP))
-  {
-  other.perks = other.perks | 16;
-  }
-  else if (t < 1 && !(other.perks & P_STAMIN))
-  {
-  other.perks = other.perks | 32;
-  }
-  else if (t <= 1 && (other.perks & P_STAMIN) && (other.perks & P_REVIVE) && (other.perks & P_JUG) && (other.perks & P_DOUBLE) && (other.perks & P_SPEED) && (other.perks & P_FLOP))
-    return;
-  else
-    give_perk();
+  	if (t < 0.166 && !(other.perks & P_REVIVE)) {
+  		other.perks = other.perks | 8;
+  	} else if (t < 0.333 && !(other.perks & P_JUG)) {
+  		other.perks = other.perks | 1;
+  	} else if (t < 0.5 && !(other.perks & P_DOUBLE)) {
+		other.perks = other.perks | 2;
+  	} else if (t < 0.6666 && !(other.perks & P_SPEED)) {
+  		other.perks = other.perks | 4;
+  	} else if (t < 0.8333 && !(other.perks & P_FLOP)) {
+  		other.perks = other.perks | 16;
+  	} else if (t < 1 && !(other.perks & P_STAMIN)) {
+  		other.perks = other.perks | 32;
+  	} else if (t <= 1 && (other.perks & P_STAMIN) && (other.perks & P_REVIVE) && (other.perks & P_JUG) && (other.perks & P_DOUBLE) && (other.perks & P_SPEED) && (other.perks & P_FLOP))
+		return;
+	else
+    	give_perk();
 }
 
 
@@ -254,10 +242,10 @@ void() powerup_touch =
 			addmoney(other, 200*exp, 0);
 			carpenter();
 		}
-		/*else if(self.zombie_drop_id == 6)
+		else if(self.zombie_drop_id == 6)
 		{
 			give_perk();
-		}*/
+		}
 		stuffcmd(other, "bf\n");
 		remove(self.owner);
 		remove(self);
@@ -288,11 +276,23 @@ void() sparkle_think =
 	
 };
 
+string(float type) getPowerupModel = 
+{
+	switch(type) {
+		case 1: return "progs/Misc/maxammo!.mdl"; break;
+		case 2: return "progs/Misc/x2!.mdl"; break;
+		case 3: return "progs/Misc/instakill!.mdl"; break;
+		case 4: return "progs/Misc/nuke!.mdl"; break;
+		case 5: return "progs/Misc/carpenter!.mdl"; break;
+		default: return ""; break;
+	}
+}
+
 float last_pu;
 void(vector where, float type) Spawn_Powerup =
 {
 	entity new_powerup;
-	float t;
+	float t, am, carp, perk;
 
 	new_powerup = spawn();
 	new_powerup.origin = where;
@@ -324,75 +324,45 @@ void(vector where, float type) Spawn_Powerup =
 	sound(new_powerup,CHAN_AUTO,"sounds/pu/drop.wav",1,ATTN_NONE);
 	//========================================================
 	t = random();
-	
-	if (!type) {
-		if (total_windows_down >= 5)
-		{
-			if (t < 0.2)
-			{
-				setmodel(new_powerup,"progs/Misc/maxammo!.mdl");
-				new_powerup.zombie_drop_id = 1;
-			}
-			else if (t < 0.4)
-			{
-				setmodel(new_powerup,"progs/Misc/x2!.mdl");
-				new_powerup.zombie_drop_id = 2;
-			}
-			else if (t < 0.6)
-			{
-				setmodel(new_powerup,"progs/Misc/instakill!.mdl");
-				new_powerup.zombie_drop_id = 3;
-			}
-			else if (t < 0.8)
-			{
-				setmodel(new_powerup,"progs/Misc/nuke!.mdl");
-				new_powerup.zombie_drop_id = 4;
-			}
-			else
-			{
-				setmodel(new_powerup,"progs/Misc/carpenter!.mdl");
-				new_powerup.zombie_drop_id = 5;
-			}
-			/*else
-		 {
-				setmodel(new_powerup,"progs/Misc/perkbottle!.mdl");
-				new_powerup.zombie_drop_id = 6;
-			}*/
+
+	//SO MUCH PRETTIER AHHHHHHH - moto
+	if (type) {
+		setmodel(new_powerup, getPowerupModel(type));
+		new_powerup.zombie_drop_id = type;
+	} else {
+		am = 5;
+
+		if (total_windows_down >= 5) {
+			am++;
+			carp = true;
 		}
-		else
-		{
-			if (t < 0.25)
-			{
-				setmodel(new_powerup,"progs/Misc/maxammo!.mdl");
-				new_powerup.zombie_drop_id = 1;
-			}
-			else if (t < 0.5)
-			{
-				setmodel(new_powerup,"progs/Misc/x2!.mdl");
-				new_powerup.zombie_drop_id = 2;
-			}
-			else if (t < 0.75)
-			{
-				setmodel(new_powerup,"progs/Misc/instakill!.mdl");
-				new_powerup.zombie_drop_id = 3;
-			}
-			else
-			{
-				setmodel(new_powerup,"progs/Misc/nuke!.mdl");
-				new_powerup.zombie_drop_id = 4;
-			}
-			/*
-			else
-		 {
-				setmodel(new_powerup,"progs/Misc/perkbottle!.mdl");
-				new_powerup.zombie_drop_id = 6;
-			}
-			*/
+
+		if (G_PERKPOWER) {
+			am++;
+			perk = true;
 		}
-	} else if (type == 1) {
-		setmodel(new_powerup,"progs/Misc/maxammo!.mdl");
-		new_powerup.zombie_drop_id = 1;
+
+		if (t < (1/am)) {
+			setmodel(new_powerup, getPowerupModel(1));
+			new_powerup.zombie_drop_id = 1;
+		} else if (t < (2/am)) {
+			setmodel(new_powerup, getPowerupModel(2));
+			new_powerup.zombie_drop_id = 2;
+		} else if (t < (3/am)) {
+			setmodel(new_powerup, getPowerupModel(3));
+			new_powerup.zombie_drop_id = 3;
+		} else if (t < (4/am)) {
+			setmodel(new_powerup, getPowerupModel(4));
+			new_powerup.zombie_drop_id = 4;
+		} else if (t < (5/am) && am > 5 && carp) {
+			setmodel(new_powerup, getPowerupModel(5));
+			new_powerup.zombie_drop_id = 5;
+		} else if (t < (6/am) && am == 6 && perk) {
+			setmodel(new_powerup, getPowerupModel(6));
+			new_powerup.zombie_drop_id = 6;
+		}
 	}
+	
 	last_pu = new_powerup.zombie_drop_id;
 	new_powerup.touch = powerup_touch;
 	

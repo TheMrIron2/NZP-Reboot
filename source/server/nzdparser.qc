@@ -248,9 +248,15 @@ void() load_nzd = {
                     case "worldtext":
                         G_WORLDTEXT = stof(value);
                         break;
+					case "perkpower":
+						G_PERKPOWER = stof(value);
+						break;
                     case "wep":
                         point = 3;
                         break;
+					case "perk":
+						point = 5;
+						break;
                     case "}":
                         loop = 0;
                         break;
@@ -274,6 +280,20 @@ void() load_nzd = {
                     wepdata++;
                 }
                 break;
+			case 5:
+				if (h == "[") {
+					point = 6;
+				} else {
+					bprint(PRINT_HIGH, strcat("Error: unknown variable ", strcat(h, " expected [\n")));
+				}
+				break;
+			case 6:
+				if (h == "]") {
+					point = 2;
+				} else {
+					G_PERKS = G_PERKS | stof(h);
+				}
+				break;
 		}
 	}
 

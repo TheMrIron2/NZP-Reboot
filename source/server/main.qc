@@ -280,6 +280,8 @@ void() worldspawn =
 	G_STARTWEAPON[1] = 8;
 	G_STARTWEAPON[2] = 32;
 	G_WORLDTEXT = 1;
+	G_PERKS = 0;
+	G_PERKPOWER = 0;
 	load_nzd();
 }
 
