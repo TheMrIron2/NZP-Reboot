@@ -855,6 +855,8 @@ noref void() CSQC_Parse_Event =
 			float cmax = readbyte();
 			vector flash = stov(readstring());
 			float flashsize = readbyte();
+			string v2 = readstring();
+			float isd = readbyte();
 			W_CUSTOMNAME[wepnum] = wepname;
 			W_CVMODEL[wepnum] = wvmodel;
 			W_CMAG[wepnum] = mag;
@@ -863,6 +865,8 @@ noref void() CSQC_Parse_Event =
 			W_CCROSSMAX[wepnum] = cmax;
 			W_CADS[wepnum] = cads;
 			W_CFLASHSIZE[wepnum] = flashsize;
+			W_CVMODEL2[wepnum] = v2;
+			W_CDUAL[wepnum] = isd;
 			break;
 	}
 }

@@ -70,8 +70,14 @@ void(entity who) nzd_defineweapon = {
 					case "vmodel":
 						W_CVMODEL[wepnum] = v;
 						break;
+					case "vmodel2":
+						W_CVMODEL2[wepnum] = v;
+						break;
 					case "gmodel":
 						W_CGMODEL[wepnum] = v;
+						break;
+					case "isdual":
+						W_CDUAL[wepnum] = stof(v);
 						break;
 					case "firetype":
 						W_CFIRETYPE[wepnum] = stof(v);
@@ -137,7 +143,7 @@ void(entity who) nzd_defineweapon = {
 						break;
                     case "}":
 						#ifndef PSP
-						sendCustomWeapon(wepnum, W_CUSTOMNAME[wepnum], W_CVMODEL[wepnum], W_CMAG[wepnum], W_CRESERVE[wepnum], vtos(W_CADS[wepnum]), W_CCROSSMIN[wepnum], W_CCROSSMAX[wepnum], vtos(W_CFLASH[wepnum]), W_CFLASHSIZE[wepnum], who);
+						sendCustomWeapon(wepnum, W_CUSTOMNAME[wepnum], W_CVMODEL[wepnum], W_CMAG[wepnum], W_CRESERVE[wepnum], vtos(W_CADS[wepnum]), W_CCROSSMIN[wepnum], W_CCROSSMAX[wepnum], vtos(W_CFLASH[wepnum]), W_CFLASHSIZE[wepnum], W_CVMODEL2[wepnum], W_CDUAL[wepnum], who);
 						#endif
 						if (wepnum == 1) {
 							l = 0;

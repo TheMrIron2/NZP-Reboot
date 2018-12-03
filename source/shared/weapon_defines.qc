@@ -2359,6 +2359,10 @@ float(float wep) IsDualWeapon = {
 			return 1;
 		case W_SNUFF:
 			return 1;
+		case W_CUSTOM1:
+			return W_CDUAL[0];
+		case W_CUSTOM2:
+			return W_CDUAL[1];
 		default:
 			return 0;
 	}
@@ -2370,6 +2374,10 @@ string(float wep) GetLeftWeaponModel = {
 			return "models/weapons/m1911/v_biatch_left.mdl";
 		case W_SNUFF:
 			return "models/weapons/sawnoff/v_snuff_left.mdl";
+		case W_CUSTOM1:
+			return W_CVMODEL2[0];
+		case W_CUSTOM2:
+			return W_CVMODEL2[1];
 		default:
 			return "";
 	}
