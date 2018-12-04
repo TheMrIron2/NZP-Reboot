@@ -268,12 +268,12 @@ void() Update_Vmodel =
 				vaccel += 0.01;
 		}
 
-		//black ops -0.01 till -0.6
+		//black ops -0.01 till -0.6 (looks better)
 		if (K_BACKDOWN || K_FORWARDDOWN) {
-			vzaccel -= 0.02;
+			vzaccel -= 0.01;
 
-			if (vzaccel < -1.4)
-				vzaccel = -1.4;
+			if (vzaccel < -0.6)
+				vzaccel = -0.6;
 		} else if (vzaccel != 0) {
 			if (vzaccel > 0)
 				vzaccel -= 0.02;
