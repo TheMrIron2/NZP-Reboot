@@ -538,6 +538,10 @@ void() PlayerSpawn =
 	if (G_STARTROUND != 1) {
 		rounds = G_STARTROUND - 1;
 	}
+
+	#ifndef PSP
+	pushHUD(G_HUD, G_HUDHOR, self);
+	#endif
 };
 
 void() SpectatorSpawn =

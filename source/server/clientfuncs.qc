@@ -227,6 +227,22 @@ void(entity who) UpdatePunchangle =
 }
 
 #ifndef PSP
+void(string h, float h2, entity who) pushHUD = {
+	if (player_count == 0) {
+		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+		WriteByte(MSG_MULTICAST, EVENT_HUDUPDATE);
+		WriteString(MSG_MULTICAST, h);
+		WriteByte(MSG_MULTICAST, h2);
+		msg_entity = who;
+		multicast('0 0 0', MULTICAST_ONE);
+	} else {
+		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
+		WriteByte(MSG_ALL, EVENT_WEAPONUPDATE);
+		WriteString(MSG_ALL, h);
+		WriteByte(MSG_ALL, h2);
+	}
+}
+
 void (float wepnum, string wepname, string wvmodel, float mag, float reserve, string ads, float min, float max, string flash, float flashsize, string v2, float isd, entity who) sendCustomWeapon = {
 	if (player_count == 0) {
 		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);

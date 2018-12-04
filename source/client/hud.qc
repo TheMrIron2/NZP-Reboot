@@ -3,6 +3,11 @@
 //																	   /
 //*********************************************************************/			
 
+//return hud images, makes drawpic slightly cleaner..
+string(string img) getImage = {
+	return strcat(huddir, img);
+}
+
 
 /*******************
 *    HUD_Health   *
@@ -30,7 +35,7 @@ void(float width, float height) HUD_Health =
 			return;
 		float color = 255.0 + modifier;
     
-		drawpic([0,0,0], "gfx/hud/blood.tga", [width, height, 0], [10,0,0], alpha/2000); // naievil -- alpha factor division here makes it easy to use legacy code
+		drawpic([0,0,0], getImage("blood.tga"), [width, height, 0], [10,0,0], alpha/2000); // naievil -- alpha factor division here makes it easy to use legacy code
 	}
 	
 }
@@ -207,7 +212,7 @@ void(float width, float height) HUD_Points =
 		if ((i+1) == getstatf(STAT_PLAYERNUM)) {
 			pointwidth = stringwidth(ftos(playerpoints[i]), 0, [0.022*width, 0.022*width, 0]);
 			x = ((width + backwidth) - pointwidth)/2;
-			drawpic([backwidth ,0.70*height - (.061*height*i),0], "gfx/hud/moneyback.tga", [0.2*width, 0.07*height, 0], [1,1,1], 1); 
+			drawpic([backwidth ,0.70*height - (.061*height*i),0], getImage("moneyback.tga"), [0.2*width, 0.07*height, 0], [1,1,1], 1); 
 			drawstring([x, 0.715*height - 0.06*height*i, 0], ftos(playerpoints[i]), [0.022*width, 0.022*width, 0], TEXTCOLOR, 1, 1); 
 			PointUpdate(backwidth * 0.95, width, height); 
 		}
@@ -215,7 +220,7 @@ void(float width, float height) HUD_Points =
 			backwidth = 0.85*width;
 			pointwidth = stringwidth(ftos(playerpoints[i]), 0, [0.022*width*0.8, 0.022*width*0.8, 0]);
 			x = ((width + backwidth) - pointwidth)/2;
-			drawpic([backwidth, 0.70*height - (.071*height*i*0.8),0], "gfx/hud/moneyback.tga", [0.2*width*0.8, 0.07*height*0.8, 0], [1,1,1], 1); 
+			drawpic([backwidth, 0.70*height - (.071*height*i*0.8),0], getImage("moneyback.tga"), [0.2*width*0.8, 0.07*height*0.8, 0], [1,1,1], 1); 
 			drawstring([x, 0.715*height - 0.07*height*i*0.8, 0], ftos(playerpoints[i]), [0.022*width*0.8, 0.022*width*0.8, 0], TEXTCOLOR, 1, 1); 
 		}
 	}
@@ -232,11 +237,11 @@ void(float width, float height) HUD_Grenades =
 
 	grenades = getstatf(STAT_GRENADES);
 	betties = getstatf(STAT_SECGRENADES);
-	drawpic([0.9*width,0.825*height,0], "gfx/hud/frag.tga", [50, 50, 0], [1,1,1], 1);
+	drawpic([0.9*width,0.825*height,0], getImage("frag.tga"), [50, 50, 0], [1,1,1], 1);
 	drawstring([0.9*width + 28, 0.825*height + 32, 0], ftos(grenades), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 1);
 	
 	if (betties != -1) {
-		drawpic([0.825*width,0.825*height,0], "gfx/hud/betty.tga", [50, 50, 0], [1,1,1], 1);
+		drawpic([0.825*width,0.825*height,0], getImage("betty.tga"), [50, 50, 0], [1,1,1], 1);
 		drawstring([0.825*width + 28, 0.825*height + 32, 0], ftos(betties), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 1);
 	}
 }
@@ -278,22 +283,23 @@ void(float width, float height) HUD_Rounds =
 	x_offset = 0;
 	savex = 0;
 	
-	sb_round[0] = "gfx/hud/r1.tga";
-	sb_round[1] = "gfx/hud/r2.tga";
-	sb_round[2] = "gfx/hud/r3.tga";
-	sb_round[3] = "gfx/hud/r4.tga";
-	sb_round[4] = "gfx/hud/r5.tga";
+	//motolegacy -- shouldn't we use a for loop for this..?
+	sb_round[0] = getImage("r1.tga");
+	sb_round[1] = getImage("r2.tga");
+	sb_round[2] = getImage("r3.tga");
+	sb_round[3] = getImage("r4.tga");
+	sb_round[4] = getImage("r5.tga");
 	
-	sb_round_num[0] = "gfx/hud/r_num0.tga";
-	sb_round_num[1] = "gfx/hud/r_num1.tga";
-	sb_round_num[2] = "gfx/hud/r_num2.tga";
-	sb_round_num[3] = "gfx/hud/r_num3.tga";
-	sb_round_num[4] = "gfx/hud/r_num4.tga";
-	sb_round_num[5] = "gfx/hud/r_num5.tga";
-	sb_round_num[6] = "gfx/hud/r_num6.tga";
-	sb_round_num[7] = "gfx/hud/r_num7.tga";
-	sb_round_num[8] = "gfx/hud/r_num8.tga";
-	sb_round_num[9] = "gfx/hud/r_num9.tga";
+	sb_round_num[0] = getImage("r_num0.tga");
+	sb_round_num[1] = getImage("r_num1.tga");
+	sb_round_num[2] = getImage("r_num2.tga");
+	sb_round_num[3] = getImage("r_num3.tga");
+	sb_round_num[4] = getImage("r_num4.tga");
+	sb_round_num[5] = getImage("r_num5.tga");
+	sb_round_num[6] = getImage("r_num6.tga");
+	sb_round_num[7] = getImage("r_num7.tga");
+	sb_round_num[8] = getImage("r_num8.tga");
+	sb_round_num[9] = getImage("r_num9.tga");
 
 	if (rounds_change == 1 || rounds_change == 2) {
 		if (!rinit) {
@@ -853,7 +859,8 @@ void(float width, float height) HUD_Perks =
 {
 	
 	int i, s;
-	int y = height - 100 - 22/*sb_round[1]->height - 22 //(round height minus perk icon height)*/;	
+	int y = height - 100 - 22;
+	int x = 2;	
 
 	//drawstring([0.01*width, 0.10*height, 0], ftos(perks), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
 			
@@ -863,33 +870,52 @@ void(float width, float height) HUD_Perks =
 		{
 			if (perk_order[i] == P_JUG)
 			{
-				drawpic([2,y,0], "gfx/hud/jug.tga", [20, 20, 1], [1,1,1], 1);
-				y = y - 22;
+				drawpic([x,y,0], getImage("jug.tga"), [20, 20, 1], [1,1,1], 1);
+
+				if (G_HUDHOR)
+					x += 22;
+				else
+					y -= 22;
 			}
 			else if (perk_order[i] == P_DOUBLE)
 			{
-				drawpic([2,y,0], "gfx/hud/double.tga", [20, 20, 1], [1,1,1], 1);
-				y = y - 22;
+				drawpic([x,y,0], getImage("double.tga"), [20, 20, 1], [1,1,1], 1);
+				if (G_HUDHOR)
+					x += 22;
+				else
+					y -= 22;
 			}
 			else if (perk_order[i] == P_SPEED)
 			{
-				drawpic([2,y,0], "gfx/hud/speed.tga", [20, 20, 1], [1,1,1], 1);
-				y = y - 22;
+				drawpic([x,y,0], getImage("speed.tga"), [20, 20, 1], [1,1,1], 1);
+				if (G_HUDHOR)
+					x += 22;
+				else
+					y -= 22;
 			}
 			else if (perk_order[i] == P_REVIVE)
 			{
-				drawpic([2,y,0], "gfx/hud/revive.tga", [20, 20, 1], [1,1,1], 1);
-				y = y - 22;
+				drawpic([x,y,0], getImage("revive.tga"), [20, 20, 1], [1,1,1], 1);
+				if (G_HUDHOR)
+					x += 22;
+				else
+					y -= 22;
 			}
 			else if (perk_order[i] == P_FLOP)
 			{
-				drawpic([2,y,0], "gfx/hud/flopper.tga", [20, 20, 1], [1,1,1], 1);
-				y = y - 22;
+				drawpic([x,y,0], getImage("flopper.tga"), [20, 20, 1], [1,1,1], 1);
+				if (G_HUDHOR)
+					x += 22;
+				else
+					y -= 22;
 			}
 			else if (perk_order[i] == P_STAMIN)
 			{
-				drawpic([2,y,0], "gfx/hud/stamin.tga", [20, 20, 1], [1,1,1], 1);
-				y = y - 22;
+				drawpic([x,y,0], getImage("stamin.tga"), [20, 20, 1], [1,1,1], 1);
+				if (G_HUDHOR)
+					x += 22;
+				else
+					y -= 22;
 			}
 		}
 	}

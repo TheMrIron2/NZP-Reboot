@@ -117,3 +117,6 @@ string chaptertitle;
 string location;
 string date;
 string person;
+
+//custom hud
+string huddir;

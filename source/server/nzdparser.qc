@@ -309,6 +309,12 @@ void() load_nzd = {
 					case "perkpower":
 						G_PERKPOWER = stof(value);
 						break;
+					case "hud":
+						G_HUD = value;
+						break;
+					case "hudhor":
+						G_HUDHOR = stof(value);
+						break;
                     case "wep":
                         point = 3;
                         break;

@@ -54,9 +54,9 @@ weapon
 
     snd
     [
-        "sounds/pu/nuke.wav"
-        "sounds/pu/drop.wav"
-        "sounds/pu/pickup.wav"
+        sounds/pu/nuke.wav
+        sounds/pu/drop.wav
+        sounds/pu/pickup.wav
     ]
 }
 
@@ -117,8 +117,8 @@ weapon
 
     snd
     [
-        "sounds/pu/nuke.wav"
-        "sounds/pu/drop.wav"
-        "sounds/pu/pickup.wav"
+        sounds/pu/nuke.wav
+        sounds/pu/drop.wav
+        sounds/pu/pickup.wav
     ]
 }

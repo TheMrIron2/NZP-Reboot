@@ -18,6 +18,7 @@ const float EVENT_WORLDDATA = 29;
 const float EVENT_ACHIEVEMENT = 30;
 const float EVENT_PLAYERUPDATE = 31;
 const float EVENT_WEAPONUPDATE = 32;
+const float EVENT_HUDUPDATE = 33;
 
 //nzp weapon defines
 //id list
@@ -163,6 +164,10 @@ float invertfloat(float input) {
 	
 	return (1 - input);	
 }
+
+//elements
+string G_HUD;
+float G_HUDHOR;
 
 //custom weapons
 //float CWEPNUM;
