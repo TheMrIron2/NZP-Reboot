@@ -2486,7 +2486,7 @@ float(float wep)  EqualNonPapWeapon =
 			return W_MP5;
 		case W_M14:
 			return W_M14;
-		case W_CPAPWEP[0]:
+		case W_CUSTOM2:
 			return W_CUSTOM1;
 		default:
 			return 0;
