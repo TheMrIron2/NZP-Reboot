@@ -175,17 +175,6 @@ void(float pwidth, float width, float height) PointUpdate =
 			drawstring([pwidth - pmwidth[i], 0.725*height - pmheight[i], 0], finalam[i], [0.015*width, 0.015*width, 0], POINTCOLOR, 1, 1);
 		}
 
-		/*if (pmwidth[i] > g_width*0.05) {
-			changeam[i] = 0;
-			return;
-		}*/
-
-		/*if (pmwidth[i] > pwidth*0.05) {
-			lastchanged = i;
-			changeam[i] = 0;
-			return;
-		}*/
-
 		pmwidth[i] += changew[i];
 		pmheight[i] += changeh[i];
 	}
@@ -282,24 +271,14 @@ void(float width, float height) HUD_Rounds =
 	int num[3];
 	x_offset = 0;
 	savex = 0;
-	
-	//motolegacy -- shouldn't we use a for loop for this..?
-	sb_round[0] = getImage("r1.tga");
-	sb_round[1] = getImage("r2.tga");
-	sb_round[2] = getImage("r3.tga");
-	sb_round[3] = getImage("r4.tga");
-	sb_round[4] = getImage("r5.tga");
-	
-	sb_round_num[0] = getImage("r_num0.tga");
-	sb_round_num[1] = getImage("r_num1.tga");
-	sb_round_num[2] = getImage("r_num2.tga");
-	sb_round_num[3] = getImage("r_num3.tga");
-	sb_round_num[4] = getImage("r_num4.tga");
-	sb_round_num[5] = getImage("r_num5.tga");
-	sb_round_num[6] = getImage("r_num6.tga");
-	sb_round_num[7] = getImage("r_num7.tga");
-	sb_round_num[8] = getImage("r_num8.tga");
-	sb_round_num[9] = getImage("r_num9.tga");
+
+	for (float j = 0; j < 10; j++) {
+		if (j < 5) {
+			sb_round[j] = getImage(strcat("r", ftos(j+1), ".tga"));
+		}
+
+		sb_round_num[j] = getImage(strcat("r_num", ftos(j), ".tga"));
+	}
 
 	if (rounds_change == 1 || rounds_change == 2) {
 		if (!rinit) {
@@ -861,8 +840,6 @@ void(float width, float height) HUD_Perks =
 	int i, s;
 	int y = height - 100 - 22;
 	int x = 2;	
-
-	//drawstring([0.01*width, 0.10*height, 0], ftos(perks), [0.03*width, 0.03*width, 0], [1, 1, 1], 1, 1);
 			
 	for (i = 0; i < 8; i = i + 1)
 	{
@@ -986,11 +963,11 @@ void() Draw_Crosshair =
 	if (K_BACKDOWN || K_FORWARDDOWN || K_LEFTDOWN || K_RIGHTDOWN || input_buttons == 2) {
 		croshhairmoving = 1;
 		
-		if (cur_spread >= CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON))) {
-			cur_spread = CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON));
+		if (cur_spread >= CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE))) {
+			cur_spread = CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE));
 		} else {
 			cur_spread += 0.5;
-		}	
+		}
 	} else {
 		croshhairmoving = 0;
 		
@@ -1015,8 +992,8 @@ void() Draw_Crosshair =
 	if (crosshair_spread_time > time && crosshair_spread_time)
     {
         cur_spread = cur_spread + 10;
-		if (cur_spread >= CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON)))
-			cur_spread = CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON));
+		if (cur_spread >= CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE)))
+			cur_spread = CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE));
 		
 		if (!croshhairmoving)
 			cur_spread *= 1/2;
@@ -1035,18 +1012,18 @@ void() Draw_Crosshair =
 	{
 		drawstring([(g_width/2 - g_width*0.0175/2), (g_height/2 - g_height*0.0175/2), 0], "O", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1);
 	}
-	else if (/*crosshair.value == 1 && */getstatf(STAT_WEAPONZOOM) != 1 && getstatf(STAT_WEAPONZOOM) != 2 && getstatf(STAT_ACTIVEWEAPON) != W_PANZER) // naievil (FIXME) crosshair cvar
+	else if (getstatf(STAT_WEAPONZOOM) != 1 && getstatf(STAT_WEAPONZOOM) != 2 && getstatf(STAT_ACTIVEWEAPON) != W_PANZER) // naievil (FIXME) crosshair cvar
     {
         int x_value, y_value;
-        int crosshair_offset; /*= CrossHairWeapon() + cur_spread;*/
+        int crosshair_offset;
         
         /*if (sv_player->v.view_ofs[2] != 32) // naievil -- changed weapon spread if crouched or not
          crosshair_offset = CrossHairWeapon()*(.8) + cur_spread;
         else*/
-         crosshair_offset = CrossHairWeapon(getstatf(STAT_ACTIVEWEAPON)) + cur_spread;
+        crosshair_offset = CrossHairWeapon(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE)) + cur_spread;
         
-		if (CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON)) < crosshair_offset)
-			crosshair_offset = CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON));
+		if (CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE)) < crosshair_offset)
+			crosshair_offset = CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE));
 
 		crosshair_offset_step += (crosshair_offset - crosshair_offset_step) * 0.5;
 
@@ -1132,7 +1109,12 @@ void() HUD_Scores =
 void() HUD_Endgame = {
 
 	string message = "GAME OVER";
-	string survive = strcat("You survived ",ftos(rounds)," rounds");
+	string rnd = " rounds";
+
+	if (rounds == 1)
+		rnd = " round";
+
+	string survive = strcat("You survived ", ftos(rounds), rnd);
 	
 	// first message
 	float print_width = stringwidth(message, 0, [(1/30)*g_width, (1/30)*g_width, 0]);
@@ -1286,139 +1268,33 @@ void(float width, float height) HUD_Draw =
 		HUD_Fade();
 }
 
-void UpdatePerks (float newperks) {
+void UpdatePerks(float newperks) {
 	float s;
-	if (newperks & P_JUG && !(perks & P_JUG))
-	{
-		perk_order[current_perk_order] = P_JUG;
-		current_perk_order = current_perk_order + 1;
+
+	for(float i = 1; i < 33; i *= 2) {
+		if (newperks & i && !(perks & i)) {
+			perk_order[current_perk_order] = i;
+			current_perk_order += 1;
+		}
 	}
-	if (newperks & P_DOUBLE && !(perks & P_DOUBLE))
-	{
-		perk_order[current_perk_order] = P_DOUBLE;
-		current_perk_order = current_perk_order + 1;
-	}
-	if (newperks & P_SPEED && !(perks & P_SPEED))
-	{
-		perk_order[current_perk_order] = P_SPEED;
-		current_perk_order = current_perk_order + 1;
-	}
-	if (newperks & P_REVIVE && !(perks & P_REVIVE))
-	{
-		perk_order[current_perk_order] = P_REVIVE;
-		current_perk_order = current_perk_order + 1;
-	}
-	if (newperks & P_FLOP && !(perks & P_FLOP))
-	{
-		perk_order[current_perk_order] = P_FLOP;
-		current_perk_order = current_perk_order + 1;
-	}
-	if (newperks & P_STAMIN && !(perks & P_STAMIN))
-	{
-		perk_order[current_perk_order] = P_STAMIN;
-		current_perk_order = current_perk_order + 1;
-	}
-	if (perks & P_JUG && !(newperks & P_JUG))
-	{
-		for (s = 0; s < 8; s++)
+
+	for(float i = 1; i < 33; i *= 2) {
+		if (perks & i && !(newperks & i)) 
 		{
-			if (perk_order[s] == P_JUG)
+			for(s = 0; s < 8; s++) 
 			{
-				perk_order[s] = 0;
-				while (perk_order[s+1])
+				if (perk_order[s] == i) 
 				{
-					perk_order[s] = perk_order[s+1];
-					perk_order[s+1] = 0;
+					perk_order[s] = 0;
+					while (perk_order[s+1]) 
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
 				}
-				break;
 			}
 		}
-		current_perk_order = current_perk_order - 1;
-	}
-	if (perks & P_DOUBLE && !(newperks & P_DOUBLE))
-	{
-		for (s = 0; s < 8; s++)
-		{
-			if (perk_order[s] == P_DOUBLE)
-			{
-				perk_order[s] = 0;
-				while (perk_order[s+1])
-				{
-					perk_order[s] = perk_order[s+1];
-					perk_order[s+1] = 0;
-				}
-				break;
-			}
-		}
-		current_perk_order = current_perk_order - 1;
-	}
-	if (perks & P_SPEED && !(newperks & P_SPEED))
-	{
-		for (s = 0; s < 8; s++)
-		{
-			if (perk_order[s] == P_SPEED)
-			{
-				perk_order[s] = 0;
-				while (perk_order[s+1])
-				{
-					perk_order[s] = perk_order[s+1];
-					perk_order[s+1] = 0;
-				}
-				break;
-			}
-		}
-		current_perk_order = current_perk_order - 1;
-	}
-	if (perks & P_REVIVE && !(newperks & P_REVIVE))
-	{
-		for (s = 0; s < 8; s++)
-		{
-			if (perk_order[s] == P_REVIVE)
-			{
-				perk_order[s] = 0;
-				while (perk_order[s+1])
-				{
-					perk_order[s] = perk_order[s+1];
-					perk_order[s+1] = 0;
-				}
-				break;
-			}
-		}
-		current_perk_order = current_perk_order - 1;
-	}
-	if (perks & P_FLOP && !(newperks & P_FLOP))
-	{
-		for (s = 0; s < 8; s++)
-		{
-			if (perk_order[s] == P_FLOP)
-			{
-				perk_order[s] = 0;
-				while (perk_order[s+1])
-				{
-					perk_order[s] = perk_order[s+1];
-					perk_order[s+1] = 0;
-				}
-				break;
-			}
-		}
-		current_perk_order = current_perk_order - 1;
-	}
-	if (perks & P_STAMIN && !(newperks & P_STAMIN))
-	{
-		for (s = 0; s < 8; s++)
-		{
-			if (perk_order[s] == P_STAMIN)
-			{
-				perk_order[s] = 0;
-				while (perk_order[s+1])
-				{
-					perk_order[s] = perk_order[s+1];
-					perk_order[s+1] = 0;
-				}
-				break;
-			}
-		}
-		current_perk_order = current_perk_order - 1;
 	}
 	
 	perks = newperks;

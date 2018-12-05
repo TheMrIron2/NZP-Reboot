@@ -795,6 +795,7 @@ void(float side) W_Fire =
 	string modelname;
 	string soundname;
 	float spread;
+	float sprdstance;
 	float delay;
 
 	//Update the basic vectors
@@ -831,7 +832,23 @@ void(float side) W_Fire =
 	shotcount = GetWeaponShotcount(self.weapon);
     soundname = GetWeaponSound(self.weapon);
 	delay = getWeaponDelay(self.weapon, FIRE);
-	spread = 1.5*GetWeaponSpread(self.weapon);
+
+	switch(self.stance) {
+		case 2:
+			sprdstance = 0;
+			break;
+		case 1:
+			sprdstance = 2;
+			break;
+		case 0:
+			sprdstance = 4;
+			break;
+		default:
+			sprdstance = 0;
+			break;
+	}
+
+	spread = (1.5*GetWeaponSpread(self.weapon))-sprdstance;
 
 	if (self.zoom == 1) {
 		if (self.weapon == W_TRENCH ||

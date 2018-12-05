@@ -3208,309 +3208,255 @@ float(float wep) getWeaponRecoilReturn =
 	return 0;
 }
 
-float(float weapon) CrossHairWeapon =
+float(float weapon, float stance) CrossHairWeapon =
 {
+	float sprd;
 	switch(weapon)
 	{
 		case W_COLT:
-			return 15;
-			break;
 		case W_BIATCH:
-			return 15; // naievil -- real var not known
+			sprd = 15;
 			break;
 		case W_KAR:
-			return 50;
-			break;
 		case W_ARMAGEDDON:
-			return 50;
+			sprd = 50;
 			break;
 		case W_THOMPSON:
-			return 10;
-			break;
 		case W_GIBS:
-			return 10;
+			sprd = 10;
 			break;
 		case W_357:
-			return 10;
-			break;
 		case W_KILLU:
-			return 10;
+			sprd = 10;
 			break;
 		case W_BAR:
-			return 10;
-			break;
 		case W_WIDOW:
-			return 10;
+			sprd = 10;
 			break;
 		case W_BROWNING:
-			return 20;
-			break;
 		case W_ACCELERATOR:
-			return 20;
+			sprd = 20;
 			break;
 		case W_DB:
-			return 25;
-			break;
 		case W_BORE:
-			return 25;
+			sprd = 25;
 			break;
 		case W_FG:
-			return 10;
-			break;
 		case W_IMPELLER:
-			return 10;
+			sprd = 10;
 			break;
 		case W_GEWEHR:
-			return 10;
-			break;
 		case W_COMPRESSOR:
-			return 10;
+			sprd = 10;
 			break;
 		case W_KAR_SCOPE:
-			return 50;
-			break;
 		case W_HEADCRACKER:
-			return 50;
+			sprd = 50;
 			break;
 		case W_M1:
-			return 10;
-			break;
 		case W_M1000:
-			return 10;
+			sprd = 10;
 			break;
 		case W_M1A1:
-			return 10;
-			break;
 		case W_WIDDER:
-			return 10;
+			sprd = 10;
 			break;
 		case W_MP40:
-			return 10;
-			break;
 		case W_AFTERBURNER:
-			return 10;
+			sprd = 10;
 			break;
 		case W_MG:
-			return 20;
-			break;
 		case W_BARRACUDA:
-			return 20;
+			sprd = 20;
 			break;
 		case W_PANZER:
-			return 0;
-			break;
 		case W_LONGINUS:
-			return 0;
+			sprd = 0;
 			break;
 		case W_PPSH:
-			return 10;
-			break;
 		case W_REAPER:
-			return 10;
+			sprd = 10;
 			break;
 		case W_PTRS:
-			return 50;
-			break;
 		case W_PENETRATOR:
-			return 50;
+			sprd = 50;
 			break;
 		case W_RAY:
-			return 10;
-			break;
 		case W_PORTER:
-			return 10;
+			sprd = 10;
 			break;
 		case W_SAWNOFF:
-			return 30;
-			break;
 		case W_SNUFF:
-			return 30;
+			sprd = 30;
 			break;
 		case W_STG:
-			return 10;
-			break;
 		case W_SPATZ:
-			return 10;
+			sprd = 10;
 			break;
 		case W_TRENCH:
-			return 25;
-			break;
 		case W_GUT:
-			return 25;
+			sprd = 25;
 			break;
 		case W_TYPE:
-			return 10;
-			break;
 		case W_SAMURAI:
-			return 10;
+			sprd = 10;
 			break;
 		case W_MP5:
-			return 10;
+			sprd = 10;
 			break;
 		case W_TESLA:
-			return 0;
+			sprd = 0;
 			break;
 		case W_CUSTOM1:
-			return W_CCROSSMIN[0];
+			sprd = W_CCROSSMIN[0];
 			break;
 		case W_CUSTOM2:
-			return W_CCROSSMIN[1];
+			sprd = W_CCROSSMIN[1];
+			break;
+		default:
+			sprd = 0;
 			break;
 	}
-	return 0;	
+	
+	if (sprd == 0)
+		return 0;
+	else {
+		switch(stance) {
+			case 2:
+				return sprd;
+			case 1:
+				return sprd - 2;
+			case 0:
+				return sprd - 4;
+			default: return 0;
+		}
+	}
 }
 
-float(float weapon) CrossHairMaxSpread =
+float(float weapon, float stance) CrossHairMaxSpread =
 {
-
+	float sprd;
 	switch(weapon)
 	{
 		case W_COLT:
-			return 30;
-			break;
 		case W_BIATCH:
-			return 30; // naievil -- real var not known
+			sprd = 30;
 			break;
 		case W_KAR:
-			return 75;
-			break;
 		case W_ARMAGEDDON:
-			return 75;
+			sprd = 75;
 			break;
 		case W_THOMPSON:
-			return 25;
-			break;
 		case W_GIBS:
-			return 25;
+			sprd = 25;
 			break;
 		case W_357:
-			return 20;
-			break;
 		case W_KILLU:
-			return 20;
+			sprd = 20;
 			break;
 		case W_BAR:
-			return 35;
-			break;
 		case W_WIDOW:
-			return 35;
+			sprd = 35;
 			break;
 		case W_BROWNING:
-			return 50;
-			break;
 		case W_ACCELERATOR:
-			return 50;
+			sprd = 50;
 			break;
 		case W_DB:
-			return 25;
-			break;
 		case W_BORE:
-			return 25;
+			sprd = 25;
 			break;
 		case W_FG:
-			return 40;
-			break;
 		case W_IMPELLER:
-			return 40;
+			sprd = 40;
 			break;
 		case W_GEWEHR:
-			return 35;
-			break;
 		case W_COMPRESSOR:
-			return 35;
+			sprd = 35;
 			break;
 		case W_KAR_SCOPE:
-			return 75;
-			break;
 		case W_HEADCRACKER:
-			return 75;
+			sprd = 75;
 			break;
 		case W_M1:
-			return 35;
-			break;
 		case W_M1000:
-			return 35;
+			sprd = 35;
 			break;
 		case W_M1A1:
-			return 35;
-			break;
 		case W_WIDDER:
-			return 35;
+			sprd = 35;
 			break;
 		case W_MP40:
-			return 25;
-			break;
 		case W_AFTERBURNER:
-			return 25;
+			sprd = 25;
 			break;
 		case W_MG:
-			return 50;
-			break;
 		case W_BARRACUDA:
-			return 50;
+			sprd = 50;
 			break;
 		case W_PANZER:
-			return 0;
-			break;
 		case W_LONGINUS:
-			return 0;
+			sprd = 0;
 			break;
 		case W_PPSH:
-			return 25;
-			break;
 		case W_REAPER:
-			return 25;
+			sprd = 25;
 			break;
 		case W_PTRS:
-			return 75;
-			break;
 		case W_PENETRATOR:
-			return 75;
+			sprd = 75;
 			break;
 		case W_RAY:
-			return 20;
-			break;
 		case W_PORTER:
-			return 20;
+			sprd = 20;
 			break;
 		case W_SAWNOFF:
-			return 30;
-			break;
 		case W_SNUFF:
-			return 30;
+			sprd = 30;
 			break;
 		case W_STG:
-			return 35;
-			break;
 		case W_SPATZ:
-			return 35;
+			sprd = 35;
 			break;
 		case W_TRENCH:
-			return 25;
-			break;
 		case W_GUT:
-			return 25;
+			sprd = 25;
 			break;
 		case W_TYPE:
-			return 25;
-			break;
 		case W_SAMURAI:
-			return 25;
+			sprd = 25;
 			break;
 		case W_MP5:
-			return 25;
+			sprd = 25;
 			break;
 		case W_TESLA:
-			return 0;
+			sprd = 0;
 			break;
 		case W_CUSTOM1:
-			return W_CCROSSMAX[0];
+			sprd = W_CCROSSMAX[0];
 			break;
 		case W_CUSTOM2:
-			return W_CCROSSMAX[1];
+			sprd = W_CCROSSMAX[1];
+			break;
+		default:
+			sprd = 0;
 			break;
 	}
-	return 0;
+
+	if (sprd == 0)
+		return 0;
+	else {
+		switch(stance) {
+			case 2:
+				return sprd;
+			case 1:
+				return sprd - 2;
+			case 0:
+				return sprd - 4;
+			default:
+				return 0;
+		}
+	}
 }
 
 int(int weapon, int type) GetLowAmmo = // determine what ammo value you should have that turns shells red
