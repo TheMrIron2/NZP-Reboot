@@ -11,6 +11,10 @@
 	light(integer) : "Default light level"
 	WaveHeight(string) : "Default Wave Height"
 	chaptertitle(string) : "Chapter Title Message"
+	location(string) : "Location of the Map"
+	date(string) : "Time Era of the Map"
+	person(string) : "Creator or fictional character of map"
+	song(string) : "Triggered song of the map"
 ]
 
 //
@@ -116,6 +120,21 @@
 @SolidClass = trigger_electro : "Zapper trigger field"
 [
 	zappername(string) : "Zapper Name"
+]
+
+//
+//NZP Misc
+//
+
+@PointClass color(114 224 172) studio() = trigger_song : "Song trigger" 
+[
+	model(studio) : "Model" : "progs/props/"
+	tune(string) : "Trigger Sound" : "sounds/"
+	skin(integer) : "Skin" : 0
+	spawnflags(Flags) =
+	[
+		1 : "Fullbright" : 0
+	]
 ]
 
 //

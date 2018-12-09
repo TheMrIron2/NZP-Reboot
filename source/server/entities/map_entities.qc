@@ -728,3 +728,41 @@ void() teddy_spawn =
 	self.health = 0;
 	self.th_die = teddy_react;
 };
+
+/* ==================
+    Custom Song Code
+   ================== */
+
+void() touch_songtrigger = {
+	if (other.classname != "player" || self.activated)
+		return;
+
+	if (other.button7) {
+		sound(self, CHAN_VOICE, self.tune, 1, ATTN_NORM);
+		self.activated = true;
+		sndActivCnt++;
+
+		if (sndTriggerCnt == sndActivCnt)
+			playSoundAtPlayers(world.song);
+	}
+	
+}
+
+void() trigger_song = {
+	#ifdef PSP
+	remove(self);
+	#endif
+
+	precache_model(self.model);
+	precache_sound(self.tune);
+
+	self.movetype = MOVETYPE_NONE;
+	self.solid = SOLID_TRIGGER;
+	self.classname = "trigger_song";
+	setmodel(self, self.model);
+	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+
+	self.touch = touch_songtrigger;
+
+	sndTriggerCnt++;
+}

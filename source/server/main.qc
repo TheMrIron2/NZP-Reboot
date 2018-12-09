@@ -98,6 +98,7 @@ void() precaches =
 	
 	#ifndef PSP
 	precache_model ("models/v_morphine.mdl");
+	precache_sound (world.song);
 	#endif
 	
 	precache_model ("progs/Sprites/revive.spr");
