@@ -151,7 +151,7 @@ void(entity who) nzd_defineweapon = {
 						#ifndef PSP
 						sendCustomWeapon(wepnum, W_CUSTOMNAME[wepnum], W_CVMODEL[wepnum], W_CMAG[wepnum], W_CRESERVE[wepnum], vtos(W_CADS[wepnum]), W_CCROSSMIN[wepnum], W_CCROSSMAX[wepnum], vtos(W_CFLASH[wepnum]), W_CFLASHSIZE[wepnum], W_CVMODEL2[wepnum], W_CDUAL[wepnum], who);
 						#endif
-						if (wepnum == 1) {
+						if (wepnum == MAX_CWEAPONS - 1) {
 							l = 0;
 							break;
 						} else {
@@ -178,12 +178,10 @@ void(entity who) nzd_defineweapon = {
                     p = 2;
                 } else {
 					switch(wepnum) {
-						case 0:
-							W_C1FRAMES[fnum] = stof(line);
-							break;
-						case 1:
-							W_C2FRAMES[fnum] = stof(line);
-							break;
+						case 0: W_C1FRAMES[fnum] = stof(line); break;
+						case 1: W_C2FRAMES[fnum] = stof(line); break;
+						case 2: W_C3FRAMES[fnum] = stof(line); break;
+						case 3: W_C4FRAMES[fnum] = stof(line); break;
 					}
 					fnum++;
                 }
@@ -200,12 +198,10 @@ void(entity who) nzd_defineweapon = {
                     p = 2;
                 } else {
 					switch(wepnum) {
-						case 0:
-							W_C1XSNDFRAME[framenum] = stof(line);
-							break;
-						case 1:
-							W_C2XSNDFRAME[framenum] = stof(line);
-							break;
+						case 0: W_C1XSNDFRAME[framenum] = stof(line); break;
+						case 1: W_C2XSNDFRAME[framenum] = stof(line); break;
+						case 2: W_C3XSNDFRAME[framenum] = stof(line); break;
+						case 3: W_C4XSNDFRAME[framenum] = stof(line); break;
 					}
 					framenum++;
                 }
@@ -222,12 +218,10 @@ void(entity who) nzd_defineweapon = {
                     p = 2;
                 } else {
 					switch(wepnum) {
-						case 0:
-							W_C1XTRASND[fsnd] = line;
-							break;
-						case 1:
-							W_C2XTRASND[fsnd] = line;
-							break;
+						case 0: W_C1XTRASND[fsnd] = line; break;
+						case 1: W_C2XTRASND[fsnd] = line; break;
+						case 2: W_C3XTRASND[fsnd] = line; break;
+						case 3: W_C4XTRASND[fsnd] = line; break;
 					}
 					fsnd++;
                 }

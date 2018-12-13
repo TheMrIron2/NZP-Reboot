@@ -1012,7 +1012,7 @@ void() Draw_Crosshair =
 	{
 		drawstring([(g_width/2 - g_width*0.0175/2), (g_height/2 - g_height*0.0175/2), 0], "O", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1);
 	}
-	else if (getstatf(STAT_WEAPONZOOM) != 1 && getstatf(STAT_WEAPONZOOM) != 2 && getstatf(STAT_ACTIVEWEAPON) != W_PANZER) // naievil (FIXME) crosshair cvar
+	else if (getstatf(STAT_WEAPONZOOM) != 1 && getstatf(STAT_WEAPONZOOM) != 2 && getstatf(STAT_ACTIVEWEAPON) != W_PANZER && getstatf(STAT_ACTIVEWEAPON) != W_LONGINUS) // naievil (FIXME) crosshair cvar
     {
         int x_value, y_value;
         int crosshair_offset;

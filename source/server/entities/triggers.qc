@@ -179,15 +179,13 @@ void() weapon_wall =
 
 void() teddy_react =
 {
-  local entity t;
-  
-	if (self.spawnflags & 1)
-	{
+  	local entity t;
+	if (self.spawnflags & 1) {
 		t = find (world, teddyremovetarget, self.target);
     
 		if (t)
 			remove(t); 
 	}
- /* if (self.noise)
-    sound (other, CHAN_ITEM, self.noise, 1, ATTN_NORM);*/
+
+	remove(self); //this was present in the patch, i like it.
 }

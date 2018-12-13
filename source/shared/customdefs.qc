@@ -81,9 +81,12 @@ const float EVENT_HUDUPDATE = 33;
 
 #define W_TESLA  56
 
-//custom
+//Custom Weapons
+//FIXME - use array?
 #define W_CUSTOM1 	   70
 #define W_CUSTOM2	   71
+#define W_CUSTOM3 	   72
+#define W_CUSTOM4 	   73
 
 
 #define BASE_FRAME			1
@@ -169,38 +172,63 @@ float invertfloat(float input) {
 string G_HUD;
 float G_HUDHOR;
 
-//custom weapons
-//float CWEPNUM;
+//==- Custom Weapon Defs -==//
+/*
+	The defs for this is kinda disgusting,
+	and some weapons need their own variables
+	(ex. W_C2FRAMES). #Arraysinsideofarrays2020
+	--------
+	I'm sorry if this code disgusts anyone, in
+	case of that happening I left a trash can
+	for you to vomit into on your desk..
+*/
+
+//Max weapon count
+#define MAX_CWEAPONS 	4
+
+//Special/independent variables
 float W_C1FRAMES[15];
 float W_C2FRAMES[15];
-string W_CUSTOMNAME[4];
-string W_CVMODEL[4];
-string W_CVMODEL2[4];
-string W_CGMODEL[4];
-string W_CFIRESOUND[4];
-string W_C1XTRASND[4]; //don't see anyone using more than 4 "extra" sounds
+float W_C3FRAMES[15];
+float W_C4FRAMES[15];
+
+string W_C1XTRASND[4];
 string W_C2XTRASND[4];
+string W_C3XTRASND[4];
+string W_C4XTRASND[4];
+
 float W_C1XSNDFRAME[4];
 float W_C2XSNDFRAME[4];
-float W_CDUAL[4];
-float W_CFIRETYPE[4];
-float W_CMAG[4];
-float W_CRESERVE[4];
-float W_CPAPWEP[4];
-float W_CDMG[4];
-float W_CSHOTCOUNT[4];
-float W_CPENETRATION[4];
-float W_CBODYPEN[4];
-float W_CSPREAD[4];
-float W_CRDELAY[4];
-float W_CFDELAY[4];
-float W_CWALKSPD[4];
-float W_CSKIN[4];
-float W_CRECOIL[4];
-float W_CCROSSMIN[4];
-float W_CCROSSMAX[4];
-float W_CLOWMAG[4];
-float W_CLOWRES[4];
-float W_CFLASHSIZE[4];
-vector W_CADS[4];
-vector W_CFLASH[4];
+float W_C3XSNDFRAME[4];
+float W_C4XSNDFRAME[4];
+
+//Normal variables
+string W_CUSTOMNAME[MAX_CWEAPONS];
+string W_CVMODEL[MAX_CWEAPONS];
+string W_CVMODEL2[MAX_CWEAPONS];
+string W_CGMODEL[MAX_CWEAPONS];
+string W_CFIRESOUND[MAX_CWEAPONS];
+
+float W_CDUAL[MAX_CWEAPONS];
+float W_CFIRETYPE[MAX_CWEAPONS];
+float W_CMAG[MAX_CWEAPONS];
+float W_CRESERVE[MAX_CWEAPONS];
+float W_CPAPWEP[MAX_CWEAPONS];
+float W_CDMG[MAX_CWEAPONS];
+float W_CSHOTCOUNT[MAX_CWEAPONS];
+float W_CPENETRATION[MAX_CWEAPONS];
+float W_CBODYPEN[MAX_CWEAPONS];
+float W_CSPREAD[MAX_CWEAPONS];
+float W_CRDELAY[MAX_CWEAPONS];
+float W_CFDELAY[MAX_CWEAPONS];
+float W_CWALKSPD[MAX_CWEAPONS];
+float W_CSKIN[MAX_CWEAPONS];
+float W_CRECOIL[MAX_CWEAPONS];
+float W_CCROSSMIN[MAX_CWEAPONS];
+float W_CCROSSMAX[MAX_CWEAPONS];
+float W_CLOWMAG[MAX_CWEAPONS];
+float W_CLOWRES[MAX_CWEAPONS];
+float W_CFLASHSIZE[MAX_CWEAPONS];
+
+vector W_CADS[MAX_CWEAPONS];
+vector W_CFLASH[MAX_CWEAPONS];

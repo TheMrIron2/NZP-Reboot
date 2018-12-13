@@ -15,8 +15,14 @@ void() ReturnWeaponModel =
 }
 
 .float scopetime;
+
+/*
+	MotoLegacy - continue special ADS.. FIXME
+*/
 void() W_AimIn =
 {
+	float zoomvar;
+	float startframe, endframe;
 	if (IsDualWeapon(self.weapon) ||
 		self.zoom ||
 		self.reload_delay > time ||
@@ -28,21 +34,25 @@ void() W_AimIn =
 		
 	#ifdef PSP
 	self.ADS_Offset = GetWeaponADSOfs_PSP(self.weapon);
+	zoomvar = 2;
 	#endif
+
+	zoomvar = 1;
 	
 	if (self.weapon == W_KAR_SCOPE || self.weapon == W_PTRS ||
-	    self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR)
-	{
+	    self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR) {
 		SetUpdate(self, UT_ZOOM2, 0, 0, 0);
-		#ifndef PSP
-		self.zoom = 2;
-		#else 
-		self.zoom = 1;
+		self.zoom = zoomvar;
 		self.scopetime = time + 0.3;
-		#endif
+	} else {
+		self.zoom = 1;
 	}
-	else
-	{
+
+	//special weapons
+	if (self.weapon == W_RAY || self.weapon == W_TYPE) {
+		startframe = GetFrame(self.weapon, AIM_IN_START, self.zoom);
+		endframe = GetFrame(self.weapon, AIM_IN_END, self.zoom);
+		Set_W_Frame(startframe, endframe, 0, 0, ZOOM, SUB_Null, GetWeaponModel(self.weapon, 0), false, S_RIGHT);
 		self.zoom = 1;
 	}
 	
@@ -53,11 +63,13 @@ void() W_AimIn =
 
 void() W_AimOut =
 {
+	float startframe, endframe;
 	if (!self.zoom ||
 		self.new_anim_stop || 
 		self.sprinting) {
 		return;
 	}
+
 	if (self.weapon == W_KAR_SCOPE || self.weapon == W_PTRS ||
 	    self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR) {
 		ReturnWeaponModel();
@@ -66,6 +78,13 @@ void() W_AimOut =
 	#ifdef PSP
 	self.zoom = 0;
 	#endif
+
+	//special weapons
+	if (self.weapon == W_RAY || self.weapon == W_TYPE) {
+		startframe = GetFrame(self.weapon, AIM_OUT_START, self.zoom);
+		endframe = GetFrame(self.weapon, AIM_OUT_END, self.zoom);
+		Set_W_Frame(startframe, endframe, 0, 0, ZOOM, SUB_Null, GetWeaponModel(self.weapon, 0), false, S_RIGHT);
+	}
 	
 	if (!self.downed)
 		playout();
@@ -894,6 +913,14 @@ void(float side) W_Fire =
 	startframe = GetFrame(self.weapon,FIRE_START);
 	endframe = GetFrame(self.weapon,FIRE_END);
 
+	if (self.zoom) {
+		if (self.weapon == W_RAY || self.weapon == W_TYPE) { //special weapons
+			startframe = GetFrame(self.weapon, AIM_FIRE_START);
+			endframe = GetFrame(self.weapon, AIM_FIRE_END);
+		}
+	}
+	
+
 	if (self.perks & P_DOUBLE) {
 		delay *= 0.66;
 	}
@@ -1320,19 +1347,26 @@ void() W_Grenade =
    }    
 }
 
-void() CheckButtonOne = {if (self.weaponnum == 1){W_PutOut();}}		// weapon switch to two if 1
-void() CheckButtonTwo = {if (self.weaponnum == 0) {W_PutOut();}}	// weapon switch to one if 2
+void(float wepnum) CheckButton = {
+	if (self.weaponnum == wepnum)
+		W_PutOut();
+}
 
 void() Change_Stance = {
+
 	if (self.downed || !(self.flags & FL_ONGROUND) || self.changestance == true)
 		return;
+
 	switch(self.stance) {
 		case 2: 
 			self.new_ofs_z = self.view_ofs_z - 24;
 			self.stance = 1;
 			break;
 		case 1:
-			if (!self.stancereset) {
+			if (self.isBuying) { //don't want to prone while buying a perk..
+				self.stance = 2;
+				self.new_ofs_z = self.view_ofs_z + 24;
+			} else if (!self.stancereset) {
 				self.new_ofs_z = self.view_ofs_z - 18;
 				self.stance = 0;
 			} else {
@@ -1435,10 +1469,10 @@ void () Impulse_Functions =
 				Change_Stance();
 			break;
 		case 110:
-			CheckButtonOne();
+			CheckButton(1);
 			break;
 		case 111:
-			CheckButtonTwo();
+			CheckButton(0);
 			break;		
 		case 100:
 			cvar_set("waypoint_mode", "1");
@@ -1559,6 +1593,11 @@ void() CheckPlayer =
 			self.changestance = true;
 			self.view_ofs_z = self.view_ofs_z + 1.5;
 	} else {
+		self.changestance = false;
+	}
+
+	if (self.view_ofs_z > 40) {
+		self.view_ofs_z = 40;
 		self.changestance = false;
 	}
 	

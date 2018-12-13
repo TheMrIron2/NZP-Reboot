@@ -103,16 +103,19 @@ void() touch_perk =
 		addmoney(other, G_PRONEPOINTS, 0);
 		sound(self, 0,"sounds/misc/ching.wav", 1, 1);
 	}
+
+	if (other.stance == 0)
+		return;
 	  
-	if (self.requirespower == true && !isPowerOn)
-	{
+	if (self.requirespower == true && !isPowerOn) {
 		useprint (other, 8, 0, 0);
 		return;
 	}
-	  if (other.weaponskin == 0)
-      backupWepSkin = 0;
+
+	if (other.weaponskin == 0)
+      	backupWepSkin = 0;
     else 
-      backupWepSkin = 1;
+      	backupWepSkin = 1;
 
 	
 	if (self.classname == "perk_revive" && !(other.perks & P_REVIVE) && other.fire_delay < time)
@@ -815,6 +818,7 @@ void() findboxspot =
 	}
 	
 	self.owner.model = "progs/Misc/teddy.mdl";
+	self.owner.frame = 1;
 	setmodel(self.owner, self.owner.model);
 	self.owner.classname = "mystery_box_tp_spot";
 	self.owner.touch = SUB_Null;
@@ -959,8 +963,10 @@ void() mystery_box_tp_spot =
 	setmodel (self, "progs/Misc/teddy.mdl");
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	
-	if (self.model == "progs/Misc/teddy.mdl")
+	if (self.model == "progs/Misc/teddy.mdl") {
+		self.frame = 1;
 		self.angles_y -= 90;
+	}
 	
 	boxLocations[boxCount] = self;
 	boxCount++;
