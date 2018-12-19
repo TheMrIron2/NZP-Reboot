@@ -15,7 +15,7 @@ A faithful recreation of Call of Duty Zombies for the PC and PlayStation Portabl
 Bugs can be reported by either creating an issue in this repository or joining the [Discord server](discord.gg/ChX7Fjr) and posting in the #bug-reports channel.
 
 Bugs must be formatted like this:
-* Breif description of issue
+* Brief description of issue
 * More detail of issue, causes, etc.
 * Video of bug in question
 
@@ -28,7 +28,7 @@ __Blubswillrule__: Coding, Models, GFX, Sounds, Animation, & Music
 <br>
 __Ju[s]tice__: Maps, Models, GFX
 <br>
-__Jukki__: Codding
+__Jukki__: Coding
 
 
 
