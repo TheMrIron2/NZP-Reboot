@@ -769,57 +769,57 @@ char *ReturnLoadingtex (void)
 {
     int StringNum = Random_Int(37);
     switch(StringNum)
-    {
+    { // NOTE: 59-character limit before message goes off-screen
         case 1:
             return  "The original Quake came out in 1996 (22 years ago as of 2018!)";
             break;
         case 2:
-            return  "Use the Kar98-k to be the hero we "; // need?
+            return  "Use the Kar98-k to be the hero we need!";
             break;
         case 3:
-            return  "There is a huge number of modern engines based on the Quake engine";
+            return  "There is a huge number of modern engines based on Quake!";
             break;
         case 4:
-            return  "Development for NZ:P officially started on September 27, 2009";
+            return  "Development for NZP officially started on September 27 2009";
             break;
         case 5:
             return  "The first release of NZ:P was released on December 25, 2010";
             break;
         case 6:
-            return  "The 1.1 release of NZ:P (original) has a total of about 90,000 downloads!";
+            return  "The 1.1 release of NZ:P (original) has a total of over 90,000 downloads!";
             break;
         case 7:
             return  "NZ:P has been downloaded a total of 461,723 times as of December 25, 2014";
             break;
         case 8:
-            return  "The original NZP was made primarily by 3 guys spanning continents";
+            return  "The original NZP was made mainly by 3 guys around the world.";
             break;
         case 9:
-            return  "Blubswillrule: known as \"blubs\", is from the USA";
+            return  "Blubswillrule: known as \"blubs\", is from the USA.";
             break;
         case 10:
-            return  "Jukki is from Finland";
+            return  "Jukki is from Finland.";
             break;
         case 11:
-            return  "Ju[s]tice, or \"tom\" is from Lithuania";
+            return  "Ju[s]tice, or \"tom\" is from Lithuania.";
             break;
         case 12:
-            return  "This game is the reason that we have bad sleeping habits";
+            return  "This game is the reason that we have bad sleeping habits!";
             break;
         case 13:
-            return  "'We had a lot of fun making this game";
+            return  "We had a lot of fun making this game.";
             break;
         case 14:
-            return  "You can make your own custom map, check out the readme file!";
+            return  "You can make your own custom map, check the readme file!";
             break;
         case 15:
-            return  "Try Retro mode! (It's in the Graphics Settings)";
+            return  "Try Retro mode in the graphics settings!";
             break;
         case 16:
             return  "Tired of Nacht der Untoten? Make your own map!";
             break;
         case 17:
-            return  "Slay zombies & be grateful";
+            return  "Slay zombies & be grateful.";
             break;
         case 18:
             return  "Custom maps, CUSTOM MAPS!";
@@ -831,13 +831,13 @@ char *ReturnLoadingtex (void)
             return  "Please surround yourself with zombies!";
             break;
         case 21:
-            return  "Don't play for too long, or else zombies will eat you";
+            return  "Don't play for too long, or zombies will eat you.";
             break;
         case 22:
-            return  "that was epic... EPIC FOR THE WIIIN";
+            return  "That was epic... EPIC FOR THE WIIIN!"; //why
             break;
         case 23:
-            return  "PPSSPP is an awesome PSP emulator for all of your PSP emulation needs";
+            return  "PPSSPP is an awesome PSP emulator!";
             break;
         case 24:
             return  "You dead yet?";
@@ -846,29 +846,29 @@ char *ReturnLoadingtex (void)
             return  "Now 21% cooler!";
             break;
         case 26:
-            return  "your lg is nothink on the lan";
+            return  "your lg is nothink on the lan"; //what
             break;
         case 27:
-            return  "I'm not your chaotic on dm6";
+            return  "I'm not your chaotic on dm6!"; 
             break;
         case 28:
             return  "Shoot zombies to kill them. Or knife them. You choose.";
             break;
         case 29:
-            //return  "Be sure to also check out \"Cause of War: 1944\" for the PSP!"; // seems dead now unfortunately
-	    return "Be sure to also check out \"Perfect Dark: Reloaded\" for the PSP!"; 
+            //return  "Be sure to also check out \"Cause of War: 1944\" for the PSP!"; // rip
+	    return "Be sure to also check out \"Perfect Dark: Reloaded\" for the PSP!"; // shameless
             break;
         case 30:
             return  "ggnore";
             break;
         case 31:
-            return  "Try this game on PC as well as PSP!";
+            return  "Try this game on PC or PS Vita as well as PSP!";
             break;
         case 32:
-            return  "Submerge your device in water for godmode";
+            return  "Submerge your device in water for godmode!";
             break;
         case 33:
-            return  "10/10/10 was a good day";
+            return  "10/10/10 was a good day.";
             break;
         case 34:
             return  "Also check out \"No Bugs Allowed\" for the PSP!";
