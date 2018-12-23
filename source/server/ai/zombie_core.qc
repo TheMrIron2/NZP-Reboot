@@ -12,21 +12,21 @@ void(float what) play_sound_z =
 		if(what == 1)//attack
 		{
 			if (e < 0.125)
-				sound(self,CHAN_WEAPON,"sounds/zombie/a0.wav",1,ATTN_NORM);
+				sound(self,CHAN_VOICE,"sounds/zombie/a0.wav",1,ATTN_NORM);
 			else if (e < 0.25)
-				sound(self,CHAN_WEAPON,"sounds/zombie/a1.wav",1,ATTN_NORM);
+				sound(self,CHAN_VOICE,"sounds/zombie/a1.wav",1,ATTN_NORM);
 			else if (e < 0.375)
-				sound(self,CHAN_WEAPON,"sounds/zombie/a2.wav",1,ATTN_NORM);   
+				sound(self,CHAN_VOICE,"sounds/zombie/a2.wav",1,ATTN_NORM);   
 			else if( e < 0.5)
-				sound(self,CHAN_WEAPON,"sounds/zombie/a3.wav",1,ATTN_NORM);   
+				sound(self,CHAN_VOICE,"sounds/zombie/a3.wav",1,ATTN_NORM);   
 			else if( e < 0.625)
-				sound(self,CHAN_WEAPON,"sounds/zombie/a4.wav",1,ATTN_NORM);   
+				sound(self,CHAN_VOICE,"sounds/zombie/a4.wav",1,ATTN_NORM);   
 			else if( e < 0.75)
-				sound(self,CHAN_WEAPON,"sounds/zombie/a5.wav",1,ATTN_NORM);   
+				sound(self,CHAN_VOICE,"sounds/zombie/a5.wav",1,ATTN_NORM);   
 			else if( e < 0.875)
-				sound(self,CHAN_WEAPON,"sounds/zombie/a6.wav",1,ATTN_NORM);  
+				sound(self,CHAN_VOICE,"sounds/zombie/a6.wav",1,ATTN_NORM);  
 			else
-				sound(self,CHAN_WEAPON,"sounds/zombie/a7.wav",1,ATTN_NORM);   
+				sound(self,CHAN_VOICE,"sounds/zombie/a7.wav",1,ATTN_NORM);   
 			return;
 		}
 		if(what == 2)//walking!
@@ -803,7 +803,7 @@ void() Zombie_Death =
 	self.movetype = MOVETYPE_NONE;
 	self.takedamage = DAMAGE_NO;
 	
-	sound(self,CHAN_WEAPON,"sounds/null.wav",1,ATTN_NORM);
+	sound(self,CHAN_VOICE,"sounds/null.wav",1,ATTN_NORM);
 	
 	self.usedent = world;
 	
