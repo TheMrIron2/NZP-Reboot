@@ -470,7 +470,7 @@ void() PlayerSpawn =
 	self.origin = spawnpoint.origin + [0,0,1];
 	self.angles = spawnpoint.angles;
 	self.fixangle = TRUE;
-	setsize(self, [-16, -16, -24], [16, 16, 32]);
+	setsize(self, [-16, -16, -32], [16, 16, 40]);
 	self.view_ofs = VEC_VIEW_OFS; // naievil -- set view_ofs to 32 to maintain half life (64) sizes
 	self.stance = 2;
 	self.new_ofs_z = self.view_ofs_z;

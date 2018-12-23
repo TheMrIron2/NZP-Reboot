@@ -147,11 +147,11 @@ void() SUB_Null2 = {};
 #define 	VEC_HULL2_MIN   	'-32 -32 -24'
 #define 	VEC_HULL2_MAX  		'32 32 64'
 
+#define     VEC_VIEW_OFS  '0 0 32'
+
 #ifdef PSP
-#define  	VEC_VIEW_OFS  '0 0 32'
 #define 	MAX_ZOMB 	  12
 #else
-#define     VEC_VIEW_OFS  '0 0 40'
 #define 	MAX_ZOMB 	  24
 #endif
 
