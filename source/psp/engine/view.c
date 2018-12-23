@@ -23,6 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <pspgu.h>
 
 sfx_t			*cl_sfx_step[4];
+
 /*
 
 The view is allowed to move slightly from it's true position for bobbing,

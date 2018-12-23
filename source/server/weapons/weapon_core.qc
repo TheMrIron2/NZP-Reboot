@@ -527,21 +527,136 @@ void(vector org, vector vel, float damage) SpawnBlood =
 	f.hitcount = f.hitcount + 1;
 };
 
+#ifdef PSP
+void(vector where) spawn_gibs = {
+	particle(where, where, 225, 1);
+}
+#endif
+
 
 void Parse_Damage () = // DO NOT TOUCH
 {
 	entity ent;
 	float total_dmg;
+
+	#ifdef PSP
+	entity body_ent;
+	float head_hit, headoff;
+	#endif
+
 	ent = findfloat (world, washit, 1);
 
 	while (ent) {
-		if (ent.classname == "ai_zombie" || ent.classname == "ai_dog") {
+		if (ent.classname != "radio" && ent.classname != "explosive_barrel") {
+			
+			#ifdef PSP
+			if (ent.classname == "ai_zombie_head")
+				head_hit = 1;
+			
+			if (ent.classname != "ai_zombie" || ent.classname == "ai_dog") //limb
+				body_ent = ent.owner;
+			else
+				body_ent = ent;
+
+			total_dmg = body_ent.hitamount;
+
+			if (body_ent.head.washit) {
+				total_dmg = total_dmg + body_ent.head.hitamount;
+				head_hit = 1;
+				body_ent.head.health = body_ent.head.health - body_ent.head.hitamount;
+				
+				if (body_ent.head.health <= 0 && self.weapon != W_COLT) {
+					if (!body_ent.head.deadflag)
+						return;
+
+					local vector where;
+					
+					makevectors(body_ent.head.owner.angles);
+					where = body_ent.head.owner.origin + (body_ent.head.view_ofs_x * v_right) + (body_ent.head.view_ofs_y * v_forward) + (body_ent.head.view_ofs_z * v_up);
+					spawn_gibs(where);
+					
+					body_ent.head.deadflag = false;
+					body_ent.head.solid = SOLID_NOT;
+					setmodel(body_ent.head,"");
+					body_ent.head.frame = 0;
+					
+					body_ent.usedent = self;
+					
+					body_ent.bleedingtime = time + 2;
+					headoff = 1;
+					updateLimb (body_ent.head.owner, 0, world);
+				}
+				
+				body_ent.head.washit = 0;
+				body_ent.head.hitamount = 0;
+			}
+			if (body_ent.larm.washit) {
+				total_dmg = total_dmg + body_ent.larm.hitamount;
+
+				body_ent.larm.health = body_ent.larm.health - body_ent.larm.hitamount;
+				if (body_ent.larm.health <= 0 && self.weapon != W_COLT && body_ent.larm.owner.rarm.deadflag && body_ent.larm.deadflag)
+				{
+					
+					makevectors(body_ent.larm.owner.angles);
+					where = body_ent.larm.owner.origin + (body_ent.larm.view_ofs_x * v_right) + (body_ent.larm.view_ofs_y * v_forward) + (body_ent.larm.view_ofs_z * v_up);
+					spawn_gibs(where);
+					
+					body_ent.larm.deadflag = false;
+					body_ent.larm.solid = SOLID_NOT;
+					setmodel(body_ent.larm,"");
+					body_ent.larm.frame = 0;
+					updateLimb (body_ent.larm.owner, 1, world);
+				}
+
+				body_ent.larm.washit = 0;
+				body_ent.larm.hitamount = 0;
+			}
+			if (body_ent.rarm.washit) {
+				total_dmg = total_dmg + body_ent.rarm.hitamount;
+
+				body_ent.rarm.health = body_ent.rarm.health - body_ent.rarm.hitamount;
+				if (body_ent.rarm.health <= 0 && self.weapon != W_COLT && body_ent.rarm.owner.larm.deadflag && body_ent.rarm.deadflag) {
+					
+					makevectors(body_ent.rarm.owner.angles);
+					where = body_ent.rarm.owner.origin + (body_ent.rarm.view_ofs_x * v_right) + (body_ent.rarm.view_ofs_y * v_forward) + (body_ent.rarm.view_ofs_z * v_up);
+					spawn_gibs(where);
+					
+					body_ent.rarm.deadflag = false;
+					body_ent.rarm.solid = SOLID_NOT;
+					setmodel(body_ent.rarm,"");
+					body_ent.rarm.frame = 0;
+					updateLimb (body_ent.rarm.owner, 2, world);
+				}
+
+				body_ent.rarm.washit = 0;
+				body_ent.rarm.hitamount = 0;
+			}
+
+			if (instakill_finished) {
+				if(body_ent.head.deadflag) {
+					body_ent.head.deadflag = false;
+					body_ent.head.solid = SOLID_NOT;
+					setmodel(body_ent.head,"");
+					body_ent.head.frame = 0;
+				}
+			}
+			
+			if (head_hit)
+				DamageHandler(body_ent,self, total_dmg, S_HEADSHOT);
+			else
+				DamageHandler(body_ent,self, total_dmg, S_NORMAL);
+			
+			body_ent.washit = 0;
+			body_ent.hitamount = 0;
+			#else
 			total_dmg = ent.hitamount;
 			//Clear hit
 			ent.washit = 0;
 			ent.hitamount = 0;
 			
 			DamageHandler(ent,self, total_dmg, S_NORMAL);
+			#endif
+
 		}
 		ent = findfloat (ent, washit, 1);
 	}

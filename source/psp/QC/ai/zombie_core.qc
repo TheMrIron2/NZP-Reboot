@@ -173,6 +173,7 @@ void(float what) play_sound_z =
 
 void(float which) SetZombieHitBox =
 {
+
 	//Zombie's bbox is constant across all hitbox setups, so we don't update it.
 	
 	if(self.currentHitBoxSetup == which)
