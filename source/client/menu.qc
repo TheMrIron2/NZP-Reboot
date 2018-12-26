@@ -51,9 +51,16 @@ void() menu_quit =
 
 void() menu_back =
 {
-	if (in_menu == MENU_IGS)
+	if (in_menu == MENU_GSETTINGS || in_menu == MENU_CSETTINGS) {
+		if (wasigs == TRUE)
+			in_menu = MENU_IGS;
+		else
+			in_menu = MENU_SETTINGS;
+
+		wasigs = FALSE;
+	} else if (in_menu == MENU_IGS) {
 		in_menu = MENU_PAUSE;
-	else
+	} else
 		in_menu = MENU_MAIN;
 };
 
@@ -103,7 +110,29 @@ void() menu_main =
 	localcmd("disconnect\n");
 };
 
+void() menu_graphics =
+{
+	if (in_menu == MENU_IGS)
+		wasigs = TRUE;
+	else
+		wasigs = FALSE;
+
+	in_menu = MENU_GSETTINGS;
+};
+
+void() menu_controls =
+{
+	if (in_menu == MENU_IGS)
+		wasigs = TRUE;
+	else
+		wasigs = FALSE;
+
+	in_menu = MENU_CSETTINGS;
+}
+
+//
 //settings adjustments
+//
 
 void() settings_fps = {
 	local float fps = cvar("show_fps");
@@ -114,6 +143,137 @@ void() settings_fps = {
 		fps = 0;
 
 	cvar_set("show_fps", ftos(fps));
+}
+
+void() settings_brite = {
+	local float br = cvar("gamma");
+
+	br -= 0.1;
+	projBr += 0.1;
+
+	if (br < 0) {
+		br = 2;
+		projBr = 0;
+	}
+
+	cvar_set("gamma", ftos(br));
+}
+
+void() settings_brite2 = {
+	local float br = cvar("gamma");
+
+	br += 0.1;
+	projBr -= 0.1;
+
+	if (br > 2) {
+		br = 0;
+		projBr = 2;
+	}
+
+	cvar_set("gamma", ftos(br));
+}
+
+void() bind_walkf = {
+	if (editBind[0] == FALSE)
+		editBind[0] = TRUE;
+	else
+		editBind[0] = FALSE;
+}
+
+void() bind_walkb = {
+	if (editBind[1] == FALSE)
+		editBind[1] = TRUE;
+	else
+		editBind[1] = FALSE;
+}
+
+void() bind_walkl = {
+	if (editBind[2] == FALSE)
+		editBind[2] = TRUE;
+	else
+		editBind[2] = FALSE;
+}
+
+void() bind_walkr = {
+	if (editBind[3] == FALSE)
+		editBind[3] = TRUE;
+	else
+		editBind[3] = FALSE;
+}
+
+void() bind_jump = {
+	if (editBind[4] == FALSE)
+		editBind[4] = TRUE;
+	else
+		editBind[4] = FALSE;
+}
+
+void() bind_sprint = {
+	if (editBind[5] == FALSE)
+		editBind[5] = TRUE;
+	else
+		editBind[5] = FALSE;
+}
+
+void() bind_stance = {
+	if (editBind[6] == FALSE)
+		editBind[6] = TRUE;
+	else
+		editBind[6] = FALSE;
+}
+
+void() bind_wpnn = {
+	if (editBind[7] == FALSE)
+		editBind[7] = TRUE;
+	else
+		editBind[7] = FALSE;
+}
+
+void() bind_wpnp = {
+	if (editBind[8] == FALSE)
+		editBind[8] = TRUE;
+	else
+		editBind[8] = FALSE;
+}
+
+void() bind_interact = {
+	if (editBind[9] == FALSE)
+		editBind[9] = TRUE;
+	else
+		editBind[9] = FALSE;
+}
+
+void() bind_reload = {
+	if (editBind[10] == FALSE)
+		editBind[10] = TRUE;
+	else
+		editBind[10] = FALSE;
+}
+
+void() bind_knife = {
+	if (editBind[11] == FALSE)
+		editBind[11] = TRUE;
+	else
+		editBind[11] = FALSE;
+}
+
+void() bind_nade = {
+	if (editBind[12] == FALSE)
+		editBind[12] = TRUE;
+	else
+		editBind[12] = FALSE;
+}
+
+void() bind_switchnade = {
+	if (editBind[13] == FALSE)
+		editBind[13] = TRUE;
+	else
+		editBind[13] = FALSE;
+}
+
+//rmb null
+void() null = {
+	return;
 }
 
 /*
@@ -128,37 +288,70 @@ void() settings_fps = {
 
 */
 
-//struct for all buttons, note scale is going to be multiplied with width/height in draw step, so keep them between 0 and 1
+//struct for all buttons, note scale is going to be multiplied w/ width/height in draw step, keep between 0 and 1
 var struct
 {
 	vector pos;
 	string text;
 	float active; //used for mouseover hilight (positive values) and alpha (negative values)
-	void() action; //function that is called when the button is pressed
+	void() action; //function that is called when the button is pressed with lmb
+	void() action2; //rmb function
 	float group; //a bit field, button will be usable/visible when these bits are active
 } buttons[] =
 {
-	{[0.025, 0.175, 0], "Solo", -1, menu_single, MENU_MAIN},
-	{[0.025, 0.225, 0], "Cooperative", -1, menu_multi, MENU_MAIN},
-	{[0.025, 0.300, 0], "Settings", -1, menu_settings, MENU_MAIN},
-	{[0.025, 0.375, 0], "Achievements", -1, menu_main, MENU_MAIN},
-	{[0.025, 0.450, 0], "Credits", -1, menu_about, MENU_MAIN},
-	{[0.025, 0.525, 0], "Quit", -1, menu_quit, MENU_MAIN},
-	{[0.025, 0.900, 0], "Back", -1, menu_back, MENU_SINGLE + MENU_MULTI + MENU_SETTINGS + MENU_ABOUT + MENU_IGS},
-	{[0.025, 0.175, 0], "Nacht der Untoten", -1, menu_loadndu, MENU_SINGLE},
-	{[0.025, 0.500, 0], "Resume", -1, menu_resume, MENU_PAUSE},
-	{[0.025, 0.550, 0], "Restart", -1, menu_restart, MENU_PAUSE},
-	{[0.025, 0.600, 0], "Settings", -1, menu_settings, MENU_PAUSE},
-	{[0.025, 0.650, 0], "Main Menu", -1, menu_main, MENU_PAUSE},
+	//Main
+	{[0.025, 0.175, 0], "Solo", -1, menu_single, null, MENU_MAIN},
+	{[0.025, 0.225, 0], "Cooperative", -1, menu_multi, null, MENU_MAIN},
+	{[0.025, 0.300, 0], "Settings", -1, menu_settings, null, MENU_MAIN},
+	{[0.025, 0.375, 0], "Achievements", -1, menu_main, null, MENU_MAIN},
+	{[0.025, 0.450, 0], "Credits", -1, menu_about, null, MENU_MAIN},
+	{[0.025, 0.525, 0], "Quit", -1, menu_quit, null, MENU_MAIN},
 
-	{[0.025, 0.500, 0], "Yes", -1, menu_resy, MENU_RES},
-	{[0.025, 0.550, 0], "No", -1, menu_resn, MENU_RES},
+	//Solo
+	{[0.025, 0.175, 0], "Nacht der Untoten", -1, menu_loadndu, null, MENU_SINGLE},
 
-	{[0.025, 0.175, 0], "Show FPS", -1, settings_fps, MENU_SETTINGS + MENU_IGS},
+	//Pause
+	{[0.025, 0.500, 0], "Resume", -1, menu_resume, null, MENU_PAUSE},
+	{[0.025, 0.550, 0], "Restart", -1, menu_restart, null, MENU_PAUSE},
+	{[0.025, 0.600, 0], "Settings", -1, menu_settings, null, MENU_PAUSE},
+	{[0.025, 0.650, 0], "Main Menu", -1, menu_main, null, MENU_PAUSE},
+
+	//Restart
+	{[0.025, 0.500, 0], "Yes", -1, menu_resy, null, MENU_RES},
+	{[0.025, 0.550, 0], "No", -1, menu_resn, null, MENU_RES},
+
+	//Settings
+	{[0.025, 0.175, 0], "Graphics Settings", -1, menu_graphics, null, MENU_SETTINGS + MENU_IGS},
+	{[0.025, 0.225, 0], "Controls", -1, menu_controls, null, MENU_SETTINGS + MENU_IGS},
+
+	//Graphics
+	{[0.025, 0.175, 0], "Show FPS", -1, settings_fps, settings_fps, MENU_GSETTINGS},
+	{[0.025, 0.225, 0], "Brightness", -1, settings_brite, settings_brite2, MENU_GSETTINGS},
+
+	//Controls
+	{[0.025, 0.175, 0], "Walk Forward", -1, bind_walkf, null, MENU_CSETTINGS},
+	{[0.025, 0.225, 0], "Walk Backward", -1, bind_walkb, null, MENU_CSETTINGS},
+	{[0.025, 0.275, 0], "Walk Left", -1, bind_walkl, null, MENU_CSETTINGS},
+	{[0.025, 0.325, 0], "Walk Right", -1, bind_walkr, null, MENU_CSETTINGS},
+	{[0.025, 0.375, 0], "Jump", -1, bind_jump, null, MENU_CSETTINGS},
+	{[0.025, 0.425, 0], "Sprint", -1, bind_sprint, null, MENU_CSETTINGS},
+	{[0.025, 0.475, 0], "Change Stance", -1, bind_stance, null, MENU_CSETTINGS},
+
+	{[0.025, 0.525, 0], "Weapon Next", -1, bind_wpnn, null, MENU_CSETTINGS},
+	{[0.025, 0.575, 0], "Weapon Previous", -1, bind_wpnp, null, MENU_CSETTINGS},
+
+	{[0.025, 0.625, 0], "Interact", -1, bind_interact, null, MENU_CSETTINGS},
+	{[0.025, 0.675, 0], "Reload", -1, bind_reload, null, MENU_CSETTINGS},
+	{[0.025, 0.725, 0], "Melee", -1, bind_knife, null, MENU_CSETTINGS},
+	{[0.025, 0.775, 0], "Grenade", -1, bind_nade, null, MENU_CSETTINGS},
+	{[0.025, 0.825, 0], "Secondary Grenade", -1, bind_switchnade, null, MENU_CSETTINGS},
+
+	//Everything, pretty much
+	{[0.025, 0.925, 0], "Back", -1, menu_back, null, MENU_SINGLE + MENU_MULTI + MENU_SETTINGS + MENU_ABOUT + MENU_IGS + MENU_GSETTINGS + MENU_CSETTINGS},
 };
 
 //REMEMBER TO UPDATE THIS CONST IF YOU ADD BUTTONS
-const float BUTTONS_COUNT = 15; //17
+const float BUTTONS_COUNT = 32;
 float lastActive;
 
 
@@ -213,7 +406,7 @@ void(float index) Update_Button =
 };
 
 
-void(float index) Button_Click = 
+void(float index, float type) Button_Click = 
 {
 	float btnscale = 0.030*g_height;
 
@@ -229,19 +422,24 @@ void(float index) Button_Click =
 	//scale_y *= g_height;
 	
 	if (cursor_pos_x > pos_x && cursor_pos_x < pos_x + (g_height * 0.6) && cursor_pos_y > pos_y && cursor_pos_y < pos_y + btnscale) {
-		buttons[index].action(); //do whatever this button is supposed to do
+		if (type == 0) { //left click
+			buttons[index].action();
+		} else { //right click
+			buttons[index].action2();
+		}
+		
 		lastActive = -1;
-		sound(self, 0, "sounds/menu/enter.wav", 1, ATTN_NONE);
+		sound(self, 0, "sounds/menu/enter.wav", 1, ATTN_NONE); //FIXME - prevent sound from playing if action2 is null!
 	}
 };
 
 
-void() Menu_Click =
+void(float type) Menu_Click =
 {
 	float i;
 	for(i = 0; i < BUTTONS_COUNT; i++)
 	{
-		Button_Click(i);
+		Button_Click(i, type);
 	}
 };
 
@@ -277,7 +475,7 @@ void() Draw_Extra_Restart =
 	drawstring([0.02*g_width, 0.425*g_height, 0], "Your current progress will be lost!", [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 1);
 }
 
-void() Draw_Extra_Settings =
+void() Draw_Extra_GSettings =
 {
 	local string fpsval;
 
@@ -286,12 +484,38 @@ void() Draw_Extra_Settings =
 	else
 		fpsval = S_ENABLED;
 
-	drawstring([0.325*g_width, 0.175*g_height, 0], fpsval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+	drawstring([0.475*g_width, 0.175*g_height, 0], fpsval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+
+	//have to use a drawfill because of how gamma values are subtracted.. for some reason
+	drawfill ([0.475*g_width, 0.2255*g_height, 0], [g_height * (projBr/3), g_height * 0.030, 1], [0.8, 0.8, 0.8], 1);
+}
+
+void() Draw_Extra_Controls =
+{
+	local string buttoncon[MAX_BINDS];
+	local string binding = "_";
+
+	//prevent warning
+	buttoncon[0] = "";
+
+	for (int i = 0; i < MAX_BINDS; i += 1) {
+		tokenize(findkeysforcommand(buttonBind[i]));
+
+		if (editBind[i] == FALSE)
+			buttoncon[i] = strtoupper(keynumtostring(stof(argv(0))));
+		else
+			buttoncon[i] = binding;
+
+		if (buttoncon[i] == "01")
+			buttoncon[i] = "UNBOUND";
+
+		drawstring([0.475*g_width, (0.175+(0.05*i))*g_height, 0], buttoncon[i], [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+	}
 }
 
 void() Draw_Menu =
 {
-	//Background picture with a nice scrolling effect, scrolling happens in the shader in scripts/menu.shader
+	//background
 	if(serverkey("constate") == "disconnected")
 	{
 		if(g_width <= g_height * 1.77778)
@@ -326,7 +550,14 @@ void() Draw_Menu =
 		case MENU_IGS:
 		case MENU_SETTINGS:
 			title = "SETTINGS";
-			Draw_Extra_Settings();
+			break;
+		case MENU_GSETTINGS:
+			title = "GRAPHICS SETTINGS";
+			Draw_Extra_GSettings();
+			break;
+		case MENU_CSETTINGS:
+			title = "CONTROLS";
+			Draw_Extra_Controls();
 			break;
 		case MENU_RES:
 			title = "RESTART";

@@ -43,6 +43,8 @@ const float MENU_JOIN = 32;
 const float MENU_PAUSE = 64;
 const float MENU_IGS = 128;
 const float MENU_RES = 256;
+const float MENU_GSETTINGS = 512;
+const float MENU_CSETTINGS = 1024;
 
 
 float useprint_type;
@@ -124,3 +126,12 @@ string huddir;
 //this just cleans up settings a bit..
 #define     S_ENABLED       "Enabled"
 #define     S_DISABLED      "Disabled"
+float projBr;
+float wasigs;
+
+//controls
+#define MAX_BINDS   14
+
+float editBind[MAX_BINDS];
+string buttonBind[MAX_BINDS];
+string tempBind[MAX_BINDS];

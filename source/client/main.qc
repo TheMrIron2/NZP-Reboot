@@ -45,6 +45,23 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	if(serverkey("constate") == "disconnected")
 		ToggleMenu();
 	//bgpos = 0;
+
+	projBr = cvar("gamma");
+
+	buttonBind[0] = "+forward";
+	buttonBind[1] = "+back";
+	buttonBind[2] = "+moveleft";
+	buttonBind[3] = "+moveright";
+	buttonBind[4] = "+jump";
+	buttonBind[5] = "+sprint";
+	buttonBind[6] = "impulse 30";
+	buttonBind[7] = "impulse 110";
+	buttonBind[8] = "impulse 111";
+	buttonBind[9] = "+button7";
+	buttonBind[10] = "+button5";
+	buttonBind[11] = "+button6";
+	buttonBind[12] = "+button3";
+	buttonBind[13] = "impulse 25";
 };
 
 noref void() CSQC_WorldLoaded =
@@ -508,6 +525,24 @@ void(float scanx, float setval) Input_Movecheck =
 		K_BACKDOWN = setval;
 }
 
+void(float button, string key) setToBind =
+{
+	local string fullbind, unbind, oldkey;
+	local string btn;
+	editBind[button] = FALSE;
+
+	btn = buttonBind[button];
+
+	tokenize(findkeysforcommand(btn));
+	oldkey = keynumtostring(stof(argv(0)));
+
+	unbind = strcat("bind ", oldkey, " null\n");
+	fullbind = strcat("bind ", key, " \"", btn, "\"\n");
+			
+	localcmd(unbind);
+	localcmd(fullbind);
+}
+
 noref float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent =
 {
 	switch(evtype)
@@ -515,56 +550,25 @@ noref float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent
 	case IE_KEYDOWN:
 		if(in_menu != MENU_NONE)
 		{
-			if(scanx == K_MOUSE1)
-			{
-				Menu_Click();
+			if(scanx == K_MOUSE1) {
+				Menu_Click(0);
 				return TRUE;
+			} else if (scanx == K_MOUSE2) {
+				Menu_Click(1);
+				return TRUE;
+			}
+
+			if (in_menu == MENU_CSETTINGS) {
+				for (int i = 0; i < MAX_BINDS; i += 1) {
+					if (editBind[i] == TRUE)
+						setToBind(i, keynumtostring(scanx));
+				}
 			}
 
 		}
 		
 		Input_Movecheck(scanx, 1);
 
-		/*if (scanx == K_UPARROW) {
-			adsOffset.z += adsAmount;
-			print(vtos(adsOffset), "\n");
-		}
-		if (scanx == K_DOWNARROW) {
-			adsOffset.z -= adsAmount;
-			print(vtos(adsOffset), "\n");
-		}
-		if (scanx == K_LEFTARROW) {
-			adsOffset.y += adsAmount;
-			print(vtos(adsOffset), "\n");
-		}
-		if (scanx == K_RIGHTARROW) {
-			adsOffset.y -= adsAmount;
-			print(vtos(adsOffset), "\n");
-		}
-		if (scanx == K_KP_PLUS) {
-			adsOffset.x += adsAmount;
-			print(vtos(adsOffset), "\n");
-		}
-		if (scanx == K_KP_MINUS) {
-			adsOffset.x -= adsAmount;
-			print(vtos(adsOffset), "\n");
-		}
-		if (scanx == K_LCTRL) {
-			if (!adsAmount) {
-				adsAmount = 1;
-			}
-
-			adsAmount *= 0.1;
-			print(ftos(adsAmount), "\n");
-		}
-		if (scanx == K_RCTRL) {
-			if (!adsAmount) {
-				adsAmount = 1;
-			}
-
-			adsAmount *= 10;
-			print(ftos(adsAmount), "\n");
-		}*/
 		return FALSE;
 	case IE_KEYUP:
 	
