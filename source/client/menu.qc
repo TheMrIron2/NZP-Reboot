@@ -32,17 +32,11 @@ void() menu_multi =
 
 void() menu_settings =
 {
-	in_menu = MENU_SETTINGS;
-	time_in_menu = 0;
-	localcmd("menu_options\n");
+	if (in_menu == MENU_PAUSE)
+		in_menu = MENU_IGS;
+	else
+		in_menu = MENU_SETTINGS;
 };
-
-void() menu_settings2 =
-{
-	in_menu = MENU_IGS;
-	time_in_menu = 0;
-	localcmd("menu_options\n");
-}
 
 void() menu_about =
 {
@@ -57,13 +51,10 @@ void() menu_quit =
 
 void() menu_back =
 {
-	in_menu = MENU_MAIN;
-	time_in_menu = 0;
-};
-
-void() menu_back2 =
-{
-	in_menu = MENU_PAUSE;
+	if (in_menu == MENU_IGS)
+		in_menu = MENU_PAUSE;
+	else
+		in_menu = MENU_MAIN;
 };
 
 void() menu_loadndu =
@@ -112,6 +103,19 @@ void() menu_main =
 	localcmd("disconnect\n");
 };
 
+//settings adjustments
+
+void() settings_fps = {
+	local float fps = cvar("show_fps");
+
+	if (fps == 0)
+		fps = 1;
+	else
+		fps = 0;
+
+	cvar_set("show_fps", ftos(fps));
+}
+
 /*
 
 	MENU GUIDELINES (to perserve consistency)
@@ -124,7 +128,7 @@ void() menu_main =
 
 */
 
-//struct for all buttons, note pos and scale are going to be multiplied with width/height in draw step, so keep them between 0 and 1
+//struct for all buttons, note scale is going to be multiplied with width/height in draw step, so keep them between 0 and 1
 var struct
 {
 	vector pos;
@@ -140,15 +144,17 @@ var struct
 	{[0.025, 0.375, 0], "Achievements", -1, menu_main, MENU_MAIN},
 	{[0.025, 0.450, 0], "Credits", -1, menu_about, MENU_MAIN},
 	{[0.025, 0.525, 0], "Quit", -1, menu_quit, MENU_MAIN},
-	{[0.025, 0.900, 0], "Back", -1, menu_back, MENU_SINGLE + MENU_MULTI + MENU_SETTINGS + MENU_ABOUT},
+	{[0.025, 0.900, 0], "Back", -1, menu_back, MENU_SINGLE + MENU_MULTI + MENU_SETTINGS + MENU_ABOUT + MENU_IGS},
 	{[0.025, 0.175, 0], "Nacht der Untoten", -1, menu_loadndu, MENU_SINGLE},
 	{[0.025, 0.500, 0], "Resume", -1, menu_resume, MENU_PAUSE},
 	{[0.025, 0.550, 0], "Restart", -1, menu_restart, MENU_PAUSE},
-	{[0.025, 0.600, 0], "Settings", -1, menu_settings2, MENU_PAUSE},
+	{[0.025, 0.600, 0], "Settings", -1, menu_settings, MENU_PAUSE},
 	{[0.025, 0.650, 0], "Main Menu", -1, menu_main, MENU_PAUSE},
-	{[0.025, 0.925, 0], "Back", -1, menu_back2, MENU_IGS},
+
 	{[0.025, 0.500, 0], "Yes", -1, menu_resy, MENU_RES},
 	{[0.025, 0.550, 0], "No", -1, menu_resn, MENU_RES},
+
+	{[0.025, 0.175, 0], "Show FPS", -1, settings_fps, MENU_SETTINGS + MENU_IGS},
 };
 
 //REMEMBER TO UPDATE THIS CONST IF YOU ADD BUTTONS
@@ -184,6 +190,9 @@ void(float index) Update_Button =
 	}
 
 	if (cursor_pos_x > pos_x && cursor_pos_x < pos_x + (g_height * 0.6) && cursor_pos_y > pos_y && cursor_pos_y < pos_y + btnscale) {
+		if (index != lastActive)
+			sound(self, 0, "sounds/menu/navigate.wav", 1, ATTN_NONE);
+		
 		buttons[index].active = 1;
 		lastActive = index;
 	}
@@ -266,14 +275,22 @@ void() Draw_Extra_Restart =
 {
 	drawstring([0.025*g_width, 0.375*g_height, 0], "Are you sure you want to restart?", [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 1);
 	drawstring([0.02*g_width, 0.425*g_height, 0], "Your current progress will be lost!", [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 1);
-	//drawstring([0.025*g_width, 0.25*g_height, 0], "Are you sure you want to restart?", [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
-	//drawstring([0.025*g_width, 0.3*g_height, 0], "Your current progress will be lost!", [g_height * 0.015, g_height * 0.015, 1], [0.8, 0.8, 0.8], 1, 1);
+}
+
+void() Draw_Extra_Settings =
+{
+	local string fpsval;
+
+	if (cvar("show_fps") == 0)
+		fpsval = S_DISABLED;
+	else
+		fpsval = S_ENABLED;
+
+	drawstring([0.325*g_width, 0.175*g_height, 0], fpsval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
 }
 
 void() Draw_Menu =
 {
-	precache_sound("sounds/menu/enter.wav");
-	
 	//Background picture with a nice scrolling effect, scrolling happens in the shader in scripts/menu.shader
 	if(serverkey("constate") == "disconnected")
 	{
@@ -299,9 +316,6 @@ void() Draw_Menu =
 		case MENU_MULTI:
 			title = "COOP";
 			break;
-		case MENU_SETTINGS:
-			title = "SETTINGS";
-			break;
 		case MENU_ABOUT:
 			title = "CREDITS";
 			Draw_Extra_Credits();
@@ -310,7 +324,9 @@ void() Draw_Menu =
 			title = "PAUSED";
 			break;
 		case MENU_IGS:
+		case MENU_SETTINGS:
 			title = "SETTINGS";
+			Draw_Extra_Settings();
 			break;
 		case MENU_RES:
 			title = "RESTART";
