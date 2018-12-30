@@ -336,8 +336,10 @@ void() item_barricade =
 	spawn_boxes();
 
 	#ifdef PSP
+	#ifndef VITA
 	windows[wincnt] = self;
 	wincnt++;
+	#endif
 	#endif
 };
 
@@ -366,7 +368,9 @@ void() item_cover =
 	spawn_boxes();
 
 	#ifdef PSP
+	#ifndef VITA
 	windows[wincnt] = self;
 	wincnt++;
+	#endif
 	#endif
 };

@@ -909,12 +909,14 @@ void() removeZombie =
 	self.aistatus = "0";
 	setmodel(self,"");
 	
+	#ifndef VITA
 	setmodel(self.larm,"");
 	updateLimb (self, 0, world);
 	setmodel(self.rarm,"");
 	updateLimb (self, 1, world);
 	setmodel(self.head,"");
 	updateLimb (self, 2, world);
+	#endif
 	
 	setorigin(self,'0 0 0');
 	setorigin (self.goaldummy, '0 0 0');
@@ -1216,7 +1218,9 @@ void(float i) spawnSingleZombEnt =
 	zSpawn.head.solid = SOLID_NOT;
 	zSpawn.head.movetype = MOVETYPE_STEP;
 	zSpawn.head.takedamage = DAMAGE_NO;
+	#ifndef VITA
 	updateLimb (zSpawn, 0, zSpawn.head);
+	#endif
 	
 	zSpawn.larm = spawn();
 	zSpawn.larm.classname = "in_ai_zombie_larm";
@@ -1224,7 +1228,9 @@ void(float i) spawnSingleZombEnt =
 	zSpawn.larm.solid = SOLID_NOT;
 	zSpawn.larm.movetype = MOVETYPE_STEP;
 	zSpawn.larm.takedamage = DAMAGE_NO;
+	#ifndef VITA
 	updateLimb (zSpawn, 1, zSpawn.larm);
+	#endif
 	
 	zSpawn.rarm = spawn();
 	zSpawn.rarm.classname = "in_ai_zombie_rarm";
@@ -1232,7 +1238,9 @@ void(float i) spawnSingleZombEnt =
 	zSpawn.rarm.solid = SOLID_NOT;
 	zSpawn.rarm.movetype = MOVETYPE_STEP;
 	zSpawn.rarm.takedamage = DAMAGE_NO;
+	#ifndef VITA
 	updateLimb (zSpawn, 2, zSpawn.rarm);
+	#endif
 };
 void(entity szombie)  SetUpHitBoxes =
 {
@@ -1334,9 +1342,11 @@ void(entity where) spawn_a_zombieB =
 	setmodel(szombie.head, "models/ai/zh^.mdl");
 	setmodel(szombie.rarm, "models/ai/zar(.mdl");
 	setmodel(szombie.larm, "models/ai/zal(.mdl");
+	#ifndef VITA
 	updateLimb (szombie, 0, szombie.head);
 	updateLimb (szombie, 1, szombie.larm);
 	updateLimb (szombie, 2, szombie.rarm);
+	#endif
 	
 	
 	szombie.solid = SOLID_SLIDEBOX;

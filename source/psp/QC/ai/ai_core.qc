@@ -529,7 +529,9 @@ float() TryWalkToEnemy =
 
 float() SetUpGoalDummy =
 {
+	#ifndef VITA
 	self.goaldummy.origin = Get_Waypoint_Near(self);
+	#endif
 	setorigin(self.goaldummy,self.goaldummy.origin);
 	self.goalentity = self.goaldummy;
 	if (self.goalentity)
@@ -546,10 +548,14 @@ float() SetUpGoalDummy =
 void() PathfindToEnemy =
 {
 	float path_success;
+	#ifndef VITA
 	path_success = Do_Pathfind_psp(self,self.enemy);
+	#endif
 	if(path_success ==1)
 	{
+		#ifndef VITA
 		self.goaldummy.origin = Get_First_Waypoint(self,self.origin,VEC_HULL_MIN,VEC_HULL_MAX);
+		#endif
 		setorigin(self.goaldummy,self.goaldummy.origin);
 		self.goalentity = self.goaldummy;
 		self.chase_time = time + 7;
@@ -568,10 +574,14 @@ void() PathfindToEnemy =
 void() NextPathfindToEnemy =
 {
 	float path_success;
+	#ifndef VITA
 	path_success = Do_Pathfind_psp(self,self.enemy);
+	#endif
 	if(path_success ==1)
 	{
+		#ifndef VITA
 		self.goaldummy.origin = Get_Next_Waypoint(self,self.origin,VEC_HULL_MIN,VEC_HULL_MAX);
+		#endif
 		setorigin(self.goaldummy,self.goaldummy.origin);
 		self.goalentity = self.goaldummy;
 		self.chase_time = time + 7;

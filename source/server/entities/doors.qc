@@ -130,7 +130,10 @@ void() door_go_up =
 	SUB_CalcMove (self.pos2, self.speed, door_hit_top);
 	
 	#ifdef PSP
+	//TODO: Add Open_Waypoint to vitaQuake
+	#ifndef VITA
 	Open_Waypoint(self.wayTarget);
+	#endif
 	#endif
 	SUB_UseTargets();
 };

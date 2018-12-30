@@ -805,6 +805,7 @@ void() Float_Decrease =
 	self.think = Finalize_box;
 }
 
+#ifndef VITA
 void() findboxspot =
 {	
 	entity newspot;
@@ -856,6 +857,7 @@ void() remove_box =
 	self.think = findboxspot;
 	self.nextthink = time + 2;
 }
+#endif
 
 void() Float_Change =
 {
@@ -885,6 +887,7 @@ void() Float_Change =
 				
 		self.velocity = '0 0 0';
 		
+		#ifndef VITA
 		if (!teddygen || teddygen < 0.9) {		//teddy gen threshold, high means less chance
 			self.owner.boxstatus = 2;
 			self.weapon = r;
@@ -901,6 +904,7 @@ void() Float_Change =
 			sound (self, CHAN_ITEM, "sounds/music/end.wav", 1, ATTN_NORM);	//naievil FIXME -- change sound
 			return;
 		}
+		#endif
 	}
 	if (self.ltime <= time)
 	{
@@ -968,8 +972,10 @@ void() mystery_box_tp_spot =
 		self.angles_y -= 90;
 	}
 	
+	#ifndef VITA
 	boxLocations[boxCount] = self;
 	boxCount++;
+	#endif
 };
 
 void() mystery_touch =
@@ -1363,10 +1369,13 @@ void() mystery_box =
 	}
 
 	self.touch = mystery_touch;
+
+	#ifndef VITA
 	boxOrigin = self.origin;
 
 	boxLocations[boxCount] = self;
 	boxCount++;
+	#endif
 }
 
 //PACK A PUNCH

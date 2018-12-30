@@ -1,0 +1,32 @@
+engine functions (from psp):
+* Open_Waypoint
+* updateLimb
+* Get_Waypoint_Near
+* Do_Pathfind_psp
+* Get_First_Waypoint
+
+other engine funcs:
+* useprint
+* light_environment
+* ads stuff
+* traceattack stuff
+* CL_SendWeaponFire()
+* powerup icons (x2_icon & insta_icon)
+
+misc:
+* fix model precaching
+* update progdefs.h(?)
+* skybox
+* transparent textures
+* viewbobbing
+* menu
+
+
+
+
+MODEL PRECACHING REVERT:
+browning: g > g_browning
+m1carbine: g > g_m1a1
+sawnoff: g_sawn > g_sawnoff
+trench: g > g_trench
+nade: g > g_grenade

@@ -277,9 +277,12 @@ float isPowerOn;
 .entity boxweapon;
 .float spins;
 .float papState;
+
+#ifndef VITA
 entity boxLocations[32];
 float boxCount;
 vector boxOrigin;
+#endif
 
 #ifndef PSP
 //powerups

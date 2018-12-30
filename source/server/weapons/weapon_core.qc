@@ -33,8 +33,10 @@ void() W_AimIn =
 	}
 		
 	#ifdef PSP
+	#ifndef VITA
 	self.ADS_Offset = GetWeaponADSOfs_PSP(self.weapon);
 	zoomvar = 2;
+	#endif
 	#endif
 
 	zoomvar = 1;
@@ -584,7 +586,9 @@ void Parse_Damage () = // DO NOT TOUCH
 					
 					body_ent.bleedingtime = time + 2;
 					headoff = 1;
+					#ifndef VITA
 					updateLimb (body_ent.head.owner, 0, world);
+					#endif
 				}
 				
 				body_ent.head.washit = 0;
@@ -605,7 +609,9 @@ void Parse_Damage () = // DO NOT TOUCH
 					body_ent.larm.solid = SOLID_NOT;
 					setmodel(body_ent.larm,"");
 					body_ent.larm.frame = 0;
+					#ifndef VITA
 					updateLimb (body_ent.larm.owner, 1, world);
+					#endif
 				}
 
 				body_ent.larm.washit = 0;
@@ -625,7 +631,9 @@ void Parse_Damage () = // DO NOT TOUCH
 					body_ent.rarm.solid = SOLID_NOT;
 					setmodel(body_ent.rarm,"");
 					body_ent.rarm.frame = 0;
+					#ifndef VITA
 					updateLimb (body_ent.rarm.owner, 2, world);
+					#endif
 				}
 
 				body_ent.rarm.washit = 0;
@@ -773,20 +781,25 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 		SetUpdate(self, UT_HM, 0, 0, 0);
 		
 		#ifdef PSP
+		#ifndef VITA
 		msg_entity = self;
 		WriteByte(MSG_ONE, SVC_HITMARK);
 		#endif
+		#endif
 	} else {
 	#ifdef PSP
+	#ifndef VITA
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte (MSG_BROADCAST, TE_GUNSHOT);
 	WriteCoord (MSG_BROADCAST, org_x);
 	WriteCoord (MSG_BROADCAST, org_y);
 	WriteCoord (MSG_BROADCAST, org_z);
 	#endif
+	#endif
 	}
 	
 	#ifndef PSP
+	#ifndef VITA
 	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 	WriteByte(MSG_MULTICAST, EVENT_PISTOLFIRE);
 	WriteEntity(MSG_MULTICAST, self);
@@ -798,6 +811,7 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 	WriteCoord(MSG_MULTICAST, plane_z);
 	WriteEntity(MSG_MULTICAST, hit_ent);
 	multicast(trace_endpos, MULTICAST_PHS);
+	#endif
 	#endif
 	
 };
@@ -813,7 +827,9 @@ void (float shotcount, float sprd, float Damage/*, float headmulti, float legmul
 	src = self.origin + self.view_ofs;
 	
 	#ifdef PSP
+	#ifndef VITA
 	CL_SendWeaponFire();
+	#endif
 	#endif
 
 	while (count < shotcount)
@@ -841,12 +857,6 @@ void (float shotcount, float sprd, float Damage/*, float headmulti, float legmul
 				
 				if (hitent == world)
 					break;
-				/*if (hitent.larm == trace_ent || hitent.rarm == trace_ent || hitent.head == trace_ent)
-				{
-					hitent = trace_ent;
-					trace_start_org = trace_endpos + normalize(dir)*10;
-					//break;
-				}*/
 				else
 					break;
 			}
