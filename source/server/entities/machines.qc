@@ -219,6 +219,8 @@ void() touch_perk =
 
 void() setup_perk =
 {
+	//TODO: vitaQuake light effects
+	#ifndef VITA
 	if (find (world, classname, "power_switch"))
 	{
 		if (self.classname == "perk_revive" && !coop && !deathmatch) {
@@ -255,6 +257,7 @@ void() setup_perk =
 		
 		}
 	} 
+	#endif
 }
 void() perk_revive =
 {
@@ -359,6 +362,7 @@ void()	turnpower4	=[	4,		SUB_Null	] {self.frame = 4;};
 
 void() Turn_Lights =
 {
+	#ifndef VITA
 	entity tempe = findfloat (world, requirespower, 1);// trigger all paired doors
 	while (tempe)
 	{
@@ -393,6 +397,7 @@ void() Turn_Lights =
       
 		tempe = findfloat (tempe, requirespower, 1);// trigger all paired doors
 	}
+	#endif
 } 
 
 void() touch_power_Switch =
