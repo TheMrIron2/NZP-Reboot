@@ -342,6 +342,41 @@ void PF_centerprint(void)
 	MSG_WriteString(&client->message, s);
 }
 
+/*
+=================
+PF_useprint
+
+Print a text depending on what it is fed with
+
+useprint(entity client, float type, float cost, float weapon)
+=================
+*/
+void PF_useprint (void)
+{
+	client_t	*client;
+	int			entnum, type, cost, weapon;
+
+	entnum = G_EDICTNUM(OFS_PARM0);
+	type = G_FLOAT(OFS_PARM1);
+	cost = G_FLOAT(OFS_PARM2);
+	weapon = G_FLOAT(OFS_PARM3);
+
+
+	if (entnum < 1 || entnum > svs.maxclients)
+	{
+		Con_Printf ("tried to sprint to a non-client\n");
+		return;
+	}
+
+	client = &svs.clients[entnum-1];
+
+	MSG_WriteByte (&client->message,svc_useprint);
+	MSG_WriteByte (&client->message,type);
+	MSG_WriteShort (&client->message,cost);
+	MSG_WriteByte (&client->message,weapon);
+	//MSG_WriteString (&client->message, s );
+}
+
 
 /*
 =================
@@ -2329,7 +2364,8 @@ builtin_t pr_builtin[] =
 	PF_stov,		// #117
 	PF_strzone,		// #118
 	PF_strunzone,	// #119
-	PF_strtrim
+	PF_strtrim,
+	PF_useprint 	// #121
 };
 
 builtin_t *pr_builtins = pr_builtin;

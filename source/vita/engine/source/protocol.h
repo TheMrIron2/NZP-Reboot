@@ -169,6 +169,8 @@ Here is a short list of known protocol used by other NetQuake ports:
 
 #define svc_cutscene		34
 
+#define svc_useprint 		35 		// [string] to put in center of the screen
+
 //
 // client to server
 //

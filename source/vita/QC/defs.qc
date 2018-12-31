@@ -234,6 +234,8 @@ void		end_sys_globals;		// flag for structure dumping
 
 .string		noise, noise1, noise2, noise3;	// contains names of wavs to play
 
+.string		Weapon_Name_Touch;
+
 //================================================
 void		end_sys_fields;			// flag for structure dumping
 //================================================
@@ -331,6 +333,7 @@ float	SVC_INTERMISSION	= 30;
 float	SVC_FINALE			= 31;
 float	SVC_CDTRACK			= 32;
 float	SVC_SELLSCREEN		= 33;
+float 	SVC_USEPRINT		= 35; 		
 
 #define	VEC_ORIGIN 	 '0 0 0'
 
@@ -473,6 +476,8 @@ string(string s) precache_file2		= #77;		// registered version only
 void(entity e) setspawnparms		= #78;		// set parm1... to the
 												// values at level start
 												// for coop 
+
+void(entity client, float type, float cost, float weapon) useprint = #121;
 												
 float(string s) stof = #81;	// 2001-09-20 QuakeC string manipulation by FrikaC
 entity (entity start, .float field, float match) findfloat = #98;
@@ -522,9 +527,6 @@ void(entity e, float r, string s) sprint = {
 .vector		bbmins, bbmaxs;		// Used for zombie hitboxes
 
 .float maxspeed;
-
-.string Weapon_Name;
-.string Weapon_Name_Touch;
 
 .vector Flash_Offset;
 .float Flash_Size;

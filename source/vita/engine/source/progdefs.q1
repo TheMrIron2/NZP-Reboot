@@ -144,6 +144,7 @@ typedef struct
 	string_t	noise1;
 	string_t	noise2;
 	string_t	noise3;
+	string_t 	Weapon_Name_Touch;
 } entvars_t;
 
 #define PROGHEADER_CRC 5927

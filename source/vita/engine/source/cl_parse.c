@@ -64,7 +64,8 @@ char *svc_strings[] =
 	"svc_finale",			// [string] music [string] text
 	"svc_cdtrack",			// [byte] track [byte] looptrack
 	"svc_sellscreen",
-	"svc_cutscene"
+	"svc_cutscene",
+	"svc_useprint"
 };
 
 //=============================================================================
@@ -981,6 +982,10 @@ void CL_ParseServerMessage (void)
 
 		case svc_sellscreen:
 			Cmd_ExecuteString ("help", src_command);
+			break;
+
+		case svc_useprint:
+			SCR_UsePrint (MSG_ReadByte (),MSG_ReadShort (),MSG_ReadByte ());
 			break;
 		}
 	}

@@ -23,7 +23,7 @@ string(float num) argv = {return "";};
 
 //void(vector where, float type) Spawn_Powerup = {};
 void() Soft_Restart = {};
-void(entity e, float type, float cost, float wep) useprint = {};
+//void(entity e, float type, float cost, float wep) useprint = {};
 //void() ReturnWeaponModel = {};
 
 void() trigger_activator = {}; //idek what this is lol

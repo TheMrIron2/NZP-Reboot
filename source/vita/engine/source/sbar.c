@@ -62,6 +62,23 @@ int         hipweapons[4] = {HIT_LASER_CANNON_BIT,HIT_MJOLNIR_BIT,4,HIT_PROXIMIT
 //MED 01/04/97 added hipnotic items array
 qpic_t      *hsb_items[2];
 
+//nzp
+/*qpic_t 		*b_circle;
+qpic_t 		*b_square;
+qpic_t 		*b_cross;
+qpic_t 		*b_triangle;
+qpic_t 		*b_left;
+qpic_t 		*b_right;
+qpic_t 		*b_up;
+qpic_t 		*b_down;
+qpic_t 		*b_lt;
+qpic_t 		*b_rt;
+qpic_t 		*b_start;
+qpic_t 		*b_select;
+qpic_t 		*b_home;*/
+
+
+
 void Sbar_MiniDeathmatchOverlay (void);
 void Sbar_DeathmatchOverlay (void);
 void M_DrawPic (int x, int y, qpic_t *pic);
@@ -246,6 +263,35 @@ void Sbar_Init (void)
 		rsb_ammo[1] = Draw_PicFromWad ("r_ammomulti");
 		rsb_ammo[2] = Draw_PicFromWad ("r_ammoplasma");
 	}
+
+	//nzp
+	
+	/*b_circle = Draw_CachePic ("gfx/butticons/circle");
+	b_square = Draw_CachePic ("gfx/butticons/square");
+	b_cross = Draw_CachePic ("gfx/butticons/cross");
+	b_triangle = Draw_CachePic ("gfx/butticons/triangle");
+	b_left = Draw_CachePic ("gfx/butticons/left");
+	b_right = Draw_CachePic ("gfx/butticons/right");
+	b_up = Draw_CachePic ("gfx/butticons/up");
+	b_down = Draw_CachePic ("gfx/butticons/down");
+	b_lt = Draw_CachePic ("gfx/butticons/lt");
+	b_rt = Draw_CachePic ("gfx/butticons/rt");
+	b_start = Draw_CachePic ("gfx/butticons/start");
+	b_select = Draw_CachePic ("gfx/butticons/select");
+	b_home = Draw_CachePic ("gfx/butticons/home");
+	b_circle = Draw_CachePic ("gfx/loading.lmp");
+	b_square = Draw_CachePic ("gfx/loading.lmp");
+	b_cross = Draw_CachePic ("gfx/loading.lmp");
+	b_triangle = Draw_CachePic ("gfx/loading.lmp");
+	b_left = Draw_CachePic ("gfx/loading.lmp");
+	b_right = Draw_CachePic ("gfx/loading.lmp");
+	b_up = Draw_CachePic ("gfx/loading.lmp");
+	b_down = Draw_CachePic ("gfx/loading.lmp");
+	b_lt = Draw_CachePic ("gfx/loading.lmp");
+	b_rt = Draw_CachePic ("gfx/loading.lmp");
+	b_start = Draw_CachePic ("gfx/loading.lmp");
+	b_select = Draw_CachePic ("gfx/loading.lmp");
+	b_home = Draw_CachePic ("gfx/loading.lmp");*/
 }
 
 
