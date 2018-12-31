@@ -20,6 +20,8 @@ misc:
 * transparent textures
 * viewbobbing
 * menu
+* punchangle fix
+* perk lights
 
 
 

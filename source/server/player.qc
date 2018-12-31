@@ -490,8 +490,12 @@ void() PlayerSpawn =
 	self.pri_grenade_state = 0; 		// defines that frag grenades are for player first, not betty
 	self.secondary_grenades = -1;		// shows that we both don't have betties AND shouldn't draw the image onscreen
 
+	#ifndef VITA
 	if (!self.points)
 		addmoney(self, G_STARTPOINTS, 0);
+	#else
+	addmoney(self, 10000, 0);
+	#endif
 
 	self.weaponmodel = GetWeaponModel(self.weapon, 0);// Give weapon model
 
