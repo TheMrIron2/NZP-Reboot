@@ -149,6 +149,11 @@ void() PlayerJump =
 	self.button2 = 0;
 	
 	self.oldz = self.origin_z;
+
+	//we have to manually make the player jump on vita..
+	#ifdef VITA
+	self.velocity_z = self.velocity_z + 270;
+	#endif
 }
 
 void() PlayerPreThink =
