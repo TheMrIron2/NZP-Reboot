@@ -151,6 +151,8 @@ void	VID_UnlockBuffer (void);
 #define	STAT_TOTALMONSTERS	12
 #define	STAT_SECRETS		13		// bumped on client side by svc_foundsecret
 #define	STAT_MONSTERS		14		// bumped by svc_killedmonster
+#define STAT_CURRENTMAG 	15
+#define STAT_PRIGRENADES 	16
 
 // stock defines
 

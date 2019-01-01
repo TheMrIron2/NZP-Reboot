@@ -160,6 +160,7 @@ void		end_sys_globals;		// flag for structure dumping
 .string		weaponmodel;
 .float		weaponframe;
 .float		currentammo;
+//.float 		currentmag;
 .float		ammo_shells, ammo_nails, ammo_rockets, ammo_cells;
 
 .float		items;			// bit flags
@@ -236,6 +237,12 @@ void		end_sys_globals;		// flag for structure dumping
 
 .string		Weapon_Name_Touch;
 
+.float 		currentmag;
+
+.string 	Weapon_Name;
+
+.float		primary_grenades;
+
 //================================================
 void		end_sys_fields;			// flag for structure dumping
 //================================================
@@ -248,6 +255,7 @@ void		end_sys_fields;			// flag for structure dumping
 ==============================================================================
 */
 
+.string Weapon_Name;
 
 //
 // constants

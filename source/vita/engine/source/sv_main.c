@@ -710,10 +710,12 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 	
 	MSG_WriteShort (msg, ent->v.health);
 	MSG_WriteByte (msg, ent->v.currentammo);
+	MSG_WriteByte (msg, ent->v.currentmag);
 	MSG_WriteByte (msg, ent->v.ammo_shells);
 	MSG_WriteByte (msg, ent->v.ammo_nails);
 	MSG_WriteByte (msg, ent->v.ammo_rockets);
 	MSG_WriteByte (msg, ent->v.ammo_cells);
+	MSG_WriteByte (msg, ent->v.primary_grenades);
 
 	if (standard_quake)
 	{

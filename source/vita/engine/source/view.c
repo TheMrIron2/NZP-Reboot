@@ -790,6 +790,7 @@ V_CalcRefdef
 
 ==================
 */
+vec3_t lastPunchAngle;
 void V_CalcRefdef (void)
 {
 	entity_t	*ent, *view;
@@ -880,8 +881,13 @@ void V_CalcRefdef (void)
 	view->frame = cl.stats[STAT_WEAPONFRAME];
 	view->colormap = vid.colormap;
 
+	//blubs's punchangle interpolation
+	lastPunchAngle[0] += (cl.punchangle[0] - lastPunchAngle[0]) * 0.5;
+	lastPunchAngle[1] += (cl.punchangle[1] - lastPunchAngle[1]) * 0.5;
+	lastPunchAngle[2] += (cl.punchangle[2] - lastPunchAngle[2]) * 0.5;
+
 // set up the refresh position
-	VectorAdd (r_refdef.viewangles, cl.punchangle, r_refdef.viewangles);
+	VectorAdd (r_refdef.viewangles, lastPunchAngle, r_refdef.viewangles);
 
 // smooth out stair step ups
 if (cl.onground && ent->origin[2] - oldz > 0)

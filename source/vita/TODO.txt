@@ -6,7 +6,7 @@ engine functions (from psp):
 * Get_First_Waypoint
 
 other engine funcs:
-* useprint
+* tga support
 * light_environment
 * ads stuff
 * traceattack stuff

@@ -619,6 +619,20 @@ void CL_ParseClientdata (int bits)
 		Sbar_Changed ();
 	}
 
+	i = MSG_ReadByte ();
+	if (cl.stats[STAT_CURRENTMAG] != i)
+	{
+		cl.stats[STAT_CURRENTMAG] = i;
+		Sbar_Changed ();
+	}
+
+	i = MSG_ReadByte ();
+	if (cl.stats[STAT_PRIGRENADES] != i)
+	{
+		cl.stats[STAT_PRIGRENADES] = i;
+		Sbar_Changed ();
+	}
+
 	for (i=0 ; i<4 ; i++)
 	{
 		j = MSG_ReadByte ();

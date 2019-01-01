@@ -1143,7 +1143,7 @@ void SCR_UpdateScreen (void)
 		SCR_DrawPause ();
 		SCR_CheckDrawCenterString ();
 		SCR_CheckDrawUseString ();
-		//Sbar_Draw ();
+		Sbar_Draw ();
 		SCR_DrawConsole ();	
 		M_Draw ();
 	}

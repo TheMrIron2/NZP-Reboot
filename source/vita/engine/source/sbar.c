@@ -21,6 +21,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
+//nzp
+//*qpic_t 	*fragpic;
+
 extern cvar_t scr_sbaralpha;
 
 int			sb_updates;		// if >= vid.numpages, no update needed
@@ -62,7 +65,7 @@ int         hipweapons[4] = {HIT_LASER_CANNON_BIT,HIT_MJOLNIR_BIT,4,HIT_PROXIMIT
 //MED 01/04/97 added hipnotic items array
 qpic_t      *hsb_items[2];
 
-//nzp
+
 /*qpic_t 		*b_circle;
 qpic_t 		*b_square;
 qpic_t 		*b_cross;
@@ -82,6 +85,8 @@ qpic_t 		*b_home;*/
 void Sbar_MiniDeathmatchOverlay (void);
 void Sbar_DeathmatchOverlay (void);
 void M_DrawPic (int x, int y, qpic_t *pic);
+
+int  x_value, y_value;
 
 /*
 ===============
@@ -265,6 +270,7 @@ void Sbar_Init (void)
 	}
 
 	//nzp
+	//fragpic = Draw_CachePic ("gfx/hud/frag.lmp");
 	
 	/*b_circle = Draw_CachePic ("gfx/butticons/circle");
 	b_square = Draw_CachePic ("gfx/butticons/square");
@@ -936,6 +942,93 @@ void Sbar_DrawFace (void)
 }
 
 /*
+=============
+HUD_itoa
+=============
+*/
+int HUD_itoa (int num, char *buf)
+{
+	char	*str;
+	int		pow10;
+	int		dig;
+
+	str = buf;
+
+	if (num < 0)
+	{
+		*str++ = '-';
+		num = -num;
+	}
+
+	for (pow10 = 10 ; num >= pow10 ; pow10 *= 10)
+	;
+
+	do
+	{
+		pow10 /= 10;
+		dig = num/pow10;
+		*str++ = '0'+dig;
+		num -= dig*pow10;
+	} while (pow10 != 1);
+
+	*str = 0;
+
+	return str-buf;
+}
+
+/*
+===============
+HUD_Ammo
+===============
+*/
+void HUD_Ammo (void)
+{
+	char str[12];
+	int xplus;
+
+	xplus = HUD_itoa (cl.stats[STAT_CURRENTMAG], str); //currentmag
+	Draw_String (vid.width - 42 - (xplus*8), vid.height - 16, va("%i", cl.stats[STAT_CURRENTMAG])); //currentmag
+	Draw_Character (vid.width - 42, vid.height - 16, '/');
+	Draw_String (vid.width - 34, vid.height - 16, va("%i", cl.stats[STAT_AMMO]));
+}
+
+/*
+===============
+HUD_Grenades
+===============
+*/
+#define 	UI_FRAG		1
+#define 	UI_BETTY	2
+
+void HUD_Grenades (void)
+{
+	x_value = vid.width - 50;
+	y_value = vid.height - 16 - 12 - 4;
+
+	Draw_String (x_value + 12, y_value + 12, va ("%i",cl.stats[STAT_PRIGRENADES]));
+	//Draw_Pic (x_value, y_value, frag); //stretch 22, 22
+}
+
+/*
+===============
+HUD_Weapon
+===============
+*/
+void HUD_Weapon (void)
+{
+	char str[32];
+	float l;
+	x_value = vid.width;
+	y_value = vid.height - 16 - 12 - 16;
+
+	strcpy(str, pr_strings+sv_player->v.Weapon_Name);
+	l = strlen(str);
+
+	x_value = vid.width - 8 - l*8;
+	Draw_String (x_value, y_value, str);
+}
+
+/*
 ===============
 Sbar_Draw
 ===============
@@ -953,10 +1046,13 @@ void Sbar_Draw (void)
 
 	sb_updates++;
 
+	HUD_Ammo();
+	HUD_Weapon();
+
 /*	if (viewsize.value < 100.0 && vid.width > 320) 
 		Draw_TileClear (0, vid.height - sb_lines, vid.width, sb_lines);*/
 
-	if (sb_lines > 24)
+	/*if (sb_lines > 24)
 	{
 		Sbar_DrawInventory ();
 		if (cl.maxclients != 1)
@@ -1058,7 +1154,7 @@ void Sbar_Draw (void)
 	if (vid.width > 320) {
 		if (cl.gametype == GAME_DEATHMATCH)
 			Sbar_MiniDeathmatchOverlay ();
-	}
+	}*/
 }
 
 //=============================================================================

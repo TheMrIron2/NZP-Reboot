@@ -214,7 +214,7 @@ void DropPunchAngle (void)
 
 	len = VectorNormalize (sv_player->v.punchangle);
 
-	len -= 10*host_frametime;
+	len -= 20*host_frametime;
 	if (len < 0)
 		len = 0;
 	VectorScale (sv_player->v.punchangle, len, sv_player->v.punchangle);
