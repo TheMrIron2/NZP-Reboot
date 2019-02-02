@@ -148,6 +148,7 @@ typedef struct
 	float 		currentmag;
 	string_t 	Weapon_Name;
 	float		primary_grenades;
+	float 		zoom;
 } entvars_t;
 
 #define PROGHEADER_CRC 5927

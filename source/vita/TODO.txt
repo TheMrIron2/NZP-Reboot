@@ -1,9 +1,5 @@
 engine functions (from psp):
-* Open_Waypoint
 * updateLimb
-* Get_Waypoint_Near
-* Do_Pathfind_psp
-* Get_First_Waypoint
 
 other engine funcs:
 * tga support
@@ -20,9 +16,12 @@ misc:
 * transparent textures
 * viewbobbing
 * menu
-* punchangle fix
 * perk lights
 * maxspeed stat(?)
+
+
+R_InterpolateEntity
+
 
 
 

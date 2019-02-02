@@ -750,7 +750,6 @@ void CL_ParseStaticSound (void)
 	S_StaticSound (cl.sound_precache[sound_num], org, vol, atten);
 }
 
-
 #define SHOWNET(x) if(cl_shownet.value==2)Con_Printf ("%3i:%s\n", msg_readcount-1, x);
 
 /*

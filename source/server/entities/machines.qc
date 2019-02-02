@@ -1,4 +1,3 @@
-
 float backupWepSkin;
 float sound_perk_delay; 
 void() W_Switch;

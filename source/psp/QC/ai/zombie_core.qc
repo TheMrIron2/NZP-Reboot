@@ -183,6 +183,7 @@ void(float which) SetZombieHitBox =
 	{
 		case EMPTY_BBOX:
 		{
+			#ifndef VITA
 			setorigin(self.head,'0 0 0');
 			setsize (self.head, '0 0 0', '0 0 0');
 			
@@ -195,12 +196,14 @@ void(float which) SetZombieHitBox =
 			self.head.view_ofs = '0 0 0';
 			self.rarm.view_ofs = '0 0 0';
 			self.larm.view_ofs = '0 0 0';
+			#endif
 			
 			self.currentHitBoxSetup = EMPTY_BBOX;
 			return;
 		}
 		case IDLE_BBOX: 
 		{
+			#ifndef VITA
 			//setsize (self.head, '-5 -5 -5', '5 5 5');
 			self.head.bbmins = '-5 -5 -5';
 			self.head.bbmaxs = '5 5 5';
@@ -215,12 +218,14 @@ void(float which) SetZombieHitBox =
 			self.rarm.bbmins = '-5 -5 -15';
 			self.rarm.bbmaxs = '5 5 15';
 			self.rarm.view_ofs = '10 10 10';
+			#endif
 			
 			self.currentHitBoxSetup = IDLE_BBOX;
 			return;
 		}
 		case WALK1_BBOX:
 		{
+			#ifndef VITA
 			//setsize (self.head, '-5 -5 -5', '5 5 5');
 			self.head.bbmins = '-5 -5 -5';
 			self.head.bbmaxs = '5 5 5';
@@ -238,12 +243,14 @@ void(float which) SetZombieHitBox =
 			self.rarm.bbmins = '-5 -8 -11';
 			self.rarm.bbmaxs = '5 8 11';
 			self.rarm.view_ofs = '10 11 11';
+			#endif
 			
 			self.currentHitBoxSetup = WALK1_BBOX;
 			return;
 		}
 		case WALK2_BBOX:
 		{
+			#ifndef VITA
 			//setsize (self.head, '-7 -5 -5', '7 5 5');
 			self.head.bbmins = '-7 -5 -5';
 			self.head.bbmaxs = '7 5 5';
@@ -258,12 +265,14 @@ void(float which) SetZombieHitBox =
 			self.rarm.bbmins = '-5 -5 -11';
 			self.rarm.bbmaxs = '5 5 11';
 			self.rarm.view_ofs = '4 13 11';
+			#endif
 			
 			self.currentHitBoxSetup = WALK2_BBOX;
 			return;
 		}
 		case WALK3_BBOX:
 		{
+			#ifndef VITA
 			//setsize (self.head, '-5 -5 -5', '5 5 5');
 			self.head.bbmins = '-5 -5 -5';
 			self.head.bbmaxs = '5 5 5';
@@ -278,12 +287,14 @@ void(float which) SetZombieHitBox =
 			self.rarm.bbmins = '-5 -5 -11';
 			self.rarm.bbmaxs = '5 5 11';
 			self.rarm.view_ofs = '14 6 12';
+			#endif
 			
 			self.currentHitBoxSetup = WALK3_BBOX;
 			return;
 		}
 		case JOG_BBOX:
 		{
+			#ifndef VITA
 			//setsize (self.head, '-5 -5 -5', '5 5 5');
 			self.head.bbmins = '-5 -5 -5';
 			self.head.bbmaxs = '5 5 5';
@@ -298,12 +309,14 @@ void(float which) SetZombieHitBox =
 			self.rarm.bbmins = '-5 -13 -5';
 			self.rarm.bbmaxs = '5 13 5';
 			self.rarm.view_ofs = '10 19 24';
+			#endif
 			
 			self.currentHitBoxSetup = JOG_BBOX;
 			return;
 		}
 		case RUN_BBOX:
 		{
+			#ifndef VITA
 			//setsize (self.head, '-5 -5 -5', '5 5 5');
 			self.head.bbmins = '-5 -5 -5';
 			self.head.bbmaxs = '5 5 5';
@@ -318,12 +331,14 @@ void(float which) SetZombieHitBox =
 			self.rarm.bbmins = '-4 -13 -10';
 			self.rarm.bbmaxs = '4 13 10';
 			self.rarm.view_ofs = '12 -2 19';
+			#endif
 			
 			self.currentHitBoxSetup = RUN_BBOX;
 			return;
 		}
 		case CRAWLER_BBOX:
 		{
+			#ifndef VITA
 			self.head.bbmins = '-5 -5 -5';
 			self.head.bbmaxs = '5 5 5';
 			self.head.view_ofs = '2 18 -14';
@@ -335,12 +350,14 @@ void(float which) SetZombieHitBox =
 			self.rarm.bbmins = '-4 -13 -10';
 			self.rarm.bbmaxs = '4 13 10';
 			self.rarm.view_ofs = '12 15 -25';
+			#endif
 			
 			self.currentHitBoxSetup = CRAWLER_BBOX;
 			return;
 		}
 		default:  //also known as BASE_BBOX
 		{
+			#ifndef VITA
 			//setsize (self.head, '-5 -5 -5', '5 5 5');
 			self.head.bbmins = '-5 -5 -5';
 			self.head.bbmaxs = '5 5 5';
@@ -355,6 +372,7 @@ void(float which) SetZombieHitBox =
 			self.rarm.bbmins = '-5 -5 -15';
 			self.rarm.bbmaxs = '5 5 15';
 			self.rarm.view_ofs = '10 0 5';
+			#endif
 			
 			self.currentHitBoxSetup = BASE_BBOX;
 			return;
@@ -364,11 +382,13 @@ void(float which) SetZombieHitBox =
 
 void() Zombie_Think = //called every frame for zombies
 {
+	#ifndef VITA
 	if (self.bleedingtime < time && !self.head.deadflag)
 	{
 		self.bleedingtime = time + 2;
 		DamageHandler (self, self.usedent, z_health * 0.05, S_HEADSHOT);
 	}
+	#endif
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -908,13 +928,13 @@ void() removeZombie =
 	self.classname = "freeZombieEntity";
 	self.aistatus = "0";
 	setmodel(self,"");
-	
+
 	#ifndef VITA
 	setmodel(self.larm,"");
-	updateLimb (self, 0, world);
 	setmodel(self.rarm,"");
-	updateLimb (self, 1, world);
 	setmodel(self.head,"");
+	updateLimb (self, 0, world);
+	updateLimb (self, 1, world);
 	updateLimb (self, 2, world);
 	#endif
 	
@@ -1011,6 +1031,7 @@ void() Zombie_Death =
 	self.movetype = MOVETYPE_NONE;
 	self.takedamage = DAMAGE_NO;
 	
+	#ifndef VITA
 	self.head.solid = SOLID_NOT;
 	self.head.movetype = MOVETYPE_NONE;
 	self.head.takedamage = DAMAGE_NO;
@@ -1020,6 +1041,7 @@ void() Zombie_Death =
 	self.rarm.solid = SOLID_NOT;
 	self.rarm.movetype = MOVETYPE_NONE;
 	self.rarm.takedamage = DAMAGE_NO;
+	#endif
 	sound(self,CHAN_VOICE,"sounds/null.wav",1,ATTN_NORM);
 	
 	self.usedent = world;
@@ -1161,7 +1183,7 @@ entity(entity me) getFreeZombieEnt =
 };
 float() spawn_a_zombieA =
 {
-	//dprint("Spawn_a_zombieA \n");
+	dprint("Spawn_a_zombieA \n");
 	local float pcount;
 	local entity thing, szombie;
 	local float FAIL;
@@ -1212,15 +1234,14 @@ void(float i) spawnSingleZombEnt =
 	zSpawn.goaldummy = spawn();
 	zSpawn.goaldummy.classname = "waypoint_target";
 	
+	#ifndef VITA
 	zSpawn.head = spawn();
 	zSpawn.head.classname = "in_ai_zombie_head";
 	zSpawn.head.owner = zSpawn;
 	zSpawn.head.solid = SOLID_NOT;
 	zSpawn.head.movetype = MOVETYPE_STEP;
 	zSpawn.head.takedamage = DAMAGE_NO;
-	#ifndef VITA
 	updateLimb (zSpawn, 0, zSpawn.head);
-	#endif
 	
 	zSpawn.larm = spawn();
 	zSpawn.larm.classname = "in_ai_zombie_larm";
@@ -1228,9 +1249,7 @@ void(float i) spawnSingleZombEnt =
 	zSpawn.larm.solid = SOLID_NOT;
 	zSpawn.larm.movetype = MOVETYPE_STEP;
 	zSpawn.larm.takedamage = DAMAGE_NO;
-	#ifndef VITA
 	updateLimb (zSpawn, 1, zSpawn.larm);
-	#endif
 	
 	zSpawn.rarm = spawn();
 	zSpawn.rarm.classname = "in_ai_zombie_rarm";
@@ -1238,12 +1257,12 @@ void(float i) spawnSingleZombEnt =
 	zSpawn.rarm.solid = SOLID_NOT;
 	zSpawn.rarm.movetype = MOVETYPE_STEP;
 	zSpawn.rarm.takedamage = DAMAGE_NO;
-	#ifndef VITA
 	updateLimb (zSpawn, 2, zSpawn.rarm);
 	#endif
 };
 void(entity szombie)  SetUpHitBoxes =
 {
+	#ifndef VITA
 	szombie.head.solid = SOLID_CORPSE;
 	szombie.head.movetype = MOVETYPE_STEP;
 	szombie.head.classname = "ai_zombie_head";
@@ -1258,6 +1277,7 @@ void(entity szombie)  SetUpHitBoxes =
 	szombie.rarm.movetype = MOVETYPE_STEP;
 	szombie.rarm.classname = "ai_zombie_rarm";
 	szombie.rarm.takedamage = DAMAGE_YES;
+	#endif
 	
 	local entity oldself = self;
 	self = szombie;
@@ -1334,6 +1354,7 @@ void(entity where) spawn_a_zombieB =
 	//blubsvel
 	//szombie.movetype = MOVETYPE_STEP;
 
+	#ifndef VITA
 	szombie.head.deadflag = 1;
 	szombie.larm.deadflag = 1;
 	szombie.rarm.deadflag = 1;
@@ -1342,7 +1363,6 @@ void(entity where) spawn_a_zombieB =
 	setmodel(szombie.head, "models/ai/zh^.mdl");
 	setmodel(szombie.rarm, "models/ai/zar(.mdl");
 	setmodel(szombie.larm, "models/ai/zal(.mdl");
-	#ifndef VITA
 	updateLimb (szombie, 0, szombie.head);
 	updateLimb (szombie, 1, szombie.larm);
 	updateLimb (szombie, 2, szombie.rarm);
@@ -1417,9 +1437,11 @@ void(entity where) spawn_a_zombieB =
 	
 	szombie.health = z_health;
 
+	#ifndef VITA
 	szombie.head.health = szombie.health/10;
 	szombie.larm.health = szombie.health/10;
 	szombie.rarm.health = szombie.health/10;
+	#endif
 
 	szombie.th_die = Zombie_Death;
 	szombie.th_walk = Zombie_Walk_Setup;

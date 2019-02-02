@@ -243,6 +243,8 @@ void		end_sys_globals;		// flag for structure dumping
 
 .float		primary_grenades;
 
+.float 		zoom;
+
 //================================================
 void		end_sys_fields;			// flag for structure dumping
 //================================================
@@ -486,6 +488,13 @@ void(entity e) setspawnparms		= #78;		// set parm1... to the
 												// for coop 
 
 void(entity client, float type, float cost, float weapon) useprint = #121;
+float(vector start, vector min, vector max, vector end, float nomonsters, entity forent) tracemove = #122;
+vector(entity what) Get_Waypoint_Near = #124;
+float(entity zombie, entity target) Do_Pathfind_psp = #123;
+void(string s) Open_Waypoint = #126;
+vector(entity zombie,vector start,vector min, vector max) Get_Next_Waypoint = #127;
+vector(entity zombie,vector start,vector min, vector max) Get_First_Waypoint = #128;
+//float(entity zombie, float which, entity limb) updateLimb		= #122;
 												
 float(string s) stof = #81;	// 2001-09-20 QuakeC string manipulation by FrikaC
 entity (entity start, .float field, float match) findfloat = #98;
