@@ -292,6 +292,8 @@ CL_BaseMove
 Send the intended movement message to the server
 ================
 */
+//do stuff here later
+cvar_t waypoint_mode;
 void CL_BaseMove (usercmd_t *cmd)
 {
 	if (cls.signon != SIGNONS)

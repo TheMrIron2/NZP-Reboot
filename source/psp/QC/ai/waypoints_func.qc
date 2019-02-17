@@ -802,7 +802,6 @@ void() Load_Waypoints
 
 	h = strcat(mappath, ".way");
 	file = fopen (h, FILE_READ);
-
 	if (file == -1)
 	{
 		dprint("Error: file not found \n");

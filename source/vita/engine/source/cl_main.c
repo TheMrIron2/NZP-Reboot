@@ -25,6 +25,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // references them even when on a unix system.
 
 // these two are not intended to be set directly
+cvar_t	waypoint_mode = {"waypoint_mode", "0", false};// waypoint mode active
+cvar_t	autosave_waypoint = {"autosave_waypoint", "0", false};// waypoint mode active
 cvar_t	cl_name = {"_cl_name", "player", CVAR_ARCHIVE};
 cvar_t	cl_color = {"_cl_color", "0", CVAR_ARCHIVE};
 
@@ -734,6 +736,8 @@ void CL_Init (void)
 // register our commands
 //
 	Cvar_RegisterVariable (&cl_name);
+	Cvar_RegisterVariable (&waypoint_mode);
+	Cvar_RegisterVariable (&autosave_waypoint);
 	Cvar_RegisterVariable (&cl_color);
 	Cvar_RegisterVariable (&cl_upspeed);
 	Cvar_RegisterVariable (&cl_forwardspeed);

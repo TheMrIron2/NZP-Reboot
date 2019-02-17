@@ -17,7 +17,6 @@ void() Spawn_Enemy =
 }
 
 float() getZombieTotal = {
-	#ifndef VITA
 	if (rounds < 20) {
 		switch (player_count) {
 			case 0: float cnt[20] = {6, 8, 13, 18, 24, 27, 28, 28, 29, 33, 34, 36, 39, 41, 44, 47, 50, 53, 56}; return cnt[rounds - 1];
@@ -36,10 +35,6 @@ float() getZombieTotal = {
 		}
 	}
 	return 0;
-	#else
-	//uhhh
-	return 1;
-	#endif
 }
 
 void(string s) playSoundAtPlayers =

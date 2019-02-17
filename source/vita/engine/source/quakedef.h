@@ -47,8 +47,9 @@ extern int m_state;
 #define	QUAKE_GAME			// as opposed to utilities
 //#define	DEBUG
 
-#define ENGINE_NAME			"vitaQuake"
-#define	VERSION				3.00
+#define ENGINE_NAME			"Nazi Zombies Portable"
+#define	VERSION				1.00
+#define VITAQUAKE_VERSION   3.00
 #define VERSION_PROQUAKE	3.50
 #define	GLQUAKE_VERSION	    1.00
 

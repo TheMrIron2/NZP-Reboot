@@ -1390,6 +1390,8 @@ void(entity where) spawn_a_zombieB =
 	else
 		szombie.head.skin = 1;*/
 	
+	// fuck skins man
+	#ifndef VITA
 	local float tex;
 	tex = random();
 	szombie.skin = 0;
@@ -1401,6 +1403,7 @@ void(entity where) spawn_a_zombieB =
 		szombie.skin = 2;
 	else if(tex <= 1)
 		szombie.skin = 3;
+	#endif
 		
 	
 	//====================================

@@ -12,5 +12,3 @@ exec autoexec.cfg
 // stuff command line statements
 //
 stuffcmds
-
-map ndu

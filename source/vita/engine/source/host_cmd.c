@@ -1366,9 +1366,9 @@ void Host_Name_f (void)
 
 void Host_Version_f (void)
 {
-	Con_Printf ("%s - Version %4.2f (GIT: %s)\n", ENGINE_NAME, VERSION, GIT_VERSION);
-	Con_Printf ("Compiled: "__TIME__" "__DATE__"\n");
-	Con_Printf ("ProQuake protocol: %4.2f. \n", VERSION_PROQUAKE);
+	Con_Printf ("%s - Version %4.2f (vitaQuake: %4.2f)\n", ENGINE_NAME, VERSION, VITAQUAKE_VERSION);
+	//Con_Printf ("Compiled: "__TIME__" "__DATE__"\n");
+	//Con_Printf ("Nazi Zombies Portable: %4.2f. \n", VERSION_PROQUAKE);
 }
 
 #ifdef IDGODS
