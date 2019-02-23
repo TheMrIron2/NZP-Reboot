@@ -157,6 +157,32 @@ void	VID_UnlockBuffer (void);
 
 // stock defines
 
+#define W_COLT 		BIT(1)
+#define W_KAR 		BIT(2)
+#define W_THOMPSON 	BIT(3)
+#define W_357		BIT(4)
+#define W_BAR		BIT(5)
+#define W_BK		BIT(6)
+#define W_BROWNING	BIT(7)
+#define W_DB		BIT(8)
+#define W_FG		BIT(9)
+#define W_GEWEHR	BIT(10)
+#define W_KAR_SCOPE	BIT(11)
+#define W_M1		BIT(12)
+#define W_M1A1		BIT(13)
+#define W_M2		BIT(14)
+#define W_MP40		BIT(15)
+#define W_MG		BIT(16)
+#define W_PANZER	BIT(17)
+#define W_PPSH		BIT(18)
+#define W_PTRS		BIT(19)
+#define W_RAY		BIT(20)
+#define W_SAWNOFF	BIT(21)
+#define W_STG		BIT(22)
+#define W_TRENCH	BIT(23)
+#define W_TYPE		BIT(24)
+
+//REMOVE ME LATER THANKS
 #define	IT_SHOTGUN				BIT(0)
 #define	IT_SUPER_SHOTGUN		BIT(1)
 #define	IT_NAILGUN				BIT(2)
@@ -185,6 +211,7 @@ void	VID_UnlockBuffer (void);
 #define IT_SIGIL2               BIT(28)
 #define IT_SIGIL3               BIT(29)
 #define IT_SIGIL4               BIT(30)
+//STOP REMOVE ME LATER NOTICE.. THANKS - MOTO
 
 //===========================================
 //rogue changed and added defines

@@ -676,7 +676,7 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 	if (ent->v.armorvalue)
 		bits |= SU_ARMOR;
 
-//	if (ent->v.weapon)
+	if (ent->v.weapon)
 		bits |= SU_WEAPON;
 
 // send the data
@@ -716,7 +716,7 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 	MSG_WriteByte (msg, ent->v.ammo_rockets);
 	MSG_WriteByte (msg, ent->v.ammo_cells);
 	MSG_WriteByte (msg, ent->v.primary_grenades);
-	MSG_WriteByte (msg, ent->v.zoom);
+	//MSG_WriteByte (msg, ent->v.zoom);
 
 	if (standard_quake)
 	{

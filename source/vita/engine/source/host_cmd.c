@@ -1739,6 +1739,7 @@ void Host_Spawn_f (void)
 			Sys_Printf ("%s entered the game\n", host_client->name);
 
 		PR_ExecuteProgram (pr_global_struct->PutClientInServer);
+		S_LocalSound ("sounds/rounds/splash.wav");   // since this won't execute in progs...
 	}
 
 

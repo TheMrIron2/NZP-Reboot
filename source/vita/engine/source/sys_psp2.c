@@ -27,6 +27,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 byte sys_bigstack[BIGSTACK_SIZE];
 int sys_bigstack_cursize;
 
+extern int msaa;
+
 // Mods support
 int max_mod_idx = -1;
 
@@ -54,7 +56,6 @@ int isKeyboard;
 extern uint64_t rumble_tick;
 extern cvar_t psvita_touchmode;
 extern cvar_t vid_vsync;
-extern cvar_t res_val;
 extern int scr_width;
 extern int scr_height;
 extern int cfg_width;
@@ -259,7 +260,7 @@ void Sys_Error(char *error, ...)
 	FILE* f = fopen("ux0:/data/nzportable/log.txt", "a+");
 	fwrite(buf, 1, strlen(buf), f);
 	fclose(f);
-	//Sys_Quit();
+	Sys_Quit();
 }
 
 void Sys_Printf(char *fmt, ...)
@@ -422,11 +423,10 @@ bool CheckForMod(char* dir)
 	int res;
 	bool ret = false;
 
-	/*while ((res = sceIoDread(dd, &entry)) > 0 && (!ret))
+	while ((res = sceIoDread(dd, &entry)) > 0 && (!ret))
 		if ( strstr(strtolower(entry.d_name),".pak") != NULL || !strcmp(strtolower(entry.d_name), "progs.dat") ) ret = true;	// Enable checks for progs.dat only mods
 	
 	sceIoDclose(dd);
-*/
 	return ret;
 }
 
@@ -476,7 +476,7 @@ int main(int argc, char **argv)
 	}
 	sceIoDclose(dd);
 	
-	// Loading resolution from config file, this is not handled vita Host cause Host_Init required vitaGL to be working
+	// Loading resolution and MSAA mode from config files, those are not handled vita Host cause Host_Init requires vitaGL to be working
 	char res_str[64];
 	FILE *f = fopen("ux0:data/nzportable/resolution.cfg", "rb");
 	if (f != NULL){
@@ -484,12 +484,29 @@ int main(int argc, char **argv)
 		fclose(f);
 		sscanf(res_str, "%dx%d", &scr_width, &scr_height);
 	}
+	f = fopen("ux0:data/nzportable/antialiasing.cfg", "rb");
+	if (f != NULL){
+		fread(res_str, 1, 64, f);
+		fclose(f);
+		sscanf(res_str, "%d", &msaa);
+	}
 	cfg_width = scr_width;
 	cfg_height = scr_height;
+	
 	// Initializing vitaGL
-	vglInitExtended(0x1400000, scr_width, scr_height, 0x1000000);
+	switch (msaa) {
+	case 1:
+		vglInitExtended(0x1400000, scr_width, scr_height, 0x1000000, SCE_GXM_MULTISAMPLE_2X);
+		break;
+	case 2:
+		vglInitExtended(0x1400000, scr_width, scr_height, 0x1000000, SCE_GXM_MULTISAMPLE_4X);
+		break;
+	default:
+		vglInitExtended(0x1400000, scr_width, scr_height, 0x1000000, SCE_GXM_MULTISAMPLE_NONE);
+		break;
+	}
 	vglUseVram(GL_TRUE);
-	vglMapHeapMem();
+    vglMapHeapMem();
 	
 	// Official mission packs support
 	SceAppUtilAppEventParam eventParam;
@@ -507,23 +524,6 @@ int main(int argc, char **argv)
 		mod_path = mp_path;
 	}else COM_InitArgv(argc, argv);
 
-	f = fopen("ux0:data/nzportable/setup.ini", "rb");
-	if (f != NULL){
-		// naievil -- 512 buffer should be enough...right?
-		char init_parms[512];
-		char c;
-		int m = 0;
-		int f_argc = 1;
-		while ((c = fgetc(f)) != EOF) {
-			init_parms[m] = c;
-			m++;
-		}
-		init_parms[m] = '\0';
-		fclose(f);		
-	}
-	
-	char *args[MAX_NUM_ARGVS];
-
 	parms.argc = com_argc;
 	parms.argv = com_argv;
 
@@ -537,7 +537,7 @@ int main(int argc, char **argv)
 		sceAppUtilSystemParamGetString(SCE_SYSTEM_PARAM_ID_USERNAME, nickname, SCE_SYSTEM_PARAM_USERNAME_MAXSIZE);
 
 		static char cmd[256];
-		sprintf(cmd, "n_cl_name \"%s\"\n", nickname);
+		sprintf(cmd, "_cl_name \"%s\"\n", nickname);
 		Cbuf_AddText(cmd);
 	}
 
