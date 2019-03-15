@@ -1,5 +1,6 @@
 //
-//	Menu stuff.. very uglp :p
+//	Menu stuff.. very ugly :p
+// 	Typos FTW!
 //
 
 
@@ -60,6 +61,8 @@ void() menu_back =
 		wasigs = FALSE;
 	} else if (in_menu == MENU_IGS) {
 		in_menu = MENU_PAUSE;
+	} else if (in_menu == MENU_CUSTOMS) {
+		in_menu = MENU_SINGLE;
 	} else
 		in_menu = MENU_MAIN;
 };
@@ -128,6 +131,11 @@ void() menu_controls =
 		wasigs = FALSE;
 
 	in_menu = MENU_CSETTINGS;
+}
+
+void() menu_customs =
+{
+	in_menu = MENU_CUSTOMS;
 }
 
 //
@@ -309,6 +317,8 @@ var struct
 
 	//Solo
 	{[0.025, 0.175, 0], "Nacht der Untoten", -1, menu_loadndu, null, MENU_SINGLE},
+	{[0.025, 0.225, 0], "Warehouse", -1, menu_loadwh, null, MENU_SINGLE},
+	/*{[0.025, 0.300, 0], "Custom Maps", -1, menu_customs, null, MENU_SINGLE},*/
 
 	//Pause
 	{[0.025, 0.500, 0], "Resume", -1, menu_resume, null, MENU_PAUSE},
@@ -347,11 +357,12 @@ var struct
 	{[0.025, 0.825, 0], "Secondary Grenade", -1, bind_switchnade, null, MENU_CSETTINGS},
 
 	//Everything, pretty much
-	{[0.025, 0.925, 0], "Back", -1, menu_back, null, MENU_SINGLE + MENU_MULTI + MENU_SETTINGS + MENU_ABOUT + MENU_IGS + MENU_GSETTINGS + MENU_CSETTINGS},
+	{[0.025, 0.925, 0], "Back", -1, menu_back, null, MENU_SINGLE + MENU_MULTI + MENU_SETTINGS + MENU_ABOUT + 
+													 MENU_IGS + MENU_GSETTINGS + MENU_CSETTINGS + MENU_CUSTOMS},
 };
 
 //REMEMBER TO UPDATE THIS CONST IF YOU ADD BUTTONS
-const float BUTTONS_COUNT = 32;
+const float BUTTONS_COUNT = 33;
 float lastActive;
 
 
@@ -404,6 +415,15 @@ void(float index) Update_Button =
 			buttons[index].active = 0;
 	}
 };
+
+float xd;
+void() Controller_UpdateButton =
+{
+	/*if (GPActive[0]) {
+
+	}*/
+	drawstring([0.025*g_width, 0.375*g_height, 0], ftos(GPActive[2]), [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 1);
+}
 
 
 void(float index, float type) Button_Click = 
@@ -513,6 +533,12 @@ void() Draw_Extra_Controls =
 	}
 }
 
+void() Draw_Extra_Customs =
+{
+	string maps = con_getset("echo f", "echo f");
+	drawstring([0.025*g_width, 0.375*g_height, 0], maps, [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 1);
+}
+
 void() Draw_Menu =
 {
 	//background
@@ -563,6 +589,10 @@ void() Draw_Menu =
 			title = "RESTART";
 			Draw_Extra_Restart();
 			break;
+		case MENU_CUSTOMS:
+			title = "CUSTOM MAPS";
+			Draw_Extra_Customs();
+			break;
 		default:
 			title = "Nazi Zombies: Portable";
 	}
@@ -575,5 +605,9 @@ void() Draw_Menu =
 	for(i = 0; i < BUTTONS_COUNT; i++)
 	{
 		Update_Button(i);
+	}
+
+	if (cvar("in_xinput")) {
+		Controller_UpdateButton();
 	}
 };

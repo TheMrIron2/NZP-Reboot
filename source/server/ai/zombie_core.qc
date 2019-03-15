@@ -160,10 +160,19 @@ void(float what) play_sound_z =
 
 void() set_z_health =
 {
-	if(rounds < 10) {
-		z_health = 50 + (rounds * 100);
-	} else {
-		z_health = 950 * pow(1.1, rounds-9);
+	if (roundtype == 1) {
+		if(rounds < 10) {
+			z_health = 50 + (rounds * 100);
+		} else {
+			z_health = 950 * pow(1.1, rounds-9);
+		}
+	} else { //dogs
+		switch(dogWave) {
+			case 1: z_health = 400; break;
+			case 2: z_health = 900; break;
+			case 3: z_health = 1300; break;
+			default: z_health = 1600; break;
+		}
 	}
 };
 
@@ -402,7 +411,10 @@ void() zombie_attack2 =
 	{
 		if(vlen(self.enemy.origin - self.origin) < 60)
 		{
-			DamageHandler (self.enemy, self, 50, S_ZOMBIE);
+			if (self.classname == "ai_dog")
+				DamageHandler (self.enemy, self, 40, S_ZOMBIE);
+			else
+				DamageHandler (self.enemy, self, 50, S_ZOMBIE);
 		}
 	}
 	else return;
@@ -946,11 +958,21 @@ void(float i) spawnSingleZombEnt =
 	zSpawn.goaldummy.classname = "waypoint_target";
 };
 
+float() getMaxZombies =
+{
+	if (rounds == dogRound && gotdog) {
+		return 2;
+	} else {
+		return MAX_ZOMB;
+	}
+}
+
 void() spawnAllZombEnts =
 {
 	local float i;
 	i = 0;
-	while(i < MAX_ZOMB)//IMPORTANT VALUE, max zombies allowed in map
+
+	while(i < getMaxZombies())//IMPORTANT VALUE, max zombies allowed in map
 	{
 		spawnSingleZombEnt(i);
 		i++;

@@ -87,6 +87,7 @@ void() StartFrame =
 			else 
 				gotdog = 0;
 				
+			updateDogRound();
 			InitRounds();
 		}
 	}

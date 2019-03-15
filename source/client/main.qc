@@ -547,42 +547,71 @@ noref float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent
 {
 	switch(evtype)
 	{
-	case IE_KEYDOWN:
-		if(in_menu != MENU_NONE)
-		{
-			if(scanx == K_MOUSE1) {
-				Menu_Click(0);
-				return TRUE;
-			} else if (scanx == K_MOUSE2) {
-				Menu_Click(1);
-				return TRUE;
-			}
+		case IE_KEYDOWN:
+			if(in_menu != MENU_NONE)
+			{
+				if(scanx == K_MOUSE1) {
+					Menu_Click(0);
+					return TRUE;
+				} else if (scanx == K_MOUSE2) {
+					Menu_Click(1);
+					return TRUE;
+				}
 
-			if (in_menu == MENU_CSETTINGS) {
-				for (int i = 0; i < MAX_BINDS; i += 1) {
-					if (editBind[i] == TRUE)
-						setToBind(i, keynumtostring(scanx));
+				if (in_menu == MENU_CSETTINGS) {
+					for (int i = 0; i < MAX_BINDS; i += 1) {
+						if (editBind[i] == TRUE)
+							setToBind(i, keynumtostring(scanx));
+					}
+				}
+
+				// Controller Menu Navigation
+				if (scanx == K_JOY2) {
+					GPActive[0] = TRUE;
+				}
+
+				if (scanx == K_JOY4) {
+					GPActive[1] = TRUE;
+				}
+
+				if (scanx == K_JOY1) {
+					GPActive[2] = TRUE;
+				}
+
+			}
+		
+			Input_Movecheck(scanx, 1);
+
+			return FALSE;
+		case IE_KEYUP:
+
+			// Controller Menu Navigation
+			if(in_menu != MENU_NONE) {
+				if (scanx == K_JOY2) {
+					GPActive[0] = FALSE;
+				} 
+
+				if (scanx == K_JOY4) {
+					GPActive[1] = FALSE;
+				} 
+
+				if (scanx == K_JOY1) {
+					GPActive[2] = FALSE;
 				}
 			}
+			
 
-		}
-		
-		Input_Movecheck(scanx, 1);
-
-		return FALSE;
-	case IE_KEYUP:
+			Input_Movecheck(scanx, 0);
 	
-		Input_Movecheck(scanx, 0);
-	
-		return FALSE;
-	case IE_MOUSEDELTA:
-		return FALSE;
-	case IE_MOUSEABS:
-		//if(devid != 0 && devid != 1)
-		//	return FALSE;
-		cursor_pos_x = scanx;
-		cursor_pos_y = chary;
-		return FALSE;
+			return FALSE;
+		case IE_MOUSEDELTA:
+			return FALSE;
+		case IE_MOUSEABS:
+			//if(devid != 0 && devid != 1)
+			//	return FALSE;
+			cursor_pos_x = scanx;
+			cursor_pos_y = chary;
+			return FALSE;
 	}
 	return FALSE;
 };

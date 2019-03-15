@@ -45,6 +45,7 @@ const float MENU_IGS = 128;
 const float MENU_RES = 256;
 const float MENU_GSETTINGS = 512;
 const float MENU_CSETTINGS = 1024;
+const float MENU_CUSTOMS = 2048;
 
 
 float useprint_type;
@@ -135,3 +136,19 @@ float wasigs;
 float editBind[MAX_BINDS];
 string buttonBind[MAX_BINDS];
 string tempBind[MAX_BINDS];
+
+//controller buttons
+
+/*
+    reference:
+    0: A
+    1: B
+    2: X
+    3: Y
+    4: DPAD UP
+    5: DPAD DOWN
+    6: DPAD LEFT
+    7: DPAD RIGHT
+
+*/
+float GPActive[32];

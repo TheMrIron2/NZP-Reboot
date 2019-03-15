@@ -249,6 +249,8 @@ void() set_z_health;
 float() spawn_a_zombieA;
 float() spawn_a_dogA;
 float gotdog;
+float dogRound;
+float dogWave;
 float z_health;
 .float bleedingtime;
 .float time_to_die;

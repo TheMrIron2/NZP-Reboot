@@ -58,7 +58,7 @@ void() Dog_Death =
 		self.s_time = 0;
 	}
 	
-	if (rounds == 5 || rounds == 10 || rounds == 15)
+	if (rounds == dogRound)
 	{
 		if (!Remaining_Zombies)
 			Spawn_Powerup(self.origin + '0 0 12', 1);

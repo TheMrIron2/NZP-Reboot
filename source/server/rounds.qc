@@ -17,22 +17,29 @@ void() Spawn_Enemy =
 }
 
 float() getZombieTotal = {
-	if (rounds < 20) {
-		switch (player_count) {
-			case 0: float cnt[20] = {6, 8, 13, 18, 24, 27, 28, 28, 29, 33, 34, 36, 39, 41, 44, 47, 50, 53, 56}; return cnt[rounds - 1];
-			case 1: float cnt2[20] = {7, 9, 15, 21, 27, 31, 32, 33, 34, 42, 45, 49, 54, 59, 64, 70, 76, 82, 89}; return cnt2[rounds - 1];
-			case 2: float cnt3[20] = {11, 14, 23, 32, 41, 47, 48, 50, 51, 62, 68, 74, 81, 89, 97, 105, 114, 123, 133}; return cnt3[rounds - 1];
-			case 3: float cnt4[20] = {14, 18, 30, 42, 54, 62, 64, 66, 68, 83, 91, 99, 108, 118, 129, 140, 152, 164, 178}; return cnt4[rounds - 1];
-			default: return 0;
+	if (roundtype == 1) {
+		if (rounds < 20) {
+			switch (player_count) {
+				case 0: float cnt[20] = {6, 8, 13, 18, 24, 27, 28, 28, 29, 33, 34, 36, 39, 41, 44, 47, 50, 53, 56}; return cnt[rounds - 1];
+				case 1: float cnt2[20] = {7, 9, 15, 21, 27, 31, 32, 33, 34, 42, 45, 49, 54, 59, 64, 70, 76, 82, 89}; return cnt2[rounds - 1];
+				case 2: float cnt3[20] = {11, 14, 23, 32, 41, 47, 48, 50, 51, 62, 68, 74, 81, 89, 97, 105, 114, 123, 133}; return cnt3[rounds - 1];
+				case 3: float cnt4[20] = {14, 18, 30, 42, 54, 62, 64, 66, 68, 83, 91, 99, 108, 118, 129, 140, 152, 164, 178}; return cnt4[rounds - 1];
+				default: return 0;
+			}
+		} else {
+			switch (player_count) {
+				case 0: return 0.09 * rounds * rounds - 0.0029 * rounds + 23.958;
+				case 1: return 0.1882 * rounds * rounds - 0.4313 * rounds + 29.212;
+				case 2: return 0.2637 * rounds * rounds + 0.1802 * rounds + 35.015;
+				case 3: return 0.35714 * rounds * rounds - 0.0714 * rounds + 50.4286;
+				default: return 0;
+			}
 		}
-	} else {
-		switch (player_count) {
-			case 0: return 0.09 * rounds * rounds - 0.0029 * rounds + 23.958;
-			case 1: return 0.1882 * rounds * rounds - 0.4313 * rounds + 29.212;
-			case 2: return 0.2637 * rounds * rounds + 0.1802 * rounds + 35.015;
-			case 3: return 0.35714 * rounds * rounds - 0.0714 * rounds + 50.4286;
-			default: return 0;
-		}
+	} else { //dogs
+		if (dogWave == 1 || dogWave == 2)
+			return 6 * (player_count + 1);
+
+		return 8 * (player_count + 1);
 	}
 	return 0;
 }
@@ -46,6 +53,21 @@ void(string s) playSoundAtPlayers =
 		sound(p,CHAN_AUTO,s,1,ATTN_NONE);
 		p = find(p,classname,"player");
 	}
+}
+
+void() updateDogRound =
+{
+	float r = random();
+
+	if (r < 0.33) {
+		dogRound = rounds + 5;
+	} else if (r < 0.66) {
+		dogRound = rounds + 6;
+	} else {
+		dogRound = rounds + 7;
+	}
+
+	dogWave++;
 }
 
 void() EndRound =
@@ -89,6 +111,12 @@ void() NewRound =
 		SetUpdate(self, UT_ROUNDS_CHANGE, rounds_change, 0, 0);
 		blink_return = time + 2;
 	}
+
+	// if we just had a dog round, set the next
+	if (gotdog && rounds == dogRound) {
+		updateDogRound();
+	}
+
 	rounds = rounds + 1;
 
 	NotifyNewRound(rounds);
@@ -103,11 +131,11 @@ void() NewRound =
 		}
 		tempe = find(tempe, classname, "player");
 	}
+
 	set_z_health();
-	Remaining_Zombies = Total_Zombies = getZombieTotal();
 
 	//temp dog stuff
-	if (gotdog) {
+	/*if (gotdog) {
 		switch(rounds) {
 			case 5:
 				Remaining_Zombies = Total_Zombies = 10; break;
@@ -115,7 +143,7 @@ void() NewRound =
 			case 15:
 				Remaining_Zombies = Total_Zombies = 15; break;
 		}
-	}
+	}*/
 	
 	maxreward = 50 * rounds;
 	if (maxreward > 500)
@@ -126,7 +154,7 @@ void() NewRound =
 	totalpowerups = 0;
 	powerup_activate = powerup_activate*1.14;
 	
-	if ((rounds == 5 || rounds == 10 || rounds == 15) && gotdog) {
+	if (rounds == dogRound && gotdog) {
 		roundtype = 2;
 		localcmd("fog 0.25\n"); 
 	} else {
@@ -140,6 +168,8 @@ void() NewRound =
 			#endif
 		}
 	}
+
+	Remaining_Zombies = Total_Zombies = getZombieTotal();
 	#ifdef PSP
 	//MotoLegacy -- achievements crash on psp..
 	/*if (rounds == 5)
