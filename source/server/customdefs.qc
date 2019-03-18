@@ -398,3 +398,13 @@ float G_PERKPOWER;
 float sndTriggerCnt;
 float sndActivCnt;
 .float activated;
+
+//teleporter
+.entity tele_target;
+.float mode;
+.float cooldown;
+.float isLinked;
+.float waitLink;
+.float tpTimer;
+.float isTimed;
+.entity host;

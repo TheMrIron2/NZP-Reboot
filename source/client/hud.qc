@@ -817,8 +817,26 @@ void(float width, float height) HUD_Useprint =
 			case 13://revive
 				usestring = strcat("Hold ",usebutton, " to revive player");
 				break;
+			case 14://use teleporter (free)
+				usestring = strcat("Hold ", usebutton, " to use Teleporter");
+				break;
+			case 15://use teleporter (cost)
+				usestring = strcat("Hold ", usebutton, " to use Teleporter [Cost: ", ftos(useprint_cost), "]");
+				break;
+			case 16:
+				usestring = "Teleporter is cooling down";
+				break;
+			case 17:
+				usestring = strcat("Hold ", usebutton, " to initate link to pad");
+				break;
+			case 18:
+				usestring = "Link not active";
+				break;
+			case 19:
+				usestring = strcat("Hold ", usebutton, " to link pad with core");
+				break;
 			default:
-				usestring = "This should not happen you dum fuck";
+				usestring = "This should not happen you dum fuck"; //yikes
 				break;
 		}
 			print_width = stringwidth (usestring, 0, [0.015*width, 0.015*width, 0]);

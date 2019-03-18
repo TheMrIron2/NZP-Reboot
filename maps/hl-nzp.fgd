@@ -81,6 +81,35 @@
 	mangle(string) : "Mangle (Pitch Yaw Roll)"
 ]
 
+@PointClass size(-16 -16 -32, 16 16 56) base(Item) color(107 29 20) studio("progs/props/teleporter.mdl") =  func_teleporter_entrance : "Teleporter Entrance" 
+[
+	target(target_destination) : "Destination"
+	cost(integer) : "Cost"
+	mode(choices) : "Teleporter Mode" : 0 = 
+	[
+		0: "Patch 1.0.4"
+		1: "Linked (Der Riese)"
+		2: "Timed (Kino der Toten)"
+	]
+	target2(target_destination) : "[Linked/Timed] Pad"
+	tpTimer(integer) : "[Timed] Time before return"
+]
+
+@PointClass size(-16 -16 -32, 16 16 56) base(Item) color(107 29 20) studio("progs/props/mainframe_pad.mdl") = func_teleporter_destination : "Teleporter Destination" 
+[
+	targetname(target_source) : "Name" 
+]
+
+@PointClass size(-16 -16 -32, 16 16 56) base(Item) color(171 73 252) studio("progs/props/mainframe_pad.mdl") = func_teleporter_timed : "Teleporter Timed Destination" 
+[
+	targetname(target_source) : "Name" 
+]
+
+@PointClass size(-16 -16 -32, 16 16 56) base(Item) color(62 0 132) studio("progs/props/mainframe_pad.mdl") = func_teleporter_pad : "Teleporter Pad" 
+[
+	targetname(target_source) : "Name" 
+]
+
 //
 // NZP Misc Items
 //
