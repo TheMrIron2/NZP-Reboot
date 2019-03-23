@@ -149,6 +149,11 @@ void() PlayerJump =
 	self.button2 = 0;
 	
 	self.oldz = self.origin_z;
+
+	// jumping needs to be handled manually on psp
+	#ifdef PSP
+	self.velocity_z = self.velocity_z + 270;
+	#endif
 }
 
 void() PlayerPreThink =

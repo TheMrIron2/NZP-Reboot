@@ -823,16 +823,16 @@ void(float width, float height) HUD_Useprint =
 			case 15://use teleporter (cost)
 				usestring = strcat("Hold ", usebutton, " to use Teleporter [Cost: ", ftos(useprint_cost), "]");
 				break;
-			case 16:
+			case 16://tp cooldown
 				usestring = "Teleporter is cooling down";
 				break;
-			case 17:
+			case 17://link
 				usestring = strcat("Hold ", usebutton, " to initate link to pad");
 				break;
-			case 18:
+			case 18://no link
 				usestring = "Link not active";
 				break;
-			case 19:
+			case 19://finish link
 				usestring = strcat("Hold ", usebutton, " to link pad with core");
 				break;
 			default:

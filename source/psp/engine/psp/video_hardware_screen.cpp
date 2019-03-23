@@ -414,6 +414,34 @@ void SCR_UsePrint (int type, int cost, int weapon)
 			strcpy(s, va("Hold %s to Pack a Punch [Cost:%i]\n", GetUseButtonL(), cost));
 			button_pic_x = 5;
 			break;
+		case 13://revive
+			strcpy(s, va("Hold %s to Fix your Code.. :)\n", GetUseButtonL()));
+			button_pic_x = 5;
+			break;
+		case 14://use teleporter (free)
+			strcpy(s, va("Hold %s to use Teleporter\n", GetUseButtonL()));
+			button_pic_x = 5;
+			break;
+		case 15://use teleporter (cost)
+			strcpy(s, va("Hold %s to use Teleporter [Cost:%i]\n", GetUseButtonL(), cost));
+			button_pic_x = 5;
+			break;
+		case 16://tp cooldown
+			strcpy(s, "Teleporter is cooling down\n");
+			button_pic_x = 100;
+			break;
+		case 17://link
+			strcpy(s, va("Hold %s to initiate link to pad\n", GetUseButtonL()));
+			button_pic_x = 5;
+			break;
+		case 18://no link
+			strcpy(s, "Link not active\n");
+			button_pic_x = 100;
+			break;
+		case 19://finish link
+			strcpy(s, va("Hold %s to link pad with core\n", GetUseButtonL()));
+			button_pic_x = 100;
+			break;
 		default:
 			Con_Printf ("No type defined in engine for useprint\n");
 			break;
