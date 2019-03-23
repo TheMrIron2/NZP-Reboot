@@ -171,22 +171,9 @@ void() NewRound =
 
 	Remaining_Zombies = Total_Zombies = getZombieTotal();
 	#ifdef PSP
-	//MotoLegacy -- achievements crash on psp..
-	/*if (rounds == 5)
-	{
-		WriteByte (MSG_ALL, 43);
-		WriteByte (MSG_ALL, 0);
-	}
-	if (rounds == 10)
-	{
-		WriteByte (MSG_ALL, 43);
-		WriteByte (MSG_ALL, 1);
-	}
-	if (rounds == 15)
-	{
-		WriteByte (MSG_ALL, 43);
-		WriteByte (MSG_ALL, 2);
-	}*/
+	//local entity e = find(world, classname, "player");
+	//if (rounds == 2)
+		//achievement(e, 1);
 	#else
 	switch(rounds) {
 		case 5: GiveAchievement(0, pl1); break;
