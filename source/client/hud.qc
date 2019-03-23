@@ -835,6 +835,9 @@ void(float width, float height) HUD_Useprint =
 			case 19://finish link
 				usestring = strcat("Hold ", usebutton, " to link pad with core");
 				break;
+			case 20://buyable ending
+				usestring = strcat("Hold ", usebutton, " to End the Game [Cost: ", ftos(useprint_cost), "]");
+				break;
 			default:
 				usestring = "This should not happen you dum fuck"; //yikes
 				break;

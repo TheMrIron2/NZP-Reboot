@@ -440,7 +440,11 @@ void SCR_UsePrint (int type, int cost, int weapon)
 			break;
 		case 19://finish link
 			strcpy(s, va("Hold %s to link pad with core\n", GetUseButtonL()));
-			button_pic_x = 100;
+			button_pic_x = 5;
+			break;
+		case 20://buyable ending
+			strcpy(s, va("Hold %s to End the Game [Cost:%i]\n", GetUseButtonL(), cost));
+			button_pic_x = 5;
 			break;
 		default:
 			Con_Printf ("No type defined in engine for useprint\n");

@@ -1012,3 +1012,43 @@ void() func_teleporter_pad =
 	
     self.touch = teleport_pad_touch;
 }
+
+/* ================
+    Buyable Ending
+   ================ */
+void() touch_ending =
+{
+	if (other.classname != "player" || self.activated)
+		return;
+	
+	useprint(other, 20, self.cost, 0);
+
+	if (other.button7) {
+
+		if (other.points < self.cost)
+			return;
+
+		addmoney(other, -self.cost, 0);
+
+		local entity tempe;
+		tempe = self;
+		self = other;
+		EndGameSetup();
+		self = tempe;
+
+		self.activated = true;
+	}
+}
+
+void() func_ending =
+{  
+	precache_model (self.model);
+	
+	self.movetype = MOVETYPE_NONE;	// so it doesn't get pushed by anything
+	self.solid = SOLID_TRIGGER;
+	self.classname = "func_ending";
+  	setmodel(self, self.model);
+  	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	
+    self.touch = touch_ending;
+};

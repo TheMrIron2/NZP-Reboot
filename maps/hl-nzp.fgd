@@ -110,6 +110,12 @@
 	targetname(target_source) : "Name" 
 ]
 
+@PointClass color(114 224 172) studio() = func_ending : "Buyable Ending" 
+[
+	model(studio) : "Model" : "progs/props/"
+	cost(integer) : "Cost" : 0
+]
+
 //
 // NZP Misc Items
 //
