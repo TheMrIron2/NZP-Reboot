@@ -108,18 +108,18 @@ void HUD_Init (void)
 		sb_round_num[i] = Draw_CachePic (va("gfx/hud/r_num%i",i));
 	}
 
-	sb_moneyback = Draw_CachePic ("gfx/hud/moneyback.lmp");
-	instapic = Draw_CachePic ("gfx/hud/in_kill.lmp");
-	x2pic = Draw_CachePic ("gfx/hud/2x.lmp");
+	sb_moneyback = Draw_CachePic ("gfx/hud/moneyback");
+	instapic = Draw_CachePic ("gfx/hud/in_kill");
+	x2pic = Draw_CachePic ("gfx/hud/");
 
-	revivepic = Draw_CachePic ("gfx/hud/revive.lmp");
-	jugpic = Draw_CachePic ("gfx/hud/jug.lmp");
-	floppic = Draw_CachePic ("gfx/hud/flopper.lmp");
-	staminpic = Draw_CachePic ("gfx/hud/stamin.lmp");
-	doublepic = Draw_CachePic ("gfx/hud/double.lmp");
-	speedpic = Draw_CachePic ("gfx/hud/speed.lmp");
-	fragpic = Draw_CachePic ("gfx/hud/frag.lmp");
-	bettypic = Draw_CachePic ("gfx/hud/betty.lmp");
+	revivepic = Draw_CachePic ("gfx/hud/revive");
+	jugpic = Draw_CachePic ("gfx/hud/jug");
+	floppic = Draw_CachePic ("gfx/hud/flopper");
+	staminpic = Draw_CachePic ("gfx/hud/stamin");
+	doublepic = Draw_CachePic ("gfx/hud/double");
+	speedpic = Draw_CachePic ("gfx/hud/speed");
+	fragpic = Draw_CachePic ("gfx/hud/frag");
+	bettypic = Draw_CachePic ("gfx/hud/betty");
 
 	b_circle = Draw_CachePic ("gfx/butticons/circle");
 	b_square = Draw_CachePic ("gfx/butticons/square");

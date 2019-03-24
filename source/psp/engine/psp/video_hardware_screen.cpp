@@ -597,7 +597,7 @@ void SCR_Init (void)
 //
 	Cmd_AddCommand ("screenshot",SCR_ScreenShot_f);
 
-    hitmark = Draw_CachePic("gfx/hud/hit_marker.lmp");
+    hitmark = Draw_CachePic("gfx/hud/hit_marker");
 	ls_wahnsinn = Draw_CachePic ("gfx/lscreen/psp_wahnsinn.lmp");
 	ls_anstieg = Draw_CachePic ("gfx/lscreen/psp_anstieg");
 

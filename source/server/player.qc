@@ -545,7 +545,7 @@ void() PlayerSpawn =
 	}
 
 	#ifndef PSP
-	pushHUD(G_HUD, G_HUDHOR, self);
+	//pushHUD(G_HUD, G_HUDHOR, self); //FIXME - breaks mp!
 	#endif
 };
 
