@@ -1802,6 +1802,35 @@ void Open_Waypoint (void)
 
 /*
 =================
+Close_Waypoint
+
+void Close_Waypoint (string, string, string, string, string, string, string, string)
+
+moto - basically a carbon copy of open_waypoint lol
+=================
+*/
+void Close_Waypoint (void)
+{
+	int i, t;
+	char *p = G_STRING(OFS_PARM0);
+
+	for (i = 1; i < MAX_WAYPOINTS; i++)
+	{
+		if (waypoints[i].special[0])//no need to open without tag
+		{
+			if (!strcmp(p, waypoints[i].special))
+			{
+				waypoints[i].open = 0;
+				t = 1;
+			}
+			else
+				continue;
+		}
+	}
+}
+
+/*
+=================
 Do_Pathfind
 
 float Do_Pathfind (entity zombie, entity target)
@@ -3277,6 +3306,7 @@ ebfs_builtin_t pr_ebfs_builtins[] =
 	{  86, "Get_Next_Waypoint", Get_Next_Waypoint }, //Get next waypoint
 	{  87, "useprint", PF_useprint }, //Print with button
 	{  88, "Get_First_Waypoint", Get_First_Waypoint },//Get the first waypoint in the list
+	{  89, "Close_Waypoint", Close_Waypoint }, //Closes a waypoint
 
 // 2001-11-15 DarkPlaces general builtin functions by Lord Havoc  start
 // not implemented yet

@@ -41,11 +41,13 @@ void(entity door) reclose_door = {
 	self.isopen = 0;
 	func_door_nzp();
 
+	//Close_Waypoint(self.wayTarget);
+
 	self = oldself;
 }
 
 void() Soft_Restart = {
-	entity who, oldself, doors, box, revive;
+	entity who, oldself, doors, box, revive, endgame;
 	self = find(world,classname,"player");
 	oldself = self;
 	
@@ -104,10 +106,38 @@ void() Soft_Restart = {
 		oldself.revivesoda = 0;
 	}
 
+	//reset buyable ending
+	endgame = find(world, classname, "func_ending");
+	if (endgame) {
+		endgame.activated = false;
+	}
+
+	//reset teleporters
+	local entity tp;
+	tp = find(world, classname, "func_teleporter_entrance");
+
+	if (tp) {
+		tp.activated = false;
+		tp.isLinked = false;
+		tp.cooldown = false;
+		tp.waitLink = false;
+		tp.think = SUB_Null;
+	}
+
+	local entity power;
+	power = find(world, classname, "power_switch");
+	if(power) {
+		isPowerOn = false;
+		power.frame = 0;
+	}
+
+
+
 	self = oldself;
 	self.downed = 0;
 	game_over = false;
 	rounds = 0;
+	self.score = 0;
 	self.points = 0;
 	self.secondaryweapon = 0;
 	InitRounds();

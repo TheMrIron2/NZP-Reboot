@@ -238,6 +238,7 @@ void(string s) Open_Waypoint = #85;
 vector(entity zombie,vector start,vector min, vector max) Get_Next_Waypoint = #86;
 void(entity client, float type, float cost, float weapon) useprint = #87;
 vector(entity zombie,vector start,vector min, vector max) Get_First_Waypoint = #88;
+void(string s) Close_Waypoint = #89;
 
 void(entity plr, float achievement) achievement = #79;
 /*
