@@ -1039,13 +1039,18 @@ CL_ParseWeaponFire
 */
 void CL_ParseWeaponFire (void)
 {
+	vec3_t		kick;
 	return_time = (double)6/MSG_ReadLong ();
 	crosshair_spread_time = return_time + sv.time;
 
+	kick[0] = MSG_ReadCoord()/5;
+	kick[1] = MSG_ReadCoord()/5;
+	kick[2] = MSG_ReadCoord()/5;
+
 	if (!(cl.perks & 64)) {
-		cl.gun_kick[0] = cl.gun_kick[0] + MSG_ReadCoord ()/5;
-		cl.gun_kick[1] = cl.gun_kick[1] + MSG_ReadCoord ()/5;
-		cl.gun_kick[2] = cl.gun_kick[2] + MSG_ReadCoord ()/5;
+		cl.gun_kick[0] += kick[0];
+		cl.gun_kick[1] += kick[1];
+		cl.gun_kick[2] += kick[2];
 	}
 }
 /*
