@@ -1733,8 +1733,8 @@ void() CheckPlayer =
 		self.changestance = false;
 	}
 
-	if (self.view_ofs_z > 40) {
-		self.view_ofs_z = 40;
+	if (self.view_ofs_z > 32) {
+		self.view_ofs_z = 32;
 		self.changestance = false;
 	}
 	
