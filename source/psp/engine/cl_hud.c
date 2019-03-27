@@ -35,6 +35,7 @@ qpic_t		*floppic;
 qpic_t		*staminpic;
 qpic_t		*doublepic;
 qpic_t		*speedpic;
+qpic_t		*deadpic;
 qpic_t		*fragpic;
 qpic_t		*bettypic;
 
@@ -118,6 +119,7 @@ void HUD_Init (void)
 	staminpic = Draw_CachePic ("gfx/hud/stamin");
 	doublepic = Draw_CachePic ("gfx/hud/double");
 	speedpic = Draw_CachePic ("gfx/hud/speed");
+	deadpic = Draw_CachePic ("gfx/hud/dead");
 	fragpic = Draw_CachePic ("gfx/hud/frag");
 	bettypic = Draw_CachePic ("gfx/hud/betty");
 
@@ -904,6 +906,7 @@ HUD_Perks
 #define 	P_REVIVE	8
 #define 	P_FLOP		16
 #define 	P_STAMIN	32
+#define 	P_DEAD 		64
 
 int perk_order[8];
 int current_perk_order;
@@ -946,6 +949,11 @@ void HUD_Perks (void)
 			else if (perk_order[i] == P_STAMIN)
 			{
 				Draw_StretchPic (2, y, staminpic, 20, 20);
+				y = y - 22;
+			}
+			else if (perk_order[i] == P_DEAD)
+			{
+				Draw_StretchPic (2, y, deadpic, 20, 20);
 				y = y - 22;
 			}
 		}

@@ -1084,208 +1084,223 @@ float crosshair_offset_step;
 
 int CrossHairWeapon (void)
 {
-    /*if (cl.stats[STAT_ACTIVEWEAPON] == W_COLT || cl.stats[STAT_ACTIVEWEAPON] == W_BIATCH)
-        return 15;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_KAR)
-        return 50;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_THOMPSON)
-        return 10;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_RAY)
-        return 10;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_KAR_SCOPE)
-        return 50;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_BAR)
-        return 10;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_M1A1)
-        return 10;
-    //if (cl.stats[STAT_ACTIVEWEAPON] == W_TESLA)
-    //    return -0;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_TYPE)
-        return 10;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_SAWNOFF)
-        return 30;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_PPSH)
-        return 10;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_DB)
-        return 25;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_FG)
-        return 10;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_TRENCH)
-        return 25;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_MG)
-        return 20;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_GEWEHR)
-        return 10;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_BROWNING)
-        return 20;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_357)
-        return 10;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_M1)
-        return 10;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_MP40)
-        return 10;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_PTRS)
-        return 50;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_STG)
-        return 10;*/
+    int i;
 	switch(cl.stats[STAT_ACTIVEWEAPON])
 	{
 		case W_COLT:
 		case W_BIATCH:
-			return 15;
+			i = 15;
+			break;
 		case W_KAR:
 		case W_ARMAGEDDON:
-			return 50;
+			i = 50;
+			break;
 		case W_THOMPSON:
 		case W_GIBS:
-			return 10;
+			i = 10;
+			break;
 		case W_357:
 		case W_KILLU:
-			return 10;
+			i = 10;
+			break;
 		case W_BAR:
 		case W_WIDOW:
-			return 10;
+			i = 10;
+			break;
 		case W_BROWNING:
 		case W_ACCELERATOR:
-			return 20;
+			i = 20;
+			break;
 		case W_DB:
 		case W_BORE:
-			return 25;
+			i = 25;
+			break;
 		case W_FG:
 		case W_IMPELLER:
-			return 10;
+			i = 10;
+			break;
 		case W_GEWEHR:
 		case W_COMPRESSOR:
-			return 10;
+			i = 10;
+			break;
 		case W_KAR_SCOPE:
 		case W_HEADCRACKER:
-			return 50;
+			i = 50;
+			break;
 		case W_M1:
 		case W_M1000:
-			return 10;
+			i = 10;
+			break;
 		case W_M1A1:
 		case W_WIDDER:
-			return 10;
+			i = 10;
+			break;
 		case W_MP40:
 		case W_AFTERBURNER:
-			return 10;
+			i = 10;
+			break;
 		case W_MG:
 		case W_BARRACUDA:
-			return 20;
+			i = 20;
+			break;
 		case W_PANZER:
 		case W_LONGINUS:
-			return 0;
+			i = 0;
+			break;
 		case W_PPSH:
 		case W_REAPER:
-			return 10;
+			i = 10;
+			break;
 		case W_PTRS:
 		case W_PENETRATOR:
-			return 50;
+			i = 50;
+			break;
 		case W_RAY:
 		case W_PORTER:
-			return 10;
+			i = 10;
+			break;
 		case W_SAWNOFF:
 		case W_SNUFF:
-			return 30;
+			i = 30;
+			break;
 		case W_STG:
 		case W_SPATZ:
-			return 10;
+			i = 10;
+			break;
 		case W_TRENCH:
 		case W_GUT:
-			return 25;
+			i = 25;
+			break;
 		case W_TYPE:
 		case W_SAMURAI:
-			return 10;
+			i = 10;
+			break;
 		case W_MP5:
-			return 10;
+			i = 10;
+			break;
 		case W_TESLA:
-			return 0;
+			i = 0;
+			break;
 		default:
-			return 0;
+			i = 0;
+			break;
 	}
 
-    return 0;
+    if (cl.perks & 64)
+        i *= 0.65;
+
+    return i;
 }
 int CrossHairMaxSpread (void)
 {
+	int i;
 	switch(cl.stats[STAT_ACTIVEWEAPON])
 	{
 		case W_COLT:
 		case W_BIATCH:
-			return 30;
+			i = 30;
+			break;
 		case W_KAR:
 		case W_ARMAGEDDON:
-			return 75;
+			i = 75;
+			break;
 		case W_THOMPSON:
 		case W_GIBS:
-			return 25;
+			i = 25;
+			break;
 		case W_357:
 		case W_KILLU:
-			return 20;
+			i = 20;
+			break;
 		case W_BAR:
 		case W_WIDOW:
-			return 35;
+			i = 35;
+			break;
 		case W_BROWNING:
 		case W_ACCELERATOR:
-			return 50;
+			i = 50;
+			break;
 		case W_DB:
 		case W_BORE:
-			return 25;
+			i = 25;
+			break;
 		case W_FG:
 		case W_IMPELLER:
-			return 40;
+			i = 40;
+			break;
 		case W_GEWEHR:
 		case W_COMPRESSOR:
-			return 35;
+			i = 35;
+			break;
 		case W_KAR_SCOPE:
 		case W_HEADCRACKER:
-			return 75;
+			i = 75;
+			break;
 		case W_M1:
 		case W_M1000:
-			return 35;
+			i = 35;
+			break;
 		case W_M1A1:
 		case W_WIDDER:
-			return 35;
+			i = 35;
+			break;
 		case W_MP40:
 		case W_AFTERBURNER:
-			return 25;
+			i = 25;
+			break;
 		case W_MG:
 		case W_BARRACUDA:
-			return 50;
+			i = 50;
+			break;
 		case W_PANZER:
 		case W_LONGINUS:
-			return 0;
+			i = 0;
+			break;
 		case W_PPSH:
 		case W_REAPER:
-			return 25;
+			i = 25;
+			break;
 		case W_PTRS:
 		case W_PENETRATOR:
-			return 75;
+			i = 75;
+			break;
 		case W_RAY:
 		case W_PORTER:
-			return 20;
+			i = 20;
+			break;
 		case W_SAWNOFF:
 		case W_SNUFF:
-			return 30;
+			i = 30;
+			break;
 		case W_STG:
 		case W_SPATZ:
-			return 35;
+			i = 35;
+			break;
 		case W_TRENCH:
 		case W_GUT:
-			return 25;
+			i = 25;
+			break;
 		case W_TYPE:
 		case W_SAMURAI:
-			return 25;
+			i = 25;
+			break;
 		case W_MP5:
-			return 25;
+			i = 25;
+			break;
 		case W_TESLA:
-			return 0;
+			i = 0;
+			break;
 		default:
-			return 0;
+			i = 0;
+			break;
 	}
 
-    return 0;
+    if (cl.perks & 64)
+        i *= 0.65;
+
+    return i;
 }
+
 /*
 ================
 Draw_Crosshair

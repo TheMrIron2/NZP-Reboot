@@ -134,6 +134,8 @@ string(float perk) GetPerkName =
 			return "Stamin-Up";
 		case 6:
 			return "PhD Flopper";
+		case 7:
+			return "Deadshot Daiquiri";
 		default:
 			return "NULL";
 	}

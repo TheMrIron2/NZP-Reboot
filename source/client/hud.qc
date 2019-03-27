@@ -915,6 +915,14 @@ void(float width, float height) HUD_Perks =
 				else
 					y -= 22;
 			}
+			else if (perk_order[i] == P_DEAD)
+			{
+				drawpic([x,y,0], getImage("dead.tga"), [20, 20, 1], [1,1,1], 1);
+				if (G_HUDHOR)
+					x += 22;
+				else
+					y -= 22;
+			}
 		}
 	}
 }
@@ -1045,6 +1053,9 @@ void() Draw_Crosshair =
         
 		if (CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE)) < crosshair_offset)
 			crosshair_offset = CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE));
+		
+		if (perks & P_DEAD)
+			crosshair_offset *= 0.65;
 
 		crosshair_offset_step += (crosshair_offset - crosshair_offset_step) * 0.5;
 
@@ -1292,14 +1303,14 @@ void(float width, float height) HUD_Draw =
 void UpdatePerks(float newperks) {
 	float s;
 
-	for(float i = 1; i < 33; i *= 2) {
+	for(float i = 1; i < 65; i *= 2) {
 		if (newperks & i && !(perks & i)) {
 			perk_order[current_perk_order] = i;
 			current_perk_order += 1;
 		}
 	}
 
-	for(float i = 1; i < 33; i *= 2) {
+	for(float i = 1; i < 65; i *= 2) {
 		if (perks & i && !(newperks & i)) 
 		{
 			for(s = 0; s < 8; s++) 

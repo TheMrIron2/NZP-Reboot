@@ -551,7 +551,11 @@ void CL_Aim_Snap(void)
 	VectorCopy(player->v.origin,pOrg);
 	pOrg[2] += vofs;
 
-	znum = EN_Find(0,"ai_zombie");
+	if (cl.perks & 64)
+    	znum = EN_Find(0,"ai_zombie_head");
+  	else
+    	znum = EN_Find(0,"ai_zombie");
+
 	z = EDICT_NUM(znum);
 	VectorCopy(z->v.origin,zOrg);
 	zOrg[2] += z->v.maxs[2];//Setting to top of zomb ent
@@ -574,7 +578,10 @@ void CL_Aim_Snap(void)
 				}
 			}
 		}
-		znum = EN_Find(znum,"ai_zombie");
+		if (cl.perks & 64)
+		  	znum = EN_Find(znum,"ai_zombie_head");
+    	else
+      		znum = EN_Find(znum,"ai_zombie");
 		z = EDICT_NUM(znum);
 	}
 
@@ -619,7 +626,7 @@ void CL_SendMove (usercmd_t *cmd)
 	cl.cmd = *cmd;
 
 	//==== Aim Assist Code ====
-	if((cl.stats[STAT_ZOOM]==1 || cl.stats[STAT_ZOOM]==2) && in_aimassist.value)
+	if((cl.stats[STAT_ZOOM]==1 || cl.stats[STAT_ZOOM]==2) && ((in_aimassist.value) || (cl.perks & 64)))
 	{
 		if(!zoom_snap)
 		{

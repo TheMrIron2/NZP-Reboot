@@ -988,6 +988,10 @@ void(float side) W_Fire =
 
 	spread = (1.5*GetWeaponSpread(self.weapon))-sprdstance;
 
+	if (self.perks & P_DEAD) {
+		spread *= 0.65;
+	}
+
 	if (self.zoom == 1) {
 		if (self.weapon == W_TRENCH ||
 			self.weapon == W_DB ||
@@ -1075,8 +1079,12 @@ void(float side) W_Fire =
 	self.effects = self.effects | EF_MUZZLEFLASH;
 	#else 
 	// psp takes care of this in engine
+	if (self.perks & P_DEAD)
+		return;
+
 	vector Wep_Recoil;
 	Wep_Recoil = GetWeaponRecoil(self.weapon)*0.5;
+
 	self.punchangle_x = Wep_Recoil_x;
 	self.punchangle_y = Wep_Recoil_y;
 	self.punchangle_z = Wep_Recoil_z;

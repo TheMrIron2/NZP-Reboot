@@ -25,6 +25,9 @@ void GivePerk(float perk) {
 		case P_DOUBLE:
 			self.perks = self.perks | 2;
 			break;
+		case P_DEAD:
+			self.perks = self.perks | 64;
+			break;
 		default:
 			print("Unknown perk type, wtf?\n");
 	}
@@ -45,6 +48,7 @@ void() give_doubletap = { GivePerk(P_DOUBLE); }
 void() give_speedcola = { GivePerk(P_SPEED); }
 void() give_flopper = { GivePerk(P_FLOP); }
 void() give_staminup = { GivePerk(P_STAMIN); }
+void() give_deadshot = { GivePerk(P_DEAD); }
 
 
 void DrinkPerk(float perk) {
@@ -75,6 +79,10 @@ void DrinkPerk(float perk) {
 		case P_DOUBLE:
 			other.weaponskin = 0;	
 			func = give_doubletap;
+			break;
+		case P_DEAD:
+			other.weaponskin = 5;
+			func = give_deadshot;
 			break;
 		default:
 			print("Unknown perk type, wtf?\n");
@@ -215,6 +223,19 @@ void() touch_perk =
 			centerprint (other, "Not enough points\n");
 		}
 	}
+	if (self.classname == "perk_deadshot" && !(other.perks & P_DEAD) && self.fire_delay < time)
+	{
+		useprint (other, 9, self.cost, 7);
+		if (other.points >= self.cost && other.button7)
+		{
+			addmoney (other, -self.cost, 0);
+			DrinkPerk(P_DEAD);
+		}
+		else if (other.button7)
+		{
+			centerprint (other, "Not enough points\n");
+		}
+	}
 }
 
 void() setup_perk =
@@ -245,6 +266,7 @@ void() setup_perk =
 				break;
 			case "perk_staminup":
 			case "perk_double":
+			case "perk_deadshot":
 			#ifdef PSP
 				self.effects = self.effects |  EF_ORANGELIGHT;
 			#else 
@@ -352,6 +374,28 @@ void() perk_double =
 	self.nextthink = time + 0.1;
 };
 
+void() perk_deadshot =
+{
+	self.solid = SOLID_TRIGGER;
+	precache_model ("models/machines/deadshot.mdl");
+	precache_model ("models/machines/v_perk.mdl");
+	precache_sound ("sounds/machines/perk_drink.wav");
+	setorigin (self, self.origin);
+	setmodel (self, "models/machines/deadshot.mdl");
+	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	self.classname = "perk_deadshot";
+	self.touch = touch_perk;
+
+	self.think = setup_perk;
+	self.nextthink = time + 0.1;
+
+	#ifndef PSP
+	self.cost = 1000;
+	#else
+	self.cost = 1500;
+	#endif
+};
+
 void()	turnpower1	=[	1,		turnpower2	] {self.frame = 1;};
 void()	turnpower2	=[	2,		turnpower3	] {self.frame = 2;};
 void()	turnpower3	=[	3,		turnpower4	] {self.frame = 3;};
@@ -381,6 +425,7 @@ void() Turn_Lights =
 				break;
 			case "perk_staminup":
 			case "perk_double":
+			case "perk_deadshot":
 			#ifdef PSP
 				tempe.effects = self.effects |  EF_FULLBRIGHT;
 				tempe.effects = self.effects |  EF_ORANGELIGHT;

@@ -728,6 +728,11 @@ void CL_ParseClientdata (int bits)
 			perk_order[current_perk_order] = 32;
 			current_perk_order++;
 		}
+		if (i & 64 && !(cl.perks & 64))
+		{
+			perk_order[current_perk_order] = 64;
+			current_perk_order++;
+		}
 		if (cl.perks & 1 && !(i & 1))
 		{
 			for (s = 0; s < 8; s++)
@@ -818,6 +823,23 @@ void CL_ParseClientdata (int bits)
 			for (s = 0; s < 8; s++)
 			{
 				if (perk_order[s] == 32)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order--;
+		}
+		if (cl.perks & 64 && !(i & 64))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == 64)
 				{
 					perk_order[s] = 0;
 					while (perk_order[s+1])
@@ -1020,9 +1042,11 @@ void CL_ParseWeaponFire (void)
 	return_time = (double)6/MSG_ReadLong ();
 	crosshair_spread_time = return_time + sv.time;
 
-	cl.gun_kick[0] = cl.gun_kick[0] + MSG_ReadCoord ()/5;
-	cl.gun_kick[1] = cl.gun_kick[1] + MSG_ReadCoord ()/5;
-	cl.gun_kick[2] = cl.gun_kick[2] + MSG_ReadCoord ()/5;
+	if (!(cl.perks & 64)) {
+		cl.gun_kick[0] = cl.gun_kick[0] + MSG_ReadCoord ()/5;
+		cl.gun_kick[1] = cl.gun_kick[1] + MSG_ReadCoord ()/5;
+		cl.gun_kick[2] = cl.gun_kick[2] + MSG_ReadCoord ()/5;
+	}
 }
 /*
 ===================
