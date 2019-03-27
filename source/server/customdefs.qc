@@ -53,6 +53,7 @@ entity activator;
 .float zoom;
 .float sprinting;
 .float weaponskin;
+.float secondaryweaponskin;
 .float stamina;
 void() W_SprintStop;
 .float into_sprint;

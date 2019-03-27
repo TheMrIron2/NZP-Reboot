@@ -1475,6 +1475,10 @@ void PapUpgrade(entity pap, entity buyer) {
 
 	Set_W_Frame (0, 39, 0, 0, 0, W_TakeOut, "models/machines/v_pap.mdl", true, S_BOTH);
 
+	#ifdef PSP
+	self.Weapon_Name = "";
+	#endif
+
 	self = tempe;
 
 	self.papState = 1;
@@ -1534,6 +1538,14 @@ void touch_pap() {
 			self = other;
 			SwitchWeapon(self.weapon);
 			Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, true, S_BOTH);//FIXME
+
+			#ifdef PSP
+			self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
+			self.Flash_Size = GetWeaponFlash_Size(self.weapon);
+			self.Weapon_Name = GetWeaponName(self.weapon);
+			self.weaponskin = GetWepSkin(self.weapon);
+			#endif
+
 			self = tempe;
 			reset_pap();
 		}

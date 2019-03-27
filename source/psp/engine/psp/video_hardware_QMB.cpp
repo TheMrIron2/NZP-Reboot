@@ -2416,15 +2416,174 @@ void QMB_RunParticleEffect (vec3_t org, vec3_t dir, int col, int count)
 	}
 }
 
+float pap_detr(int weapon)
+{
+
+	switch (weapon)
+	{
+		case W_COLT:
+			return 0;
+			break;
+		case W_BIATCH:
+			return 1;
+			break;
+		case W_KAR:
+			return 0;
+			break;
+		case W_THOMPSON:
+			return 0;
+			break;
+		case W_357:
+			return 0;
+			break;
+		case W_KILLU:
+			return 1;
+			break;
+		case W_BAR:
+			return 0;
+			break;
+		case W_BK:
+			return 0;
+			break;
+		case W_BROWNING:
+			return 0;
+			break;
+		case W_DB:
+			return 0;
+			break;
+		case W_FG:
+			return 0;
+			break;
+		case W_GEWEHR:
+			return 0;
+			break;
+		case W_KAR_SCOPE:
+			return 0;
+			break;
+		case W_M1:
+			return 0;
+			break;
+		case W_M1A1:
+			return 0;
+			break;
+		case W_MP40:
+			return 0;
+			break;
+		case W_MG:
+			return 0;
+			break;
+		case W_PANZER:
+			return 0;
+			break;
+		case W_PPSH:
+			return 0;
+			break;
+		case W_PTRS:
+			return 0;
+			break;
+		case W_RAY:
+			return 0;
+			break;
+		case W_SAWNOFF:
+			return 0;
+			break;
+		case W_STG:
+			return 0;
+			break;
+		case W_TRENCH:
+			return 0;
+			break;
+		case W_TYPE:
+			return 0;
+			break;
+		case W_M2:
+			return 0;
+			break;
+		case W_COMPRESSOR:
+      return 1;
+      break;
+    case W_M1000:
+      return 1;
+      break;
+    case W_GIBS:
+      return 1;
+      break;
+    case W_SAMURAI:
+      return 1;
+      break;
+    case W_AFTERBURNER:
+      return 1;
+      break;
+    case W_SPATZ:
+      return 1;
+      break;
+    case W_SNUFF:
+      return 1;
+      break;
+    case W_BORE:
+      return 1;
+      break;
+    case W_IMPELLER:
+      return 1;
+      break;
+    case W_BARRACUDA:
+      return 1;
+      break;
+    case W_ACCELERATOR:
+      return 1;
+      break;
+    case W_GUT:
+      return 1;
+      break;
+    case W_REAPER:
+      return 1;
+      break;
+    case W_HEADCRACKER:
+      return 1;
+      break;
+    case W_LONGINUS:
+      return 1;
+      break;
+    case W_PENETRATOR:
+      return 1;
+      break;
+    case W_WIDOW:
+      return 1;
+      break;
+    case W_PORTER:
+      return 1;
+      break;
+    case W_ARMAGEDDON:
+      return 1;
+      break;
+    case W_WIDDER:
+      return 1;
+      break;
+    case W_MP5:
+      return 0;
+      break;
+    case W_TESLA:
+      return 0;
+      break;
+	}
+	return 0;
+}
+
 //R00k added particle muzzleflashes
 void QMB_MuzzleFlash(vec3_t org)
 {
 	float	frametime = fabs(cl.ctime - cl.oldtime);
 	col_t	color;
 
-	color[0] = color[1] = color[2] = 255;
-	if (!qmb_initialized)
-	{
+	if (pap_detr(cl.stats[STAT_ACTIVEWEAPON]) == 0) {
+    	color[0] = color[1] = color[2] = 255;
+	} else {
+	  color[0] = 132;
+	  color[1] = 44;
+	  color[2] = 139;
+	}
+
+	if (!qmb_initialized) {
 		return;
 	}
 

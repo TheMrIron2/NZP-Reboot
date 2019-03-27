@@ -148,7 +148,7 @@ void() W_Switch =
 {
 	if (self.secondaryweapon && self.secondaryweapon !=0 && !self.new_anim_stop && !other.button7)
 	{      
-		float tempf,tempf1,tempf2;
+		float tempf,tempf1,tempf2,tempf3;
 		float startframe;
 		float endframe;
 		string modelname;
@@ -168,6 +168,10 @@ void() W_Switch =
 		tempf2 = self.weapon;
 		self.weapon = self.secondaryweapon;
 		self.secondaryweapon = tempf2;
+
+		tempf3 = self.weaponskin;
+		self.weaponskin = self.secondaryweaponskin;
+		self.secondaryweaponskin = tempf3;
 
 		startframe = GetFrame(self.weapon,TAKE_OUT_START);
 		endframe = GetFrame(self.weapon,TAKE_OUT_END);
@@ -1084,6 +1088,7 @@ void(float side) W_Fire =
 * W_Knife                     *
 ******************************/
 
+// FIXME - knife & nade vmodels change skin on PSP!
 void () W_Knife =
 {
 	if (time < self.knife_delay || self.new_anim_stop ||
@@ -1094,7 +1099,7 @@ void () W_Knife =
 	vector	source;
 	entity	hit_ent = world;
 	//entity	oldself;
-	float	r;
+	float	r, backupSkin;
 	vector	org;
 	float hit = false;
 		
@@ -1102,6 +1107,8 @@ void () W_Knife =
 		W_SprintStop();
 	}
 	
+	backupSkin = self.weaponskin;
+	self.weaponskin = 0;
 	sound (self, CHAN_WEAPON, "sounds/weapons/knife/knife.wav", 1, ATTN_NORM);
 	makevectors (self.v_angle);
 	source = self.origin + self.view_ofs;
@@ -1204,6 +1211,7 @@ void () W_Knife =
 		}
 	}
 	self.reload_delay2 = self.reload_delay = 0;
+	self.weaponskin = backupSkin;
 	
 	LungeKnifeHit();
 
@@ -1665,20 +1673,16 @@ void(entity ent) CheckPowerups =
 				insta_blink = time + 1;
 		}
 		
-		#ifndef PSP
 		if (insta_blink < time)
 			ent.insta_icon = true;
 		else 
 			ent.insta_icon = false;		
-		#endif
 	}
 	else if(instakill_finished)
 	{
 		instakill_finished = 0;
 		
-		#ifndef PSP
 		ent.insta_icon = false;
-		#endif
 	}
 	
 	if (x2_finished > time)
@@ -1699,21 +1703,16 @@ void(entity ent) CheckPowerups =
 				x2_blink = time + 1;
 		}
 		
-		#ifndef PSP
 		if (x2_blink < time)
 			ent.x2_icon = true;
 		else 
 			ent.x2_icon = false;
-		#endif
-		
 	}
 	else if(x2_finished)
 	{
 		x2_finished = 0;
 		
-		#ifndef PSP
 		ent.x2_icon = false;
-		#endif
 	}
 
 }

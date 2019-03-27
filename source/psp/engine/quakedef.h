@@ -152,6 +152,39 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define W_TRENCH	23
 #define W_TYPE		24
 
+#define W_BIATCH  28
+#define W_KILLU   29 //357
+#define W_COMPRESSOR 30 // Gewehr
+#define W_M1000  31 //garand
+//#define W_KOLLIDER  32
+#define W_PORTER  33 // Ray
+#define W_WIDDER  34 // M1A1
+#define W_FIW  35 //upgraded flamethrower
+#define W_ARMAGEDDON  36 //Kar
+//#define W_WUNDER  37
+#define W_GIBS  38 // thompson
+#define W_SAMURAI  39 //Type
+#define W_AFTERBURNER  40 //mp40
+#define W_SPATZ  41 // stg
+#define W_SNUFF  42 // sawn off
+#define W_BORE  43 // double barrel
+#define W_IMPELLER  44 //fg
+#define W_BARRACUDA  45 //mg42
+#define W_ACCELERATOR  46 //M1919 browning
+#define W_GUT  47 //trench
+#define W_REAPER  48 //ppsh
+#define W_HEADCRACKER  49 //scoped kar
+#define W_LONGINUS  50 //panzer
+#define W_PENETRATOR  51 //ptrs
+#define W_WIDOW  52 //bar
+//#define W_KRAUS  53 //ballistic
+#define W_MP5   54
+#define W_M14   55
+
+#define W_TESLA  56
+
+#define W_NOWEP   420
+
 //===========================================
 
 #define	MAX_SCOREBOARD		16

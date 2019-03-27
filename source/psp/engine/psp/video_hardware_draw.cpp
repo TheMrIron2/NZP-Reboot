@@ -1084,7 +1084,7 @@ float crosshair_offset_step;
 
 int CrossHairWeapon (void)
 {
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_COLT)
+    /*if (cl.stats[STAT_ACTIVEWEAPON] == W_COLT || cl.stats[STAT_ACTIVEWEAPON] == W_BIATCH)
         return 15;
     if (cl.stats[STAT_ACTIVEWEAPON] == W_KAR)
         return 50;
@@ -1127,56 +1127,162 @@ int CrossHairWeapon (void)
     if (cl.stats[STAT_ACTIVEWEAPON] == W_PTRS)
         return 50;
     if (cl.stats[STAT_ACTIVEWEAPON] == W_STG)
-        return 10;
+        return 10;*/
+	switch(cl.stats[STAT_ACTIVEWEAPON])
+	{
+		case W_COLT:
+		case W_BIATCH:
+			return 15;
+		case W_KAR:
+		case W_ARMAGEDDON:
+			return 50;
+		case W_THOMPSON:
+		case W_GIBS:
+			return 10;
+		case W_357:
+		case W_KILLU:
+			return 10;
+		case W_BAR:
+		case W_WIDOW:
+			return 10;
+		case W_BROWNING:
+		case W_ACCELERATOR:
+			return 20;
+		case W_DB:
+		case W_BORE:
+			return 25;
+		case W_FG:
+		case W_IMPELLER:
+			return 10;
+		case W_GEWEHR:
+		case W_COMPRESSOR:
+			return 10;
+		case W_KAR_SCOPE:
+		case W_HEADCRACKER:
+			return 50;
+		case W_M1:
+		case W_M1000:
+			return 10;
+		case W_M1A1:
+		case W_WIDDER:
+			return 10;
+		case W_MP40:
+		case W_AFTERBURNER:
+			return 10;
+		case W_MG:
+		case W_BARRACUDA:
+			return 20;
+		case W_PANZER:
+		case W_LONGINUS:
+			return 0;
+		case W_PPSH:
+		case W_REAPER:
+			return 10;
+		case W_PTRS:
+		case W_PENETRATOR:
+			return 50;
+		case W_RAY:
+		case W_PORTER:
+			return 10;
+		case W_SAWNOFF:
+		case W_SNUFF:
+			return 30;
+		case W_STG:
+		case W_SPATZ:
+			return 10;
+		case W_TRENCH:
+		case W_GUT:
+			return 25;
+		case W_TYPE:
+		case W_SAMURAI:
+			return 10;
+		case W_MP5:
+			return 10;
+		case W_TESLA:
+			return 0;
+		default:
+			return 0;
+	}
 
     return 0;
 }
 int CrossHairMaxSpread (void)
 {
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_COLT)
-        return 30;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_KAR)
-        return 75;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_THOMPSON)
-        return 25;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_RAY)
-        return 20;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_KAR_SCOPE)
-        return 75;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_BAR)
-        return 35;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_M1A1)
-        return 35;
-    //if (cl.stats[STAT_ACTIVEWEAPON] == W_TESLA)
-    //    return -0;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_TYPE)
-        return 25;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_SAWNOFF)
-        return 30;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_PPSH)
-        return 25;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_DB)
-        return 25;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_FG)
-        return 40;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_TRENCH)
-        return 25;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_MG)
-        return 50;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_GEWEHR)
-        return 35;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_BROWNING)
-        return 50;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_357)
-        return 20;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_M1)
-        return 35;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_MP40)
-        return 25;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_PTRS)
-        return 75;
-    if (cl.stats[STAT_ACTIVEWEAPON] == W_STG)
-        return 35;
+	switch(cl.stats[STAT_ACTIVEWEAPON])
+	{
+		case W_COLT:
+		case W_BIATCH:
+			return 30;
+		case W_KAR:
+		case W_ARMAGEDDON:
+			return 75;
+		case W_THOMPSON:
+		case W_GIBS:
+			return 25;
+		case W_357:
+		case W_KILLU:
+			return 20;
+		case W_BAR:
+		case W_WIDOW:
+			return 35;
+		case W_BROWNING:
+		case W_ACCELERATOR:
+			return 50;
+		case W_DB:
+		case W_BORE:
+			return 25;
+		case W_FG:
+		case W_IMPELLER:
+			return 40;
+		case W_GEWEHR:
+		case W_COMPRESSOR:
+			return 35;
+		case W_KAR_SCOPE:
+		case W_HEADCRACKER:
+			return 75;
+		case W_M1:
+		case W_M1000:
+			return 35;
+		case W_M1A1:
+		case W_WIDDER:
+			return 35;
+		case W_MP40:
+		case W_AFTERBURNER:
+			return 25;
+		case W_MG:
+		case W_BARRACUDA:
+			return 50;
+		case W_PANZER:
+		case W_LONGINUS:
+			return 0;
+		case W_PPSH:
+		case W_REAPER:
+			return 25;
+		case W_PTRS:
+		case W_PENETRATOR:
+			return 75;
+		case W_RAY:
+		case W_PORTER:
+			return 20;
+		case W_SAWNOFF:
+		case W_SNUFF:
+			return 30;
+		case W_STG:
+		case W_SPATZ:
+			return 35;
+		case W_TRENCH:
+		case W_GUT:
+			return 25;
+		case W_TYPE:
+		case W_SAMURAI:
+			return 25;
+		case W_MP5:
+			return 25;
+		case W_TESLA:
+			return 0;
+		default:
+			return 0;
+	}
 
     return 0;
 }
