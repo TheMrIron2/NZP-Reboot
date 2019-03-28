@@ -152,6 +152,7 @@ void		end_sys_globals;		// flag for structure dumping
 .float 		Flash_Size;
 .string 	Weapon_Name;
 .string		Weapon_Name_Touch;
+.float      currentmag2;
 void		end_sys_fields;			// flag for structure dumping
 // End. Lines below this MAY be altered, to some extent
 

@@ -1064,11 +1064,27 @@ int GetLowAmmo(int weapon, int type)
 		default: return 0;
 	}
 }
+
+int IsDualWeapon(int weapon)
+{
+	switch(weapon) {
+		case W_BIATCH:
+		case W_SNUFF:
+			return 1;
+		default:
+			return 0;
+	}
+
+	return 0;
+}
+
 void HUD_Ammo (void)
 {
 	char str[12];
-    int xplus;
+	char str2[12];
+    int xplus, xplus2;
 	char *magstring;
+	char *mag2string;
 
 	y_value = vid.height - 16;
 	if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG])
@@ -1077,8 +1093,15 @@ void HUD_Ammo (void)
 		magstring = va ("%i",cl.stats[STAT_CURRENTMAG]);
 
 	xplus = HUD_itoa (cl.stats[STAT_CURRENTMAG], str);
-
 	Draw_ColoredString (vid.width - 42 - (xplus*8), y_value, magstring, 0);
+
+	mag2string = va("%i", cl.stats[STAT_CURRENTMAG2]);
+	xplus2 = HUD_itoa (cl.stats[STAT_CURRENTMAG2], str2);
+
+	if (IsDualWeapon(cl.stats[STAT_ACTIVEWEAPON])) {
+		Draw_ColoredString (vid.width - 56 - (xplus2*8), y_value, mag2string, 0);
+	}
+
 	if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 0) >= cl.stats[STAT_AMMO])
 	{
 		Draw_ColoredString (vid.width - 42, y_value, "&cF00/", 0);

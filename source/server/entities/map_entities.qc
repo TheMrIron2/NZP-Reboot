@@ -391,6 +391,11 @@ void () buy_weapon_touch =
 		startframe = GetFrame(self.weapon,TAKE_OUT_START);
 		endframe = GetFrame(self.weapon,TAKE_OUT_END);
 		modelname = GetWeaponModel(self.weapon, 0);
+		
+		if (self.weapon != W_KAR_SCOPE && self.weapon != W_HEADCRACKER && !IsDualWeapon(self.weapon)) {
+			self.weapon2model = "";
+		}
+
 		SwitchWeapon(self.weapon);
 		Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
 		

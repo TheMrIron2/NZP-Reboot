@@ -3069,6 +3069,7 @@ void(float weptype) precache_extra =
 			precache_sound("sounds/weapons/colt/magin.wav");
 			precache_sound("sounds/weapons/colt/slide.wav");
 			precache_model ("models/weapons/m1911/v_biatch_right.mdl");	// sprite explosion
+			precache_model ("models/weapons/m1911/v_biatch_left.mdl");
 			break;
 		case W_KAR_SCOPE:
 		case W_KAR:
@@ -3120,6 +3121,7 @@ void(float weptype) precache_extra =
 			precache_sound ("sounds/weapons/browning/shoot.wav");
 			break;
 		case W_SAWNOFF:
+		case W_SNUFF:
 		case W_DB:
 		case W_BORE:
 			precache_sound("sounds/weapons/shotgun/open.wav");
@@ -3127,6 +3129,11 @@ void(float weptype) precache_extra =
 			precache_sound("sounds/weapons/shotgun/in.wav");
 			precache_sound("sounds/weapons/shotgun/close.wav");
 			precache_sound("sounds/weapons/shotgun/shoot.wav");
+
+			//lotta stuff here, so let's make sure we don't add unless ABSOLUTELY necessary..
+			if (weptype == W_SAWNOFF || weptype == W_SNUFF)
+				precache_model("models/weapons/sawnoff/v_snuff_right.mdl");
+				precache_model("models/weapons/sawnoff/v_snuff_left.mdl");
 			break;
 		case W_FG:
 		case W_IMPELLER:

@@ -124,6 +124,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	STAT_WEAPON2		17
 #define	STAT_WEAPON2SKIN	18
 #define	STAT_WEAPON2FRAME	19
+#define STAT_CURRENTMAG2 	20
 
 // stock defines
 

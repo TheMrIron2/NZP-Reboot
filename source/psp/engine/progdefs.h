@@ -161,6 +161,7 @@ typedef struct
 	float   Flash_Size;
 	string_t	Weapon_Name;
 	string_t 	Weapon_Name_Touch;
+	float 	currentmag2;
 } entvars_t;
 
 #define PROGHEADER_CRC 14116

@@ -1065,6 +1065,10 @@ void() mystery_touch =
           			other.currentammo = getWeaponAmmo(self.boxweapon.weapon);
 					other.currentmag = getWeaponMag(self.boxweapon.weapon);
 					other.weaponskin = 0;
+
+					if (other.weapon != W_KAR_SCOPE && other.weapon != W_HEADCRACKER && !IsDualWeapon(other.weapon)) {
+						other.weapon2model = "";
+					}
 					
 					#ifdef PSP
 					other.Flash_Offset = GetWeaponFlash_Offset(self.boxweapon.weapon);

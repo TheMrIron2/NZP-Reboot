@@ -977,6 +977,10 @@ void CL_ParseClientdata (int bits)
 	i = MSG_ReadByte ();
 	if (cl.stats[STAT_WEAPON2FRAME] != i)
 		cl.stats[STAT_WEAPON2FRAME] = i;
+
+	i = MSG_ReadByte ();
+	if (cl.stats[STAT_CURRENTMAG2] != i)
+		cl.stats[STAT_CURRENTMAG2] = i;
 }
 
 /*

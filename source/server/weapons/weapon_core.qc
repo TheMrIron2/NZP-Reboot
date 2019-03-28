@@ -4,14 +4,16 @@ void() GrenadeExplode;
 void() ReturnWeaponModel =
 {
 	self.weaponmodel = GetWeaponModel(self.weapon, 0);
-	if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER) {
+
+	if (IsDualWeapon(self.weapon)) {
+		self.weapon2model = GetLeftWeaponModel(self.weapon);
+	} else if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER) {
 		self.weapon2model = "models/weapons/kar/v_karscope.mdl";
 		UpdateV2model(self.weapon2model, 0);
-	} else {
-		UpdateV2model(self.weapon2model, GetWepSkin(self.weapon));
 	}
 		
 	UpdateVmodel(self.weaponmodel, GetWepSkin(self.weapon));
+	UpdateV2model(self.weapon2model, GetWepSkin(self.weapon));
 }
 
 .float scopetime;
@@ -178,6 +180,10 @@ void() W_Switch =
 		modelname = GetWeaponModel(self.weapon, 0);
 
 		SwitchWeapon(self.weapon);
+
+		if (IsDualWeapon(self.weapon)) {
+			self.weapon2model = GetLeftWeaponModel(self.weapon);
+		}
 	
 		
 		//UpdateWeapons(1);
@@ -1180,7 +1186,7 @@ void () W_Knife =
 		else if (self.bowie)
 		{
 			Set_W_Frame (4, 10, 0.7, 0, KNIFE, ReturnWeaponModel, "progs/VModels/v_bowie.mdl", false, S_RIGHT);
-			self.fire_delay = time + 0.8;
+			self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = time + 0.8;
 			self.knife_delay = time + 1.3;
 		}
 		else
@@ -1188,7 +1194,7 @@ void () W_Knife =
 			self.punchangle_x = -5;
 			self.punchangle_y = -10;
 			Set_W_Frame (4, 12, 0.7, 0, KNIFE, ReturnWeaponModel, "progs/VModels/v_knife.mdl", false, S_RIGHT);
-			self.fire_delay = time + 0.8;
+			self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = time + 0.8;
 			self.knife_delay = time + 1;
 		}
 		self.velocity = v_forward * 200;
@@ -1205,7 +1211,7 @@ void () W_Knife =
 		else if (self.bowie)
 		{
 			Set_W_Frame (0, 3, 0.3, 0, KNIFE, ReturnWeaponModel, "progs/VModels/v_bowie.mdl", false, S_RIGHT);
-			self.fire_delay = time + 0.4;
+			self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = time + 0.4;
 			self.knife_delay = time + 0.9;
 		}
 		else
@@ -1214,7 +1220,7 @@ void () W_Knife =
 			self.punchangle_y = -10;
 			//self.punchangle_z = 5;
 			Set_W_Frame (0, 3, 0.3, 0, KNIFE, ReturnWeaponModel, "progs/VModels/v_knife.mdl", false, S_RIGHT);
-			self.fire_delay = time + 0.4;
+			self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = time + 0.4;
 			self.knife_delay = time + 0.7;
 		}
 	}
@@ -1846,20 +1852,35 @@ void () Weapon_Logic =
 	UpdatePunchangle(self);
 	#endif
 			
+	//FIXME - cleanup!
 	if (IsDualWeapon(self.weapon)) { 
 		if (self.button0) {
+			#ifndef PSP
 			W_Fire(S_LEFT);
+			#else
+			W_Fire(S_RIGHT);
+			#endif
 		} else {
+			#ifndef PSP
 			self.semi2 = FALSE;
+			#else
+			self.semi = FALSE;
+			#endif
 		}
 		
-		#ifndef PSP
 		if (self.button8) {
+			#ifndef PSP
 			W_Fire(S_RIGHT);
+			#else
+			W_Fire(S_LEFT);
+			#endif
 		} else {
+			#ifndef PSP
 			self.semi = FALSE;
+			#else
+			self.semi2 = FALSE;
+			#endif
 		}
-		#endif
 		
 	} else {
 		if (self.button0) {

@@ -770,6 +770,7 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 	MSG_WriteByte (msg, SV_ModelIndex(pr_strings+ent->v.weapon2model));
 	MSG_WriteByte (msg, ent->v.weapon2skin);
 	MSG_WriteByte (msg, ent->v.weapon2frame);
+	MSG_WriteByte (msg, ent->v.currentmag2);
 }
 
 /*
