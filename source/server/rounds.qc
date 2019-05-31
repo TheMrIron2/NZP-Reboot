@@ -163,13 +163,16 @@ void() NewRound =
 		if (world.fog) {
 			#ifdef PSP
 			localcmd(strcat("fog ", world.fog));
-			#else 
+			#else
+			#ifdef PC
 			localcmd(strcat("fog ", world_fog));
+			#endif
 			#endif
 		}
 	}
 
 	Remaining_Zombies = Total_Zombies = getZombieTotal();
+	#ifndef NX
 	#ifdef PSP
 	//local entity e = find(world, classname, "player");
 	//if (rounds == 2)
@@ -180,6 +183,7 @@ void() NewRound =
 		case 10: GiveAchievement(1, pl1); break;
 		case 15: GiveAchievement(2, pl1); break;
 	}
+	#endif
 	#endif
 }
 void() Round_Core =

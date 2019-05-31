@@ -20,6 +20,13 @@ const float EVENT_PLAYERUPDATE = 31;
 const float EVENT_WEAPONUPDATE = 32;
 const float EVENT_HUDUPDATE = 33;
 
+// Define our PC version if we don't have NX or PSP 
+#ifndef NX
+#ifndef PSP
+#define PC
+#endif
+#endif
+
 //nzp weapon defines
 //id list
 #define W_NOWEP        0

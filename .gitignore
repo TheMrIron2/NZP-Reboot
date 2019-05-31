@@ -1,5 +1,6 @@
 # Compiled Object files
 *conhistory.txt
+*.DS_STORE
 
 pc/nzp/source/fteqcc\.log
 

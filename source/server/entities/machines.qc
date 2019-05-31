@@ -29,7 +29,7 @@ void GivePerk(float perk) {
 			self.perks = self.perks | 64;
 			break;
 		default:
-			print("Unknown perk type, wtf?\n");
+			break;
 	}
   	sound_perk_delay = time + 4.5;
 	self.isBuying = false;
@@ -85,7 +85,7 @@ void DrinkPerk(float perk) {
 			func = give_deadshot;
 			break;
 		default:
-			print("Unknown perk type, wtf?\n");
+			break;
 	}
 	other.isBuying = true;
 	entity tempe = self;
@@ -267,7 +267,7 @@ void() setup_perk =
 			case "perk_staminup":
 			case "perk_double":
 			case "perk_deadshot":
-			#ifdef PSP
+			#ifndef PC
 				self.effects = self.effects |  EF_ORANGELIGHT;
 			#else 
 				self.effects = self.effects |  EF_ORANGE;
@@ -389,7 +389,7 @@ void() perk_deadshot =
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
 
-	#ifndef PSP
+	#ifdef PC
 	self.cost = 1000;
 	#else
 	self.cost = 1500;
@@ -426,7 +426,7 @@ void() Turn_Lights =
 			case "perk_staminup":
 			case "perk_double":
 			case "perk_deadshot":
-			#ifdef PSP
+			#ifndef PC
 				tempe.effects = self.effects |  EF_FULLBRIGHT;
 				tempe.effects = self.effects |  EF_ORANGELIGHT;
 			#else 
@@ -619,6 +619,8 @@ float (float r) Getweaponid =
 	
 	return r;
 }
+
+// naievil -- wow...just fucking fix this
 float() randomweapon = //this function is for making random box weapon system, currently it acts as just random thing
 {
 	local float r;
@@ -1070,7 +1072,7 @@ void() mystery_touch =
 						other.weapon2model = "";
 					}
 					
-					#ifdef PSP
+					#ifndef PC
 					other.Flash_Offset = GetWeaponFlash_Offset(self.boxweapon.weapon);
 					other.Flash_Size = GetWeaponFlash_Size(self.boxweapon.weapon);
 					other.Weapon_Name = GetWeaponName(self.boxweapon.weapon);
@@ -1093,7 +1095,7 @@ void() mystery_touch =
 					other.currentammo = getWeaponAmmo(self.boxweapon.weapon);
 					other.currentmag = getWeaponMag(self.boxweapon.weapon);
 					other.weaponskin = GetWepSkin(self.boxweapon.weapon);
-					#ifdef PSP
+					#ifndef PC
 					other.Flash_Offset = GetWeaponFlash_Offset(self.boxweapon.weapon);
 					other.Flash_Size = GetWeaponFlash_Size(self.boxweapon.weapon);
 					other.Weapon_Name = GetWeaponName(self.boxweapon.weapon);
@@ -1116,12 +1118,14 @@ void() mystery_touch =
 }
 
 
+// naievil -- fucking wow...FIXME and make me not look absolutely fucking awful
 void() Load_Mbox_Data =
 {
     
 	local float file;
 	local string h;
 	string temps;
+
 	h = strcat(mapname, ".mbox");
 	h = strcat("maps/",  h);
 	file = fopen (h, FILE_READ);
@@ -1129,6 +1133,7 @@ void() Load_Mbox_Data =
 	if (file == -1) {
 		colt = kar = db =bar = mg = ray = thomp = flame = ppsh = sawn = tesla = m1a1 = ptrs = panz = stg = mp40 = revolver = gewehr = fg = browning = kars = bknife = trench = m1 = type100 = 1;
 	} else {
+
 		h = (fgets(file));
 		colt = stof(h);
 		h = (fgets(file));
@@ -1181,6 +1186,7 @@ void() Load_Mbox_Data =
 		type100 = stof(h);
 		h = (fgets(file));
 	}
+
 	if (colt)
 	{
 		temps = GetWeaponModel(W_COLT, 1);
@@ -1382,6 +1388,7 @@ void() Load_Mbox_Data =
 		precache_model (temps);
 		precache_extra(W_TYPE);
 	}
+
 }
 
 void() mystery_box =
@@ -1524,7 +1531,7 @@ void PapUpgrade(entity pap, entity buyer) {
 
 	Set_W_Frame (0, 39, 0, 0, 0, W_TakeOut, "models/machines/v_pap.mdl", true, S_BOTH);
 
-	#ifdef PSP
+	#ifndef PC
 	self.Weapon_Name = "";
 	#endif
 
@@ -1588,7 +1595,7 @@ void touch_pap() {
 			SwitchWeapon(self.weapon);
 			Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, true, S_BOTH);//FIXME
 
-			#ifdef PSP
+			#ifndef PC
 			self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
 			self.Flash_Size = GetWeaponFlash_Size(self.weapon);
 			self.Weapon_Name = GetWeaponName(self.weapon);

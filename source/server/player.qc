@@ -92,7 +92,7 @@ void() playgetup8		=[	9,		playgetup9		] {self.frame = 46;}
 void() playgetup9		=[	10,		playgetup10		] {self.frame = 47;}
 void() playgetup10		=[	11,		playgetup10		] {self.frame = 48;}
 
-#ifndef PSP
+#ifdef PC
 #define forward 	0
 #define backward 	1
 #define left 		2
@@ -150,10 +150,10 @@ void() PlayerJump =
 	
 	self.oldz = self.origin_z;
 
-	// jumping needs to be handled manually on psp
-	#ifdef PSP
+	// jumping needs to be handled manually on psp and switch
+	#ifndef PC
 	self.velocity_z = self.velocity_z + 270;
-	#endif
+	#endif 
 }
 
 void() PlayerPreThink =
@@ -163,7 +163,7 @@ void() PlayerPreThink =
 	} else {
 		self.maxspeed = 175;
 		if (self.sprinting) {
-		#ifndef PSP
+		#ifdef PC
 			if (self.viewzoom > 0.9)
 				self.viewzoom -= 0.015;
 			else if (self.viewzoom < 0.9)
@@ -171,11 +171,11 @@ void() PlayerPreThink =
 				
 			// viewbob when running 
 			self.punchangle_x = 1*sin(time*15);
-		#endif		
+		#endif	
 			playrun1();
 			self.maxspeed *= 1.66;
 		} else if (!self.sprinting && !self.zoom) {
-		#ifndef PSP
+		#ifdef PC
 			if (self.viewzoom < 1)
 				self.viewzoom += 0.015;
 			else 
@@ -274,7 +274,7 @@ void() PlayerPostThink =
 		self.lastsound_time = time - 0.15;
 	}
 	
-	#ifndef PSP
+	#ifdef PC
 	//footsteps
 	if((vlen(self.velocity) > 100) &&(( time - self.lastsound_time > 0.4) || (time - self.lastsound_time > 0.3 && self.sprinting)) && (self.flags & FL_ONGROUND))
 	{
@@ -328,7 +328,7 @@ void() PlayerPostThink =
 
 
 	if (self.sprinting) {
-		#ifdef PSP
+		#ifndef PC
 		if (!self.velocity || self.stance != 2) {
 			W_SprintStop();
 		}
@@ -339,8 +339,7 @@ void() PlayerPostThink =
 		#endif
 		
 		// Have to choose from PSP and PC here since frametime is a lot different...
-		#ifndef PSP
-		
+		#ifdef PC
 		if (self.perks & P_STAMIN) {
 			self.stamina = self.stamina - (0.05*fabs(sin(time)));
 		} else {
@@ -358,7 +357,7 @@ void() PlayerPostThink =
 			W_SprintStop();
 		}
 	} else if (self.stamina < 3) 	{
-		#ifdef PSP
+		#ifndef PC
 		self.stamina = self.stamina + 10*frametime;
 		#else 
 		self.stamina = self.stamina + (0.1*fabs(sin(time)));
@@ -376,7 +375,7 @@ void() ClientKill = {};
 //called when a client connects to the server
 void() ClientConnect =
 {
-	#ifndef PSP
+	#ifdef PC
 	// Maintain old FGD values and just convert them to new ones
 	// 
 	if (world.fog) {
@@ -423,7 +422,6 @@ void() PollPlayerPoints =
 			breakpoint = 1;
 			break;
 		}
-		
 		UpdatePlayerPoints(i, pollent.points, pollent.kills, 0, pollent.netname, pollent);
 	}
 }
@@ -523,7 +521,7 @@ void() PlayerSpawn =
 	PromptLevelChange(self.nextthink + 3, 1, self);	
 	UpdatePlayerCount(player_count);
 	
-	#ifndef PSP
+	#ifdef PC
 	PollPlayerPoints();
 	UpdateV2model("", 0);
 	stuffcmd(self, "cl_gunx 8;cl_guny 16;cl_gunz 25\n");
@@ -533,7 +531,6 @@ void() PlayerSpawn =
 
 	if (G_WORLDTEXT)
 		WorldText(world.chaptertitle, world.location, world.date, world.person, self);
-
 	#else 
 	self.Weapon_Name = GetWeaponName(self.weapon);
 	self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
@@ -575,7 +572,7 @@ void() PutClientInServer =
 	if (spawn_time > time || !rounds)
 		PlayerSpawn();
 	// TEMPORARY
-	#ifndef PSP
+	#ifdef PC
 	else 
 		SpectatorSpawn();
 	#endif
@@ -633,13 +630,13 @@ void(string com) SV_ParseClientCommand =
 	{
 		static float paused;
 		paused = !paused;
-		#ifndef PSP
+		#ifdef PC
 		setpause(paused);
 		#endif
 	}
 	else if (com == "noclip")
 	{		
-		#ifdef PSP
+		#ifndef PC
 		entity benis = self;
 		other = find(world, classname, "player");
 		self = other;
@@ -650,7 +647,7 @@ void(string com) SV_ParseClientCommand =
 		else
 			self.movetype = MOVETYPE_WALK;
 			
-		#ifdef PSP
+		#ifndef PC
 		localcmd(com);
 		self = benis;
 		#endif
@@ -693,7 +690,7 @@ void(string com) SV_ParseClientCommand =
 					
 					self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
 					
-					#ifdef PSP
+					#ifndef PC
 					self.Weapon_Name = GetWeaponName(self.weapon);
 					#endif
 				}
@@ -720,7 +717,7 @@ void(string com) SV_ParseClientCommand =
 					self = tempe1;
 					break;
 			default: 
-					#ifdef PSP
+					#ifndef PC
 					bprint(PRINT_HIGH, "Command not found in QC\n");
 					#endif
 					break;
@@ -728,7 +725,7 @@ void(string com) SV_ParseClientCommand =
 	}
 };
 
-#ifndef PSP
+#ifdef PC
 void() SV_RunClientCommand =
 {
 	runstandardplayerphysics(self);

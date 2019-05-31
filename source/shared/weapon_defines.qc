@@ -2714,6 +2714,7 @@ float(float wep)  EqualPapWeapon =
 
 void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeaponSound =
 {
+#ifndef NX
 	if (anim_style == KNIFE) {
 		if (curweaponframe == 6) {
 			self.punchangle_x = -2;
@@ -2723,6 +2724,7 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 			self.punchangle_y = 10;
 		}
 	}
+#endif
 	if (anim_style == FIRE)
 	{
 		if (wep == W_KAR || wep == W_ARMAGEDDON || wep == W_KAR_SCOPE || wep == W_HEADCRACKER)
@@ -3722,10 +3724,12 @@ int(int weapon, int type) GetLowAmmo = // determine what ammo value you should h
 		case W_KILLU: if (type) return 2; else return 20;
 		case W_TESLA: if (type) return 1; else return 6;
 		#ifndef PSP //warnings on psp..?
+		#ifndef NX
 		case W_CUSTOM1: if (type) return W_CLOWMAG[0]; else return W_CLOWRES[0];
 		case W_CUSTOM2: if (type) return W_CLOWMAG[1]; else return W_CLOWRES[1];
 		case W_CUSTOM3: if (type) return W_CLOWMAG[2]; else return W_CLOWRES[2];
 		case W_CUSTOM4: if (type) return W_CLOWMAG[3]; else return W_CLOWRES[3];
+		#endif
 		#endif
 		case 0: if (type) return -1; else return -1;
 		default: return 0;

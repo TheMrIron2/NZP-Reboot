@@ -10,7 +10,6 @@
 
 //custom weapon search
 void(entity who) nzd_defineweapon = {
-	//W_CUSTOMNAME = "reee";
 	float f, p, l, fnum, wepnum, framenum, fsnd;
 	string line;
 
@@ -149,7 +148,9 @@ void(entity who) nzd_defineweapon = {
 						break;
                     case "}":
 						#ifndef PSP
+						#ifndef NX
 						sendCustomWeapon(wepnum, W_CUSTOMNAME[wepnum], W_CVMODEL[wepnum], W_CMAG[wepnum], W_CRESERVE[wepnum], vtos(W_CADS[wepnum]), W_CCROSSMIN[wepnum], W_CCROSSMAX[wepnum], vtos(W_CFLASH[wepnum]), W_CFLASHSIZE[wepnum], W_CVMODEL2[wepnum], W_CDUAL[wepnum], who);
+						#endif
 						#endif
 						if (wepnum == MAX_CWEAPONS - 1) {
 							l = 0;
@@ -233,6 +234,8 @@ void(entity who) nzd_defineweapon = {
 
 //basically copying the waypoint code.. yikes
 void() load_nzd = {
+
+	#ifndef NX
     float file, point;
     string h;
     float loop;
@@ -240,7 +243,7 @@ void() load_nzd = {
 
     h = strcat(mappath, ".nzd");
 	file = fopen (h, FILE_READ);
-
+	
 	if (file == -1)
 	{
 		dprint(".NZD file not found, using default settings..\n");
@@ -286,7 +289,6 @@ void() load_nzd = {
 				string value, variable;
 				variable = strtrim(argv(0));
 				value = strtrim(argv(2));
-
 				switch (variable) {
 					case "proneperkpoints":
 						G_PRONEPOINTS = stof(value);
@@ -356,4 +358,5 @@ void() load_nzd = {
 	}
 
 	fclose(file);
+	#endif
 }

@@ -205,7 +205,7 @@ void () buy_weapon_touch =
 		return;
 	}
 	
-	#ifdef PSP
+	#ifndef PC
 	other.Weapon_Name_Touch = GetWeaponName(self.weapon);
 	#endif
 	
@@ -399,7 +399,7 @@ void () buy_weapon_touch =
 		SwitchWeapon(self.weapon);
 		Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
 		
-		#ifdef PSP
+		#ifndef PC
 		self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
 		self.Flash_Size = GetWeaponFlash_Size(self.weapon);
 		self.Weapon_Name = GetWeaponName(self.weapon);
@@ -447,7 +447,7 @@ void() BarrelExplode =
 	sound (self, CHAN_WEAPON, "sounds/weapons/grenade/explode.wav", 1, ATTN_NORM);	
 	DamgageExplode (self, self.enemy, 500, 75, 200);//was 256 inch radius, kicked it down to 128 because 21 feet exploding radius is... a bit overkill...
 	
-	#ifndef PSP
+	#ifdef PC
 	te_explosionquad(self.origin);
 	#else
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
@@ -577,7 +577,7 @@ void zapper_play () {
 
 	if (zents) {
 		//TEMPORARY
-		#ifndef PSP
+		#ifdef PC
 		te_lightning2(self, self.origin, zents.origin);
 		#endif
 	}
@@ -754,7 +754,7 @@ void() touch_songtrigger = {
 }
 
 void() trigger_song = {
-	#ifdef PSP
+	#ifndef PC
 	remove(self);
 	#endif
 

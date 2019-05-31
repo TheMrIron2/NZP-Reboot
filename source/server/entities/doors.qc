@@ -129,7 +129,7 @@ void() door_go_up =
 	self.state = STATE_UP;
 	SUB_CalcMove (self.pos2, self.speed, door_hit_top);
 	
-	#ifdef PSP
+	#ifndef PC
 	Open_Waypoint(self.wayTarget);
 	#endif
 	SUB_UseTargets();

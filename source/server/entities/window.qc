@@ -335,7 +335,7 @@ void() item_barricade =
 	setorigin(self,self.origin);
 	spawn_boxes();
 
-	#ifdef PSP
+	#ifndef PC
 	windows[wincnt] = self;
 	wincnt++;
 	#endif
@@ -365,7 +365,7 @@ void() item_cover =
 	setorigin(self,self.origin + '0 0 32');
 	spawn_boxes();
 
-	#ifdef PSP
+	#ifndef PC
 	windows[wincnt] = self;
 	wincnt++;
 	#endif

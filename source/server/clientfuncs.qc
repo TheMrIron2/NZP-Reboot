@@ -5,6 +5,7 @@
 void SetUpdate(entity client, float type, float val1, float val2, float val3)
 {
 	#ifndef PSP
+	#ifndef NX
 	if (type != 2)
 	{
 		msg_entity = client;
@@ -25,9 +26,11 @@ void SetUpdate(entity client, float type, float val1, float val2, float val3)
 		WriteByte(MSG_ALL, val3); // misc flags/vars for later if needed
 	}
 	#endif
+	#endif
 }
 
 #ifndef PSP
+#ifndef NX
 void(entity to, float type, float cost, float weapon) useprint = {
 	
     msg_entity = to;
@@ -39,19 +42,23 @@ void(entity to, float type, float cost, float weapon) useprint = {
 	
 }
 #endif
+#endif
 
 void NotifyNewRound(float to) {
 	#ifndef PSP
+	#ifndef NX
 	
 	WriteByte(MSG_ALL, SVC_CGAMEPACKET);
 	WriteByte(MSG_ALL, EVENT_NEWROUND);
 	WriteByte(MSG_ALL, to);
 	
 	#endif
+	#endif
 }
 
 void SetRound(entity client, float to) {
 	#ifndef PSP
+	#ifndef NX
 	
     msg_entity = client;
 	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
@@ -59,11 +66,13 @@ void SetRound(entity client, float to) {
 	WriteByte(MSG_ONE, to);
 	
 	#endif
+	#endif
 }
 
 void SetPerk(entity client, float to) 
 {
 	#ifndef PSP
+	#ifndef NX
 	
     msg_entity = client;
 	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
@@ -71,11 +80,13 @@ void SetPerk(entity client, float to)
 	WriteLong(MSG_ONE, to);
 	
 	#endif
+	#endif
 }
 
 void(float to) SwitchWeapon =
 {
 	#ifndef PSP
+	#ifndef NX
 	
 	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 	WriteByte(MSG_MULTICAST, EVENT_WEAPONCHANGE);
@@ -84,11 +95,13 @@ void(float to) SwitchWeapon =
 	multicast('0 0 0', MULTICAST_ONE);
 	
 	#endif
+	#endif
 }
 
 void(string to, float skin) UpdateVmodel =
 {
 	#ifndef PSP
+	#ifndef NX
 	
 	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 	WriteByte(MSG_MULTICAST, EVENT_UPDATEVMODEL);
@@ -98,11 +111,13 @@ void(string to, float skin) UpdateVmodel =
 	multicast('0 0 0', MULTICAST_ONE);
 	
 	#endif
+	#endif
 }
 
 void(string to, float skin) UpdateV2model =
 {
 	#ifndef PSP
+	#ifndef NX
 	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 	WriteByte(MSG_MULTICAST, EVENT_UPDATEV2MODEL);
 	WriteString(MSG_MULTICAST, to);
@@ -110,24 +125,26 @@ void(string to, float skin) UpdateV2model =
 	msg_entity = self;
 	multicast('0 0 0', MULTICAST_ONE);
 	#endif	
+	#endif
 }
 
 void(float broadcast_time, float type) BroadcastMessage =
 {
 	#ifndef PSP
-	
+	#ifndef NX
 	WriteByte(MSG_ALL, SVC_CGAMEPACKET);
 	WriteByte(MSG_ALL, EVENT_BROADCAST);
 	WriteByte(MSG_ALL, broadcast_time);
 	WriteByte(MSG_ALL, type);
 	
 	#endif
+	#endif
 }
 
 void(float playernum, float points, float am, float kills, string name, entity person) UpdatePlayerPoints =
 {
 	#ifndef PSP
-	
+	#ifndef NX
 	if (player_count == 0) {
 		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 		WriteByte(MSG_MULTICAST, EVENT_POINTUPDATE);
@@ -150,11 +167,12 @@ void(float playernum, float points, float am, float kills, string name, entity p
 	}
 	
 	#endif
+	#endif
 }
 
 void(float count) UpdatePlayerCount = {
 	#ifndef PSP
-
+	#ifndef NX
 	if (count == 0)
 		return;
 	else {
@@ -164,11 +182,13 @@ void(float count) UpdatePlayerCount = {
 	}
 
 	#endif
+	#endif
 }
 
 void(float newtime, float newtype, entity change) PromptLevelChange = 
 {
 	#ifndef PSP
+	#ifndef NX
 	
 	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 	WriteByte(MSG_MULTICAST, EVENT_BLACKOUT);
@@ -178,6 +198,7 @@ void(float newtime, float newtype, entity change) PromptLevelChange =
 	multicast('0 0 0', MULTICAST_ONE);
 	
 	#endif
+	#endif
 }
 
 void(entity who) UpdatePunchangle =	
@@ -185,6 +206,7 @@ void(entity who) UpdatePunchangle =
 
 	// naievil -- shit logic lol...but result looks clean as fuck...
 	#ifndef PSP
+	#ifndef NX
 	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
 	WriteByte(MSG_ONE, EVENT_PUNCHANGLE);
 	WriteCoord(MSG_ONE, who.punchangle_x);
@@ -224,9 +246,11 @@ void(entity who) UpdatePunchangle =
 		who.punchangle_z = 0;
 		
 	#endif
+	#endif
 }
 
 #ifndef PSP
+#ifndef NX
 void(string h, float h2, entity who) pushHUD = {
 	if (player_count == 0) {
 		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
@@ -327,6 +351,7 @@ void(float ach, entity who, optional float single) GiveAchievement= {
 		WriteByte(MSG_ALL, ach);
 	}
 }
+#endif
 #endif
 
 // *****************************************

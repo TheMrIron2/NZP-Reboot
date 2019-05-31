@@ -92,16 +92,19 @@ void() StartFrame =
 		}
 	}
 }
+string(string s) precache_model         = #20;
 
 void() precaches = 
 {
 	precache_model ("models/player.mdl");
 	
 	#ifndef PSP
+	#ifndef NX
 	precache_model ("models/v_morphine.mdl");
 
 	if (world.song != "")
 		precache_sound (world.song);
+	#endif
 	#endif
 	
 	precache_model ("progs/Sprites/revive.spr");
@@ -253,6 +256,8 @@ void() worldspawn =
 	precaches();
 
 	#ifndef PSP
+	#ifndef NX 		// Keep this here, we shouldn't have these on anything but PC...
+					// or just define PC....
 	clientstat(STAT_CURRENTMAG, EV_FLOAT, currentmag);
 	clientstat(STAT_CURRENTMAG2, EV_FLOAT, currentmag2);
 	clientstat(STAT_POINTS, EV_FLOAT, points);
@@ -270,12 +275,13 @@ void() worldspawn =
 	clientstat(STAT_PLAYERNUM, EV_FLOAT, playernum);		// literally useless but will be kept in case
 	clientstat(STAT_PLAYERSTANCE, EV_FLOAT, stance);
 	#endif
+	#endif 
 	
 	mappath = strcat("maps/", mapname);
 	mappath = strzone(mappath);
 
 	LoadWaypointData();
-
+		
 	//set game elements
 	G_STARTPOINTS = 500;
 	G_STARTROUND = 1;
@@ -287,6 +293,7 @@ void() worldspawn =
 	G_PERKS = 0;
 	G_PERKPOWER = 0;
 	load_nzd();
+	
 }
 
 void() SpectatorConnect =

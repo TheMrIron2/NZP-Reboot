@@ -1,7 +1,9 @@
 // put custom server-only globals and fields here
 
 #ifndef PSP
+#ifndef NX
 #pragma target FTE
+#endif
 #endif 
 
 #define true 1
@@ -50,7 +52,10 @@ entity activator;
 .float requirespower;
 
 //player funcs
+#ifdef PC
 .float zoom;
+#endif
+
 .float sprinting;
 .float weaponskin;
 .float secondaryweaponskin;
@@ -349,7 +354,7 @@ typedef struct
 #define SET_OPEN	1
 #define SET_CLOSED	2
 
-#ifndef PSP
+#ifdef PC
 waypoint_ai waypoints[MAX_WAYPOINTS];
 
 // fog

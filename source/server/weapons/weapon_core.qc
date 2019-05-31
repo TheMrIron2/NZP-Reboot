@@ -34,7 +34,7 @@ void() W_AimIn =
 		return;
 	}
 		
-	#ifdef PSP
+	#ifndef PC
 	self.ADS_Offset = GetWeaponADSOfs_PSP(self.weapon);
 	zoomvar = 2;
 	#endif
@@ -77,7 +77,7 @@ void() W_AimOut =
 		ReturnWeaponModel();
 	}
 		
-	#ifdef PSP
+	#ifndef PC
 	self.zoom = 0;
 	#endif
 
@@ -102,7 +102,7 @@ void() W_SprintStop =
 		return;
 	
 	//TEMPORARY
-	#ifdef PSP
+	#ifndef PC
 	self.zoom = 0;
 	#endif
 
@@ -133,7 +133,7 @@ void W_SprintStart () {
 	float endframe = GetFrame(self.weapon,SPRINT_IN_END);
 	string modelname = GetWeaponModel(self.weapon, 0);
 
-	#ifdef PSP 
+	#ifndef PC
 	self.zoom = 3;
 	#endif
 	
@@ -194,7 +194,7 @@ void() W_Switch =
 		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0; 
 		
 		
-		#ifdef PSP
+		#ifndef PC
 		self.Weapon_Name = GetWeaponName(self.weapon);
 		self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
 		self.Flash_Size = GetWeaponFlash_Size(self.weapon);
@@ -347,7 +347,7 @@ void() ContinueReload = //Special reloads
 void(float side) W_Reload =
 {
 	//TEMPORARY
-	#ifndef PSP
+	#ifdef PC
 	self.viewzoom = 1;
 	#endif
 	self.zoom = false;
@@ -527,7 +527,7 @@ void(vector org, vector vel, float damage) SpawnBlood =
 {
 	local entity f;
   
-	#ifndef PSP
+  	#ifdef PC
 	te_blood(org, vel, 1);
 	#else
 	particle (org, vel*0.1, 73, damage*2);
@@ -537,7 +537,7 @@ void(vector org, vector vel, float damage) SpawnBlood =
 	f.hitcount = f.hitcount + 1;
 };
 
-#ifdef PSP
+#ifndef PC
 void(vector where) spawn_gibs = {
 	particle(where, where, 225, 1);
 }
@@ -549,7 +549,7 @@ void Parse_Damage () = // DO NOT TOUCH
 	entity ent;
 	float total_dmg;
 
-	#ifdef PSP
+	#ifndef PC
 	entity body_ent;
 	float head_hit, headoff;
 	#endif
@@ -559,7 +559,7 @@ void Parse_Damage () = // DO NOT TOUCH
 	while (ent) {
 		if (ent.classname != "radio" && ent.classname != "explosive_barrel") {
 			
-			#ifdef PSP
+			#ifndef PC
 			if (ent.classname == "ai_zombie_head")
 				head_hit = 1;
 			
@@ -784,10 +784,13 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 		
 		#ifdef PSP
 		msg_entity = self;
+		// Naievil -- FIXME #ifndef NX
 		WriteByte(MSG_ONE, SVC_HITMARK);
 		#endif
 	} else {
+
 	#ifdef PSP
+	// Naievil -- FIXME #ifndef NX
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte (MSG_BROADCAST, TE_GUNSHOT);
 	WriteCoord (MSG_BROADCAST, org_x);
@@ -796,7 +799,7 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 	#endif
 	}
 	
-	#ifndef PSP
+	#ifdef PC
 	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 	WriteByte(MSG_MULTICAST, EVENT_PISTOLFIRE);
 	WriteEntity(MSG_MULTICAST, self);
@@ -822,7 +825,7 @@ void (float shotcount, float sprd, float Damage/*, float headmulti, float legmul
 	
 	src = self.origin + self.view_ofs;
 	
-	#ifdef PSP
+	#ifndef PC
 	CL_SendWeaponFire();
 	#endif
 
@@ -1080,6 +1083,9 @@ void(float side) W_Fire =
 	SetUpdate(self, UT_HUD, 6, 0, 0);
 	SetUpdate(self, UT_CROSSHAIR, 5, 0, 0);
 	
+
+	// REFORMAT THIS 
+	// Naievil -- FIXME #ifndef NX
 	//TEMPORARY
 	#ifdef PSP
 	self.effects = self.effects | EF_MUZZLEFLASH;
@@ -1154,7 +1160,7 @@ void () W_Knife =
 		
 		/* naievil (FIXME) add weapon decal here */
 	
-		#ifndef PSP
+		#ifdef PC
 		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 		WriteByte(MSG_MULTICAST, EVENT_PISTOLFIRE);
 		WriteEntity(MSG_MULTICAST, self);
@@ -1167,11 +1173,13 @@ void () W_Knife =
 		WriteEntity(MSG_MULTICAST, hit_ent);
 		multicast(trace_endpos, MULTICAST_PHS);
 		#else
+		#ifdef PSP
 		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 		WriteByte (MSG_BROADCAST, TE_GUNSHOT);
 		WriteCoord (MSG_BROADCAST, org_x);
 		WriteCoord (MSG_BROADCAST, org_y);
 		WriteCoord (MSG_BROADCAST, org_z);
+		#endif
 		#endif
 	}
 
@@ -1267,7 +1275,7 @@ void() GrenadeExplode =
 	else
 		DamgageExplode (self, self.owner, 125, 300, 128); //explosive weapons have a smaller radius but are more powerful :)
 	
-	#ifndef PSP
+	#ifdef PC
 	te_explosionquad(self.origin);
 	#else
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
@@ -1337,7 +1345,8 @@ void() W_ThrowBetty =
 		local entity oldself;
 		oldself = self;
 		self = betty;
-		#ifndef PSP
+		
+		#ifdef PC
 		droptofloor();
 		#else
 		droptofloor(0, 0);
@@ -1590,7 +1599,7 @@ void () Impulse_Functions =
 			rounds += 4;
 			break;
 		case 23:
-			#ifndef PSP
+			#ifdef PC
 			if (!checkMovement(forward))
 				return;
 			#endif
@@ -1620,7 +1629,6 @@ void () Impulse_Functions =
 			#endif
 			break;
 		case 26:
-
 		case 30:
 			if (self.sprinting)
 				dolphin_dive();
@@ -1653,7 +1661,7 @@ void () Impulse_Functions =
 			waypoint_mode = 1;
 			break;
 		default:
-			#ifndef PSP
+			#ifdef PC
 			bprint(PRINT_HIGH, "Unknown impulse: ", ftos(self.impulse));
 			#endif
 			break;
@@ -1820,7 +1828,7 @@ void() CheckPlayer =
 			if (self.perks & P_FLOP && fabs(self.oldz - self.origin_z) > 90) {
 				sound (self, CHAN_WEAPON, "sounds/weapons/grenade/explode.wav", 1, ATTN_NORM);	
 				DamgageExplode (self, self, 225, 75, 128);
-				#ifndef PSP
+				#ifdef PC
 				te_explosionquad(self.origin);
 				#endif
 			}
@@ -1840,7 +1848,7 @@ void () Weapon_Logic =
 	W_Frame_Update ();
 	Impulse_Functions();
 
-	#ifdef PSP
+	#ifndef PC
 	// For PSP only to tell our engine to display the scope 
 	if ((self.scopetime < time) && self.scopetime) {
 		self.scopetime = 0;
@@ -1855,13 +1863,13 @@ void () Weapon_Logic =
 	//FIXME - cleanup!
 	if (IsDualWeapon(self.weapon)) { 
 		if (self.button0) {
-			#ifndef PSP
+			#ifdef PC
 			W_Fire(S_LEFT);
 			#else
 			W_Fire(S_RIGHT);
 			#endif
 		} else {
-			#ifndef PSP
+			#ifdef PC
 			self.semi2 = FALSE;
 			#else
 			self.semi = FALSE;
@@ -1869,13 +1877,13 @@ void () Weapon_Logic =
 		}
 		
 		if (self.button8) {
-			#ifndef PSP
+			#ifdef PC
 			W_Fire(S_RIGHT);
 			#else
 			W_Fire(S_LEFT);
 			#endif
 		} else {
-			#ifndef PSP
+			#ifdef PC
 			self.semi = FALSE;
 			#else
 			self.semi2 = FALSE;
@@ -1892,7 +1900,7 @@ void () Weapon_Logic =
 			if (!self.zoom) {
 				W_AimIn();
 			} 
-			#ifndef PSP
+			#ifdef PC
 			else {
 			
 				if (self.weapon == W_KAR_SCOPE || self.weapon == W_PTRS ||
@@ -1911,7 +1919,7 @@ void () Weapon_Logic =
 			#endif
 		} else if (!self.button8 && self.zoom) {
 		
-			#ifndef PSP
+			#ifdef PC
 			if (self.weapon == W_KAR_SCOPE   || self.weapon == W_PTRS ||
 				self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR) {
 				if (self.viewzoom == 0.5) {

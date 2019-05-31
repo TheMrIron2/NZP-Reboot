@@ -28,6 +28,7 @@ float (entity way1, entity way2) progs_Link_Waypoints =
 		return 2;//already linked
 	}
 	
+	#ifndef NX
 	if (way1.target == "")
 	{
 		way1.target = way2.waynum;
@@ -73,6 +74,8 @@ float (entity way1, entity way2) progs_Link_Waypoints =
 		//bprint(PRINT_HIGH, "no targets remaining!\n");
 		return -1;//no targets
 	}
+	
+	#endif
 	return 1;
 }
 
@@ -155,6 +158,7 @@ void() Remove_Waypoint =
 	bprint (PRINT_HIGH, active_way.waynum);
 	bprint (PRINT_HIGH, "\n");
 
+#ifndef NX
 	strunzone (active_way.classname);
 	strunzone (active_way.targetname);
 	strunzone (active_way.waynum);
@@ -167,6 +171,7 @@ void() Remove_Waypoint =
 	strunzone (active_way.target7);
 	strunzone (active_way.target8);
 	remove (active_way);
+#endif
 }
 
 void() creator_way_touch =
@@ -208,6 +213,7 @@ void () Create_New_Waypoint =
 		tempe = find (tempe, classname, "waypoint");
 	}
 	
+	#ifndef NX
 	temps = ftos(way_count + 1);
 	new_way.waynum = temps;
 	new_way.waynum = strzone(new_way.waynum);
@@ -215,6 +221,7 @@ void () Create_New_Waypoint =
 	bprint (PRINT_HIGH, "Created waypoint  ");
 	bprint (PRINT_HIGH, new_way.waynum);
 	bprint (PRINT_HIGH, "\n");
+	#endif
 
 	new_way.touch = creator_way_touch;
 }
@@ -337,6 +344,7 @@ void () Link_Waypoints =
 		return;
 	}
 	
+	#ifndef NX
 	if (active_way.target == "")
 	{
 		active_way.target = current_way.waynum;
@@ -383,6 +391,7 @@ void () Link_Waypoints =
 		return;
 	}
 		
+	#endif
 	
 	bprint(PRINT_HIGH, "Linked waypoint ");
 	bprint (PRINT_HIGH, current_way.waynum);
@@ -597,6 +606,7 @@ entity() closestDoor =
 }
 void () Make_Special_Waypoint =
 {
+	#ifndef NX
 	if (self.classname != "player")
 		return;
 	if (!active_way)
@@ -638,10 +648,12 @@ void () Make_Special_Waypoint =
 		bprint(PRINT_HIGH, "\n");
 		//current_special++;
 	}
+	#endif
 }
 
 void (vector here, float which, string special, string trg, string trg2, string trg3, string trg4, string trg5, string trg6, string trg7, string trg8) Create_Waypoint =
 {
+	#ifndef NX
 	entity new_way;
 	new_way = spawn();
 
@@ -739,8 +751,9 @@ void (vector here, float which, string special, string trg, string trg2, string 
 		dprint (new_way.target8);
 		dprint ("\n");
 	}
-
+	
 	new_way.touch = creator_way_touch;
+	#endif
 }
 
 string tempstest;
@@ -749,6 +762,7 @@ void() Save_Waypoints
 	local float file;
 	string h;
 
+#ifndef NX
 	h = strcat(mappath, ".way");
 	file = fopen (h, FILE_WRITE);
 	
@@ -793,9 +807,11 @@ void() Save_Waypoints
 			fputs(file,"\n");
 	}
 	fclose(file);
+	#endif
 }
 void() Load_Waypoints
 {
+	#ifndef NX
 	float file, which;
 	string h, special, trg, trg2, trg3, trg4, trg5, trg6, trg7, trg8;
 	local vector where;
@@ -878,4 +894,5 @@ void() Load_Waypoints
 		h = (fgets(file));
 		h = (fgets(file));
 	}
+	#endif
 }
