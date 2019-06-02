@@ -1,6 +1,8 @@
 # Compiled Object files
 *conhistory.txt
 *.DS_STORE
+*.o
+*.d
 
 pc/nzp/source/fteqcc\.log
 
@@ -41,3 +43,5 @@ pc/nzp/maps/*.map
 *.pts
 *.wic
 cosmodrome* #moto - sorry lol
+
+source/nx/build/*

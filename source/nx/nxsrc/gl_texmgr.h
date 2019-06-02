@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define TEXPREF_CONCHARS		0x0400	// use conchars palette
 #define TEXPREF_WARPIMAGE		0x0800	// resize this texture when warpimagesize changes
 
-enum srcformat {SRC_INDEXED, SRC_LIGHTMAP, SRC_RGBA};
+enum srcformat {SRC_INDEXED, SRC_LIGHTMAP, SRC_RGBA, SRC_TGA};
 
 typedef uintptr_t src_offset_t;
 
@@ -110,6 +110,8 @@ void GL_DisableMultitexture (void); //selects texture unit 0
 void GL_EnableMultitexture (void); //selects texture unit 1
 void GL_Bind (gltexture_t *texture);
 void GL_ClearBindings (void);
+
+qpic_t *LoadTGA (FILE *fin, int matchwidth, int matchheight);
 
 #endif	/* _GL_TEXMAN_H */
 

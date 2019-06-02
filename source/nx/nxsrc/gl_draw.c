@@ -283,6 +283,9 @@ qpic_t *Draw_PicFromWad (const char *name)
 Draw_CachePic
 ================
 */
+
+extern char	cwd[MAX_OSPATH];
+
 qpic_t	*Draw_CachePic (const char *path)
 {
 	cachepic_t	*pic;
@@ -300,13 +303,39 @@ qpic_t	*Draw_CachePic (const char *path)
 	menu_numcachepics++;
 	strcpy (pic->name, path);
 
-//
-// load the pic from disk
-//
-	dat = (qpic_t *)COM_LoadTempFile (path, NULL);
-	if (!dat)
-		Sys_Error ("Draw_CachePic: failed to load %s", path);
-	SwapPic (dat);
+	// Determine whether or not we need to have a source by index or by something else
+	//
+	char extension[16];
+	char loc[MAX_OSPATH];
+	strcpy(extension, COM_FileGetExtension(path));
+	int src_type;
+
+	if (!strcmp("tga", extension)) {
+		//
+		// Naievil -- load TGA from absolute path for fopen to be okay
+		//
+		src_type = SRC_TGA;
+
+		// Load the true file, not the relative path
+		strcpy(loc, "/switch/nzportable/nzp/");
+		strcat(loc, path);
+
+		FILE *f;
+		f = fopen(loc, "rb");
+		if (!f) {
+			Sys_Error("Cannot read file %s\n", loc);
+		}
+
+		dat = (qpic_t *)LoadTGA(f, 0, 0);
+
+	} else {
+		src_type = SRC_INDEXED;
+
+		dat = (qpic_t *)COM_LoadTempFile (path, NULL);
+		if (!dat)
+			Sys_Error ("Draw_CachePic: failed to load %s", path);
+		SwapPic (dat);
+	}
 
 	// HACK HACK HACK --- we need to keep the bytes for
 	// the translatable player picture just for the menu
@@ -316,23 +345,10 @@ qpic_t	*Draw_CachePic (const char *path)
 
 	pic->pic.width = dat->width;
 	pic->pic.height = dat->height;
-
-	// Determine whether or not we need to have a source by index or by RGBA
-	//
-	char extension[16];
-	strcpy(extension, COM_FileGetExtension(path));
-	int src_type;
-
-	if (!strcmp("lmp", extension)) {
-		// This means it was LMP, so load as indexed
-		src_type = SRC_INDEXED;
-	} else {
-		src_type = SRC_RGBA;
-	}
-
 	// naievil -- modified to change extension
 	gl.gltexture = TexMgr_LoadImage (NULL, path, dat->width, dat->height, src_type, dat->data, path,
 									  sizeof(int)*2, TEXPREF_ALPHA | TEXPREF_PAD | TEXPREF_NOPICMIP); //johnfitz -- TexMgr
+
 	gl.sl = 0;
 	gl.sh = (float)dat->width/(float)TexMgr_PadConditional(dat->width); //johnfitz
 	gl.tl = 0;

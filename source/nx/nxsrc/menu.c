@@ -408,6 +408,10 @@ void M_Menu_Main_f (void)
 void M_Main_Draw (void)
 {
 	int x_offset = 8;
+	qpic_t *p;
+
+	p = Draw_CachePic ("gfx_new/menu/start_background.tga"); 
+	M_DrawPic ((vid.width/x_offset)/2, vid.height * 0.5 + 4, p);
 
 	char *s1 = "Single Player";
  	Draw_String ((vid.width/x_offset)/2, vid.height * (0.5 + ((0.35)/2)), s1);
@@ -1949,9 +1953,6 @@ void M_Menu_Credits_f (void)
 
 void M_Credits_Draw (void)
 {
-	//qpic_t *p;
-	//p = Draw_CachePic ("gfx_new/menu/start_background.tga"); 
-	//M_DrawTransPic (16, 4, p);
 	int x_offset = 8;
 
 	char *s1 = "CREDITS:";

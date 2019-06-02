@@ -1276,6 +1276,7 @@ Key_UpdateForDest
 void Key_UpdateForDest (void)
 {
 	static qboolean forced = false;
+	char *workline = key_lines[edit_line];
 
 	if (cls.state == ca_dedicated)
 		return;
@@ -1285,6 +1286,10 @@ void Key_UpdateForDest (void)
 	case key_console:
 		if (forced && cls.state == ca_connected)
 		{
+			if (OSK_toggle) {
+				strcpy(workline, osk_buffer);
+				OSK_toggle = 0;
+			}
 			forced = false;
 			IN_Activate();
 			key_dest = key_game;
