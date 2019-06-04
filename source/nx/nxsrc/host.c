@@ -865,6 +865,7 @@ void Host_Init (void)
 		CDAudio_Init ();
 		BGM_Init();
 		Sbar_Init ();
+		HUD_Init ();
 		CL_Init ();
 	}
 

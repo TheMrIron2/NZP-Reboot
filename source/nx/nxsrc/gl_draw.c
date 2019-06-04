@@ -306,7 +306,7 @@ qpic_t	*Draw_CachePic (const char *path)
 	// Determine whether or not we need to have a source by index or by something else
 	//
 	char extension[16];
-	char loc[MAX_OSPATH];
+	char loc[2*MAX_OSPATH];
 	strcpy(extension, COM_FileGetExtension(path));
 	int src_type;
 

@@ -136,9 +136,24 @@ Similiar to above, but will also print the current button for the action.
 ==============
 */
 
+extern qpic_t      *b_up;
+extern qpic_t      *b_down;
+extern qpic_t      *b_left;
+extern qpic_t      *b_right;
+extern qpic_t      *b_lthumb;
+extern qpic_t      *b_rthumb;
+extern qpic_t      *b_lshoulder;
+extern qpic_t      *b_rshoulder;
+extern qpic_t      *b_abutton;
+extern qpic_t      *b_bbutton;
+extern qpic_t      *b_ybutton;
+extern qpic_t      *b_xbutton;
+extern qpic_t      *b_lt;
+extern qpic_t      *b_rt;
+
 qpic_t *GetButtonIcon (char *buttonname)
 {
-	/*
+
 	int		j;
 	int		l;
 	char	*b;
@@ -159,32 +174,33 @@ qpic_t *GetButtonIcon (char *buttonname)
 				return b_left;
 			else if (!strcmp(Key_KeynumToString(j), "RIGHTARROW"))
 				return b_right;
-			else if (!strcmp(Key_KeynumToString(j), "SELECT"))
-				return b_select;
-			else if (!strcmp(Key_KeynumToString(j), "HOME"))
-				return b_home;
-			else if (!strcmp(Key_KeynumToString(j), "TRIANGLE"))
-				return b_triangle;
-			else if (!strcmp(Key_KeynumToString(j), "CIRCLE"))
-				return b_circle;
-			else if (!strcmp(Key_KeynumToString(j), "CROSS"))
-				return b_cross;
-			else if (!strcmp(Key_KeynumToString(j), "SQUARE"))
-				return b_square;
+			else if (!strcmp(Key_KeynumToString(j), "LTHUMB"))
+				return b_lthumb;
+			else if (!strcmp(Key_KeynumToString(j), "RTHUMB"))
+				return b_rthumb;
+			else if (!strcmp(Key_KeynumToString(j), "LSHOULDER"))
+				return b_lshoulder;
+			else if (!strcmp(Key_KeynumToString(j), "RSHOULDER"))
+				return b_rshoulder;
+			else if (!strcmp(Key_KeynumToString(j), "ABUTTON"))
+				return b_abutton;
+			else if (!strcmp(Key_KeynumToString(j), "BBUTTON"))
+				return b_bbutton;
+			else if (!strcmp(Key_KeynumToString(j), "YBUTTON"))
+				return b_ybutton;
+			else if (!strcmp(Key_KeynumToString(j), "XBUTTON"))
+				return b_xbutton;
 			else if (!strcmp(Key_KeynumToString(j), "LTRIGGER"))
 				return b_lt;
 			else if (!strcmp(Key_KeynumToString(j), "RTRIGGER"))
 				return b_rt;
 		}
 	}
-	return b_cross;
-	*/
-	return NULL;
+	return b_abutton;
 }
 
 char *GetUseButtonL ()
 {
-	/*
 	int		j;
 	int		l;
 	char	*b;
@@ -197,15 +213,15 @@ char *GetUseButtonL ()
 			continue;
 		if (!strncmp (b, "+use", l) )
 		{
-			if (!strcmp(Key_KeynumToString(j), "SELECT") ||
+			if (!strcmp(Key_KeynumToString(j), "LSHOULDER") ||
+				!strcmp(Key_KeynumToString(j), "RSHOULDER") ||
 				!strcmp(Key_KeynumToString(j), "LTRIGGER") ||
-				!strcmp(Key_KeynumToString(j), "RTRIGGER") ||
-				!strcmp(Key_KeynumToString(j), "HOME"))
-				return "  ";
+				!strcmp(Key_KeynumToString(j), "RTRIGGER"))
+				return "   ";
 			else
-				return " ";
+				return "  ";
 		}
-	}*/
+	}
 	return " ";
 }
 
@@ -349,7 +365,9 @@ void SCR_DrawUseString (void)
 
     GL_SetCanvas(CANVAS_USEPRINT);
     Draw_String (x, y, scr_usestring);
-	//Draw_Pic (x + button_pic_x*8, y, GetButtonIcon("+use"));
+
+    GL_SetCanvas(CANVAS_DEFAULT);
+	Draw_Pic (x*2 + button_pic_x*16, y*0.8125, GetButtonIcon("+use"));
 }
 
 void SCR_CheckDrawUseString (void)
@@ -1450,8 +1468,8 @@ void SCR_UpdateScreen (void)
 		SCR_DrawPause ();
 		SCR_CheckDrawCenterString ();
 		SCR_CheckDrawUseString ();
-		// Sbar_Draw ();
 		SCR_DrawDevStats (); //johnfitz
+		HUD_Draw ();
 		SCR_DrawFPS (); //johnfitz
 		SCR_DrawClock (); //johnfitz
 		SCR_DrawConsole ();

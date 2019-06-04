@@ -314,6 +314,7 @@ typedef struct
 
 #include "gl_model.h"
 #include "world.h"
+#include "gl_hud.h"
 
 #include "image.h"	//johnfitz
 #include "gl_texmgr.h"	//johnfitz
