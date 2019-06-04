@@ -214,10 +214,8 @@ char *GetUseButtonL ()
 		if (!strncmp (b, "+use", l) )
 		{
 			if (!strcmp(Key_KeynumToString(j), "LSHOULDER") ||
-				!strcmp(Key_KeynumToString(j), "RSHOULDER") ||
-				!strcmp(Key_KeynumToString(j), "LTRIGGER") ||
-				!strcmp(Key_KeynumToString(j), "RTRIGGER"))
-				return "   ";
+				!strcmp(Key_KeynumToString(j), "RSHOULDER"))
+				return "    ";
 			else
 				return "  ";
 		}

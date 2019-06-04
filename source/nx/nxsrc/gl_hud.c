@@ -80,15 +80,13 @@ void HUD_Init (void) {
 	fragpic = Draw_CachePic ("gfx_new/hud/frag.tga");
 	bettypic = Draw_CachePic ("gfx_new/hud/betty.tga");
 
-	/*
 	b_lt = Draw_CachePic ("gfx_new/butticons/lt.tga");
 	b_rt = Draw_CachePic ("gfx_new/butticons/rt.tga");
 	b_lthumb = Draw_CachePic ("gfx_new/butticons/lthumb.tga");
 	b_rthumb = Draw_CachePic ("gfx_new/butticons/rthumb.tga");
 	b_lshoulder = Draw_CachePic ("gfx_new/butticons/lshoulder.tga");
 	b_rshoulder = Draw_CachePic ("gfx_new/butticons/rshoulder.tga");
-	*/
-
+	
 	b_left = Draw_CachePic ("gfx_new/butticons/left.tga");
 	b_right = Draw_CachePic ("gfx_new/butticons/right.tga");
 	b_up = Draw_CachePic ("gfx_new/butticons/up.tga");
