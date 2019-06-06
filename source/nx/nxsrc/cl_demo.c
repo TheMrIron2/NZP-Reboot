@@ -322,12 +322,6 @@ void CL_Record_f (void)
 			MSG_WriteByte (&net_message, svc_updatename);
 			MSG_WriteByte (&net_message, i);
 			MSG_WriteString (&net_message, cl.scores[i].name);
-			MSG_WriteByte (&net_message, svc_updatefrags);
-			MSG_WriteByte (&net_message, i);
-			MSG_WriteShort (&net_message, cl.scores[i].frags);
-			MSG_WriteByte (&net_message, svc_updatecolors);
-			MSG_WriteByte (&net_message, i);
-			MSG_WriteByte (&net_message, cl.scores[i].colors);
 		}
 
 		// send all current light styles

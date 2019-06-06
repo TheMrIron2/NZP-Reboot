@@ -53,6 +53,8 @@ qpic_t		*deadpic;
 qpic_t		*fragpic;
 qpic_t		*bettypic;
 
+qpic_t      *fx_blood_lu;
+
 void HUD_Init (void) {
 	int		i;
 
@@ -95,33 +97,167 @@ void HUD_Init (void) {
 	b_bbutton = Draw_CachePic ("gfx_new/butticons/bbutton.tga");
 	b_ybutton = Draw_CachePic ("gfx_new/butticons/ybutton.tga");
 	b_xbutton = Draw_CachePic ("gfx_new/butticons/xbutton.tga");
+
+	fx_blood_lu = Draw_CachePic ("gfx_new/hud/blood.tga");
 }
+
+//=============================================================================
+
+int		pointsort[MAX_SCOREBOARD];
+
+char	scoreboardtext[MAX_SCOREBOARD][20];
+int		scoreboardtop[MAX_SCOREBOARD];
+int		scoreboardbottom[MAX_SCOREBOARD];
+int		scoreboardcount[MAX_SCOREBOARD];
+int		scoreboardlines;
+
+/*
+===============
+HUD_Sorpoints
+===============
+*/
+void HUD_Sortpoints (void)
+{
+	int		i, j, k;
+
+// sort by points
+	scoreboardlines = 0;
+	for (i=0 ; i<cl.maxclients ; i++)
+	{
+		if (cl.scores[i].name[0])
+		{
+			pointsort[scoreboardlines] = i;
+			scoreboardlines++;
+		}
+	}
+
+	for (i=0 ; i<scoreboardlines ; i++)
+		for (j=0 ; j<scoreboardlines-1-i ; j++)
+			if (cl.scores[pointsort[j]].points < cl.scores[pointsort[j+1]].points)
+			{
+				k = pointsort[j];
+				pointsort[j] = pointsort[j+1];
+				pointsort[j+1] = k;
+			}
+}
+
+/*
+===============
+HUD_EndScreen
+===============
+*/
+void HUD_EndScreen (void)
+{
+	scoreboard_t	*s;
+	char			str[80];
+	int				i, k, l;
+	int				y, x, d;
+
+	HUD_Sortpoints ();
+
+	l = scoreboardlines;
+
+	Draw_String ((vid.width/2 - 9*8)/2, vid.height/2 + (vid.height)*40/272, "GAME OVER");
+
+	sprintf (str,"You survived %3i rounds", 0);//cl.stats[STAT_ROUNDS]);
+	Draw_String ((vid.width/2 - strlen (str)*8)/2, vid.height/2 + (vid.height)*48/272, str);
+
+	sprintf (str,"Name           Kills     Points");
+	x = (vid.width/2 - strlen (str)*8)/2;
+
+	Draw_String (x, vid.height/2 + vid.height*68/272, str);
+	y = 0;
+	for (i=0; i<l ; i++)
+	{
+		k = pointsort[i];
+		s = &cl.scores[k];
+		if (!s->name[0])
+			continue;
+
+		Draw_String (x, vid.height/2 + vid.height*78/272 + y, s->name);
+
+		d = strlen (va("%i",s->kills));
+		Draw_String (x + (20 - d)*8, vid.height/2 + (vid.height)*78/272 + y, va("%i",s->kills));
+
+		d = strlen (va("%i",s->points));
+		Draw_String (x + (31 - d)*8, vid.height/2 + (vid.height)*78/272 + y, va("%i",s->points));
+		y += 20;
+	}
+
+}
+
+
+//=============================================================================
+
+
+/*
+==================
+HUD_Blood
+
+==================
+*/
+void HUD_Blood (void)
+{
+	GL_SetCanvas(CANVAS_USEPRINT);
+
+    float alpha;
+	//blubswillrule:
+	//this function scales linearly from health = 0 to health = 100
+	//alpha = (100.0 - (float)cl.stats[STAT_HEALTH])/100*255;
+	//but we want the picture to be fully visible at health = 20, so use this function instead
+	alpha = (100.0 - ((1.25 * (float) cl.stats[STAT_HEALTH]) - 25))/100;
+
+    if (alpha <= 0.0)
+        return;
+    
+    float modifier = (sin(cl.time * 10) * 20) - 20;//always negative
+    if(modifier < -35.0)
+	modifier = -35.0;
+    
+    alpha += (modifier/255);
+
+    if (alpha > 1) {
+    	alpha = 1;
+    }
+    
+    if(alpha < 0.0)
+	    return;
+    
+    Draw_AlphaPic (0, vid.height/2, fx_blood_lu, alpha);
+
+    GL_SetCanvas(CANVAS_DEFAULT);
+}
+
+//=============================================================================
+
 
 void HUD_Draw (void) {
 	if (key_dest == key_menu_pause) {
 		return;
 	}
 
-	// Naievil -- FIXME untested
 	if (waypoint_mode.value) {
-		Draw_String (vid.width - 112, 0, "WAYPOINTMODE");
-		Draw_String (vid.width - 240, 8, "Press fire to create waypoint");
-		Draw_String (vid.width - 232, 16, "Press use to select waypoint");
-		Draw_String (vid.width - 216, 24, "Press aim to link waypoint");
-		Draw_String (vid.width - 248, 32, "Press knife to remove waypoint");
-		Draw_String (vid.width - 272, 40, "Press switch to move waypoint here");
-		Draw_String (vid.width - 304, 48, "Press reload to make special waypoint");
+		GL_SetCanvas (CANVAS_USEPRINT);
+		Draw_String (vid.width/2 - 112, vid.height/2 + 0, "WAYPOINTMODE");
+		Draw_String (vid.width/2 - 240, vid.height/2 + 8, "Press fire to create waypoint");
+		Draw_String (vid.width/2 - 232, vid.height/2 + 16, "Press use to select waypoint");
+		Draw_String (vid.width/2 - 216, vid.height/2 + 24, "Press aim to link waypoint");
+		Draw_String (vid.width/2 - 248, vid.height/2 + 32, "Press knife to remove waypoint");
+		Draw_String (vid.width/2 - 272, vid.height/2 + 40, "Press switch to move waypoint here");
+		Draw_String (vid.width/2 - 304, vid.height/2 + 48, "Press reload to make special waypoint");
+		GL_SetCanvas (CANVAS_DEFAULT);
 		return;
 	}
 
-/*
 	if (cl.stats[STAT_HEALTH] <= 0)
 	{
+		GL_SetCanvas(CANVAS_USEPRINT);
 		HUD_EndScreen ();
+		GL_SetCanvas(CANVAS_DEFAULT);
 		return;
 	}
 
-	HUD_Blood();
+	HUD_Blood(); /*
 	HUD_Rounds();
 	HUD_Perks();
 	HUD_Powerups();

@@ -444,12 +444,7 @@ void Sbar_SortFrags (void)
 	{
 		for (j = 0; j < scoreboardlines - 1 - i; j++)
 		{
-			if (cl.scores[fragsort[j]].frags < cl.scores[fragsort[j+1]].frags)
-			{
-				k = fragsort[j];
-				fragsort[j] = fragsort[j+1];
-				fragsort[j+1] = k;
-			}
+			// naievil -- removed
 		}
 	}
 }
@@ -479,10 +474,10 @@ void Sbar_UpdateScoreboard (void)
 	{
 		k = fragsort[i];
 		s = &cl.scores[k];
-		sprintf (&scoreboardtext[i][1], "%3i %s", s->frags, s->name);
+		sprintf (&scoreboardtext[i][1], "%3i %s", 0/*s->frags*/, s->name);
 
-		top = s->colors & 0xf0;
-		bottom = (s->colors & 15) <<4;
+		top = 0;//s->colors & 0xf0;
+		bottom = 0;//(s->colors & 15) <<4;
 		scoreboardtop[i] = Sbar_ColorForMap (top);
 		scoreboardbottom[i] = Sbar_ColorForMap (bottom);
 	}
@@ -780,17 +775,17 @@ void Sbar_DrawFrags (void)
 			continue;
 
 	// top color
-		color = s->colors & 0xf0;
+		color = 0;//s->colors & 0xf0;
 		color = Sbar_ColorForMap (color);
 		Draw_Fill (x + 10, 1, 28, 4, color, 1);
 
 	// bottom color
-		color = (s->colors & 15)<<4;
+		color = 0;//(s->colors & 15)<<4;
 		color = Sbar_ColorForMap (color);
 		Draw_Fill (x + 10, 5, 28, 3, color, 1);
 
 	// number
-		sprintf (num, "%3i", s->frags);
+		sprintf (num, "%3i", 0);//s->frags);
 		Sbar_DrawCharacter (x + 12, -24, num[0]);
 		Sbar_DrawCharacter (x + 20, -24, num[1]);
 		Sbar_DrawCharacter (x + 28, -24, num[2]);
@@ -827,8 +822,8 @@ void Sbar_DrawFace (void)
 
 		s = &cl.scores[cl.viewentity - 1];
 		// draw background
-		top = s->colors & 0xf0;
-		bottom = (s->colors & 15)<<4;
+		top = 0;//s->colors & 0xf0;
+		bottom = 0;//(s->colors & 15)<<4;
 		top = Sbar_ColorForMap (top);
 		bottom = Sbar_ColorForMap (bottom);
 
@@ -842,7 +837,7 @@ void Sbar_DrawFace (void)
 		Draw_Fill (xofs, /*vid.height-*/24+12, 22, 9, bottom, 1); //johnfitz -- sbar coords are now relative
 
 		// draw number
-		f = s->frags;
+		f = 0;//s->frags;
 		sprintf (num, "%3i",f);
 
 		if (top == 8)
@@ -1091,8 +1086,8 @@ void Sbar_DeathmatchOverlay (void)
 			continue;
 
 	// draw background
-		top = s->colors & 0xf0;
-		bottom = (s->colors & 15)<<4;
+		top = 0;//s->colors & 0xf0;
+		bottom = 0;//(s->colors & 15)<<4;
 		top = Sbar_ColorForMap (top);
 		bottom = Sbar_ColorForMap (bottom);
 
@@ -1100,7 +1095,7 @@ void Sbar_DeathmatchOverlay (void)
 		Draw_Fill ( x, y+4, 40, 4, bottom, 1); //johnfitz -- stretched overlays
 
 	// draw number
-		f = s->frags;
+		f = 0;//s->frags;
 		sprintf (num, "%3i",f);
 
 		Draw_Character ( x+8 , y, num[0]); //johnfitz -- stretched overlays
@@ -1184,8 +1179,8 @@ void Sbar_MiniDeathmatchOverlay (void)
 			continue;
 
 	// colors
-		top = s->colors & 0xf0;
-		bottom = (s->colors & 15)<<4;
+		top = 0;//s->colors & 0xf0;
+		bottom = 0;//(s->colors & 15)<<4;
 		top = Sbar_ColorForMap (top);
 		bottom = Sbar_ColorForMap (bottom);
 
@@ -1193,7 +1188,7 @@ void Sbar_MiniDeathmatchOverlay (void)
 		Draw_Fill (x, y+5, 40, 3, bottom, 1);
 
 	// number
-		f = s->frags;
+		f = 0;//s->frags;
 		sprintf (num, "%3i",f);
 		Draw_Character (x+ 8, y, num[0]);
 		Draw_Character (x+16, y, num[1]);

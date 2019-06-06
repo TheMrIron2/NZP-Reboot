@@ -37,9 +37,10 @@ typedef struct
 {
 	char	name[MAX_SCOREBOARDNAME];
 	float	entertime;
-	int		frags;
-	int		colors;			// two 4 bit fields
-	byte	translations[VID_GRADES*256];
+	int		points;
+	int		maxpoints;
+	int		kills;
+	int		headshots;
 } scoreboard_t;
 
 typedef struct

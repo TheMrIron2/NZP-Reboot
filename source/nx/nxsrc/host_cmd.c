@@ -1511,9 +1511,9 @@ void Host_Color_f(void)
 	host_client->edict->v.team = bottom + 1;
 
 // send notification to all clients
-	MSG_WriteByte (&sv.reliable_datagram, svc_updatecolors);
-	MSG_WriteByte (&sv.reliable_datagram, host_client - svs.clients);
-	MSG_WriteByte (&sv.reliable_datagram, host_client->colors);
+	// MSG_WriteByte (&sv.reliable_datagram, svc_updatecolors);
+	// MSG_WriteByte (&sv.reliable_datagram, host_client - svs.clients);
+	// MSG_WriteByte (&sv.reliable_datagram, host_client->colors);
 }
 
 /*
@@ -1676,12 +1676,12 @@ void Host_Spawn_f (void)
 		MSG_WriteByte (&host_client->message, svc_updatename);
 		MSG_WriteByte (&host_client->message, i);
 		MSG_WriteString (&host_client->message, client->name);
-		MSG_WriteByte (&host_client->message, svc_updatefrags);
-		MSG_WriteByte (&host_client->message, i);
-		MSG_WriteShort (&host_client->message, client->old_frags);
-		MSG_WriteByte (&host_client->message, svc_updatecolors);
-		MSG_WriteByte (&host_client->message, i);
-		MSG_WriteByte (&host_client->message, client->colors);
+		// MSG_WriteByte (&host_client->message, svc_updatefrags);
+		// MSG_WriteByte (&host_client->message, i);
+		// MSG_WriteShort (&host_client->message, client->old_frags);
+		// MSG_WriteByte (&host_client->message, svc_updatecolors);
+		// MSG_WriteByte (&host_client->message, i);
+		// MSG_WriteByte (&host_client->message, client->colors);
 	}
 
 // send all current light styles

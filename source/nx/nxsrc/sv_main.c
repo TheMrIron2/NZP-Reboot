@@ -991,9 +991,9 @@ void SV_UpdateToReliableMessages (void)
 			{
 				if (!client->active)
 					continue;
-				MSG_WriteByte (&client->message, svc_updatefrags);
-				MSG_WriteByte (&client->message, i);
-				MSG_WriteShort (&client->message, host_client->edict->v.frags);
+				//MSG_WriteByte (&client->message, svc_updatefrags);
+				//MSG_WriteByte (&client->message, i);
+				//MSG_WriteShort (&client->message, host_client->edict->v.frags);
 			}
 
 			host_client->old_frags = host_client->edict->v.frags;
