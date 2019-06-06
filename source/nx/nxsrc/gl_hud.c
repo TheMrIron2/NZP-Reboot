@@ -230,14 +230,20 @@ void HUD_Blood (void)
 
 //=============================================================================
 
+void HUD_Rounds (void) {
+	Draw_String (0, vid.height/2, va("Round %d\n", cl.stats[STAT_ROUNDS]));
+}
+
+//=============================================================================
 
 void HUD_Draw (void) {
 	if (key_dest == key_menu_pause) {
 		return;
 	}
 
+	GL_SetCanvas(CANVAS_USEPRINT);
+
 	if (waypoint_mode.value) {
-		GL_SetCanvas (CANVAS_USEPRINT);
 		Draw_String (vid.width/2 - 112, vid.height/2 + 0, "WAYPOINTMODE");
 		Draw_String (vid.width/2 - 240, vid.height/2 + 8, "Press fire to create waypoint");
 		Draw_String (vid.width/2 - 232, vid.height/2 + 16, "Press use to select waypoint");
@@ -251,14 +257,13 @@ void HUD_Draw (void) {
 
 	if (cl.stats[STAT_HEALTH] <= 0)
 	{
-		GL_SetCanvas(CANVAS_USEPRINT);
 		HUD_EndScreen ();
 		GL_SetCanvas(CANVAS_DEFAULT);
 		return;
 	}
 
-	HUD_Blood(); /*
-	HUD_Rounds();
+	HUD_Blood(); 
+	HUD_Rounds();/*
 	HUD_Perks();
 	HUD_Powerups();
 	HUD_ProgressBar();
@@ -273,4 +278,6 @@ void HUD_Draw (void) {
 	HUD_Point_Change();
 	HUD_Achievement();
 */
+
+	GL_SetCanvas(CANVAS_DEFAULT);
 }

@@ -229,6 +229,7 @@ void M_DrawTextBox (int x, int y, int width, int lines)
 void Menu_Background_Draw (int type) {
 
 	qpic_t *p;
+	float alpha = 1;
 
 	switch(type) {
 		case MENU_START:
@@ -236,6 +237,7 @@ void Menu_Background_Draw (int type) {
 
 		case MENU_PAUSE:
 			p = Draw_CachePic ("gfx_new/menu/pause_background.tga"); 
+			alpha = 0.75;
 			break;
 
 		case MENU_MAIN:
@@ -246,7 +248,7 @@ void Menu_Background_Draw (int type) {
 
 	}
 
-	M_DrawPic (0, vid.height * 0.5, p);
+	Draw_AlphaPic (0, vid.height * 0.5, p, alpha);
 
 }
 
@@ -302,8 +304,6 @@ int M_Paused_Cusor;
 
 void M_Paused_Menu_Draw (void) {
 	int x_offset = 8;
-
-	Menu_Background_Draw (MENU_PAUSE);
 
 	char *s1 = "Resume";
  	Draw_String ((vid.width/x_offset)/2, vid.height * (0.5 + ((0.35)/2)), s1);
@@ -445,8 +445,6 @@ void M_Menu_Main_f (void)
 void M_Main_Draw (void)
 {
 	int x_offset = 8;
-
-	Menu_Background_Draw(MENU_MAIN);
 
 	char *s1 = "Single Player";
  	Draw_String ((vid.width/x_offset)/2, vid.height * (0.5 + ((0.35)/2)), s1);

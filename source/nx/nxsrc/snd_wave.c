@@ -167,7 +167,9 @@ static qboolean WAV_ReadRIFFHeader(const char *name, FILE *file, snd_info_t *inf
 	/* Scan for the data chunk */
 	if ((info->size = WAV_FindRIFFChunk(file, "data")) < 0)
 	{
-		Con_Printf("%s is missing data chunk\n", name);
+		if (strcmp(name, "sounds/null.wav")) {
+			Con_Printf("%s is missing data chunk\n", name);
+		}
 		return false;
 	}
 
@@ -180,7 +182,9 @@ static qboolean WAV_ReadRIFFHeader(const char *name, FILE *file, snd_info_t *inf
 	info->samples = (info->size / info->width) / info->channels;
 	if (info->samples == 0)
 	{
-		Con_Printf("%s has zero samples\n", name);
+		if (strcmp(name, "sounds/null.wav")) {
+			Con_Printf("%s has zero samples\n", name);	
+		}
 		return false;
 	}
 

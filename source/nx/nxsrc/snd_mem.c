@@ -139,9 +139,11 @@ sfxcache_t *S_LoadSound (sfx_t *s)
 
 	len = len * info.width * info.channels;
 
-	if (info.samples == 0 || len == 0)
+	if ((info.samples == 0 || len == 0))
 	{
-		Con_Printf("%s has zero samples\n", s->name);
+		if (strcmp(s->name, "sounds/null.wav")) {
+			Con_Printf("%s has zero samples\n", s->name);
+		}
 		return NULL;
 	}
 
@@ -330,7 +332,9 @@ wavinfo_t GetWavinfo (const char *name, byte *wav, int wavlength)
 	FindChunk("data");
 	if (!data_p)
 	{
-		Con_Printf("%s is missing data chunk\n", name);
+		if (strcmp(name, "sounds/null.wav")) {
+			Con_Printf("%s is missing data chunk\n", name);		
+		}
 		return info;
 	}
 

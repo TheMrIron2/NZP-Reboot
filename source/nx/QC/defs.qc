@@ -49,7 +49,7 @@ float 			deathmatch;
 float 			coop;
 float 			teamplay;
 float           serverflags;
-float           total_secrets;
+float           rounds;
 float           total_monsters;
 float           found_secrets;
 float           killed_monsters; 

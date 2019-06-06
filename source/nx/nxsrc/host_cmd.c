@@ -1695,9 +1695,10 @@ void Host_Spawn_f (void)
 //
 // send some stats
 //
+
 	MSG_WriteByte (&host_client->message, svc_updatestat);
-	MSG_WriteByte (&host_client->message, STAT_TOTALSECRETS);
-	MSG_WriteLong (&host_client->message, pr_global_struct->total_secrets);
+	MSG_WriteByte (&host_client->message, STAT_ROUNDS);
+	MSG_WriteLong (&host_client->message, pr_global_struct->rounds);
 
 	MSG_WriteByte (&host_client->message, svc_updatestat);
 	MSG_WriteByte (&host_client->message, STAT_TOTALMONSTERS);

@@ -497,7 +497,7 @@ void Sbar_SoloScoreboard (void)
 	sprintf (str,"Kills: %i/%i", cl.stats[STAT_MONSTERS], cl.stats[STAT_TOTALMONSTERS]);
 	Sbar_DrawString (8, 12, str);
 
-	sprintf (str,"Secrets: %i/%i", cl.stats[STAT_SECRETS], cl.stats[STAT_TOTALSECRETS]);
+	sprintf (str,"Secrets: %i/%i", cl.stats[STAT_SECRETS], 0);
 	Sbar_DrawString (312 - strlen(str)*8, 12, str);
 
 	if (!fitzmode)
@@ -1240,7 +1240,7 @@ void Sbar_IntermissionOverlay (void)
 
 	Sbar_IntermissionNumber (152, 104, cl.stats[STAT_SECRETS], 3, 0); //johnfitz -- was 160
 	Draw_Pic (224,104,sb_slash); //johnfitz -- was 232
-	Sbar_IntermissionNumber (240, 104, cl.stats[STAT_TOTALSECRETS], 3, 0); //johnfitz -- was 248
+	Sbar_IntermissionNumber (240, 104, 0, 3, 0); //johnfitz -- was 248
 
 	Sbar_IntermissionNumber (152, 144, cl.stats[STAT_MONSTERS], 3, 0); //johnfitz -- was 160
 	Draw_Pic (224,144,sb_slash); //johnfitz -- was 232

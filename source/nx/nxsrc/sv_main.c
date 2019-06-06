@@ -917,6 +917,8 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 		}
 	}
 
+	MSG_WriteByte (msg, pr_global_struct->rounds); // This cooresponds to CL_ParseClientdata
+
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (bits & SU_WEAPON2)
 		MSG_WriteByte (msg, SV_ModelIndex(PR_GetString(ent->v.weaponmodel)) >> 8);
