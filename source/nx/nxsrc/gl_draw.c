@@ -541,6 +541,48 @@ void Draw_String (int x, int y, const char *str)
 	glEnd ();
 }
 
+
+/*
+=============
+Draw_ColorPic
+=============
+*/
+
+void Draw_ColorPic (int x, int y, qpic_t *pic, float r, float g, float b, float alpha)
+{
+	glpic_t			*gl;
+
+	if (alpha <= 1.0) {
+		glEnable (GL_BLEND);
+		glColor4f (r,g,b,alpha);
+		glDisable (GL_ALPHA_TEST);
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	}
+
+	if (scrap_dirty)
+		Scrap_Upload ();
+	gl = (glpic_t *)pic->data;
+	GL_Bind (gl->gltexture);
+	glBegin (GL_QUADS);
+	glTexCoord2f (gl->sl, gl->tl);
+	glVertex2f (x, y);
+	glTexCoord2f (gl->sh, gl->tl);
+	glVertex2f (x+pic->width, y);
+	glTexCoord2f (gl->sh, gl->th);
+	glVertex2f (x+pic->width, y+pic->height);
+	glTexCoord2f (gl->sl, gl->th);
+	glVertex2f (x, y+pic->height);
+	glEnd ();
+
+	if (alpha <= 1.0)
+	{
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+		glEnable (GL_ALPHA_TEST);
+		glDisable (GL_BLEND);
+		glColor4f (1,1,1,1);
+	}
+}
+
 /*
 =============
 Draw_Pic -- johnfitz -- modified

@@ -55,6 +55,27 @@ qpic_t		*bettypic;
 
 qpic_t      *fx_blood_lu;
 
+int old_points;
+int current_points;
+int point_change_interval;
+int point_change_interval_neg;
+int alphabling = 0;
+float round_center_x;
+float round_center_y;
+
+typedef struct
+{
+	int points;
+	int negative;
+	float x;
+	float y;
+	float move_x;
+	float move_y;
+	double alive_time;
+} point_change_t;
+
+point_change_t point_change[10];
+
 void HUD_Init (void) {
 	int		i;
 
@@ -99,6 +120,36 @@ void HUD_Init (void) {
 	b_xbutton = Draw_CachePic ("gfx_new/butticons/xbutton.tga");
 
 	fx_blood_lu = Draw_CachePic ("gfx_new/hud/blood.tga");
+}
+
+/*
+===============
+HUD_NewMap
+===============
+*/
+void HUD_NewMap (void)
+{
+	int i;
+	alphabling = 0;
+
+	for (i=0 ; i<10 ; i++)
+	{
+		point_change[i].points = 0;
+		point_change[i].negative = 0;
+		point_change[i].x = 0.0;
+		point_change[i].y = 0.0;
+		point_change[i].move_x = 0.0;
+		point_change[i].move_y = 0.0;
+		point_change[i].alive_time = 0.0;
+	}
+
+	old_points = 500;
+	current_points = 500;
+	point_change_interval = 0;
+	point_change_interval_neg = 0;
+
+	round_center_x = (vid.width/2 - sb_round[0]->width) /2;
+	round_center_y = vid.height*3/4 - sb_round[0]->height/2;
 }
 
 //=============================================================================
@@ -159,7 +210,7 @@ void HUD_EndScreen (void)
 
 	Draw_String ((vid.width/2 - 9*8)/2, vid.height/2 + (vid.height)*40/272, "GAME OVER");
 
-	sprintf (str,"You survived %3i rounds", 0);//cl.stats[STAT_ROUNDS]);
+	sprintf (str,"You survived %3i rounds", cl.stats[STAT_ROUNDS]);
 	Draw_String ((vid.width/2 - strlen (str)*8)/2, vid.height/2 + (vid.height)*48/272, str);
 
 	sprintf (str,"Name           Kills     Points");
@@ -226,9 +277,418 @@ void HUD_Blood (void)
 
 //=============================================================================
 
-void HUD_Rounds (void) {
-	Draw_String (0, vid.height/2, va("Round %d\n", cl.stats[STAT_ROUNDS]));
-	Draw_String (0, vid.height/2 + 8, va("Round change: %d\n", cl.stats[STAT_ROUNDCHANGE]));
+/*
+===============
+HUD_Rounds
+===============
+*/
+
+float 	color_shift[3];
+float 	color_shift_end[3];
+float 	color_shift_steps[3];
+int		color_shift_init;
+float 	blinking;
+void HUD_Rounds (void)
+{
+	int i, x_offset, icon_num, savex;
+	int num[3];
+	x_offset = 0;
+	savex = 0;
+
+	Draw_String (0, vid.width/2, va("Round change %d\n", cl.stats[STAT_ROUNDCHANGE]));
+
+	if (cl.stats[STAT_ROUNDCHANGE] == 1)//this is the rounds icon at the middle of the screen
+	{
+		Draw_ColorPic ((vid.width/2 - sb_round[0]->width) /2, vid.height*3/4 - sb_round[0]->height/2, sb_round[0], 0.4196, 0.004, 0, alphabling/255);
+
+		alphabling = alphabling + 15;
+
+		if (alphabling < 0)
+			alphabling = 0;
+		else if (alphabling > 255)
+			alphabling = 255;
+	}
+	else if (cl.stats[STAT_ROUNDCHANGE] == 2)//this is the rounds icon moving from middle
+	{
+		Draw_ColorPic (round_center_x, round_center_y, sb_round[0], 0.4196, 0.004, 0, 1);
+		round_center_x = round_center_x - ((229/108)*2 - 0.2)*(vid.width/2)/480;
+		round_center_y = round_center_y + ((vid.height*1.015)/272);
+		if (round_center_x <= 5)
+			round_center_x = 5;
+		if (round_center_y >= 250*vid.height/272)
+			round_center_y = 250*vid.height/272;
+	}
+	else if (cl.stats[STAT_ROUNDCHANGE] == 3)//shift to white
+	{
+		if (!color_shift_init)
+		{
+			color_shift[0] = 107;
+			color_shift[1] = 1;
+			color_shift[2] = 0;
+			for (i = 0; i < 3; i++)
+			{
+				color_shift_end[i] = 255;
+				color_shift_steps[i] = (color_shift_end[i] - color_shift[i])/60;
+			}
+			color_shift_init = 1;
+		}
+		for (i = 0; i < 3; i++)
+		{
+			if (color_shift[i] < color_shift_end[i])
+				color_shift[i] = color_shift[i] + color_shift_steps[i];
+
+			if (color_shift[i] >= color_shift_end[i])
+				color_shift[i] = color_shift_end[i];
+		}
+		if (cl.stats[STAT_ROUNDS] > 0 && cl.stats[STAT_ROUNDS] < 11)
+		{
+
+			for (i = 0; i < cl.stats[STAT_ROUNDS]; i++)
+			{
+				if (i == 4)
+				{
+					Draw_ColorPic (5*(vid.width/2)/272, vid.height - sb_round[4]->height - 4, sb_round[4], (color_shift[0]/255), (color_shift[1]/255), (color_shift[2]/255), 1);
+					savex = x_offset + 10;
+					x_offset = x_offset + 10;
+					continue;
+				}
+				if (i == 9)
+				{
+					Draw_ColorPic ((5 + savex/2)*(vid.width/2)/272, vid.height - sb_round[4]->height - 4, sb_round[4], (color_shift[0]/255), (color_shift[1]/255), (color_shift[2]/255), 1);
+					continue;
+				}
+				if (i > 4)
+					icon_num = i - 5;
+				else
+					icon_num = i;
+
+				Draw_ColorPic ((5 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round[icon_num]->height - 4, sb_round[icon_num], (color_shift[0]/255), (color_shift[1]/255), (color_shift[2]/255), 1);
+
+				x_offset = x_offset + sb_round[icon_num]->width + 3;
+			}
+		}
+		else
+		{
+			if (cl.stats[STAT_ROUNDS] >= 100)
+			{
+				num[2] = (int)(cl.stats[STAT_ROUNDS]/100);
+				Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[2]]->height - 4, sb_round_num[num[2]], (color_shift[0]/255), (color_shift[1]/255), (color_shift[2]/255), 1);
+				x_offset = x_offset + sb_round_num[num[2]]->width - 8;
+			}
+			else
+				num[2] = 0;
+			if (cl.stats[STAT_ROUNDS] >= 10)
+			{
+				num[1] = (int)((cl.stats[STAT_ROUNDS] - num[2]*100)/10);
+				Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[1]]->height - 4, sb_round_num[num[1]], (color_shift[0]/255), (color_shift[1]/255), (color_shift[2]/255), 1);
+				x_offset = x_offset + sb_round_num[num[1]]->width - 8;
+			}
+			else
+				num[1] = 0;
+
+			num[0] = cl.stats[STAT_ROUNDS] - num[2]*100 - num[1]*10;
+			Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[0]]->height - 4, sb_round_num[num[0]], (color_shift[0]/255), (color_shift[1]/255), (color_shift[2]/255), 1);
+			x_offset = x_offset + sb_round_num[num[0]]->width - 8;
+		}
+	}
+	else if (cl.stats[STAT_ROUNDCHANGE] == 4)//blink white
+	{
+		blinking = (float)(((int)(realtime*1000)&510) - 255);
+		blinking = abs(blinking);
+		if (cl.stats[STAT_ROUNDS] > 0 && cl.stats[STAT_ROUNDS] < 11)
+		{
+			for (i = 0; i < cl.stats[STAT_ROUNDS]; i++)
+			{
+				if (i == 4)
+				{
+					Draw_ColorPic (5*(vid.width/2)/272, vid.height - sb_round[4]->height - 4, sb_round[4], 1, 1, 1, blinking/255);
+					savex = x_offset + 10;
+					x_offset = x_offset + 10;
+					continue;
+				}
+				if (i == 9)
+				{
+					Draw_ColorPic ((5 + savex/2)*(vid.width/2)/272, vid.height - sb_round[4]->height - 4, sb_round[4], 1, 1, 1, blinking/255);
+					continue;
+				}
+				if (i > 4)
+					icon_num = i - 5;
+				else
+					icon_num = i;
+
+				Draw_ColorPic ((5 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round[icon_num]->height - 4, sb_round[icon_num], 1, 1, 1, blinking/255);
+
+				x_offset = x_offset + sb_round[icon_num]->width + 3;
+			}
+		}
+		else
+		{
+			if (cl.stats[STAT_ROUNDS] >= 100)
+			{
+				num[2] = (int)(cl.stats[STAT_ROUNDS]/100);
+				Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[2]]->height - 4, sb_round_num[num[2]], 1, 1, 1, blinking/255);
+				x_offset = x_offset + sb_round_num[num[2]]->width - 8;
+			}
+			else
+				num[2] = 0;
+			if (cl.stats[STAT_ROUNDS] >= 10)
+			{
+				num[1] = (int)((cl.stats[STAT_ROUNDS] - num[2]*100)/10);
+				Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[1]]->height - 4, sb_round_num[num[1]], 1, 1, 1, blinking/255);
+				x_offset = x_offset + sb_round_num[num[1]]->width - 8;
+			}
+			else
+				num[1] = 0;
+
+			num[0] = cl.stats[STAT_ROUNDS] - num[2]*100 - num[1]*10;
+			Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[0]]->height - 4, sb_round_num[num[0]], 1, 1, 1, blinking/255);
+			x_offset = x_offset + sb_round_num[num[0]]->width - 8;
+		}
+	}
+	else if (cl.stats[STAT_ROUNDCHANGE] == 5)//blink white
+	{
+		if (blinking > 0)
+			blinking = blinking - 10;
+		if (blinking < 0)
+			blinking = 0;
+		if (cl.stats[STAT_ROUNDS] > 0 && cl.stats[STAT_ROUNDS] < 11)
+		{
+			for (i = 0; i < cl.stats[STAT_ROUNDS]; i++)
+			{
+				if (i == 4)
+				{
+					Draw_ColorPic (5*(vid.width/2)/272, vid.height - sb_round[4]->height - 4, sb_round[4], 1, 1, 1, blinking/255);
+					savex = x_offset + 10;
+					x_offset = x_offset + 10;
+					continue;
+				}
+				if (i == 9)
+				{
+					Draw_ColorPic ((5 + savex/2)*(vid.width/2)/272, vid.height - sb_round[4]->height - 4, sb_round[4], 1, 1, 1, blinking/255);
+					continue;
+				}
+				if (i > 4)
+					icon_num = i - 5;
+				else
+					icon_num = i;
+
+				Draw_ColorPic ((5 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round[icon_num]->height - 4, sb_round[icon_num], 1, 1, 1, blinking/255);
+
+				x_offset = x_offset + sb_round[icon_num]->width + 3;
+			}
+		}
+		else
+		{
+			if (cl.stats[STAT_ROUNDS] >= 100)
+			{
+				num[2] = (int)(cl.stats[STAT_ROUNDS]/100);
+				Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[2]]->height - 4, sb_round_num[num[2]], 1, 1, 1, blinking/255);
+				x_offset = x_offset + sb_round_num[num[2]]->width - 8;
+			}
+			else
+				num[2] = 0;
+			if (cl.stats[STAT_ROUNDS] >= 10)
+			{
+				num[1] = (int)((cl.stats[STAT_ROUNDS] - num[2]*100)/10);
+				Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[1]]->height - 4, sb_round_num[num[1]], 1, 1, 1, blinking/255);
+				x_offset = x_offset + sb_round_num[num[1]]->width - 8;
+			}
+			else
+				num[1] = 0;
+
+			num[0] = cl.stats[STAT_ROUNDS] - num[2]*100 - num[1]*10;
+			Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[0]]->height - 4, sb_round_num[num[0]], 1, 1, 1, blinking/255);
+			x_offset = x_offset + sb_round_num[num[0]]->width - 8;
+		}
+	}
+	else if (cl.stats[STAT_ROUNDCHANGE] == 6)//blink white while fading back
+	{
+		color_shift_init = 0;
+		blinking = ((int)(realtime*1000)&510) - 255;
+		blinking = abs(blinking);
+		if (cl.stats[STAT_ROUNDS] > 0 && cl.stats[STAT_ROUNDS] < 11)
+		{
+			for (i = 0; i < cl.stats[STAT_ROUNDS]; i++)
+			{
+				if (i == 4)
+				{
+					Draw_ColorPic (5*(vid.width/2)/272, vid.height - sb_round[4]->height - 4, sb_round[4], 1, 1, 1, blinking/255);
+					savex = x_offset + 10;
+					x_offset = x_offset + 10;
+					continue;
+				}
+				if (i == 9)
+				{
+					Draw_ColorPic ((5 + savex/2)*(vid.width/2)/272, vid.height - sb_round[4]->height - 4, sb_round[4], 1, 1, 1, blinking/255);
+					continue;
+				}
+				if (i > 4)
+					icon_num = i - 5;
+				else
+					icon_num = i;
+
+				Draw_ColorPic ((5 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round[icon_num]->height - 4, sb_round[icon_num], 1, 1, 1, blinking/255);
+
+				x_offset = x_offset + sb_round[icon_num]->width + 3;
+			}
+		}
+		else
+		{
+			if (cl.stats[STAT_ROUNDS] >= 100)
+			{
+				num[2] = (int)(cl.stats[STAT_ROUNDS]/100);
+				Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[2]]->height - 4, sb_round_num[num[2]], 1, 1, 1, blinking/255);
+				x_offset = x_offset + sb_round_num[num[2]]->width - 8;
+			}
+			else
+				num[2] = 0;
+			if (cl.stats[STAT_ROUNDS] >= 10)
+			{
+				num[1] = (int)((cl.stats[STAT_ROUNDS] - num[2]*100)/10);
+				Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[1]]->height - 4, sb_round_num[num[1]], 1, 1, 1, blinking/255);
+				x_offset = x_offset + sb_round_num[num[1]]->width - 8;
+			}
+			else
+				num[1] = 0;
+
+			num[0] = cl.stats[STAT_ROUNDS] - num[2]*100 - num[1]*10;
+			Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[0]]->height - 4, sb_round_num[num[0]], 1, 1, 1, blinking/255);
+			x_offset = x_offset + sb_round_num[num[0]]->width - 8;
+		}
+	}
+	else if (cl.stats[STAT_ROUNDCHANGE] == 7)//blink white while fading back
+	{
+		if (!color_shift_init)
+		{
+			color_shift_end[0] = 107;
+			color_shift_end[1] = 1;
+			color_shift_end[2] = 0;
+			for (i = 0; i < 3; i++)
+			{
+				color_shift[i] = 255;
+				color_shift_steps[i] = (color_shift[i] - color_shift_end[i])/60;
+			}
+			color_shift_init = 1;
+		}
+		for (i = 0; i < 3; i++)
+		{
+			if (color_shift[i] > color_shift_end[i])
+				color_shift[i] = color_shift[i] - color_shift_steps[i];
+
+			if (color_shift[i] < color_shift_end[i])
+				color_shift[i] = color_shift_end[i];
+		}
+		if (cl.stats[STAT_ROUNDS] > 0 && cl.stats[STAT_ROUNDS] < 11)
+		{
+			for (i = 0; i < cl.stats[STAT_ROUNDS]; i++)
+			{
+				if (i == 4)
+				{
+					Draw_ColorPic (5*(vid.width/2)/272, vid.height - sb_round[4]->height - 4, sb_round[4], (color_shift[0]/255), (color_shift[1]/255), (color_shift[2]/255), 1);
+					savex = x_offset + 10;
+					x_offset = x_offset + 10;
+					continue;
+				}
+				if (i == 9)
+				{
+					Draw_ColorPic ((5 + savex/2)*(vid.width/2)/272, vid.height - sb_round[4]->height - 4, sb_round[4], (color_shift[0]/255), (color_shift[1]/255), (color_shift[2]/255), 1);
+					continue;
+				}
+				if (i > 4)
+					icon_num = i - 5;
+				else
+					icon_num = i;
+
+				Draw_ColorPic ((5 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round[icon_num]->height - 4, sb_round[icon_num], (color_shift[0]/255), (color_shift[1]/255), (color_shift[2]/255), 1);
+
+				x_offset = x_offset + sb_round[icon_num]->width + 3;
+			}
+		}
+		else
+		{
+			if (cl.stats[STAT_ROUNDS] >= 100)
+			{
+				num[2] = (int)(cl.stats[STAT_ROUNDS]/100);
+				Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[2]]->height - 4, sb_round_num[num[2]], (color_shift[0]/255), (color_shift[1]/255), (color_shift[2]/255), 1);
+				x_offset = x_offset + sb_round_num[num[2]]->width - 8;
+			}
+			else
+				num[2] = 0;
+			if (cl.stats[STAT_ROUNDS] >= 10)
+			{
+				num[1] = (int)((cl.stats[STAT_ROUNDS] - num[2]*100)/10);
+				Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[1]]->height - 4, sb_round_num[num[1]], (color_shift[0]/255), (color_shift[1]/255), (color_shift[2]/255), 1);
+				x_offset = x_offset + sb_round_num[num[1]]->width - 8;
+			}
+			else
+				num[1] = 0;
+
+			num[0] = cl.stats[STAT_ROUNDS] - num[2]*100 - num[1]*10;
+			Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[0]]->height - 4, sb_round_num[num[0]], (color_shift[0]/255), (color_shift[1]/255), (color_shift[2]/255), 1);
+			x_offset = x_offset + sb_round_num[num[0]]->width - 8;
+		}
+	}
+	else
+	{
+		color_shift[0] = 107;
+		color_shift[1] = 1;
+		color_shift[2] = 0;
+		color_shift_init = 0;
+		alphabling = 0;
+		if (cl.stats[STAT_ROUNDS] > 0 && cl.stats[STAT_ROUNDS] < 11)
+		{
+			for (i = 0; i < cl.stats[STAT_ROUNDS]; i++)
+			{
+				if (i == 4)
+				{
+					Draw_ColorPic (5*(vid.width/2)/272, vid.height - sb_round[4]->height - 4, sb_round[4], 0.4196, 0.004, 0, 1);
+					savex = x_offset + 10;
+					x_offset = x_offset + 10;
+					continue;
+				}
+				if (i == 9)
+				{
+					Draw_ColorPic ((5 + savex/2)*(vid.width/2)/272, vid.height - sb_round[4]->height - 4, sb_round[4], 0.4196, 0.004, 0, 1);
+					continue;
+				}
+				if (i > 4)
+					icon_num = i - 5;
+				else
+					icon_num = i;
+
+				Draw_ColorPic ((5 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round[icon_num]->height - 4, sb_round[icon_num], 0.4196, 0.004, 0, 1);
+
+				x_offset = x_offset + sb_round[icon_num]->width + 3;
+			}
+		}
+		else
+		{
+			if (cl.stats[STAT_ROUNDS] >= 100)
+			{
+				num[2] = (int)(cl.stats[STAT_ROUNDS]/100);
+				Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[2]]->height - 4, sb_round_num[num[2]], 0.4196, 0.004, 0, 1);
+				x_offset = x_offset + sb_round_num[num[2]]->width - 8;
+			}
+			else
+				num[2] = 0;
+			if (cl.stats[STAT_ROUNDS] >= 10)
+			{
+				num[1] = (int)((cl.stats[STAT_ROUNDS] - num[2]*100)/10);
+				Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[1]]->height - 4, sb_round_num[num[1]], 0.4196, 0.004, 0, 1);
+				x_offset = x_offset + sb_round_num[num[1]]->width - 8;
+			}
+			else
+				num[1] = 0;
+
+			num[0] = cl.stats[STAT_ROUNDS] - num[2]*100 - num[1]*10;
+			
+			if(cl.stats[STAT_ROUNDS] == 0)
+				return;
+			
+			Draw_ColorPic ((2 + x_offset/2)*(vid.width/2)/272, vid.height - sb_round_num[num[0]]->height - 4, sb_round_num[num[0]], 0.4196, 0.004, 0, 1);
+			x_offset = x_offset + sb_round_num[num[0]]->width - 8;
+		}
+	}
 }
 
 //=============================================================================
