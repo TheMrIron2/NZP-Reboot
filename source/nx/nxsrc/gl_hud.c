@@ -198,8 +198,6 @@ HUD_Blood
 */
 void HUD_Blood (void)
 {
-	GL_SetCanvas(CANVAS_USEPRINT);
-
     float alpha;
 	//blubswillrule:
 	//this function scales linearly from health = 0 to health = 100
@@ -224,14 +222,13 @@ void HUD_Blood (void)
 	    return;
     
     Draw_AlphaPic (0, vid.height/2, fx_blood_lu, alpha);
-
-    GL_SetCanvas(CANVAS_DEFAULT);
 }
 
 //=============================================================================
 
 void HUD_Rounds (void) {
 	Draw_String (0, vid.height/2, va("Round %d\n", cl.stats[STAT_ROUNDS]));
+	Draw_String (0, vid.height/2 + 8, va("Round change: %d\n", cl.stats[STAT_ROUNDCHANGE]));
 }
 
 //=============================================================================

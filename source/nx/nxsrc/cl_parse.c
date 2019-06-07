@@ -828,6 +828,10 @@ void CL_ParseClientdata (void)
 	if (cl.stats[STAT_ROUNDS] != i)
 		cl.stats[STAT_ROUNDS] = i;
 
+	i = MSG_ReadByte ();
+	if (cl.stats[STAT_ROUNDCHANGE] != i)
+		cl.stats[STAT_ROUNDCHANGE] = i;
+
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (bits & SU_WEAPON2)
 		cl.stats[STAT_WEAPON] |= (MSG_ReadByte() << 8);

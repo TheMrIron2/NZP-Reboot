@@ -494,7 +494,7 @@ void Sbar_SoloScoreboard (void)
 	int	minutes, seconds, tens, units;
 	int	len;
 
-	sprintf (str,"Kills: %i/%i", cl.stats[STAT_MONSTERS], cl.stats[STAT_TOTALMONSTERS]);
+	sprintf (str,"Kills: %i/%i", cl.stats[STAT_MONSTERS], 0);
 	Sbar_DrawString (8, 12, str);
 
 	sprintf (str,"Secrets: %i/%i", cl.stats[STAT_SECRETS], 0);
@@ -1244,7 +1244,6 @@ void Sbar_IntermissionOverlay (void)
 
 	Sbar_IntermissionNumber (152, 144, cl.stats[STAT_MONSTERS], 3, 0); //johnfitz -- was 160
 	Draw_Pic (224,144,sb_slash); //johnfitz -- was 232
-	Sbar_IntermissionNumber (240, 144, cl.stats[STAT_TOTALMONSTERS], 3, 0); //johnfitz -- was 248
 }
 
 

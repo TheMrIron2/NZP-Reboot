@@ -50,7 +50,7 @@ float 			coop;
 float 			teamplay;
 float           serverflags;
 float           rounds;
-float           total_monsters;
+float           rounds_change;
 float           found_secrets;
 float           killed_monsters; 
 float           parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16;

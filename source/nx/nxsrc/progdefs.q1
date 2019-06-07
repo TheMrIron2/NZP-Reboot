@@ -15,7 +15,7 @@ typedef struct
 	float	teamplay;
 	float	serverflags;
 	float   rounds;
-	float	total_monsters;
+	float   rounds_change;
 	float	found_secrets;
 	float	killed_monsters;
 	float	parm1;
