@@ -109,7 +109,7 @@ void            end_sys_globals;
 .float          weaponframe;
 .float          currentammo;
 .float			zoom;
-.float          items;
+.float          perks;
 .float          takedamage;
 .entity         chain;
 .float          deadflag;

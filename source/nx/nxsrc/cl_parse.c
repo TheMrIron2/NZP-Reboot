@@ -701,9 +701,11 @@ CL_ParseClientdata
 Server information pertaining to this client only
 ==================
 */
+extern int perk_order[8];
+extern int current_perk_order;
 void CL_ParseClientdata (void)
 {
-	int		i, j;
+	int		i, j, s;
 	int		bits; //johnfitz
 
 	bits = (unsigned short)MSG_ReadShort (); //johnfitz -- read bits here isntead of in CL_ParseServerMessage()
@@ -747,16 +749,167 @@ void CL_ParseClientdata (void)
 	}
 	//johnfitz
 
-// [always sent]	if (bits & SU_ITEMS)
+	if (bits & SU_PERKS)
 		i = MSG_ReadLong ();
-
-	if (cl.items != i)
-	{	// set flash times
-		Sbar_Changed ();
-		for (j = 0; j < 32; j++)
-			if ( (i & (1<<j)) && !(cl.items & (1<<j)))
-				cl.item_gettime[j] = cl.time;
-		cl.items = i;
+	else
+		i = 0;
+	if (cl.perks != i)
+	{
+		if (i & 1 && !(cl.perks & 1))
+		{
+			perk_order[current_perk_order] = 1;
+			current_perk_order++;
+		}
+		if (i & 2 && !(cl.perks & 2))
+		{
+			perk_order[current_perk_order] = 2;
+			current_perk_order++;
+		}
+		if (i & 4 && !(cl.perks & 4))
+		{
+			perk_order[current_perk_order] = 4;
+			current_perk_order++;
+		}
+		if (i & 8 && !(cl.perks & 8))
+		{
+			perk_order[current_perk_order] = 8;
+			current_perk_order++;
+		}
+		if (i & 16 && !(cl.perks & 16))
+		{
+			perk_order[current_perk_order] = 16;
+			current_perk_order++;
+		}
+		if (i & 32 && !(cl.perks & 32))
+		{
+			perk_order[current_perk_order] = 32;
+			current_perk_order++;
+		}
+		if (i & 64 && !(cl.perks & 64))
+		{
+			perk_order[current_perk_order] = 64;
+			current_perk_order++;
+		}
+		if (cl.perks & 1 && !(i & 1))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == 1)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order--;
+		}
+		if (cl.perks & 2 && !(i & 2))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == 2)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order--;
+		}
+		if (cl.perks & 4 && !(i & 4))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == 4)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order--;
+		}
+		if (cl.perks & 8 && !(i & 8))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == 8)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order--;
+		}
+		if (cl.perks & 16 && !(i & 16))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == 16)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order--;
+		}
+		if (cl.perks & 32 && !(i & 32))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == 32)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order--;
+		}
+		if (cl.perks & 64 && !(i & 64))
+		{
+			for (s = 0; s < 8; s++)
+			{
+				if (perk_order[s] == 64)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order--;
+		}
+		cl.perks = i;
 	}
 
 	cl.onground = (bits & SU_ONGROUND) != 0;

@@ -94,7 +94,7 @@ typedef struct
 	float	weaponframe;
 	float	currentammo;
 	float 	zoom;
-	float	items;
+	float   perks;
 	float	takedamage;
 	int	chain;
 	float	deadflag;

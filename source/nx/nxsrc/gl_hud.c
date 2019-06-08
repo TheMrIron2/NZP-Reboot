@@ -295,8 +295,6 @@ void HUD_Rounds (void)
 	x_offset = 0;
 	savex = 0;
 
-	Draw_String (0, vid.width/2, va("Round change %d\n", cl.stats[STAT_ROUNDCHANGE]));
-
 	if (cl.stats[STAT_ROUNDCHANGE] == 1)//this is the rounds icon at the middle of the screen
 	{
 		Draw_ColorPic ((vid.width/2 - sb_round[0]->width) /2, vid.height*3/4 - sb_round[0]->height/2, sb_round[0], 0.4196, 0.004, 0, alphabling/255);
@@ -315,8 +313,8 @@ void HUD_Rounds (void)
 		round_center_y = round_center_y + ((vid.height*1.015)/272);
 		if (round_center_x <= 5)
 			round_center_x = 5;
-		if (round_center_y >= 250*vid.height/272)
-			round_center_y = 250*vid.height/272;
+		if (round_center_y >= 254*vid.height/272)
+			round_center_y = 254*vid.height/272;
 	}
 	else if (cl.stats[STAT_ROUNDCHANGE] == 3)//shift to white
 	{
@@ -693,6 +691,74 @@ void HUD_Rounds (void)
 
 //=============================================================================
 
+/*
+===============
+HUD_Perks
+===============
+*/
+#define 	P_JUG		1
+#define 	P_DOUBLE	2
+#define 	P_SPEED		4
+#define 	P_REVIVE	8
+#define 	P_FLOP		16
+#define 	P_STAMIN	32
+#define 	P_DEAD 		64
+
+int perk_order[8];
+int current_perk_order;
+
+void HUD_Perks (void)
+{
+	int i;
+	int y;
+	y = vid.height - sb_round[1]->height - jugpic->height - 14;
+
+	for (i = 0; i < 8; i++)
+	{
+		if (perk_order[i])
+		{
+			if (perk_order[i] == P_JUG)
+			{
+				Draw_Pic (2, y, jugpic);
+				y = y - 34;
+			}
+			else if (perk_order[i] == P_DOUBLE)
+			{
+				Draw_Pic (2, y, doublepic);
+				y = y - 34;
+			}
+			else if (perk_order[i] == P_SPEED)
+			{
+				Draw_Pic (2, y, speedpic);
+				y = y - 34;
+			}
+			else if (perk_order[i] == P_REVIVE)
+			{
+				Draw_Pic (2, y, revivepic);
+				y = y - 34;
+			}
+			else if (perk_order[i] == P_FLOP)
+			{
+				Draw_Pic (2, y, floppic);
+				y = y - 34;
+			}
+			else if (perk_order[i] == P_STAMIN)
+			{
+				Draw_Pic (2, y, staminpic);
+				y = y - 34;
+			}
+			else if (perk_order[i] == P_DEAD)
+			{
+				Draw_Pic (2, y, deadpic);
+				y = y - 34;
+			}
+		}
+	}
+}
+
+//=============================================================================
+
+
 void HUD_Draw (void) {
 	if (key_dest == key_menu_pause) {
 		return;
@@ -720,8 +786,8 @@ void HUD_Draw (void) {
 	}
 
 	HUD_Blood(); 
-	HUD_Rounds();/*
-	HUD_Perks();
+	HUD_Rounds();
+	HUD_Perks();/*
 	HUD_Powerups();
 	HUD_ProgressBar();
 	if ((HUD_Change_time > Sys_FloatTime() || GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG] || GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 0) >= cl.stats[STAT_AMMO]) && cl.stats[STAT_HEALTH] >= 20)

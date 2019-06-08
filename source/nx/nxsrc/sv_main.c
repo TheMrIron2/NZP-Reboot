@@ -815,17 +815,9 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 
 	if (ent->v.idealpitch)
 		bits |= SU_IDEALPITCH;
-
-// stuff the sigil bits into the high bits of items for sbar, or else
-// mix in items2
-	val = GetEdictFieldValue(ent, "items2");
-
-	if (val)
-		items = (int)ent->v.items | ((int)val->_float << 23);
-	else
-		items = (int)ent->v.items | ((int)pr_global_struct->serverflags << 28);
-
-	bits |= SU_ITEMS;
+	
+	if (ent->v.perks)
+		bits |= SU_PERKS;
 
 	if ( (int)ent->v.flags & FL_ONGROUND)
 		bits |= SU_ONGROUND;
@@ -887,8 +879,8 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 			MSG_WriteChar (msg, ent->v.velocity[i]/16);
 	}
 
-// [always sent]	if (bits & SU_ITEMS)
-	MSG_WriteLong (msg, items);
+	if (bits & SU_PERKS)
+		MSG_WriteLong (msg, ent->v.perks);
 
 	if (bits & SU_WEAPONFRAME)
 		MSG_WriteByte (msg, ent->v.weaponframe);
