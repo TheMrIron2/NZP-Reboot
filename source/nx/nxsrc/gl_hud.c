@@ -774,6 +774,30 @@ void HUD_Powerups (void)
 //=============================================================================
 
 
+/*
+===============
+HUD_ProgressBar
+===============
+*/
+void HUD_ProgressBar (void)
+{
+	float progressbar;
+
+	if (cl.progress_bar)
+	{
+		progressbar = 100 - ((cl.progress_bar-sv.time)*10);
+		if (progressbar >= 100)
+			progressbar = 100;
+		Draw_FillByColor  ((vid.width)/4 - 51, vid.height/2 + (vid.height/2)*0.75 - 1, 102, 5, 0, 100/255.0);
+		Draw_FillByColor ((vid.width)/4 - 50, vid.height/2 + (vid.height/2)*0.75, progressbar, 3, 1, 100/255.0);
+
+		Draw_String ((vid.width/2 - (88))/2, vid.height/2 + (vid.height/2)*0.75 + 10, "Reviving...");
+	}
+}
+
+//=============================================================================
+
+
 void HUD_Draw (void) {
 	if (key_dest == key_menu_pause) {
 		return;
@@ -803,8 +827,8 @@ void HUD_Draw (void) {
 	HUD_Blood(); 
 	HUD_Rounds();
 	HUD_Perks();
-	HUD_Powerups();/*
-	HUD_ProgressBar();
+	HUD_Powerups();
+	HUD_ProgressBar();/*
 	if ((HUD_Change_time > Sys_FloatTime() || GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG] || GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 0) >= cl.stats[STAT_AMMO]) && cl.stats[STAT_HEALTH] >= 20)
 	{ //these elements are only drawn when relevant for few seconds
 		HUD_Ammo();

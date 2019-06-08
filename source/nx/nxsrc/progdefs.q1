@@ -133,6 +133,7 @@ typedef struct
 	string_t	targetname;
 	float	dmg_take;
 	float	dmg_save;
+	float	progress_bar;
 	int	dmg_inflictor;
 	int	owner;
 	vec3_t	movedir;

@@ -148,6 +148,7 @@ void            end_sys_globals;
 .string         targetname;
 .float          dmg_take;
 .float          dmg_save;
+.float           progress_bar;
 .entity         dmg_inflictor;
 .entity         owner;
 .vector         movedir;

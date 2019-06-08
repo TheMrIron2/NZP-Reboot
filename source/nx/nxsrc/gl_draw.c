@@ -769,6 +769,34 @@ void Draw_Fill (int x, int y, int w, int h, int c, float alpha) //johnfitz -- ad
 	glEnable (GL_TEXTURE_2D);
 }
 
+
+/*
+=============
+Draw_FillByColor
+
+Fills a box of pixels with a single color not in basepal
+=============
+*/
+void Draw_FillByColor (int x, int y, int w, int h, unsigned int c, float alpha) //johnfitz -- added alpha
+{
+	glDisable (GL_TEXTURE_2D);
+	glEnable (GL_BLEND); //johnfitz -- for alpha
+	glDisable (GL_ALPHA_TEST); //johnfitz -- for alpha
+	glColor4f (c, c, c, alpha); //johnfitz -- added alpha
+
+	glBegin (GL_QUADS);
+	glVertex2f (x,y);
+	glVertex2f (x+w, y);
+	glVertex2f (x+w, y+h);
+	glVertex2f (x, y+h);
+	glEnd ();
+
+	glColor3f (1,1,1);
+	glDisable (GL_BLEND); //johnfitz -- for alpha
+	glEnable (GL_ALPHA_TEST); //johnfitz -- for alpha
+	glEnable (GL_TEXTURE_2D);
+}
+
 /*
 ================
 Draw_FadeScreen -- johnfitz -- revised

@@ -913,6 +913,7 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 	MSG_WriteByte (msg, pr_global_struct->rounds_change);
 	MSG_WriteByte (msg, ent->v.x2_icon);
 	MSG_WriteByte (msg, ent->v.insta_icon);
+	MSG_WriteByte (msg, ent->v.progress_bar);
 
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (bits & SU_WEAPON2)

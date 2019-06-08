@@ -38,6 +38,7 @@ void Draw_TransPicTranslate (int x, int y, qpic_t *pic, int top, int bottom); //
 void Draw_ConsoleBackground (void); //johnfitz -- removed parameter int lines
 void Draw_TileClear (int x, int y, int w, int h);
 void Draw_Fill (int x, int y, int w, int h, int c, float alpha); //johnfitz -- added alpha
+void Draw_FillByColor (int x, int y, int w, int h, unsigned int c, float alpha);
 void Draw_FadeScreen (void);
 void Draw_String (int x, int y, const char *str);
 qpic_t *Draw_PicFromWad (const char *name);

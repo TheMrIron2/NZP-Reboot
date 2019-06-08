@@ -994,6 +994,11 @@ void CL_ParseClientdata (void)
 	if (cl.stats[STAT_INSTA] != i)
 		cl.stats[STAT_INSTA] = i;
 
+	i = MSG_ReadByte ();
+	if (cl.progress_bar != i)
+		cl.progress_bar = i;
+
+
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (bits & SU_WEAPON2)
 		cl.stats[STAT_WEAPON] |= (MSG_ReadByte() << 8);
