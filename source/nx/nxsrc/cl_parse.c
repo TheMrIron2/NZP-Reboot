@@ -703,6 +703,9 @@ Server information pertaining to this client only
 */
 extern int perk_order[8];
 extern int current_perk_order;
+
+extern double HUD_Change_time;
+
 void CL_ParseClientdata (void)
 {
 	int		i, j, s;
@@ -920,16 +923,6 @@ void CL_ParseClientdata (void)
 	else
 		cl.stats[STAT_WEAPONFRAME] = 0;
 
-	if (bits & SU_ARMOR)
-		i = MSG_ReadByte ();
-	else
-		i = 0;
-	if (cl.stats[STAT_ARMOR] != i)
-	{
-		cl.stats[STAT_ARMOR] = i;
-		Sbar_Changed ();
-	}
-
 	if (bits & SU_WEAPON)
 		i = MSG_ReadByte ();
 	else
@@ -938,6 +931,32 @@ void CL_ParseClientdata (void)
 	{
 		cl.stats[STAT_WEAPON] = i;
 		Sbar_Changed ();
+	}
+
+	if (bits & SU_GRENADES)
+		i = MSG_ReadLong ();
+	else
+		i = 0;
+
+	if (cl.stats[STAT_GRENADES] != i)
+	{
+		HUD_Change_time = Sys_DoubleTime() + 6;
+		cl.stats[STAT_GRENADES] = i;
+	}
+
+	i = MSG_ReadShort ();
+	if (cl.stats[STAT_PRIGRENADES] != i)
+	{
+		HUD_Change_time = Sys_DoubleTime() + 6;
+		cl.stats[STAT_PRIGRENADES] = i;
+	}
+
+
+	i = MSG_ReadShort ();
+	if (cl.stats[STAT_SECGRENADES] != i)
+	{
+		HUD_Change_time = Sys_DoubleTime() + 6;
+		cl.stats[STAT_SECGRENADES] = i;
 	}
 
 	i = MSG_ReadShort ();
@@ -950,8 +969,15 @@ void CL_ParseClientdata (void)
 	i = MSG_ReadByte ();
 	if (cl.stats[STAT_AMMO] != i)
 	{
+		HUD_Change_time = Sys_DoubleTime() + 5;
 		cl.stats[STAT_AMMO] = i;
-		Sbar_Changed ();
+	}
+
+	i = MSG_ReadByte ();
+	if (cl.stats[STAT_CURRENTMAG] != i)
+	{
+		HUD_Change_time = Sys_DoubleTime() + 5;
+		cl.stats[STAT_CURRENTMAG] = i;
 	}
 
 	i = MSG_ReadByte ();
@@ -959,22 +985,10 @@ void CL_ParseClientdata (void)
 		cl.stats[STAT_ZOOM] = i;
 
 	i = MSG_ReadByte ();
-
-	if (standard_quake)
+	if (cl.stats[STAT_ACTIVEWEAPON] != i)
 	{
-		if (cl.stats[STAT_ACTIVEWEAPON] != i)
-		{
-			cl.stats[STAT_ACTIVEWEAPON] = i;
-			Sbar_Changed ();
-		}
-	}
-	else
-	{
-		if (cl.stats[STAT_ACTIVEWEAPON] != (1<<i))
-		{
-			cl.stats[STAT_ACTIVEWEAPON] = (1<<i);
-			Sbar_Changed ();
-		}
+		cl.stats[STAT_ACTIVEWEAPON] = i;
+	    HUD_Change_time = Sys_DoubleTime() + 5;
 	}
 
 	// This corresponds to SV_WriteClientdataToMessage
@@ -1002,8 +1016,6 @@ void CL_ParseClientdata (void)
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (bits & SU_WEAPON2)
 		cl.stats[STAT_WEAPON] |= (MSG_ReadByte() << 8);
-	if (bits & SU_ARMOR2)
-		cl.stats[STAT_ARMOR] |= (MSG_ReadByte() << 8);
 	if (bits & SU_AMMO2)
 		cl.stats[STAT_AMMO] |= (MSG_ReadByte() << 8);
 	if (bits & SU_WEAPONFRAME2)

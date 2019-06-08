@@ -836,17 +836,16 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 	if (ent->v.weaponframe)
 		bits |= SU_WEAPONFRAME;
 
-	if (ent->v.armorvalue)
-		bits |= SU_ARMOR;
-
 //	if (ent->v.weapon)
 		bits |= SU_WEAPON;
+
+	if (ent->v.grenades)
+		bits |= SU_GRENADES;
 
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (sv.protocol != PROTOCOL_NETQUAKE)
 	{
 		if (bits & SU_WEAPON && SV_ModelIndex(PR_GetString(ent->v.weaponmodel)) & 0xFF00) bits |= SU_WEAPON2;
-		if ((int)ent->v.armorvalue & 0xFF00) bits |= SU_ARMOR2;
 		if ((int)ent->v.currentammo & 0xFF00) bits |= SU_AMMO2;
 		if (bits & SU_WEAPONFRAME && (int)ent->v.weaponframe & 0xFF00) bits |= SU_WEAPONFRAME2;
 		if (bits & SU_WEAPON && ent->alpha != ENTALPHA_DEFAULT) bits |= SU_WEAPONALPHA; //for now, weaponalpha = client entity alpha
@@ -884,31 +883,20 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 
 	if (bits & SU_WEAPONFRAME)
 		MSG_WriteByte (msg, ent->v.weaponframe);
-	if (bits & SU_ARMOR)
-		MSG_WriteByte (msg, ent->v.armorvalue);
 	if (bits & SU_WEAPON)
 		MSG_WriteByte (msg, SV_ModelIndex(PR_GetString(ent->v.weaponmodel)));
 
+	if (bits & SU_GRENADES)
+		MSG_WriteLong (msg, ent->v.grenades);
+
+	MSG_WriteShort (msg, ent->v.primary_grenades);
+	MSG_WriteShort (msg, ent->v.secondary_grenades);
 	MSG_WriteShort (msg, ent->v.health);
 	MSG_WriteByte (msg, ent->v.currentammo);
+	MSG_WriteByte (msg, ent->v.currentmag);
 	MSG_WriteByte (msg, ent->v.zoom);
 
-	if (standard_quake)
-	{
-		MSG_WriteByte (msg, ent->v.weapon);
-	}
-	else
-	{
-		for(i=0;i<32;i++)
-		{
-			if ( ((int)ent->v.weapon) & (1<<i) )
-			{
-				MSG_WriteByte (msg, i);
-				break;
-			}
-		}
-	}
-
+	MSG_WriteByte (msg, ent->v.weapon);
 	MSG_WriteByte (msg, pr_global_struct->rounds); // This cooresponds to CL_ParseClientdata
 	MSG_WriteByte (msg, pr_global_struct->rounds_change);
 	MSG_WriteByte (msg, ent->v.x2_icon);
@@ -918,8 +906,6 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (bits & SU_WEAPON2)
 		MSG_WriteByte (msg, SV_ModelIndex(PR_GetString(ent->v.weaponmodel)) >> 8);
-	if (bits & SU_ARMOR2)
-		MSG_WriteByte (msg, (int)ent->v.armorvalue >> 8);
 	if (bits & SU_AMMO2)
 		MSG_WriteByte (msg, (int)ent->v.currentammo >> 8);
 	if (bits & SU_WEAPONFRAME2)

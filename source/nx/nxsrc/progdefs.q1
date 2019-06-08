@@ -91,7 +91,11 @@ typedef struct
 	string_t	weaponmodel;
 	float	weaponframe;
 	float	currentammo;
+	float	currentmag;
 	float 	zoom;
+	float	primary_grenades;
+	float	secondary_grenades;
+	float	grenades;
 	float   perks;
 	float	takedamage;
 	int	chain;

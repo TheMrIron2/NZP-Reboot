@@ -63,6 +63,8 @@ int alphabling = 0;
 float round_center_x;
 float round_center_y;
 
+double HUD_Change_time;//hide hud when not chagned
+
 typedef struct
 {
 	int points;
@@ -73,6 +75,8 @@ typedef struct
 	float move_y;
 	double alive_time;
 } point_change_t;
+
+int  x_value, y_value;
 
 point_change_t point_change[10];
 
@@ -798,6 +802,77 @@ void HUD_ProgressBar (void)
 //=============================================================================
 
 
+/*
+===============
+HUD_Ammo
+===============
+*/
+
+int GetLowAmmo(int weapon, int type)
+{
+	switch (weapon)
+	{
+		case W_COLT: if (type) return 2; else return 16;
+		case W_KAR: if (type) return 1; else return 10;
+		case W_KAR_SCOPE: if (type) return 1; else return 10;
+		case W_M1A1: if (type) return 4; else return 24;
+		case W_SAWNOFF: if (type) return 1; else return 12;
+		case W_DB: if (type) return 1; else return 12;
+		case W_THOMPSON: if (type) return 6; else return 40;
+		case W_BAR: if (type) return 6; else return 28;
+		default: return 0;
+	}
+}
+
+int IsDualWeapon(int weapon)
+{
+	switch(weapon) {
+		case W_BIATCH:
+		case W_SNUFF:
+			return 1;
+		default:
+			return 0;
+	}
+
+	return 0;
+}
+
+//=============================================================================
+
+/*
+===============
+HUD_Grenades
+===============
+*/
+#define 	UI_FRAG		1
+#define 	UI_BETTY	2
+
+void HUD_Grenades (void)
+{
+	if (cl.stats[STAT_GRENADES])
+	{	
+		x_value = vid.width/2 - 50;
+		y_value = vid.height - 16 - fragpic->height - 4;
+	}
+	if (cl.stats[STAT_GRENADES] & UI_FRAG)
+	{
+		Draw_Pic (x_value, y_value, fragpic);
+		if (cl.stats[STAT_PRIGRENADES] <= 0)
+			// Naievil -- fixme MAKE RED
+			Draw_String (x_value + 24, y_value + 28, va ("%i",cl.stats[STAT_PRIGRENADES]));
+		else
+			Draw_String (x_value + 24, y_value + 28, va ("%i",cl.stats[STAT_PRIGRENADES]));
+	}
+	if (cl.stats[STAT_GRENADES] & UI_BETTY)
+	{
+		Draw_Pic (x_value - fragpic->width - 5, y_value, bettypic);
+		Draw_String (x_value - fragpic->width + 20, y_value + 28, va ("%i",cl.stats[STAT_SECGRENADES]));
+	}
+}
+
+//=============================================================================
+
+
 void HUD_Draw (void) {
 	if (key_dest == key_menu_pause) {
 		return;
@@ -828,14 +903,14 @@ void HUD_Draw (void) {
 	HUD_Rounds();
 	HUD_Perks();
 	HUD_Powerups();
-	HUD_ProgressBar();/*
-	if ((HUD_Change_time > Sys_FloatTime() || GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG] || GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 0) >= cl.stats[STAT_AMMO]) && cl.stats[STAT_HEALTH] >= 20)
+	HUD_ProgressBar();
+	if ((HUD_Change_time > Sys_DoubleTime() || GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG] || GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 0) >= cl.stats[STAT_AMMO]) && cl.stats[STAT_HEALTH] >= 20)
 	{ //these elements are only drawn when relevant for few seconds
-		HUD_Ammo();
+		//HUD_Ammo();
 		HUD_Grenades();
-		HUD_Weapon();
-		HUD_AmmoString();
-	}
+		//HUD_Weapon();
+		//HUD_AmmoString();
+	}/*
 	HUD_Points();
 	HUD_Point_Change();
 	HUD_Achievement();

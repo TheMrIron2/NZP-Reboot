@@ -86,7 +86,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	SU_ONGROUND		(1<<10)	// no data follows, the bit is it
 #define	SU_INWATER		(1<<11)	// no data follows, the bit is it
 #define	SU_WEAPONFRAME	(1<<12)
-#define	SU_ARMOR		(1<<13)
+#define	SU_GRENADES		(1<<13)
 #define	SU_WEAPON		(1<<14)
 //johnfitz -- PROTOCOL_FITZQUAKE -- new bits
 #define SU_EXTEND1		(1<<15) // another byte to follow
