@@ -494,12 +494,6 @@ void Sbar_SoloScoreboard (void)
 	int	minutes, seconds, tens, units;
 	int	len;
 
-	sprintf (str,"Kills: %i/%i", cl.stats[STAT_MONSTERS], 0);
-	Sbar_DrawString (8, 12, str);
-
-	sprintf (str,"Secrets: %i/%i", cl.stats[STAT_SECRETS], 0);
-	Sbar_DrawString (312 - strlen(str)*8, 12, str);
-
 	if (!fitzmode)
 	{ /* QuakeSpasm customization: */
 		q_snprintf (str, sizeof(str), "skill %i", (int)(skill.value + 0.5));
@@ -1237,13 +1231,6 @@ void Sbar_IntermissionOverlay (void)
 	Draw_Pic (224,64,sb_colon); //johnfitz -- was 234
 	Draw_Pic (240,64,sb_nums[0][num/10]); //johnfitz -- was 246
 	Draw_Pic (264,64,sb_nums[0][num%10]); //johnfitz -- was 266
-
-	Sbar_IntermissionNumber (152, 104, cl.stats[STAT_SECRETS], 3, 0); //johnfitz -- was 160
-	Draw_Pic (224,104,sb_slash); //johnfitz -- was 232
-	Sbar_IntermissionNumber (240, 104, 0, 3, 0); //johnfitz -- was 248
-
-	Sbar_IntermissionNumber (152, 144, cl.stats[STAT_MONSTERS], 3, 0); //johnfitz -- was 160
-	Draw_Pic (224,144,sb_slash); //johnfitz -- was 232
 }
 
 

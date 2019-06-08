@@ -313,8 +313,8 @@ void HUD_Rounds (void)
 		round_center_y = round_center_y + ((vid.height*1.015)/272);
 		if (round_center_x <= 5)
 			round_center_x = 5;
-		if (round_center_y >= 254*vid.height/272)
-			round_center_y = 254*vid.height/272;
+		if (round_center_y >= 250*vid.height/272)
+			round_center_y = 250*vid.height/272;
 	}
 	else if (cl.stats[STAT_ROUNDCHANGE] == 3)//shift to white
 	{
@@ -758,6 +758,21 @@ void HUD_Perks (void)
 
 //=============================================================================
 
+/*
+===============
+HUD_Powerups
+===============
+*/
+void HUD_Powerups (void)
+{
+	if(cl.stats[STAT_X2])
+		Draw_Pic ((vid.width/4) - 32, vid.height/2, x2pic);
+	if(cl.stats[STAT_INSTA])
+		Draw_Pic ((vid.width/4) + 2, vid.height/2, instapic);
+}
+
+//=============================================================================
+
 
 void HUD_Draw (void) {
 	if (key_dest == key_menu_pause) {
@@ -787,8 +802,8 @@ void HUD_Draw (void) {
 
 	HUD_Blood(); 
 	HUD_Rounds();
-	HUD_Perks();/*
-	HUD_Powerups();
+	HUD_Perks();
+	HUD_Powerups();/*
 	HUD_ProgressBar();
 	if ((HUD_Change_time > Sys_FloatTime() || GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG] || GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 0) >= cl.stats[STAT_AMMO]) && cl.stats[STAT_HEALTH] >= 20)
 	{ //these elements are only drawn when relevant for few seconds

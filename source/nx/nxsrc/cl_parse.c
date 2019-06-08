@@ -986,6 +986,14 @@ void CL_ParseClientdata (void)
 	if (cl.stats[STAT_ROUNDCHANGE] != i)
 		cl.stats[STAT_ROUNDCHANGE] = i;
 
+	i = MSG_ReadByte ();
+	if (cl.stats[STAT_X2] != i)
+		cl.stats[STAT_X2] = i;
+
+	i = MSG_ReadByte ();
+	if (cl.stats[STAT_INSTA] != i)
+		cl.stats[STAT_INSTA] = i;
+
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (bits & SU_WEAPON2)
 		cl.stats[STAT_WEAPON] |= (MSG_ReadByte() << 8);
@@ -1352,14 +1360,6 @@ void CL_ParseServerMessage (void)
 			}
 			//johnfitz
 			CL_SignonReply ();
-			break;
-
-		case svc_killedmonster:
-			cl.stats[STAT_MONSTERS]++;
-			break;
-
-		case svc_foundsecret:
-			cl.stats[STAT_SECRETS]++;
 			break;
 
 		case svc_updatestat:

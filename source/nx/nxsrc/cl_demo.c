@@ -334,13 +334,13 @@ void CL_Record_f (void)
 
 		// what about the CD track or SVC fog... future consideration.
 
-		MSG_WriteByte (&net_message, svc_updatestat);
-		MSG_WriteByte (&net_message, STAT_SECRETS);
-		MSG_WriteLong (&net_message, cl.stats[STAT_SECRETS]);
+		// MSG_WriteByte (&net_message, svc_updatestat);
+		// MSG_WriteByte (&net_message, STAT_SECRETS);
+		// MSG_WriteLong (&net_message, cl.stats[STAT_SECRETS]);
 
-		MSG_WriteByte (&net_message, svc_updatestat);
-		MSG_WriteByte (&net_message, STAT_MONSTERS);
-		MSG_WriteLong (&net_message, cl.stats[STAT_MONSTERS]);
+		// MSG_WriteByte (&net_message, svc_updatestat);
+		// MSG_WriteByte (&net_message, STAT_MONSTERS);
+		// MSG_WriteLong (&net_message, cl.stats[STAT_MONSTERS]);
 
 		// view entity
 		MSG_WriteByte (&net_message, svc_setview);

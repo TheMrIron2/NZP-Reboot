@@ -815,7 +815,7 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 
 	if (ent->v.idealpitch)
 		bits |= SU_IDEALPITCH;
-	
+
 	if (ent->v.perks)
 		bits |= SU_PERKS;
 
@@ -910,8 +910,9 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 	}
 
 	MSG_WriteByte (msg, pr_global_struct->rounds); // This cooresponds to CL_ParseClientdata
-
 	MSG_WriteByte (msg, pr_global_struct->rounds_change);
+	MSG_WriteByte (msg, ent->v.x2_icon);
+	MSG_WriteByte (msg, ent->v.insta_icon);
 
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (bits & SU_WEAPON2)

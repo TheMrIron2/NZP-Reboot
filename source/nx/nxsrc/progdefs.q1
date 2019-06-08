@@ -16,8 +16,6 @@ typedef struct
 	float	serverflags;
 	float   rounds;
 	float   rounds_change;
-	float	found_secrets;
-	float	killed_monsters;
 	float	parm1;
 	float	parm2;
 	float	parm3;
@@ -144,6 +142,8 @@ typedef struct
 	string_t	noise1;
 	string_t	noise2;
 	string_t	noise3;
+	float	x2_icon;
+	float	insta_icon;
 	string_t 	Weapon_Name_Touch;
 	vec3_t 		ADS_Offset;
 } entvars_t;

@@ -1004,7 +1004,6 @@ void Host_SavegameComment (char *text)
 	for (i = 0; i < SAVEGAME_COMMENT_LENGTH; i++)
 		text[i] = ' ';
 	memcpy (text, cl.levelname, q_min(strlen(cl.levelname),22)); //johnfitz -- only copy 22 chars.
-	sprintf (kills,"kills:%3i/%3i", cl.stats[STAT_MONSTERS], 0);
 	memcpy (text+22, kills, strlen(kills));
 // convert space to _ to make stdio happy
 	for (i = 0; i < SAVEGAME_COMMENT_LENGTH; i++)
@@ -1705,13 +1704,13 @@ void Host_Spawn_f (void)
 	MSG_WriteLong (&host_client->message, pr_global_struct->rounds_change);
 
 	MSG_WriteByte (&host_client->message, svc_updatestat);
-	MSG_WriteByte (&host_client->message, STAT_SECRETS);
-	MSG_WriteLong (&host_client->message, pr_global_struct->found_secrets);
+	MSG_WriteByte (&host_client->message, STAT_X2);
+	MSG_WriteByte (&host_client->message, sv_player->v.x2_icon);
 
 	MSG_WriteByte (&host_client->message, svc_updatestat);
-	MSG_WriteByte (&host_client->message, STAT_MONSTERS);
-	MSG_WriteLong (&host_client->message, pr_global_struct->killed_monsters);
-
+	MSG_WriteByte (&host_client->message, STAT_INSTA);
+	MSG_WriteByte (&host_client->message, sv_player->v.insta_icon);
+	
 //
 // send a fixangle
 // Never send a roll angle, because savegames can catch the server

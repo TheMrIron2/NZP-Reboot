@@ -30,10 +30,8 @@ void() maxammo =
 			if (tempe.grenades & 2)
         tempe.secondary_grenades = 2;
 		}
-		#ifndef PSP
-		#ifndef NX
+		#ifdef PC
 		ScrollText("MAX AMMO!", tempe);
-		#endif
 		#endif
 		
 		tempe = find (tempe, classname, "player");
