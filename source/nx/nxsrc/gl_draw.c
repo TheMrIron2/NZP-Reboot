@@ -544,18 +544,23 @@ void Draw_String (int x, int y, const char *str)
 
 /*
 ================
-Draw_ColoredString -- naievil -- FIXME change to add RGBA, not just monochrome
+Draw_ColoredString
+
+Assume that all rgba values are divided by 255 already
 ================
 */
-void Draw_ColoredString (int x, int y, const char *str, int c)
+void Draw_ColoredString (int x, int y, const char *str, float r, float g, float b, float a)
 {
 	if (y <= -8)
 		return;			// totally off screen
 
+	glEnable (GL_BLEND);
+    glColor4f(r, g, b, a);
+	glDisable (GL_ALPHA_TEST);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
 	GL_Bind (char_texture);
 	glBegin (GL_QUADS);
-
-	glColor4f(c/255.0, c/255.0, c/255.0, 1);
 
 	while (*str)
 	{
@@ -566,6 +571,12 @@ void Draw_ColoredString (int x, int y, const char *str, int c)
 	}
 
 	glEnd ();
+
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	glEnable (GL_ALPHA_TEST);
+	glDisable (GL_BLEND);
+	glColor4f (1,1,1,1);
+
 }
 
 /*

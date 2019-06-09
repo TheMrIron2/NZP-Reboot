@@ -404,9 +404,9 @@ void HUD_Point_Change (void)
 		if (point_change[i].points)
 		{
 			if (point_change[i].negative)
-				Draw_ColoredString (point_change[i].x, point_change[i].y, va ("-%i", point_change[i].points),0); // naievil fixme -- RED
+				Draw_ColoredString (point_change[i].x, point_change[i].y, va ("-%i", point_change[i].points), 1, 0, 0, 1);
 			else
-				Draw_ColoredString (point_change[i].x, point_change[i].y, va ("+%i", point_change[i].points),0); // naievil fixme -- yellow
+				Draw_ColoredString (point_change[i].x, point_change[i].y, va ("+%i", point_change[i].points), 1, 1, 0, 1);
 			point_change[i].y = point_change[i].y + point_change[i].move_y;
 			point_change[i].x = point_change[i].x - point_change[i].move_x;
 			if (point_change[i].alive_time && point_change[i].alive_time < Sys_DoubleTime())
@@ -1031,26 +1031,24 @@ void HUD_Ammo (void)
 		magstring = va ("%i",cl.stats[STAT_CURRENTMAG]);
 
 	xplus = HUD_itoa (cl.stats[STAT_CURRENTMAG], str);
-	Draw_ColoredString (vid.width/2 - 42 - (xplus*8), y_value, magstring, 0);
+	Draw_ColoredString (vid.width/2 - 42 - (xplus*8), y_value, magstring, 1, 1, 1, 1);
 
 	mag2string = va("%i", cl.stats[STAT_CURRENTMAG2]);
 	xplus2 = HUD_itoa (cl.stats[STAT_CURRENTMAG2], str2);
 
 	if (IsDualWeapon(cl.stats[STAT_ACTIVEWEAPON])) {
-		Draw_ColoredString (vid.width/2 - 56 - (xplus2*8), y_value, mag2string, 0);
+		Draw_ColoredString (vid.width/2 - 56 - (xplus2*8), y_value, mag2string, 1, 1, 1, 1);
 	}
 
 	if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 0) >= cl.stats[STAT_AMMO])
 	{
-		// Naievil -- FIXME red
-		Draw_ColoredString (vid.width/2 - 42, y_value, "/", 0);
-		Draw_ColoredString (vid.width/2 - 34, y_value, va ("%i",cl.stats[STAT_AMMO]), 0);
+		Draw_ColoredString (vid.width/2 - 42, y_value, "/", 1, 0, 0, 1);
+		Draw_ColoredString (vid.width/2 - 34, y_value, va ("%i",cl.stats[STAT_AMMO]), 1, 0, 0, 1);
 	}
 	else
 	{
-		// Naievil -- FIXME regular
 		Draw_Character (vid.width/2 - 42, y_value, '/');
-		Draw_ColoredString (vid.width/2 - 34, y_value, va ("%i",cl.stats[STAT_AMMO]), 0);
+		Draw_String (vid.width/2 - 34, y_value, va ("%i",cl.stats[STAT_AMMO]));
 	}
 }
 
@@ -1062,26 +1060,19 @@ HUD_AmmoString
 
 void HUD_AmmoString (void)
 {
-	char str[12];
 	int len = 0;
 	
 	if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG])
 	{
 		if (0 < cl.stats[STAT_AMMO] && cl.stats[STAT_CURRENTMAG] >= 0) {
-			len = 6;
-			strcpy(str, "Reload");
+			Draw_String ((vid.width)/4, (vid.height)*3/4 + 40, "Reload");
 		} else if (0 < cl.stats[STAT_CURRENTMAG]) {
-			len = 8;
-			strcpy(str, "LOW AMMO"); // Naievil -- fixme YELLOW
+			Draw_ColoredString ((vid.width/2 - len*8)/2, (vid.height)*3/4 + 40, "LOW AMMO", 1, 1, 0, 1);
 		} else {
-			len = 7;
-			strcpy(str, "NO AMMO"); // Naievil -- fixme RED
+			Draw_ColoredString ((vid.width/2 - len*8)/2, (vid.height)*3/4 + 40, "NO AMMO", 1, 0, 0, 1);
 		}
 	}
 
-	if (len > 0)
-		Draw_String ((vid.width)/4, (vid.height)*3/4 + 40, str);
-		//Draw_ColoredString ((vid.width - len*8)/2, (vid.height)/2 + 40, str, 0);
 }
 
 //=============================================================================
@@ -1105,15 +1096,18 @@ void HUD_Grenades (void)
 	{
 		Draw_Pic (x_value, y_value, fragpic);
 		if (cl.stats[STAT_PRIGRENADES] <= 0)
-			// Naievil -- fixme MAKE RED
-			Draw_String (x_value + 24, y_value + 28, va ("%i",cl.stats[STAT_PRIGRENADES]));
+			Draw_ColoredString (x_value + 24, y_value + 28, va ("%i",cl.stats[STAT_PRIGRENADES]), 1, 0, 0, 1);
 		else
 			Draw_String (x_value + 24, y_value + 28, va ("%i",cl.stats[STAT_PRIGRENADES]));
 	}
 	if (cl.stats[STAT_GRENADES] & UI_BETTY)
 	{
 		Draw_Pic (x_value - fragpic->width - 5, y_value, bettypic);
-		Draw_String (x_value - fragpic->width + 20, y_value + 28, va ("%i",cl.stats[STAT_SECGRENADES]));
+		if (cl.stats[STAT_PRIGRENADES] <= 0) {
+			Draw_ColoredString (x_value + 24, y_value + 28, va ("%i",cl.stats[STAT_SECGRENADES]), 1, 0, 0, 1);
+		} else {
+			Draw_String (x_value - fragpic->width + 20, y_value + 28, va ("%i",cl.stats[STAT_SECGRENADES]));
+		}
 	}
 }
 

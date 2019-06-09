@@ -41,7 +41,7 @@ void Draw_Fill (int x, int y, int w, int h, int c, float alpha); //johnfitz -- a
 void Draw_FillByColor (int x, int y, int w, int h, unsigned int c, float alpha);
 void Draw_FadeScreen (void);
 void Draw_String (int x, int y, const char *str);
-void Draw_ColoredString (int x, int y, const char *str, int c);
+void Draw_ColoredString (int x, int y, const char *str, float r, float g, float b, float a);
 qpic_t *Draw_PicFromWad (const char *name);
 qpic_t *Draw_CachePic (const char *path);
 void Draw_NewGame (void);
