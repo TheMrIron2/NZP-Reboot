@@ -464,7 +464,7 @@ void Host_Status_f (void)
 		}
 		else
 			hours = 0;
-		print_fn ("#%-2u %-16.16s  %3i  %2i:%02i:%02i\n", j+1, client->name, (int)client->edict->v.frags, hours, minutes, seconds);
+		print_fn ("#%-2u %-16.16s  %3i  %2i:%02i:%02i\n", j+1, client->name, /*(int)client->edict->v.frags*/0, hours, minutes, seconds);
 		print_fn ("   %s\n", NET_QSocketGetAddressString(client->netconnection));
 	}
 }
@@ -1675,12 +1675,12 @@ void Host_Spawn_f (void)
 		MSG_WriteByte (&host_client->message, svc_updatename);
 		MSG_WriteByte (&host_client->message, i);
 		MSG_WriteString (&host_client->message, client->name);
-		// MSG_WriteByte (&host_client->message, svc_updatefrags);
-		// MSG_WriteByte (&host_client->message, i);
-		// MSG_WriteShort (&host_client->message, client->old_frags);
-		// MSG_WriteByte (&host_client->message, svc_updatecolors);
-		// MSG_WriteByte (&host_client->message, i);
-		// MSG_WriteByte (&host_client->message, client->colors);
+		MSG_WriteByte (&host_client->message, svc_updatepoints);
+		MSG_WriteByte (&host_client->message, i);
+		MSG_WriteLong (&host_client->message, client->old_points);
+		MSG_WriteByte (&host_client->message, svc_updatekills);
+		MSG_WriteByte (&host_client->message, i);
+		MSG_WriteShort (&host_client->message, client->old_kills);
 	}
 
 // send all current light styles
@@ -1710,7 +1710,7 @@ void Host_Spawn_f (void)
 	MSG_WriteByte (&host_client->message, svc_updatestat);
 	MSG_WriteByte (&host_client->message, STAT_INSTA);
 	MSG_WriteByte (&host_client->message, sv_player->v.insta_icon);
-	
+
 //
 // send a fixangle
 // Never send a roll angle, because savegames can catch the server

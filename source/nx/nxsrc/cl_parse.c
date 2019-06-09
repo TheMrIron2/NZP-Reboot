@@ -46,7 +46,7 @@ const char *svc_strings[] =
 						// [string]..[0]item cache
 	"svc_lightstyle",		// [byte] [string]
 	"svc_updatename",		// [byte] [string]
-	"svc_updatefrags",	// [byte] [short]
+	"svc_updatepoints",	// [byte] [short]
 	"svc_clientdata",		// <shortbits + data>
 	"svc_stopsound",		// <see code>
 	"svc_updatecolors",	// [byte] [byte]
@@ -87,7 +87,8 @@ const char *svc_strings[] =
 	"", // 49
 	"svc_bspdecal",   // 50     // [string] name [byte] decal_size [coords] pos
 	"svc_limbupdate", // 51
-    "svc_achievement" // 52
+    "svc_achievement", // 52
+    "svc_updatekills"  // 53
 
 
 //johnfitz
@@ -940,14 +941,14 @@ void CL_ParseClientdata (void)
 
 	if (cl.stats[STAT_GRENADES] != i)
 	{
-		HUD_Change_time = Sys_DoubleTime() + 6;
+		HUD_Change_time = Sys_DoubleTime() + 5;
 		cl.stats[STAT_GRENADES] = i;
 	}
 
 	i = MSG_ReadShort ();
 	if (cl.stats[STAT_PRIGRENADES] != i)
 	{
-		HUD_Change_time = Sys_DoubleTime() + 6;
+		HUD_Change_time = Sys_DoubleTime() + 5;
 		cl.stats[STAT_PRIGRENADES] = i;
 	}
 
@@ -955,7 +956,7 @@ void CL_ParseClientdata (void)
 	i = MSG_ReadShort ();
 	if (cl.stats[STAT_SECGRENADES] != i)
 	{
-		HUD_Change_time = Sys_DoubleTime() + 6;
+		HUD_Change_time = Sys_DoubleTime() + 5;
 		cl.stats[STAT_SECGRENADES] = i;
 	}
 
@@ -1309,26 +1310,18 @@ void CL_ParseServerMessage (void)
 			q_strlcpy (cl.scores[i].name, MSG_ReadString(), MAX_SCOREBOARDNAME);
 			break;
 
-		case svc_updatefrags:
-		/*
-			Sbar_Changed ();
+		case svc_updatepoints:
 			i = MSG_ReadByte ();
 			if (i >= cl.maxclients)
-				Host_Error ("CL_ParseServerMessage: svc_updatefrags > MAX_SCOREBOARD");
-			cl.scores[i].frags = MSG_ReadShort ();
-		*/
+				Host_Error ("CL_ParseServerMessage: svc_updatepoints > MAX_SCOREBOARD");
+			cl.scores[i].points = MSG_ReadLong ();
 			break;
 
-		case svc_updatecolors:
-		/*
-			Sbar_Changed ();
+		case svc_updatekills:
 			i = MSG_ReadByte ();
 			if (i >= cl.maxclients)
-				Host_Error ("CL_ParseServerMessage: svc_updatecolors > MAX_SCOREBOARD");
-			cl.scores[i].colors = MSG_ReadByte ();
-			MSG_ReadByte (); // Useless, used to be ^
-			CL_NewTranslation (i);
-		*/
+				Host_Error ("CL_ParseServerMessage: svc_updatepoints > MAX_SCOREBOARD");
+			cl.scores[i].kills = MSG_ReadShort ();
 			break;
 
 		case svc_particle:

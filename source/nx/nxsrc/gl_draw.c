@@ -543,6 +543,32 @@ void Draw_String (int x, int y, const char *str)
 
 
 /*
+================
+Draw_ColoredString -- naievil -- FIXME change to add RGBA, not just monochrome
+================
+*/
+void Draw_ColoredString (int x, int y, const char *str, int c)
+{
+	if (y <= -8)
+		return;			// totally off screen
+
+	GL_Bind (char_texture);
+	glBegin (GL_QUADS);
+
+	glColor4f(c/255.0, c/255.0, c/255.0, 1);
+
+	while (*str)
+	{
+		if (*str != 32) //don't waste verts on spaces
+			Draw_CharacterQuad (x, y, *str);
+		str++;
+		x += 8;
+	}
+
+	glEnd ();
+}
+
+/*
 =============
 Draw_ColorPic
 =============

@@ -86,7 +86,8 @@ typedef struct
 	float	nextthink;
 	int	groundentity;
 	float	health;
-	float	frags;
+    float	points;
+	float	kills;	
 	float	weapon;
 	string_t	weaponmodel;
 	float	weaponframe;

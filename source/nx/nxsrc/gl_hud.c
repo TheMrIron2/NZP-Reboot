@@ -156,6 +156,43 @@ void HUD_NewMap (void)
 	round_center_y = vid.height*3/4 - sb_round[0]->height/2;
 }
 
+
+/*
+=============
+HUD_itoa
+=============
+*/
+int HUD_itoa (int num, char *buf)
+{
+	char	*str;
+	int		pow10;
+	int		dig;
+
+	str = buf;
+
+	if (num < 0)
+	{
+		*str++ = '-';
+		num = -num;
+	}
+
+	for (pow10 = 10 ; num >= pow10 ; pow10 *= 10)
+	;
+
+	do
+	{
+		pow10 /= 10;
+		dig = num/pow10;
+		*str++ = '0'+dig;
+		num -= dig*pow10;
+	} while (pow10 != 1);
+
+	*str = 0;
+
+	return str-buf;
+}
+
+
 //=============================================================================
 
 int		pointsort[MAX_SCOREBOARD];
@@ -244,6 +281,147 @@ void HUD_EndScreen (void)
 
 //=============================================================================
 
+
+/*
+==================
+HUD_Points
+
+==================
+*/
+
+
+void HUD_Parse_Point_Change (int points, int negative, int x_start, int y_start)
+{
+	int i, f;
+	char str[10];
+	i=9;
+	while (i>0)
+	{
+		point_change[i] = point_change[i - 1];
+		i--;
+	}
+
+	point_change[i].points = points;
+	point_change[i].negative = negative;
+
+	f = HUD_itoa (points, str);
+	point_change[i].x = x_start - 10.0 - 8.0*f;
+	point_change[i].y = y_start;
+	point_change[i].move_x = 1.0;
+	point_change[i].move_y = ((rand ()&0x7fff) / ((float)0x7fff)) - 0.5;
+
+	point_change[i].alive_time = Sys_DoubleTime() + 0.4;
+}
+
+void HUD_Points (void)
+{
+	int				i, k, l;
+	int				x, y, f, xplus;
+	scoreboard_t	*s;
+	char str[12];
+
+// scores
+	HUD_Sortpoints ();
+
+// draw the text
+	l = scoreboardlines;
+
+
+    x = vid.width/2 - sb_moneyback->width;
+    y = vid.height - 16 - fragpic->height - 4 - 16 - sb_moneyback->height;
+	for (i=0 ; i<l ; i++)
+	{
+		k = pointsort[i];
+		s = &cl.scores[k];
+		if (!s->name[0])
+			continue;
+
+	// draw background
+
+	// draw number
+		f = s->points;
+		if (f > current_points)
+		{
+			point_change_interval_neg = 0;
+			if (!point_change_interval)
+			{
+				point_change_interval = (int)(f - old_points)/55;;
+			}
+			current_points = old_points + point_change_interval;
+			if (f < current_points)
+			{
+				current_points = f;
+				point_change_interval = 0;
+			}
+		}
+		else if (f < current_points)
+		{
+			point_change_interval = 0;
+			if (!point_change_interval_neg)
+			{
+				point_change_interval_neg = (int)(old_points - f)/55;
+			}
+			current_points = old_points - point_change_interval_neg;
+			if (f > current_points)
+			{
+				current_points = f;
+				point_change_interval_neg = 0;
+			}
+		}
+		Draw_Pic (x, y, sb_moneyback);
+		xplus = HUD_itoa (f, str);
+		Draw_String (vid.width/2 - (xplus*8) - 16, y + 3, va("%i", current_points));
+
+		if (old_points != f)
+		{
+			if (f > old_points)
+				HUD_Parse_Point_Change(f - old_points, 0, vid.width/2 - (xplus*8) - 16, y + 3);
+			else
+				HUD_Parse_Point_Change(old_points - f, 1, vid.width/2 - (xplus*8) - 16, y + 3);
+
+			old_points = f;
+		}
+
+
+
+		y += 10;
+	}
+}
+
+
+/*
+==================
+HUD_Point_Change
+
+==================
+*/
+void HUD_Point_Change (void)
+{
+	int	i;
+
+	for (i=0 ; i<10 ; i++)
+	{
+		if (point_change[i].points)
+		{
+			if (point_change[i].negative)
+				Draw_ColoredString (point_change[i].x, point_change[i].y, va ("-%i", point_change[i].points),0); // naievil fixme -- RED
+			else
+				Draw_ColoredString (point_change[i].x, point_change[i].y, va ("+%i", point_change[i].points),0); // naievil fixme -- yellow
+			point_change[i].y = point_change[i].y + point_change[i].move_y;
+			point_change[i].x = point_change[i].x - point_change[i].move_x;
+			if (point_change[i].alive_time && point_change[i].alive_time < Sys_DoubleTime())
+			{
+				point_change[i].points = 0;
+				point_change[i].negative = 0;
+				point_change[i].x = 0.0;
+				point_change[i].y = 0.0;
+				point_change[i].move_x = 0.0;
+				point_change[i].move_y = 0.0;
+				point_change[i].alive_time = 0.0;
+			}
+		}
+	}
+}
 
 /*
 ==================
@@ -837,6 +1015,75 @@ int IsDualWeapon(int weapon)
 	return 0;
 }
 
+
+void HUD_Ammo (void)
+{
+	char str[12];
+	char str2[12];
+    int xplus, xplus2;
+	char *magstring;
+	char *mag2string;
+
+	y_value = vid.height - 16;
+	if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG])
+		magstring = va ("%i",cl.stats[STAT_CURRENTMAG]);
+	else
+		magstring = va ("%i",cl.stats[STAT_CURRENTMAG]);
+
+	xplus = HUD_itoa (cl.stats[STAT_CURRENTMAG], str);
+	Draw_ColoredString (vid.width/2 - 42 - (xplus*8), y_value, magstring, 0);
+
+	mag2string = va("%i", cl.stats[STAT_CURRENTMAG2]);
+	xplus2 = HUD_itoa (cl.stats[STAT_CURRENTMAG2], str2);
+
+	if (IsDualWeapon(cl.stats[STAT_ACTIVEWEAPON])) {
+		Draw_ColoredString (vid.width/2 - 56 - (xplus2*8), y_value, mag2string, 0);
+	}
+
+	if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 0) >= cl.stats[STAT_AMMO])
+	{
+		// Naievil -- FIXME red
+		Draw_ColoredString (vid.width/2 - 42, y_value, "/", 0);
+		Draw_ColoredString (vid.width/2 - 34, y_value, va ("%i",cl.stats[STAT_AMMO]), 0);
+	}
+	else
+	{
+		// Naievil -- FIXME regular
+		Draw_Character (vid.width/2 - 42, y_value, '/');
+		Draw_ColoredString (vid.width/2 - 34, y_value, va ("%i",cl.stats[STAT_AMMO]), 0);
+	}
+}
+
+/*
+===============
+HUD_AmmoString
+===============
+*/
+
+void HUD_AmmoString (void)
+{
+	char str[12];
+	int len = 0;
+	
+	if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG])
+	{
+		if (0 < cl.stats[STAT_AMMO] && cl.stats[STAT_CURRENTMAG] >= 0) {
+			len = 6;
+			strcpy(str, "Reload");
+		} else if (0 < cl.stats[STAT_CURRENTMAG]) {
+			len = 8;
+			strcpy(str, "LOW AMMO"); // Naievil -- fixme YELLOW
+		} else {
+			len = 7;
+			strcpy(str, "NO AMMO"); // Naievil -- fixme RED
+		}
+	}
+
+	if (len > 0)
+		Draw_String ((vid.width)/4, (vid.height)*3/4 + 40, str);
+		//Draw_ColoredString ((vid.width - len*8)/2, (vid.height)/2 + 40, str, 0);
+}
+
 //=============================================================================
 
 /*
@@ -868,6 +1115,133 @@ void HUD_Grenades (void)
 		Draw_Pic (x_value - fragpic->width - 5, y_value, bettypic);
 		Draw_String (x_value - fragpic->width + 20, y_value + 28, va ("%i",cl.stats[STAT_SECGRENADES]));
 	}
+}
+
+//=============================================================================
+
+/*
+===============
+HUD_Weapon
+===============
+*/
+
+
+char *GetWeaponName (int wep)
+{
+	switch (wep)
+	{
+		case W_COLT:
+			return "Colt M1911";
+		case W_BIATCH:
+      		return "Mustang & Sally";
+		case W_KAR:
+			return "Kar 98k";
+    	case W_ARMAGEDDON:
+			return "Armageddon";
+		case W_THOMPSON:
+			return "Thompson";
+		case W_GIBS:
+			return "Gibs-O-Matic";
+		case W_357:
+			return ".357 Magnum";
+		case W_KILLU:
+			return ".357 Plus 1 K1L-u";
+		case W_BAR:
+			return "BAR";
+		case W_WIDOW:
+			return "The Widow Maker";
+		case W_BK:
+			return "Ballistic Knife";
+		case W_BROWNING:
+			return "Browning M1919";
+		case W_ACCELERATOR:
+			return "B115 Accelerator";
+		case W_DB:
+			return "Double-Barreled Shotgun";
+		case W_BORE:
+			return "24 Bore Long Range";
+		case W_FG:
+			return "FG42";
+		case W_IMPELLER:
+			return "420 Impeller";
+		case W_GEWEHR:
+			return "Gewehr 43";
+		case W_COMPRESSOR:
+			return "G115 Compressor";
+		case W_KAR_SCOPE:
+			return "Scoped Kar 98k";
+		case W_HEADCRACKER:
+			return "Headcracker";
+		case W_M1:
+			return "M1 Garand";
+		case W_M1000:
+			return "M1000";
+		case W_M1A1:
+			return "M1A1 Carbine";
+		case W_WIDDER:
+			return "Widdershins RC-1";
+		case W_M2:
+			return "M2 Flamethrower";
+		case W_FIW:
+			return "F1W Nitrogen Cooled";
+		case W_MP40:
+			return "MP40";
+		case W_AFTERBURNER:
+			return "The Afterburner";
+		case W_MG:
+			return "MG42";
+		case W_BARRACUDA:
+			return "Barracuda FU-A11";
+		case W_PANZER:
+			return "Panzerschrek";
+		case W_LONGINUS:
+			return "Longinus";
+		case W_PPSH:
+			return "PPSh-41";
+		case W_REAPER:
+			return "The Reaper";
+		case W_PTRS:
+			return "PTRS-41";
+		case W_PENETRATOR:
+			return "The Penetrator";
+		case W_RAY:
+			return "Ray Gun";
+		case W_PORTER:
+			return "Porter's X2 Ray Gun";
+		case W_SAWNOFF:
+			return "Sawnoff shotgun";
+		case W_SNUFF:
+			return "The Snuff Box";
+		case W_STG:
+			return "STG-44";
+		case W_SPATZ:
+			return "Spatz-447 +";
+		case W_TRENCH:
+			return "M1897 Trench Gun";
+		case W_GUT:
+			return "Gut Shot";
+		case W_TYPE:
+			return "Type 100";
+		case W_SAMURAI:
+			return "1001 Samurais";
+    	case W_TESLA:
+      		return "Wunderwaffe DG-2";
+		default:
+			return " ";
+	}
+}
+
+void HUD_Weapon (void)
+{
+	char str[32];
+	float l;
+	y_value = vid.height - 16 - fragpic->height - 4 - 16;
+
+	strcpy(str, GetWeaponName(cl.stats[STAT_ACTIVEWEAPON]));
+	l = strlen(str);
+
+	x_value = vid.width/2 - 8 - l*8;
+	Draw_String (x_value, y_value, str);
 }
 
 //=============================================================================
@@ -906,13 +1280,14 @@ void HUD_Draw (void) {
 	HUD_ProgressBar();
 	if ((HUD_Change_time > Sys_DoubleTime() || GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG] || GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 0) >= cl.stats[STAT_AMMO]) && cl.stats[STAT_HEALTH] >= 20)
 	{ //these elements are only drawn when relevant for few seconds
-		//HUD_Ammo();
+		HUD_Ammo();
 		HUD_Grenades();
-		//HUD_Weapon();
-		//HUD_AmmoString();
-	}/*
+		HUD_Weapon();
+		HUD_AmmoString();
+	}
 	HUD_Points();
 	HUD_Point_Change();
+/*
 	HUD_Achievement();
 */
 
