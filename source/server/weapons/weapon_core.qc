@@ -782,7 +782,7 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 		
 		SetUpdate(self, UT_HM, 0, 0, 0);
 		
-		#ifdef PSP
+		#ifndef PC
 		msg_entity = self;
 		// Naievil -- FIXME #ifndef NX
 		WriteByte(MSG_ONE, SVC_HITMARK);

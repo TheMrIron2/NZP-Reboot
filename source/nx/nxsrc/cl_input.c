@@ -59,7 +59,6 @@ kbutton_t	in_up, in_down;
 
 int			in_impulse;
 
-
 void KeyDown (kbutton_t *b)
 {
 	int		k;
@@ -439,9 +438,8 @@ void CL_BaseMove (usercmd_t *cmd)
 	else if (cl.stats[STAT_ZOOM] == 3)
 		cl_sidespeed = cl_sidespeed*1.66;
 
-	// Naievil -- fixme
-	//if (cl.perks & 32)
-	//	cl_sidespeed = cl_sidespeed*1.07;
+	if (cl.perks & 32)
+		cl_sidespeed = cl_sidespeed*1.07;
 
 	cl_backspeed = cl_forwardspeed = cl_sidespeed;
 	cl_sidespeed = cl_sidespeed*0.8;
@@ -476,6 +474,7 @@ void CL_BaseMove (usercmd_t *cmd)
 		cmd->sidemove *= cl_movespeedkey.value;
 		cmd->upmove *= cl_movespeedkey.value;
 	}
+
 }
 
 

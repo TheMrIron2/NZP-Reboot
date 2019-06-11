@@ -657,6 +657,7 @@ IN_JoyMove
 extern float cl_backspeed;
 extern float cl_forwardspeed;
 extern float cl_sidespeed;
+qboolean croshhairmoving;
 
 void IN_JoyMove (usercmd_t *cmd)
 {
@@ -696,6 +697,13 @@ void IN_JoyMove (usercmd_t *cmd)
 
 	cmd->sidemove += (cl_sidespeed * speed * moveEased.x);
 	cmd->forwardmove -= (cl_forwardspeed * speed * moveEased.y);
+
+
+	if (moveEased.x || moveEased.y) {
+		croshhairmoving = true;
+	} else {
+		croshhairmoving = false;
+	}
 
 	// Naievil -- share speed for the viewangle
 	speed = 1;

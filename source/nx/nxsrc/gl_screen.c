@@ -110,6 +110,12 @@ qpic_t		*scr_ram;
 qpic_t		*scr_net;
 qpic_t		*scr_turtle;
 
+qpic_t      *hitmark;
+qpic_t      *ls_wahnsinn;
+qpic_t      *ls_anstieg;
+
+extern qpic_t		*sniper_scope;
+
 int			clearconsole;
 int			clearnotify;
 
@@ -654,6 +660,10 @@ void SCR_LoadPics (void)
 	scr_ram = Draw_PicFromWad ("ram");
 	scr_net = Draw_PicFromWad ("net");
 	scr_turtle = Draw_PicFromWad ("turtle");
+
+	hitmark = Draw_CachePic("gfx/hud/hit_marker.tga");
+	//ls_wahnsinn = Draw_CachePic ("gfx/lscreen/psp_wahnsinn.lmp");
+	//ls_anstieg = Draw_CachePic ("gfx/lscreen/psp_anstieg.tga");
 }
 
 /*
@@ -898,9 +908,6 @@ void SCR_DrawPause (void)
 
 	GL_SetCanvas (CANVAS_MENU); //johnfitz
 
-	pic = Draw_CachePic ("gfx/pause.lmp");
-	Draw_Pic ( (320 - pic->width)/2, (240 - 48 - pic->height)/2, pic); //johnfitz -- stretched menus
-
 	scr_tileclear_updates = 0; //johnfitz
 }
 
@@ -916,26 +923,305 @@ void SCR_DrawLoading (void)
 	if (!scr_drawloading)
 		return;
 
-	GL_SetCanvas (CANVAS_MENU); //johnfitz
-
-	pic = Draw_CachePic ("gfx/loading.lmp");
-	Draw_Pic ( (320 - pic->width)/2, (240 - 48 - pic->height)/2, pic); //johnfitz -- stretched menus
-
 	scr_tileclear_updates = 0; //johnfitz
 }
 
+cvar_t	crosshair;
+extern cvar_t crosshair;
+extern qboolean croshhairmoving;
+//extern cvar_t cl_zoom;
+extern qpic_t *hitmark;
+double Hitmark_Time, crosshair_spread_time;
+float cur_spread;
+float crosshair_offset_step;
+
+int CrossHairWeapon (void)
+{
+    int i;
+	switch(cl.stats[STAT_ACTIVEWEAPON])
+	{
+		case W_COLT:
+		case W_BIATCH:
+			i = 15;
+			break;
+		case W_KAR:
+		case W_ARMAGEDDON:
+			i = 50;
+			break;
+		case W_THOMPSON:
+		case W_GIBS:
+			i = 10;
+			break;
+		case W_357:
+		case W_KILLU:
+			i = 10;
+			break;
+		case W_BAR:
+		case W_WIDOW:
+			i = 10;
+			break;
+		case W_BROWNING:
+		case W_ACCELERATOR:
+			i = 20;
+			break;
+		case W_DB:
+		case W_BORE:
+			i = 25;
+			break;
+		case W_FG:
+		case W_IMPELLER:
+			i = 10;
+			break;
+		case W_GEWEHR:
+		case W_COMPRESSOR:
+			i = 10;
+			break;
+		case W_KAR_SCOPE:
+		case W_HEADCRACKER:
+			i = 50;
+			break;
+		case W_M1:
+		case W_M1000:
+			i = 10;
+			break;
+		case W_M1A1:
+		case W_WIDDER:
+			i = 10;
+			break;
+		case W_MP40:
+		case W_AFTERBURNER:
+			i = 10;
+			break;
+		case W_MG:
+		case W_BARRACUDA:
+			i = 20;
+			break;
+		case W_PANZER:
+		case W_LONGINUS:
+			i = 0;
+			break;
+		case W_PPSH:
+		case W_REAPER:
+			i = 10;
+			break;
+		case W_PTRS:
+		case W_PENETRATOR:
+			i = 50;
+			break;
+		case W_RAY:
+		case W_PORTER:
+			i = 10;
+			break;
+		case W_SAWNOFF:
+		case W_SNUFF:
+			i = 30;
+			break;
+		case W_STG:
+		case W_SPATZ:
+			i = 10;
+			break;
+		case W_TRENCH:
+		case W_GUT:
+			i = 25;
+			break;
+		case W_TYPE:
+		case W_SAMURAI:
+			i = 10;
+			break;
+		case W_MP5:
+			i = 10;
+			break;
+		case W_TESLA:
+			i = 0;
+			break;
+		default:
+			i = 0;
+			break;
+	}
+
+    if (cl.perks & 64)
+        i *= 0.65;
+
+    return i;
+}
+int CrossHairMaxSpread (void)
+{
+	int i;
+	switch(cl.stats[STAT_ACTIVEWEAPON])
+	{
+		case W_COLT:
+		case W_BIATCH:
+			i = 30;
+			break;
+		case W_KAR:
+		case W_ARMAGEDDON:
+			i = 75;
+			break;
+		case W_THOMPSON:
+		case W_GIBS:
+			i = 25;
+			break;
+		case W_357:
+		case W_KILLU:
+			i = 20;
+			break;
+		case W_BAR:
+		case W_WIDOW:
+			i = 35;
+			break;
+		case W_BROWNING:
+		case W_ACCELERATOR:
+			i = 50;
+			break;
+		case W_DB:
+		case W_BORE:
+			i = 25;
+			break;
+		case W_FG:
+		case W_IMPELLER:
+			i = 40;
+			break;
+		case W_GEWEHR:
+		case W_COMPRESSOR:
+			i = 35;
+			break;
+		case W_KAR_SCOPE:
+		case W_HEADCRACKER:
+			i = 75;
+			break;
+		case W_M1:
+		case W_M1000:
+			i = 35;
+			break;
+		case W_M1A1:
+		case W_WIDDER:
+			i = 35;
+			break;
+		case W_MP40:
+		case W_AFTERBURNER:
+			i = 25;
+			break;
+		case W_MG:
+		case W_BARRACUDA:
+			i = 50;
+			break;
+		case W_PANZER:
+		case W_LONGINUS:
+			i = 0;
+			break;
+		case W_PPSH:
+		case W_REAPER:
+			i = 25;
+			break;
+		case W_PTRS:
+		case W_PENETRATOR:
+			i = 75;
+			break;
+		case W_RAY:
+		case W_PORTER:
+			i = 20;
+			break;
+		case W_SAWNOFF:
+		case W_SNUFF:
+			i = 30;
+			break;
+		case W_STG:
+		case W_SPATZ:
+			i = 35;
+			break;
+		case W_TRENCH:
+		case W_GUT:
+			i = 25;
+			break;
+		case W_TYPE:
+		case W_SAMURAI:
+			i = 25;
+			break;
+		case W_MP5:
+			i = 25;
+			break;
+		case W_TESLA:
+			i = 0;
+			break;
+		default:
+			i = 0;
+			break;
+	}
+
+    if (cl.perks & 64)
+        i *= 0.65;
+
+    return i;
+}
+
 /*
-==============
-SCR_DrawCrosshair -- johnfitz
-==============
+================
+Draw_Crosshair
+================
 */
 void SCR_DrawCrosshair (void)
 {
-	if (!crosshair.value)
+	if (cl.stats[STAT_HEALTH] < 20) {
 		return;
+	}
 
-	GL_SetCanvas (CANVAS_CROSSHAIR);
-	Draw_Character (-4, -4, '+'); //0,0 is center of viewport
+	GL_SetCanvas(CANVAS_USEPRINT);
+
+	if (crosshair_spread_time > sv.time && crosshair_spread_time)
+    {
+        cur_spread = cur_spread + 10;
+		if (cur_spread >= CrossHairMaxSpread())
+			cur_spread = CrossHairMaxSpread();
+    }
+    else if (crosshair_spread_time < sv.time && crosshair_spread_time)
+    {
+        cur_spread = cur_spread - 4;
+		if (cur_spread <= 0)
+		{
+			cur_spread = 0;
+			crosshair_spread_time = 0;
+		}
+    }
+
+	if (cl.stats[STAT_ACTIVEWEAPON] == W_M2)
+	{
+		Draw_Character ((vid.width)/4-4, (vid.height)*3/4, 'O');
+	}
+	else if (crosshair.value == 1 && cl.stats[STAT_ZOOM] != 1 && cl.stats[STAT_ZOOM] != 2 && cl.stats[STAT_ACTIVEWEAPON] != W_PANZER)
+    {
+        int x_value, y_value;
+        int crosshair_offset = CrossHairWeapon() + cur_spread;
+		if (CrossHairMaxSpread() < crosshair_offset || croshhairmoving)
+			crosshair_offset = CrossHairMaxSpread();
+
+		crosshair_offset_step += (crosshair_offset - crosshair_offset_step) * 0.5;
+
+		x_value = ((vid.width - 8)/4) - crosshair_offset_step;
+		y_value = (vid.height - 8)*3/4;
+		Draw_Character (x_value, y_value, 158);
+
+		x_value = ((vid.width - 8)/4) + crosshair_offset_step;
+		y_value = (vid.height - 8)*3/4;
+		Draw_Character (x_value, y_value, 158);
+
+		x_value = ((vid.width - 8)/4);
+		y_value = (vid.height - 8)*3/4 - crosshair_offset_step;
+		Draw_Character (x_value, y_value, 157);
+
+		x_value = ((vid.width - 8)/4);
+		y_value = (vid.height - 8)*3/4 + crosshair_offset_step;
+		Draw_Character (x_value, y_value, 157);
+    }
+    else if (crosshair.value && cl.stats[STAT_ZOOM] != 1 && cl.stats[STAT_ZOOM] != 2)
+		Draw_Character ((vid.width - 8)/4/* + crosshair_x*/, (vid.height - 8)*3/4/* + crosshair_y*/, '.');
+	if (cl.stats[STAT_ZOOM] == 2) {
+		Draw_AlphaPic (0, vid.height/2, sniper_scope, 1);
+	}
+   if (Hitmark_Time > sv.time) {
+        Draw_Pic ((vid.width/2 - hitmark->width)/2,vid.height/2 + (vid.height/2 - hitmark->height)/2, hitmark);
+   }
+
+   	GL_SetCanvas(CANVAS_DEFAULT);
 }
 
 

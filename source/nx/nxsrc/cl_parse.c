@@ -71,7 +71,7 @@ const char *svc_strings[] =
 	"svc_cutscene",
 //johnfitz -- new server messages
 	"",	// 35
-	"",	// 36
+	"svc_hitmark",	// 36
 	"svc_skybox", // 37					// [string] skyname
 	"svc_useprint", // 38
 	"", // 39

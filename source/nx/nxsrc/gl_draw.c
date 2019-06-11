@@ -39,6 +39,10 @@ gltexture_t *char_texture; //johnfitz
 qpic_t		*pic_ovr, *pic_ins; //johnfitz -- new cursor handling
 qpic_t		*pic_nul; //johnfitz -- for missing gfx, don't crash
 
+qpic_t		*sniper_scope;
+int			zombie_skins[2][2];
+
+
 //johnfitz -- new pics
 byte pic_ovr_data[8][8] =
 {
@@ -396,14 +400,18 @@ Draw_LoadPics -- johnfitz
 */
 void Draw_LoadPics (void)
 {
-	byte		*data;
-	src_offset_t	offset;
+	qpic_t		*dat;
 
-	data = (byte *) W_GetLumpName ("conchars");
-	if (!data) Sys_Error ("Draw_LoadPics: couldn't load conchars");
-	offset = (src_offset_t)data - (src_offset_t)wad_base;
-	char_texture = TexMgr_LoadImage (NULL, WADFILENAME":conchars", 128, 128, SRC_INDEXED, data,
-		WADFILENAME, offset, TEXPREF_ALPHA | TEXPREF_NEAREST | TEXPREF_NOPICMIP | TEXPREF_CONCHARS);
+	FILE *f;
+	f = fopen("/switch/nzportable/nzp/gfx/charset.tga", "rb");
+	if (!f) {
+		Sys_Error("Cannot read file gfx/charset.tga\n");
+	}
+
+	dat = (qpic_t *)LoadTGA(f, 0, 0);
+	char_texture = TexMgr_LoadImage (NULL, "/switch/nzportable/nzp/gfx/charset.tga", dat->width, dat->height, SRC_TGA, dat->data, 
+										"/switch/nzportable/nzp/gfx/charset.tga", sizeof(int)*2, TEXPREF_ALPHA | TEXPREF_NEAREST | TEXPREF_NOPICMIP | TEXPREF_CONCHARS); 
+
 
 	draw_disc = Draw_PicFromWad ("disc");
 	draw_backtile = Draw_PicFromWad ("backtile");
@@ -456,6 +464,13 @@ void Draw_Init (void)
 	pic_ins = Draw_MakePic ("ins", 8, 9, &pic_ins_data[0][0]);
 	pic_ovr = Draw_MakePic ("ovr", 8, 8, &pic_ovr_data[0][0]);
 	pic_nul = Draw_MakePic ("nul", 8, 8, &pic_nul_data[0][0]);
+
+	sniper_scope = Draw_CachePic ("gfx/hud/scope.tga");
+	
+	//zombie_skins[0][0] = loadtextureimage("/textures/ai/z0",0,0,qfalse,GU_LINEAR);
+	//zombie_skins[0][1] = loadtextureimage("/textures/ai/z0",0,0,qfalse,GU_LINEAR);
+	//zombie_skins[1][0] = loadtextureimage("/textures/ai/z0",0,0,qfalse,GU_LINEAR);
+	//zombie_skins[1][1] = loadtextureimage("/textures/ai/z0",0,0,qfalse,GU_LINEAR);
 
 	// load game pics
 	Draw_LoadPics ();
@@ -715,12 +730,11 @@ Draw_ConsoleBackground -- johnfitz -- rewritten
 */
 void Draw_ConsoleBackground (void)
 {
-	qpic_t *pic;
 	float alpha;
 
-	pic = Draw_CachePic ("gfx/conback.lmp");
-	pic->width = vid.conwidth;
-	pic->height = vid.conheight;
+	//pic = Draw_CachePic ("gfx/conback.lmp");
+	//pic->width = vid.conwidth;
+	//pic->height = vid.conheight;
 
 	alpha = (con_forcedup) ? 1.0 : scr_conalpha.value;
 
@@ -736,7 +750,8 @@ void Draw_ConsoleBackground (void)
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 		}
 
-		Draw_Pic (0, 0, pic);
+			Draw_FillByColor  (0, 0, vid.conwidth, vid.conheight, 0, alpha);
+
 
 		if (alpha < 1.0)
 		{
@@ -995,231 +1010,4 @@ void GL_ResampleTexture (unsigned *in, int inwidth, int inheight, unsigned *out,
 			frac += fracstep;
 		}
 	}
-}
-
-extern cvar_t crosshair;
-extern qboolean croshhairmoving;
-//extern cvar_t cl_zoom;
-extern qpic_t *hitmark;
-double Hitmark_Time, crosshair_spread_time;
-float cur_spread;
-float crosshair_offset_step;
-
-int CrossHairWeapon (void)
-{
-    int i;
-	switch(cl.stats[STAT_ACTIVEWEAPON])
-	{
-		case W_COLT:
-		case W_BIATCH:
-			i = 15;
-			break;
-		case W_KAR:
-		case W_ARMAGEDDON:
-			i = 50;
-			break;
-		case W_THOMPSON:
-		case W_GIBS:
-			i = 10;
-			break;
-		case W_357:
-		case W_KILLU:
-			i = 10;
-			break;
-		case W_BAR:
-		case W_WIDOW:
-			i = 10;
-			break;
-		case W_BROWNING:
-		case W_ACCELERATOR:
-			i = 20;
-			break;
-		case W_DB:
-		case W_BORE:
-			i = 25;
-			break;
-		case W_FG:
-		case W_IMPELLER:
-			i = 10;
-			break;
-		case W_GEWEHR:
-		case W_COMPRESSOR:
-			i = 10;
-			break;
-		case W_KAR_SCOPE:
-		case W_HEADCRACKER:
-			i = 50;
-			break;
-		case W_M1:
-		case W_M1000:
-			i = 10;
-			break;
-		case W_M1A1:
-		case W_WIDDER:
-			i = 10;
-			break;
-		case W_MP40:
-		case W_AFTERBURNER:
-			i = 10;
-			break;
-		case W_MG:
-		case W_BARRACUDA:
-			i = 20;
-			break;
-		case W_PANZER:
-		case W_LONGINUS:
-			i = 0;
-			break;
-		case W_PPSH:
-		case W_REAPER:
-			i = 10;
-			break;
-		case W_PTRS:
-		case W_PENETRATOR:
-			i = 50;
-			break;
-		case W_RAY:
-		case W_PORTER:
-			i = 10;
-			break;
-		case W_SAWNOFF:
-		case W_SNUFF:
-			i = 30;
-			break;
-		case W_STG:
-		case W_SPATZ:
-			i = 10;
-			break;
-		case W_TRENCH:
-		case W_GUT:
-			i = 25;
-			break;
-		case W_TYPE:
-		case W_SAMURAI:
-			i = 10;
-			break;
-		case W_MP5:
-			i = 10;
-			break;
-		case W_TESLA:
-			i = 0;
-			break;
-		default:
-			i = 0;
-			break;
-	}
-
-    if (cl.perks & 64)
-        i *= 0.65;
-
-    return i;
-}
-int CrossHairMaxSpread (void)
-{
-	int i;
-	switch(cl.stats[STAT_ACTIVEWEAPON])
-	{
-		case W_COLT:
-		case W_BIATCH:
-			i = 30;
-			break;
-		case W_KAR:
-		case W_ARMAGEDDON:
-			i = 75;
-			break;
-		case W_THOMPSON:
-		case W_GIBS:
-			i = 25;
-			break;
-		case W_357:
-		case W_KILLU:
-			i = 20;
-			break;
-		case W_BAR:
-		case W_WIDOW:
-			i = 35;
-			break;
-		case W_BROWNING:
-		case W_ACCELERATOR:
-			i = 50;
-			break;
-		case W_DB:
-		case W_BORE:
-			i = 25;
-			break;
-		case W_FG:
-		case W_IMPELLER:
-			i = 40;
-			break;
-		case W_GEWEHR:
-		case W_COMPRESSOR:
-			i = 35;
-			break;
-		case W_KAR_SCOPE:
-		case W_HEADCRACKER:
-			i = 75;
-			break;
-		case W_M1:
-		case W_M1000:
-			i = 35;
-			break;
-		case W_M1A1:
-		case W_WIDDER:
-			i = 35;
-			break;
-		case W_MP40:
-		case W_AFTERBURNER:
-			i = 25;
-			break;
-		case W_MG:
-		case W_BARRACUDA:
-			i = 50;
-			break;
-		case W_PANZER:
-		case W_LONGINUS:
-			i = 0;
-			break;
-		case W_PPSH:
-		case W_REAPER:
-			i = 25;
-			break;
-		case W_PTRS:
-		case W_PENETRATOR:
-			i = 75;
-			break;
-		case W_RAY:
-		case W_PORTER:
-			i = 20;
-			break;
-		case W_SAWNOFF:
-		case W_SNUFF:
-			i = 30;
-			break;
-		case W_STG:
-		case W_SPATZ:
-			i = 35;
-			break;
-		case W_TRENCH:
-		case W_GUT:
-			i = 25;
-			break;
-		case W_TYPE:
-		case W_SAMURAI:
-			i = 25;
-			break;
-		case W_MP5:
-			i = 25;
-			break;
-		case W_TESLA:
-			i = 0;
-			break;
-		default:
-			i = 0;
-			break;
-	}
-
-    if (cl.perks & 64)
-        i *= 0.65;
-
-    return i;
 }

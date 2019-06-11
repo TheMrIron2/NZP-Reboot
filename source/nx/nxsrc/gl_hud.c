@@ -85,45 +85,45 @@ void HUD_Init (void) {
 
 	for (i=0 ; i<5 ; i++)
 	{
-		sb_round[i] = Draw_CachePic (va("gfx_new/hud/r%i.tga",i + 1));
+		sb_round[i] = Draw_CachePic (va("gfx/hud/r%i.tga",i + 1));
 	}
 
 	for (i=0 ; i<10 ; i++)
 	{
-		sb_round_num[i] = Draw_CachePic (va("gfx_new/hud/r_num%i.tga",i));
+		sb_round_num[i] = Draw_CachePic (va("gfx/hud/r_num%i.tga",i));
 	}
 
-	sb_moneyback = Draw_CachePic ("gfx_new/hud/moneyback.tga");
-	instapic = Draw_CachePic ("gfx_new/hud/in_kill.tga");
-	x2pic = Draw_CachePic ("gfx_new/hud/2x.tga");
+	sb_moneyback = Draw_CachePic ("gfx/hud/moneyback.tga");
+	instapic = Draw_CachePic ("gfx/hud/in_kill.tga");
+	x2pic = Draw_CachePic ("gfx/hud/2x.tga");
 
-	revivepic = Draw_CachePic ("gfx_new/hud/revive.tga");
-	jugpic = Draw_CachePic ("gfx_new/hud/jug.tga");
-	floppic = Draw_CachePic ("gfx_new/hud/flopper.tga");
-	staminpic = Draw_CachePic ("gfx_new/hud/stamin.tga");
-	doublepic = Draw_CachePic ("gfx_new/hud/double.tga");
-	speedpic = Draw_CachePic ("gfx_new/hud/speed.tga");
-	deadpic = Draw_CachePic ("gfx_new/hud/dead.tga");
-	fragpic = Draw_CachePic ("gfx_new/hud/frag.tga");
-	bettypic = Draw_CachePic ("gfx_new/hud/betty.tga");
+	revivepic = Draw_CachePic ("gfx/hud/revive.tga");
+	jugpic = Draw_CachePic ("gfx/hud/jug.tga");
+	floppic = Draw_CachePic ("gfx/hud/flopper.tga");
+	staminpic = Draw_CachePic ("gfx/hud/stamin.tga");
+	doublepic = Draw_CachePic ("gfx/hud/double.tga");
+	speedpic = Draw_CachePic ("gfx/hud/speed.tga");
+	deadpic = Draw_CachePic ("gfx/hud/dead.tga");
+	fragpic = Draw_CachePic ("gfx/hud/frag.tga");
+	bettypic = Draw_CachePic ("gfx/hud/betty.tga");
 
-	b_lt = Draw_CachePic ("gfx_new/butticons/lt.tga");
-	b_rt = Draw_CachePic ("gfx_new/butticons/rt.tga");
-	b_lthumb = Draw_CachePic ("gfx_new/butticons/lthumb.tga");
-	b_rthumb = Draw_CachePic ("gfx_new/butticons/rthumb.tga");
-	b_lshoulder = Draw_CachePic ("gfx_new/butticons/lshoulder.tga");
-	b_rshoulder = Draw_CachePic ("gfx_new/butticons/rshoulder.tga");
+	b_lt = Draw_CachePic ("gfx/butticons/lt.tga");
+	b_rt = Draw_CachePic ("gfx/butticons/rt.tga");
+	b_lthumb = Draw_CachePic ("gfx/butticons/lthumb.tga");
+	b_rthumb = Draw_CachePic ("gfx/butticons/rthumb.tga");
+	b_lshoulder = Draw_CachePic ("gfx/butticons/lshoulder.tga");
+	b_rshoulder = Draw_CachePic ("gfx/butticons/rshoulder.tga");
 	
-	b_left = Draw_CachePic ("gfx_new/butticons/left.tga");
-	b_right = Draw_CachePic ("gfx_new/butticons/right.tga");
-	b_up = Draw_CachePic ("gfx_new/butticons/up.tga");
-	b_down = Draw_CachePic ("gfx_new/butticons/down.tga");
-	b_abutton = Draw_CachePic ("gfx_new/butticons/abutton.tga");
-	b_bbutton = Draw_CachePic ("gfx_new/butticons/bbutton.tga");
-	b_ybutton = Draw_CachePic ("gfx_new/butticons/ybutton.tga");
-	b_xbutton = Draw_CachePic ("gfx_new/butticons/xbutton.tga");
+	b_left = Draw_CachePic ("gfx/butticons/left.tga");
+	b_right = Draw_CachePic ("gfx/butticons/right.tga");
+	b_up = Draw_CachePic ("gfx/butticons/up.tga");
+	b_down = Draw_CachePic ("gfx/butticons/down.tga");
+	b_abutton = Draw_CachePic ("gfx/butticons/abutton.tga");
+	b_bbutton = Draw_CachePic ("gfx/butticons/bbutton.tga");
+	b_ybutton = Draw_CachePic ("gfx/butticons/ybutton.tga");
+	b_xbutton = Draw_CachePic ("gfx/butticons/xbutton.tga");
 
-	fx_blood_lu = Draw_CachePic ("gfx_new/hud/blood.tga");
+	fx_blood_lu = Draw_CachePic ("gfx/hud/blood.tga");
 }
 
 /*
