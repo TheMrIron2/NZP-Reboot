@@ -13,10 +13,6 @@ void(vector o, vector d, float color, float count) particle = {};
 #define EF_ORANGELIGHT 0
 #define EF_PURPLELIGHT 0
 
-vector(entity what) Get_Waypoint_Near = {return '0 0 0';}
-float(entity zombie, entity target) Do_Pathfind_psp = {return 0;}
-vector(entity zombie,vector start,vector min, vector max) Get_Next_Waypoint = {return '0 0 0';}
-vector(entity zombie,vector start,vector min, vector max) Get_First_Waypoint = {return '0 0 0';}
 float(entity zombie, float which, entity limb) updateLimb		= {return 0;}
 #define MOVE_HITMODEL 0
 

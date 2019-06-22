@@ -315,6 +315,13 @@ float VectorLengthf(vec3_t v)
 	return sqrt(length);
 }
 
+float VecLength2(vec3_t v1, vec3_t v2)
+{
+	vec3_t k;
+	VectorSubtract(v1, v2, k);
+	return sqrt(k[0]*k[0] + k[1]*k[1] + k[2]*k[2]);
+}
+
 vec_t Length(vec3_t v)
 {
 	return sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
