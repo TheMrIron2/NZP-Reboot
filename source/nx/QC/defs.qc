@@ -164,6 +164,8 @@ void            end_sys_globals;
 .float           insta_icon;
 .string			Weapon_Name_Touch;
 .vector			ADS_Offset;
+.vector 			Flash_Offset;
+.float 			Flash_Size;
 void            end_sys_fields; 
 
 /*
@@ -272,7 +274,7 @@ float   ATTN_STATIC            					= 3;
 // entity effects
 
 //float EF_BRIGHTFIELD  						= 1;
-//float EF_MUZZLEFLASH  						= 2;
+float   EF_MUZZLEFLASH  						= 2;
 float   EF_BRIGHTLIGHT  						= 4;
 float   EF_DIMLIGHT     						= 8;
 float   EF_FLAG1                				= 16;
@@ -616,7 +618,7 @@ string world_fog;
 
 #define	SOLID_CORPSE			 	5	// bsp clip, touch on edge, block
 #define	TE_EXPLOSION	 			3
-
+#define     TE_GUNSHOT                                   2
 entity windows[32];
 float wincnt;
 

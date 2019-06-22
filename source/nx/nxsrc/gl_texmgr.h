@@ -111,7 +111,7 @@ void GL_EnableMultitexture (void); //selects texture unit 1
 void GL_Bind (gltexture_t *texture);
 void GL_ClearBindings (void);
 
-qpic_t *LoadTGA (FILE *fin, int matchwidth, int matchheight);
+qpic_t *LoadTGAPic (char *path);
 
 #endif	/* _GL_TEXMAN_H */
 

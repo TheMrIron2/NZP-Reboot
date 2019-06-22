@@ -312,7 +312,6 @@ typedef struct
 #include "wad.h"
 #include "vid.h"
 #include "screen.h"
-#include "draw.h"
 #include "render.h"
 #include "view.h"
 #include "sbar.h"
@@ -322,9 +321,11 @@ typedef struct
 #include "gl_model.h"
 #include "world.h"
 #include "gl_hud.h"
+#include "gl_rpart.h"
 
 #include "image.h"	//johnfitz
 #include "gl_texmgr.h"	//johnfitz
+#include "draw.h"
 #include "input.h"
 #include "keys.h"
 #include "menu.h"
@@ -399,6 +400,9 @@ extern int		current_skill;	// skill level for currently loaded level (in case
 extern qboolean		isDedicated;
 
 extern int		minimum_memory;
+
+#define ISUNDERWATER(x) ((x) == CONTENTS_WATER || (x) == CONTENTS_SLIME || (x) == CONTENTS_LAVA)
+#define TruePointContents(p) SV_HullPointContents(&cl.worldmodel->hulls[0], 0, p)
 
 #endif	/* QUAKEDEFS_H */
 

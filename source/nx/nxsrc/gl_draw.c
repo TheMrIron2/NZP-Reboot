@@ -310,27 +310,15 @@ qpic_t	*Draw_CachePic (const char *path)
 	// Determine whether or not we need to have a source by index or by something else
 	//
 	char extension[16];
-	char loc[2*MAX_OSPATH];
+	char path_noext[2*MAX_OSPATH];
+	COM_StripExtension(path, path_noext, 2*MAX_OSPATH);
 	strcpy(extension, COM_FileGetExtension(path));
 	int src_type;
 
 	if (!strcmp("tga", extension)) {
-		//
-		// Naievil -- load TGA from absolute path for fopen to be okay
-		//
 		src_type = SRC_TGA;
 
-		// Load the true file, not the relative path
-		strcpy(loc, "/switch/nzportable/nzp/");
-		strcat(loc, path);
-
-		FILE *f;
-		f = fopen(loc, "rb");
-		if (!f) {
-			Sys_Error("Cannot read file %s\n", loc);
-		}
-
-		dat = (qpic_t *)LoadTGA(f, 0, 0);
+		dat = (qpic_t *)LoadTGAPic(path_noext);
 
 	} else {
 		src_type = SRC_INDEXED;
@@ -402,16 +390,9 @@ void Draw_LoadPics (void)
 {
 	qpic_t		*dat;
 
-	FILE *f;
-	f = fopen("/switch/nzportable/nzp/gfx/charset.tga", "rb");
-	if (!f) {
-		Sys_Error("Cannot read file gfx/charset.tga\n");
-	}
-
-	dat = (qpic_t *)LoadTGA(f, 0, 0);
-	char_texture = TexMgr_LoadImage (NULL, "/switch/nzportable/nzp/gfx/charset.tga", dat->width, dat->height, SRC_TGA, dat->data, 
-										"/switch/nzportable/nzp/gfx/charset.tga", sizeof(int)*2, TEXPREF_ALPHA | TEXPREF_NEAREST | TEXPREF_NOPICMIP | TEXPREF_CONCHARS); 
-
+	dat = (qpic_t *)LoadTGAPic("gfx/charset");
+	char_texture = TexMgr_LoadImage (NULL, "gfx/charset", dat->width, dat->height, SRC_TGA, dat->data, 
+										"gfx/charset", sizeof(int)*2, TEXPREF_ALPHA | TEXPREF_NEAREST | TEXPREF_NOPICMIP | TEXPREF_CONCHARS); 
 
 	draw_disc = Draw_PicFromWad ("disc");
 	draw_backtile = Draw_PicFromWad ("backtile");
@@ -1010,4 +991,40 @@ void GL_ResampleTexture (unsigned *in, int inwidth, int inheight, unsigned *out,
 			frac += fracstep;
 		}
 	}
+}
+
+int loading_cur_step;
+int loading_num_step;
+
+void Clear_LoadingFill (void)
+{
+    //it is end loading
+	loading_cur_step = 0;
+	loading_num_step = 0;
+}
+
+
+/*
+=============
+loadtextureimage
+=============
+*/
+
+gltexture_t *loadtextureimage (char* filename)
+{
+	byte *data;
+	glpic_t gl;
+
+	int w, h;
+
+	data = Image_LoadImage (filename, &w, &h);
+	if(data == NULL)
+	{
+		Sys_Error("loadtextureimage: Cannot load the image %s\n", filename);
+		return 0;
+	}
+	
+	gl.gltexture = TexMgr_LoadImage (NULL, filename, w, h, SRC_RGBA, data, filename, sizeof(int)*2, TEXPREF_ALPHA | TEXPREF_NEAREST | TEXPREF_NOPICMIP);
+
+	return gl.gltexture;
 }

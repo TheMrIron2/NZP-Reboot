@@ -28,6 +28,9 @@ extern	cvar_t		vid_contrast;
 
 extern float v_blend[4];
 
+extern vec3_t CWeaponRot;
+extern vec3_t CWeaponOffset;//blubs declared this
+
 void V_Init (void);
 void V_RenderView (void);
 void V_CalcBlend (void);

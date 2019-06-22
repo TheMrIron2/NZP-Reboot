@@ -784,13 +784,11 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 		
 		#ifndef PC
 		msg_entity = self;
-		// Naievil -- FIXME #ifndef NX
 		WriteByte(MSG_ONE, SVC_HITMARK);
 		#endif
 	} else {
 
-	#ifdef PSP
-	// Naievil -- FIXME #ifndef NX
+	#ifndef PC
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte (MSG_BROADCAST, TE_GUNSHOT);
 	WriteCoord (MSG_BROADCAST, org_x);
@@ -1085,9 +1083,7 @@ void(float side) W_Fire =
 	
 
 	// REFORMAT THIS 
-	// Naievil -- FIXME #ifndef NX
-	//TEMPORARY
-	#ifdef PSP
+	#ifndef PC
 	self.effects = self.effects | EF_MUZZLEFLASH;
 	#else 
 	// psp takes care of this in engine

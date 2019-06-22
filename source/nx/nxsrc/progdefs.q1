@@ -152,6 +152,8 @@ typedef struct
 	float	insta_icon;
 	string_t 	Weapon_Name_Touch;
 	vec3_t 		ADS_Offset;
+	vec3_t  Flash_Offset;
+	float   Flash_Size;
 } entvars_t;
 
 #define PROGHEADER_CRC 5927

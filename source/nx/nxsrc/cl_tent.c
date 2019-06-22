@@ -128,7 +128,7 @@ void CL_ParseTEnt (void)
 		pos[0] = MSG_ReadCoord (cl.protocolflags);
 		pos[1] = MSG_ReadCoord (cl.protocolflags);
 		pos[2] = MSG_ReadCoord (cl.protocolflags);
-		R_RunParticleEffect (pos, vec3_origin, 20, 30);
+		RunParticleEffect (pos, vec3_origin, 20, 30);
 		S_StartSound (-1, 0, cl_sfx_wizhit, pos, 1, 1);
 		break;
 
@@ -136,7 +136,7 @@ void CL_ParseTEnt (void)
 		pos[0] = MSG_ReadCoord (cl.protocolflags);
 		pos[1] = MSG_ReadCoord (cl.protocolflags);
 		pos[2] = MSG_ReadCoord (cl.protocolflags);
-		R_RunParticleEffect (pos, vec3_origin, 226, 20);
+		RunParticleEffect (pos, vec3_origin, 226, 20);
 		S_StartSound (-1, 0, cl_sfx_knighthit, pos, 1, 1);
 		break;
 
@@ -144,7 +144,7 @@ void CL_ParseTEnt (void)
 		pos[0] = MSG_ReadCoord (cl.protocolflags);
 		pos[1] = MSG_ReadCoord (cl.protocolflags);
 		pos[2] = MSG_ReadCoord (cl.protocolflags);
-		R_RunParticleEffect (pos, vec3_origin, 0, 10);
+		RunParticleEffect (pos, vec3_origin, 0, 10);
 		if ( rand() % 5 )
 			S_StartSound (-1, 0, cl_sfx_tink1, pos, 1, 1);
 		else
@@ -162,7 +162,7 @@ void CL_ParseTEnt (void)
 		pos[0] = MSG_ReadCoord (cl.protocolflags);
 		pos[1] = MSG_ReadCoord (cl.protocolflags);
 		pos[2] = MSG_ReadCoord (cl.protocolflags);
-		R_RunParticleEffect (pos, vec3_origin, 0, 20);
+		RunParticleEffect (pos, vec3_origin, 0, 20);
 
 		if ( rand() % 5 )
 			S_StartSound (-1, 0, cl_sfx_tink1, pos, 1, 1);
@@ -182,7 +182,7 @@ void CL_ParseTEnt (void)
 		pos[0] = MSG_ReadCoord (cl.protocolflags);
 		pos[1] = MSG_ReadCoord (cl.protocolflags);
 		pos[2] = MSG_ReadCoord (cl.protocolflags);
-		R_RunParticleEffect (pos, vec3_origin, 0, 20);
+		RunParticleEffect (pos, vec3_origin, 0, 20);
 		break;
 
 	case TE_EXPLOSION:			// rocket explosion
@@ -283,6 +283,30 @@ entity_t *CL_NewTempEntity (void)
 	return ent;
 }
 
+/*
+=================
+TraceLineN
+=================
+*/
+qboolean TraceLineN (vec3_t start, vec3_t end, vec3_t impact, vec3_t normal)
+{
+	trace_t	trace;
+
+	memset (&trace, 0, sizeof(trace));
+	if (!SV_RecursiveHullCheck(cl.worldmodel->hulls, 0, 0, 1, start, end, &trace))
+	{
+		if (trace.fraction < 1)
+		{
+			VectorCopy (trace.endpos, impact);
+			if (normal)
+				VectorCopy (trace.plane.normal, normal);
+
+			return true;
+		}
+	}
+
+	return false;
+}
 
 /*
 =================

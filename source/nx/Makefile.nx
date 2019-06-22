@@ -73,6 +73,7 @@ SOURCEFILES	:=\
 	nxsrc/in_sdl.c \
 	nxsrc/gl_refrag.c \
 	nxsrc/gl_rlight.c \
+	nxsrc/gl_rpart.c \
 	nxsrc/gl_rmain.c \
 	nxsrc/gl_fog.c \
 	nxsrc/gl_rmisc.c \

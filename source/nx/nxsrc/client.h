@@ -362,6 +362,7 @@ void V_SetContentsColor (int contents);
 //
 void CL_InitTEnts (void);
 void CL_SignonReply (void);
+qboolean TraceLineN (vec3_t start, vec3_t end, vec3_t impact, vec3_t normal);
 
 //
 // chase

@@ -51,6 +51,15 @@ extern cvar_t gl_zfix; // QuakeSpasm z-fighting fix
 extern gltexture_t *playertextures[MAX_SCOREBOARD]; //johnfitz
 
 
+gltexture_t *decal_blood1;
+gltexture_t * decal_blood2;
+gltexture_t *decal_blood3;
+gltexture_t *decal_q3blood;
+gltexture_t *decal_burn;
+gltexture_t *decal_mark;
+gltexture_t *decal_glow;
+
+
 /*
 ====================
 GL_Overbright_f -- johnfitz
@@ -242,6 +251,7 @@ void R_Init (void)
 	Cvar_SetCallback (&r_slimealpha, R_SetSlimealpha_f);
 
 	R_InitParticles ();
+	R_InitOtherTextures ();
 	R_SetClearColor_f (&r_clearcolor); //johnfitz
 
 	Sky_Init (); //johnfitz
@@ -649,3 +659,21 @@ void GL_ClearBufferBindings ()
 	GL_BindBufferFunc (GL_ARRAY_BUFFER, 0);
 	GL_BindBufferFunc (GL_ELEMENT_ARRAY_BUFFER, 0);
 }
+
+/*
+==================
+R_InitOtherTextures
+==================
+*/
+void	R_InitOtherTextures (void)
+{
+	//static decals
+	decal_blood1  = loadtextureimage ("textures/decals/blood_splat01");
+	decal_blood2  = loadtextureimage ("textures/decals/blood_splat02");
+	decal_blood3  = loadtextureimage ("textures/decals/blood_splat03");
+    decal_q3blood = loadtextureimage ("textures/decals/blood_stain");
+	decal_burn	  = loadtextureimage ("textures/decals/explo_burn01");
+	decal_mark	  = loadtextureimage ("textures/decals/particle_burn01");
+	decal_glow	  = loadtextureimage ("textures/decals/glow2");
+}
+

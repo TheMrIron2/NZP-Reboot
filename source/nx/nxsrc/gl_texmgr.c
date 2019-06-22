@@ -703,309 +703,21 @@ int fgetLittleShort (FILE *f);
 LoadTGA
 =============
 */
-qpic_t *LoadTGA (FILE *fin, int matchwidth, int matchheight)
+qpic_t *LoadTGAPic (char *path)
 {
-	int		w, h, x, y, realrow, truerow, baserow, i, temp1, temp2, pixel_size, map_idx;
-	int		RLE_count, RLE_flag, size, interleave, origin;
-	qboolean   	mapped, rlencoded;
-	byte		*data, *dst, r, g, b, a, j, k, l, *ColorMap;
-	TargaHeader	header;
+	byte *data;
+	int w;
+	int h;
 
-	header.id_length = fgetc (fin);
-	header.colormap_type = fgetc (fin);
-	header.image_type = fgetc (fin);
-	header.colormap_index = fgetLittleShort (fin);
-	header.colormap_length = fgetLittleShort (fin);
-	header.colormap_size = fgetc (fin);
-	header.x_origin = fgetLittleShort (fin);
-	header.y_origin = fgetLittleShort (fin);
-	header.width = fgetLittleShort (fin);
-	header.height = fgetLittleShort (fin);
-	header.pixel_size = fgetc (fin);
-	header.attributes = fgetc (fin);
-
-	if (header.width > IMAGE_MAX_DIMENSIONS || header.height > IMAGE_MAX_DIMENSIONS)
-	{
-		Con_DPrintf ("TGA image exceeds maximum supported dimensions\n");
-		fclose (fin);
-		return NULL;
-	}
-
-	if ((matchwidth && header.width != matchwidth) || (matchheight && header.height != matchheight))
-	{
-		fclose (fin);
-		return NULL;
-	}
-
-	if (header.id_length != 0)
-		fseek (fin, header.id_length, SEEK_CUR);
-
-	// validate TGA type 
-	switch (header.image_type)
-	{
-	case TGA_Map:
-	case TGA_RGB:
-	case TGA_Mono:
-	case TGA_RLEMap:
-	case TGA_RLERGB:
-	case TGA_RLEMono:
-		break;
-
-	default:
-		Con_DPrintf ("Unsupported TGA image: Only type 1 (map), 2 (RGB), 3 (mono), 9 (RLEmap), 10 (RLERGB), 11 (RLEmono) TGA images supported\n");
-		fclose (fin);
-		return NULL;
-	}
-
-	// validate color depth
-	switch (header.pixel_size)
-	{
-	case 8:
-	case 15:
-	case 16:
-	case 24:
-	case 32:
-		break;
-
-	default:
-		Con_DPrintf ("Unsupported TGA image: Only 8, 15, 16, 24 or 32 bit images (with colormaps) supported\n");
-		fclose (fin);
-		return NULL;
-	}
-
-	r = g = b = a = l = 0;
-
-	// if required, read the color map information.
-	ColorMap = NULL;
-	mapped = (header.image_type == TGA_Map || header.image_type == TGA_RLEMap) && header.colormap_type == 1;
-	if (mapped)
-	{
-		// validate colormap size 
-		switch (header.colormap_size)
-		{
-		case 8:
-		case 15:
-		case 16:
-		case 32:
-		case 24:
-			break;
-
-		default:
-			Con_DPrintf ("Unsupported TGA image: Only 8, 15, 16, 24 or 32 bit colormaps supported\n");
-			fclose (fin);
-			return NULL;
-		}
-
-		temp1 = header.colormap_index;
-		temp2 = header.colormap_length;
-		if ((temp1 + temp2 + 1) >= TGA_MAXCOLORS)
-		{
-			fclose (fin);
-			return NULL;
-		}
-		ColorMap = (byte*)(malloc (TGA_MAXCOLORS * 4));
-		map_idx = 0;
-		for (i = temp1 ; i < temp1 + temp2 ; ++i, map_idx += 4)
-		{
-			// read appropriate number of bytes, break into rgb & put in map. 
-			switch (header.colormap_size)
-			{
-			case 8:	// grey scale, read and triplicate.
-				r = g = b = getc (fin);
-				a = 255;
-				break;
-
-			case 15:	// 5 bits each of red green and blue. 
-						// watch byte order.
-				j = getc (fin);
-				k = getc (fin);
-				l = ((unsigned int)k << 8) + j;
-				r = (byte)(((k & 0x7C) >> 2) << 3);
-				g = (byte)((((k & 0x03) << 3) + ((j & 0xE0) >> 5)) << 3);
-				b = (byte)((j & 0x1F) << 3);
-				a = 255;
-				break;
-
-			case 16:	// 5 bits each of red green and blue, 1 alpha bit.
-						// watch byte order.
-				j = getc (fin);
-				k = getc (fin);
-				l = ((unsigned int)k << 8) + j;
-				r = (byte)(((k & 0x7C) >> 2) << 3);
-				g = (byte)((((k & 0x03) << 3) + ((j & 0xE0) >> 5)) << 3);
-				b = (byte)((j & 0x1F) << 3);
-				a = (k & 0x80) ? 255 : 0;
-				break;
-
-			case 24:	// 8 bits each of blue, green and red. 
-				b = getc (fin);
-				g = getc (fin);
-				r = getc (fin);
-				a = 255;
-				l = 0;
-				break;
-
-			case 32:	// 8 bits each of blue, green, red and alpha.
-				b = getc (fin);
-				g = getc (fin);
-				r = getc (fin);
-				a = getc (fin);
-				l = 0;
-				break;
-			}
-			ColorMap[map_idx+0] = r;
-			ColorMap[map_idx+1] = g;
-			ColorMap[map_idx+2] = b;
-			ColorMap[map_idx+3] = a;
-		}
-	}
-
-	// check run-length encoding.
-	rlencoded = (header.image_type == TGA_RLEMap || header.image_type == TGA_RLERGB || header.image_type == TGA_RLEMono);
-	RLE_count = RLE_flag = 0;
-
-	image_width = w = header.width;
-	image_height = h = header.height;
-
-	size = w * h * 4;
-	data = (byte*)(calloc (size, 1));
-
-	// read the Targa file body and convert to portable format.
-	pixel_size = header.pixel_size;
-	origin = (header.attributes & 0x20) >> 5;
-	interleave = (header.attributes & 0xC0) >> 6;
-	truerow = baserow = 0;
-	for (y=0 ; y<h ; y++)
-	{
-		realrow = truerow;
-		if (origin == TGA_O_UPPER)
-			realrow = h - realrow - 1;
-
-		dst = data + realrow * w * 4;
-
-		for (x=0 ; x<w ; x++)
-		{
-			// check if run length encoded.
-			if (rlencoded)
-			{
-				if (!RLE_count)
-				{
-					// have to restart run.
-					i = getc (fin);
-					RLE_flag = (i & 0x80);
-					if (!RLE_flag)	// stream of unencoded pixels
-						RLE_count = i + 1;
-					else		// single pixel replicated
-						RLE_count = i - 127;
-					// decrement count & get pixel. 
-					--RLE_count;
-				}
-				else
-				{
-					// have already read count & (at least) first pixel.
-					--RLE_count;
-					if (RLE_flag)
-						// replicated pixels.
-						goto PixEncode;
-				}
-			}
-
-			// read appropriate number of bytes, break into RGB.
-			switch (pixel_size)
-			{
-			case 8:	// grey scale, read and triplicate.
-				r = g = b = l = getc (fin);
-				a = 255;
-				break;
-
-			case 15:	// 5 bits each of red green and blue. 
-						// watch byte order. 
-				j = getc (fin);
-				k = getc (fin);
-				l = ((unsigned int)k << 8) + j;
-				r = (byte)(((k & 0x7C) >> 2) << 3);
-				g = (byte)((((k & 0x03) << 3) + ((j & 0xE0) >> 5)) << 3);
-				b = (byte)((j & 0x1F) << 3);
-				a = 255;
-				break;
-
-			case 16:	// 5 bits each of red green and blue, 1 alpha bit. 
-						// watch byte order. 
-				j = getc (fin);
-				k = getc (fin);
-				l = ((unsigned int)k << 8) + j;
-				r = (byte)(((k & 0x7C) >> 2) << 3);
-				g = (byte)((((k & 0x03) << 3) + ((j & 0xE0) >> 5)) << 3);
-				b = (byte)((j & 0x1F) << 3);
-				a = (k & 0x80) ? 255 : 0;
-				break;
-
-			case 24:	// 8 bits each of blue, green and red. 
-				b = getc (fin);
-				g = getc (fin);
-				r = getc (fin);
-				a = 255;
-				l = 0;
-				break;
-
-			case 32:	// 8 bits each of blue, green, red and alpha.
-				b = getc (fin);
-				g = getc (fin);
-				r = getc (fin);
-				a = getc (fin);
-				l = 0;
-				break;
-
-			default:
-				Con_DPrintf ("Malformed TGA image: Illegal pixel_size '%d'\n", pixel_size);
-				fclose (fin);
-				free (data);
-				if (mapped)
-					free (ColorMap);
-				return NULL;
-			}
-
-PixEncode:
-			if (mapped)
-			{
-				map_idx = l * 4;
-				*dst++ = ColorMap[map_idx+0];
-				*dst++ = ColorMap[map_idx+1];
-				*dst++ = ColorMap[map_idx+2];
-				*dst++ = ColorMap[map_idx+3];
-			}
-			else
-			{
-				*dst++ = r;
-				*dst++ = g;
-				*dst++ = b;
-				*dst++ = a;
-			}
-		}
-
-		if (interleave == TGA_IL_Four)
-			truerow += 4;
-		else if (interleave == TGA_IL_Two)
-			truerow += 2;
-		else
-			truerow++;
-		if (truerow >= h)
-			truerow = ++baserow;
-	}
-
-	if (mapped)
-		free (ColorMap);
-
-	fclose (fin);
-
+	data = Image_LoadImage(path, &w, &h);
 
 	// Build it into a qpic for easy return
 	qpic_t *pic;
-	pic = (qpic_t *) Hunk_Alloc (sizeof(qpic_t) - 4 + (4 * header.width * header.height));
+	pic = (qpic_t *) Hunk_Alloc (sizeof(qpic_t) - 4 + (4 * w * h));
 	
-	pic->width  = header.width;
-	pic->height = header.height;
-	memcpy(pic->data, data, (4 * header.width * header.height));
+	pic->width  = w;
+	pic->height = h;
+	memcpy(pic->data, data, (4 * w * h));
 
 	return pic;
 }
@@ -1859,8 +1571,11 @@ GL_Bind -- johnfitz -- heavy revision
 */
 void GL_Bind (gltexture_t *texture)
 {
-	if (!texture)
+
+	if (!texture) {
 		texture = nulltexture;
+		Con_Printf("NULL TEXTURE HERE LOL\n");
+	}
 
 	if (texture->texnum != currenttexture[currenttarget - GL_TEXTURE0_ARB])
 	{

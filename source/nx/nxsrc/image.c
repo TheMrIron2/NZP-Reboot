@@ -81,11 +81,11 @@ TODO: search order: tga png jpg pcx lmp
 byte *Image_LoadImage (const char *name, int *width, int *height)
 {
 	FILE	*f;
-
 	q_snprintf (loadfilename, sizeof(loadfilename), "%s.tga", name);
 	COM_FOpenFile (loadfilename, &f, NULL);
-	if (f)
+	if (f) {
 		return Image_LoadTGA (f, width, height);
+	}
 
 	q_snprintf (loadfilename, sizeof(loadfilename), "%s.pcx", name);
 	COM_FOpenFile (loadfilename, &f, NULL);
@@ -373,6 +373,7 @@ byte *Image_LoadTGA (FILE *fin, int *width, int *height)
 
 	*width = (int)(targa_header.width);
 	*height = (int)(targa_header.height);
+
 	return targa_rgba;
 }
 

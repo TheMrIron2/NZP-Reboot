@@ -1112,6 +1112,8 @@ void R_RenderScene (void)
 
 	R_DrawParticles ();
 
+	QMB_DrawParticles();
+
 	Fog_DisableGFog (); //johnfitz
 
 	R_DrawViewModel (); //johnfitz -- moved here from R_RenderView

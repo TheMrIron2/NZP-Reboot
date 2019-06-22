@@ -41,6 +41,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #undef	min
 #undef	max
+
+#define bound(a, b, c) ((a) >= (c) ? (a) : (b) < (a) ? (a) : (b) > (c) ? (c) : (b))
 #define	q_min(a, b)	(((a) < (b)) ? (a) : (b))
 #define	q_max(a, b)	(((a) > (b)) ? (a) : (b))
 #define	CLAMP(_minval, x, _maxval)		\

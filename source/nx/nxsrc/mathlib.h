@@ -56,6 +56,8 @@ static inline int IS_NAN (float x) {
 #define VectorSubtract(a,b,c) {c[0]=a[0]-b[0];c[1]=a[1]-b[1];c[2]=a[2]-b[2];}
 #define VectorAdd(a,b,c) {c[0]=a[0]+b[0];c[1]=a[1]+b[1];c[2]=a[2]+b[2];}
 #define VectorCopy(a,b) {b[0]=a[0];b[1]=a[1];b[2]=a[2];}
+#define VectorClear(a)		((a)[0] = (a)[1] = (a)[2] = 0)
+#define VectorNegate(a, b)	((b)[0] = -(a)[0], (b)[1] = -(a)[1], (b)[2] = -(a)[2])
 
 //johnfitz -- courtesy of lordhavoc
 // QuakeSpasm: To avoid strict aliasing violations, use a float/int union instead of type punning.
@@ -71,6 +73,13 @@ static inline int IS_NAN (float x) {
 	}\
 }
 
+float _mathlib_temp_float1, _mathlib_temp_float2, _mathlib_temp_float3;
+#define VectorSupCompare(v, w, m)								\
+	(_mathlib_temp_float1 = m,									\
+	(v)[0] - (w)[0] > -_mathlib_temp_float1 && (v)[0] - (w)[0] < _mathlib_temp_float1 &&	\
+	(v)[1] - (w)[1] > -_mathlib_temp_float1 && (v)[1] - (w)[1] < _mathlib_temp_float1 &&	\
+	(v)[2] - (w)[2] > -_mathlib_temp_float1 && (v)[2] - (w)[2] < _mathlib_temp_float1)
+
 void TurnVector (vec3_t out, const vec3_t forward, const vec3_t side, float angle); //johnfitz
 void VectorAngles (const vec3_t forward, vec3_t angles); //johnfitz
 
@@ -80,7 +89,7 @@ vec_t _DotProduct (vec3_t v1, vec3_t v2);
 void _VectorSubtract (vec3_t veca, vec3_t vecb, vec3_t out);
 void _VectorAdd (vec3_t veca, vec3_t vecb, vec3_t out);
 void _VectorCopy (vec3_t in, vec3_t out);
-
+float VectorLengthf (vec3_t v);
 vec_t Length (vec3_t v);
 
 int VectorCompare (vec3_t v1, vec3_t v2);

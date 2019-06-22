@@ -512,27 +512,34 @@ void CL_RelinkEntities (void)
 
 		if (ent->effects & EF_MUZZLEFLASH)
 		{
-			vec3_t		fv, rv, uv;
-
-			dl = CL_AllocDlight (i);
-			VectorCopy (ent->origin,  dl->origin);
-			dl->origin[2] += 16;
-			AngleVectors (ent->angles, fv, rv, uv);
-
-			VectorMA (dl->origin, 18, fv, dl->origin);
-			dl->radius = 200 + (rand()&31);
-			dl->minlight = 32;
-			dl->die = cl.time + 0.1;
-
-			//johnfitz -- assume muzzle flash accompanied by muzzle flare, which looks bad when lerped
-			if (r_lerpmodels.value != 2)
+			if (i == cl.viewentity /*&& qmb_initialized && r_part_muzzleflash.value*/)
 			{
-			if (ent == &cl_entities[cl.viewentity])
-				cl.viewent.lerpflags |= LERP_RESETANIM|LERP_RESETANIM2; //no lerping for two frames
-			else
-				ent->lerpflags |= LERP_RESETANIM|LERP_RESETANIM2; //no lerping for two frames
+				vec3_t		start, smokeorg, v_forward, v_right, v_up;
+				vec3_t tempangles;
+				float forward_offset, up_offset, right_offset;
+
+				VectorAdd(cl.viewangles,CWeaponRot,tempangles);
+				VectorAdd(tempangles,cl.gun_kick,tempangles);
+
+				AngleVectors (tempangles, v_forward, v_right, v_up);
+				VectorCopy (cl_entities[cl.viewentity].origin, smokeorg);
+				smokeorg[2] += 32;
+				VectorCopy(smokeorg,start);
+
+				right_offset	 = sv_player->v.Flash_Offset[0];
+				up_offset		 = sv_player->v.Flash_Offset[1];
+				forward_offset 	 = sv_player->v.Flash_Offset[2];
+				
+				right_offset	= right_offset/1000;
+				up_offset		= up_offset/1000;
+				forward_offset  = forward_offset/1000;
+				
+				VectorMA (start, forward_offset, v_forward ,smokeorg);
+				VectorMA (smokeorg, up_offset, v_up ,smokeorg);
+				VectorMA (smokeorg, right_offset, v_right ,smokeorg);
+				VectorAdd(smokeorg,CWeaponOffset,smokeorg);
+				QMB_MuzzleFlash (smokeorg);
 			}
-			//johnfitz
 		}
 		if (ent->effects & EF_BRIGHTLIGHT)
 		{

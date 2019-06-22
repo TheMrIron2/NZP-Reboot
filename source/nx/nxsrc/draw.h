@@ -47,6 +47,8 @@ qpic_t *Draw_CachePic (const char *path);
 void Draw_NewGame (void);
 
 void GL_SetCanvas (canvastype newcanvas); //johnfitz
+void Clear_LoadingFill (void);
+gltexture_t *loadtextureimage (char* filename);
 
 #endif	/* _QUAKE_DRAW_H */
 

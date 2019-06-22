@@ -307,6 +307,14 @@ vec_t VectorLength(vec3_t v)
 	return sqrt(DotProduct(v,v));
 }
 
+float VectorLengthf(vec3_t v)
+{
+	float	length;
+
+	length = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
+	return sqrt(length);
+}
+
 vec_t Length(vec3_t v)
 {
 	return sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
